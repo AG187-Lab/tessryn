@@ -8,7 +8,7 @@ Measure short and long prompts, shared and unrelated prefixes, concurrent tenant
 
 Compare colocated serving with disaggregated prefill/decode; compare contiguous pipeline, tensor collectives, and hybrids on the same workload. Publish memory residency, workspace peaks, transfer bytes/copies, accelerator utilization, energy, and failure outcomes. Existing macOS/Linux runtimes are reference baselines, not native execution evidence. Keep numerical format and quality comparable when reporting speed differences.
 
-Milestone four requires all four native nodes, including the exact notebook, to execute resident model shards. The declared weight/state working set must exceed every individual admitted capacity and fit aggregate capacity with headroom. If this model occupies all workers, test prefill/decode separation with a smaller checkpoint of the same architecture or additional reserved capacity; do not count the same memory twice.
+Milestone M5 requires all four native nodes, including the exact notebook, to execute resident model shards. The declared weight/state working set must exceed every individual admitted capacity and fit aggregate capacity with headroom. If this model occupies all workers, test prefill/decode separation with a smaller checkpoint of the same architecture or additional reserved capacity; do not count the same memory twice.
 
 ## Analytical traffic example
 

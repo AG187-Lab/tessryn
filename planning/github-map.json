@@ -1,0 +1,243 @@
+{
+  "repository": "AG187-Lab/tessryn",
+  "issues": {
+    "G01": {
+      "number": 1,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/1"
+    },
+    "G03": {
+      "number": 2,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/2"
+    },
+    "G02": {
+      "number": 3,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/3"
+    },
+    "K01": {
+      "number": 4,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/4"
+    },
+    "K02": {
+      "number": 5,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/5"
+    },
+    "K03": {
+      "number": 6,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/6"
+    },
+    "K04": {
+      "number": 7,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/7"
+    },
+    "K05": {
+      "number": 8,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/8"
+    },
+    "IO01": {
+      "number": 9,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/9"
+    },
+    "IO02": {
+      "number": 10,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/10"
+    },
+    "IO03": {
+      "number": 11,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/11"
+    },
+    "IO04": {
+      "number": 12,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/12"
+    },
+    "IO05": {
+      "number": 13,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/13"
+    },
+    "GPU01": {
+      "number": 14,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/14"
+    },
+    "GPU02": {
+      "number": 15,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/15"
+    },
+    "GPU03": {
+      "number": 16,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/16"
+    },
+    "INF01": {
+      "number": 17,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/17"
+    },
+    "INF02": {
+      "number": 18,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/18"
+    },
+    "NET01": {
+      "number": 19,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/19"
+    },
+    "NET02": {
+      "number": 20,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/20"
+    },
+    "NET03": {
+      "number": 21,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/21"
+    },
+    "CL01": {
+      "number": 22,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/22"
+    },
+    "CL02": {
+      "number": 23,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/23"
+    },
+    "CL03": {
+      "number": 24,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/24"
+    },
+    "CL04": {
+      "number": 25,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/25"
+    },
+    "CL05": {
+      "number": 26,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/26"
+    },
+    "AGT01": {
+      "number": 27,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/27"
+    },
+    "DIST01": {
+      "number": 28,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/28"
+    },
+    "DIST02": {
+      "number": 29,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/29"
+    },
+    "DIST03": {
+      "number": 30,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/30"
+    },
+    "DIST04": {
+      "number": 31,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/31"
+    },
+    "DIST05": {
+      "number": 32,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/32"
+    },
+    "REL01": {
+      "number": 33,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/33"
+    },
+    "DEMO01": {
+      "number": 34,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/34"
+    },
+    "CLOUD01": {
+      "number": 35,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/35"
+    },
+    "CLOUD02": {
+      "number": 36,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/36"
+    },
+    "CLOUD03": {
+      "number": 37,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/37"
+    },
+    "GEO01": {
+      "number": 38,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/38"
+    },
+    "RSI01": {
+      "number": 39,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/39"
+    },
+    "RSI02": {
+      "number": 40,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/40"
+    },
+    "RSI03": {
+      "number": 41,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/41"
+    },
+    "ARM01": {
+      "number": 42,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/42"
+    },
+    "APPLE01": {
+      "number": 43,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/43"
+    },
+    "APPLE02": {
+      "number": 44,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/44"
+    },
+    "APPLE03": {
+      "number": 45,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/45"
+    },
+    "APPLE04": {
+      "number": 46,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/46"
+    },
+    "CUDA01": {
+      "number": 47,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/47"
+    },
+    "DMA01": {
+      "number": 48,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/48"
+    },
+    "AMD01": {
+      "number": 49,
+      "url": "https://github.com/AG187-Lab/tessryn/issues/49"
+    }
+  },
+  "milestones": {
+    "M0": {
+      "number": 1,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/1"
+    },
+    "M1": {
+      "number": 2,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/2"
+    },
+    "M2": {
+      "number": 3,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/3"
+    },
+    "M3": {
+      "number": 4,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/4"
+    },
+    "M4": {
+      "number": 5,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/5"
+    },
+    "M5": {
+      "number": 6,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/6"
+    },
+    "M6": {
+      "number": 7,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/7"
+    },
+    "M7": {
+      "number": 8,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/8"
+    },
+    "M8": {
+      "number": 9,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/9"
+    },
+    "M9": {
+      "number": 10,
+      "url": "https://github.com/AG187-Lab/tessryn/milestone/10"
+    }
+  }
+}

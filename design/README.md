@@ -17,6 +17,7 @@ These documents capture the initial research, architectural decisions and implem
 | [Review findings](review.md) | Adversarial findings and their resolutions |
 | [Decisions](decisions/) | Architectural decision records |
 | [Roadmap](roadmap.md) | Dependency-ordered milestones and deliverables |
+| [Development coordination](development.md) | Ready work, GitHub workflow and planning reconciliation |
 | [Provenance](provenance.md) | Original work and third-party artifact policy |
 | [Name](name.md) | Naming rationale and domain evidence |
 

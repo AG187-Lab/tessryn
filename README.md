@@ -19,7 +19,7 @@ The first accelerator qualification targets x86-64 and one exact NVIDIA hardware
 - [Native CUDA](design/native-cuda.md), [distributed inference](design/distributed-inference.md) and [memory and serving](design/memory-and-serving.md)
 - [Research](design/research.md), [review findings](design/review.md) and [decisions](design/decisions/)
 - [Roadmap](design/roadmap.md), [hardware qualification](design/platforms.md) and [benchmark contract](design/benchmarks.md)
-- [Open implementation work](https://github.com/AG187-Lab/tessryn/issues) and [milestones](https://github.com/AG187-Lab/tessryn/milestones)
+- [Open implementation work](https://github.com/AG187-Lab/tessryn/issues), [milestones](https://github.com/AG187-Lab/tessryn/milestones) and [development coordination](design/development.md)
 
 ## Contribute
 
