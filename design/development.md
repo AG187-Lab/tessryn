@@ -4,12 +4,24 @@ The public [Tessryn development Project](https://github.com/orgs/AG187-Lab/proje
 
 ## Start with the ready work
 
-Two P0 tasks have no prerequisites and are labeled `phase:Now`:
+G01 is the remaining open P0 task with no prerequisites, labeled `phase:Now`:
 
 - [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1). Establish exact hardware, firmware, native-access constraints and the recoverable laboratory profile.
-- [G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2). Establish the toolchain, build provenance and numerical/performance evaluation before accepting optimization claims.
 
-Select one task, take ownership in its issue and agree on the acceptance evidence. The versioned native-interface task follows these prerequisites. Initial scope is qualification and design; claiming a working driver or supported platform requires its implementation evidence.
+[Draft PR #52](https://github.com/AG187-Lab/tessryn/pull/52) prepares G01's
+inventory tooling and qualification packet. Continue that effort; its fixtures
+and virtual reference inventory do not replace the missing physical records
+or initial engineering-target decision. G01 remains open.
+
+[G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2)
+is complete through [PR #51](https://github.com/AG187-Lab/tessryn/pull/51), with
+fixture evidence and native capabilities explicitly unavailable. G02 still
+depends on G01. K01 follows G02; completing G03 alone does not unblock it.
+
+Take ownership in the issue and agree on its acceptance evidence. G01's scope
+is exact inventories, access/artifact constraints and engineering-target
+selection. Native initialization and measured inference belong to subsequent
+implementation issues; advertised support requires their execution evidence.
 
 ## Track execution
 
@@ -20,7 +32,7 @@ Use **Todo**, **In Progress** and **Done** for execution state; **P0**, **P1** a
 | View | Purpose |
 | --- | --- |
 | Development board | Track execution by status across all planned work |
-| Ready to start | The two initial `phase:Now` tasks; maintain this label as work becomes ready |
+| Ready to start | Open `phase:Now` tasks; check native dependencies and maintain this label as work becomes ready |
 | First product | Initial-product work, excluding `phase:Later` programs |
 | Roadmap | Unscheduled planning view; dates follow credible qualification evidence |
 

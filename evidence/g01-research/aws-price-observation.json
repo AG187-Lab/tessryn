@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "public_vendor_price_observation",
+  "observed_at_utc": "2026-10-11T18:55:01Z",
+  "source": {
+    "publisher": "Amazon Web Services",
+    "url": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2-ondemand-without-sec-sel/US%20East%20%28N.%20Virginia%29/Linux/index.json",
+    "feed_publication_at_utc": "2026-10-09T20:31:34Z",
+    "feed_service_id": "ec2",
+    "feed_currency": "USD",
+    "feed_source": "ec2-ondemand-without-sec-sel",
+    "decoded_response_bytes": 695489,
+    "decoded_response_sha256": "f852e17d278c33264b82e0ad0ad8211bbaf0e9cadab7aaf12e2b2afa06525877",
+    "retention": "Only the selected fields and rows below are retained. The complete response is not retained or reconstructible from this record.",
+    "access": "Public HTTPS metadata; no account, credentials or resources were used."
+  },
+  "quote_scope": {
+    "region": "us-east-1",
+    "vendor_location": "US East (N. Virginia)",
+    "operating_system": "Linux",
+    "preinstalled_software": "NA",
+    "license_model": "No License required",
+    "purchase_model": "On-Demand reference price",
+    "unit": "USD per instance-hour",
+    "native_tessryn_billing_classification": "unknown",
+    "limitation": "These Linux reference prices do not establish the price classification, availability, quota or supported boot modes of an original Tessryn OS image."
+  },
+  "selected_vendor_rows": [
+    {
+      "instance_type": "g4dn.metal",
+      "vendor_row_key": "g4dn metal US East N. Virginia Linux",
+      "rate_code": "RWBGNFC2P8SPVSQU.JRTCKXETXF.6YS6EN2CT7",
+      "hourly_price_usd": "7.8240000000",
+      "vcpu": "96",
+      "memory": "384 GiB",
+      "storage": "2 x 900 GB NVMe SSD",
+      "network_performance": "100 Gigabit"
+    },
+    {
+      "instance_type": "g5.xlarge",
+      "vendor_row_key": "g5 xlarge US East N. Virginia Linux",
+      "rate_code": "79BRGEEZC6TARVWJ.JRTCKXETXF.6YS6EN2CT7",
+      "hourly_price_usd": "1.0060000000",
+      "vcpu": "4",
+      "memory": "16 GiB",
+      "storage": "1 x 250 GB NVMe SSD",
+      "network_performance": "Up to 10 Gigabit"
+    }
+  ],
+  "analytical_examples": [
+    {
+      "evidence_kind": "analytical_example",
+      "instance_type": "g4dn.metal",
+      "assumed_running_hours": "24",
+      "formula": "7.8240000000 USD/hour * 24 hours",
+      "compute_subtotal_usd": "187.776",
+      "excluded_costs": ["EBS volumes", "snapshots", "public IP addresses", "data transfer", "taxes"],
+      "measured_cost": false
+    },
+    {
+      "evidence_kind": "analytical_example",
+      "instance_type": "g5.xlarge",
+      "assumed_running_hours": "24",
+      "formula": "1.0060000000 USD/hour * 24 hours",
+      "compute_subtotal_usd": "24.144",
+      "excluded_costs": ["EBS volumes", "snapshots", "public IP addresses", "data transfer", "taxes"],
+      "measured_cost": false
+    }
+  ],
+  "project_results": {
+    "instances_launched": 0,
+    "cloud_resources_created": 0,
+    "native_boot_tests": 0,
+    "gpu_execution_tests": 0,
+    "selected_supported_profile": null,
+    "support_status": "research_only_unavailable_for_native_qualification"
+  }
+}

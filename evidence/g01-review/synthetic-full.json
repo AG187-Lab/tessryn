@@ -1,0 +1,172 @@
+{
+  "block": {
+    "devices": [
+      {
+        "kind": "block_device",
+        "model": {
+          "status": "available",
+          "value": "Original Synthetic NVMe"
+        },
+        "name": "nvme0n1",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 8192
+        }
+      }
+    ],
+    "status": "available"
+  },
+  "collected_utc": "2026-10-11T20:04:36.796155+00:00",
+  "collector_sha256": "4c4bf2a62d476c54c08061d8003885dc6b1d61611e8746643b6973b2a56c27ad",
+  "cpu": {
+    "architecture": {
+      "status": "available",
+      "value": "x86_64"
+    },
+    "features": {
+      "status": "available",
+      "value": [
+        "lm",
+        "sse2"
+      ]
+    },
+    "hypervisor_present": {
+      "status": "available",
+      "value": false
+    },
+    "model": {
+      "status": "available",
+      "value": "Original Synthetic Fixture CPU"
+    },
+    "scope": "first_logical_cpu",
+    "status": "available"
+  },
+  "diagnostics": [],
+  "evidence_kind": "synthetic_fixture",
+  "firmware": {
+    "acpi_table_presence": {
+      "APIC": {
+        "status": "present"
+      },
+      "DMAR": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      },
+      "IVRS": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      }
+    },
+    "dmi": {
+      "bios_date": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      },
+      "bios_vendor": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      },
+      "bios_version": {
+        "status": "available",
+        "value": "Original Fixture Version 1"
+      },
+      "product": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      },
+      "vendor": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      }
+    },
+    "uefi_bitness": {
+      "status": "available",
+      "value": 64
+    }
+  },
+  "measured_admission": {
+    "reason": "no_tessryn_measurement",
+    "status": "unknown"
+  },
+  "memory": {
+    "reference_os_usable_bytes": 67108864,
+    "status": "available"
+  },
+  "pci": {
+    "devices": [
+      {
+        "bdf": "0000:01:00.0",
+        "class": {
+          "status": "available",
+          "value": 131072
+        },
+        "device": {
+          "status": "available",
+          "value": 43981
+        },
+        "iommu": {
+          "status": "available",
+          "value": {
+            "group": 7,
+            "members": [
+              "0000:01:00.0"
+            ]
+          }
+        },
+        "reference_os_driver": {
+          "reason": "unbound_or_not_reported",
+          "status": "unavailable"
+        },
+        "revision": {
+          "status": "available",
+          "value": 1
+        },
+        "subsystem_device": {
+          "status": "available",
+          "value": 1
+        },
+        "subsystem_vendor": {
+          "status": "available",
+          "value": 4660
+        },
+        "vendor": {
+          "status": "available",
+          "value": 4660
+        }
+      }
+    ],
+    "status": "available"
+  },
+  "power": {
+    "ac_supplies": [
+      {
+        "name": "AC",
+        "online": {
+          "status": "available",
+          "value": 1
+        }
+      }
+    ],
+    "status": "available"
+  },
+  "schema_version": 1,
+  "support_status": "unqualified",
+  "tessryn_capabilities": {
+    "gpu_execution": {
+      "reason": "not_tested_by_reference_inventory",
+      "status": "unavailable"
+    },
+    "inference": {
+      "reason": "not_tested_by_reference_inventory",
+      "status": "unavailable"
+    },
+    "native_boot": {
+      "reason": "not_tested_by_reference_inventory",
+      "status": "unavailable"
+    }
+  }
+}

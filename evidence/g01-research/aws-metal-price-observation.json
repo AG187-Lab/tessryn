@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "public_vendor_price_observation",
+  "observed_at_utc": "2026-10-11T19:32:30.812414+00:00",
+  "source": {
+    "publisher": "Amazon Web Services",
+    "url": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2-ondemand-without-sec-sel/US%20East%20%28N.%20Virginia%29/Linux/index.json",
+    "feed_publication_at_utc": "2026-10-09T20:31:34Z",
+    "decoded_response_bytes": 695489,
+    "decoded_response_sha256": "f852e17d278c33264b82e0ad0ad8211bbaf0e9cadab7aaf12e2b2afa06525877",
+    "retention": "Only the selected fields and analytical multiplications below are retained. The complete response is not retained or reconstructible from this record.",
+    "access": "Public HTTPS metadata only; no account or credentials used."
+  },
+  "quote_scope": {
+    "region": "us-east-1",
+    "vendor_location": "US East (N. Virginia)",
+    "operating_system": "Linux",
+    "preinstalled_software": "NA",
+    "license_model": "No License required",
+    "purchase_model": "On-Demand reference price",
+    "currency": "USD",
+    "unit": "USD per instance-hour",
+    "native_tessryn_billing_classification": "unknown",
+    "excluded_charges": [
+      "EBS",
+      "snapshots",
+      "public IPv4",
+      "transfer",
+      "tax",
+      "other services"
+    ],
+    "limitation": "Reference price does not establish quota, capacity, supported boot modes, original-OS billing or native support."
+  },
+  "selected_vendor_rows": [
+    {
+      "instance_type": "c7i.metal-24xl",
+      "rate_code": "HWZ4252E5KSE3VEQ.JRTCKXETXF.6YS6EN2CT7",
+      "hourly_price_usd": "4.2840000000",
+      "vcpu": "96",
+      "memory": "192 GiB",
+      "storage": "EBS only",
+      "network_performance": "37500 Megabit"
+    },
+    {
+      "instance_type": "c6i.metal",
+      "rate_code": "Y2K7CWPW75DT8SMM.JRTCKXETXF.6YS6EN2CT7",
+      "hourly_price_usd": "5.4400000000",
+      "vcpu": "128",
+      "memory": "256 GiB",
+      "storage": "EBS only",
+      "network_performance": "50000 Megabit"
+    },
+    {
+      "instance_type": "m7i.metal-24xl",
+      "rate_code": "99WJEN6ZJK4XJAV5.JRTCKXETXF.6YS6EN2CT7",
+      "hourly_price_usd": "4.8384000000",
+      "vcpu": "96",
+      "memory": "384 GiB",
+      "storage": "EBS only",
+      "network_performance": "37500 Megabit"
+    },
+    {
+      "instance_type": "g4dn.metal",
+      "rate_code": "RWBGNFC2P8SPVSQU.JRTCKXETXF.6YS6EN2CT7",
+      "hourly_price_usd": "7.8240000000",
+      "vcpu": "96",
+      "memory": "384 GiB",
+      "storage": "2 x 900 GB NVMe SSD",
+      "network_performance": "100 Gigabit"
+    }
+  ],
+  "analytical_compute_costs": {
+    "c7i.metal-24xl": {
+      "four_hours_usd": "17.1360000000",
+      "twenty_four_hours_usd": "102.8160000000",
+      "basis": "constant quoted Linux hourly rate multiplied by stated running hours; not an all-in quote"
+    },
+    "c6i.metal": {
+      "four_hours_usd": "21.7600000000",
+      "twenty_four_hours_usd": "130.5600000000",
+      "basis": "constant quoted Linux hourly rate multiplied by stated running hours; not an all-in quote"
+    },
+    "m7i.metal-24xl": {
+      "four_hours_usd": "19.3536000000",
+      "twenty_four_hours_usd": "116.1216000000",
+      "basis": "constant quoted Linux hourly rate multiplied by stated running hours; not an all-in quote"
+    },
+    "g4dn.metal": {
+      "four_hours_usd": "31.2960000000",
+      "twenty_four_hours_usd": "187.7760000000",
+      "basis": "constant quoted Linux hourly rate multiplied by stated running hours; not an all-in quote"
+    }
+  },
+  "sample_counts": {
+    "accounts_inspected": 0,
+    "quota_queries": 0,
+    "instance_type_queries": 0,
+    "resources_created": 0,
+    "physical_inventories": 0,
+    "native_boot": 0,
+    "gpu_execution": 0,
+    "performance": 0
+  }
+}

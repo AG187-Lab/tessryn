@@ -1,0 +1,63 @@
+{
+  "acquisition_commands": [
+    "gh run download 38166939525 --repo AG187-Lab/tessryn --name g01-ci-linux-reference --dir build/g01-ci-38166939525",
+    "gh run view 38166939525 --repo AG187-Lab/tessryn --log"
+  ],
+  "base_revision": "352432ff6ca0bfac5531f74453d2dc04732c9afe",
+  "checkout_kind": "temporary_github_pull_request_merge_ref_not_a_merged_pr",
+  "ci_checkout_revision": "47c652f733020585764376835a804136ae1ce1ce",
+  "collector_implementation_revision": "8e8b2cfb3cd0da7da73b82ff01032478220f87ed",
+  "collector_sha256": "36867274affa19a8c619acad1a565660022703f8ce5101639c837fd1e4abaaee",
+  "commands": [
+    "python3 -m unittest discover -s tests -v",
+    "timeout --signal=TERM --kill-after=2s 30s python3 tools/collect_platform_inventory.py --public-summary --out build/ci-linux-reference.json",
+    "sha256sum tools/collect_platform_inventory.py build/ci-linux-reference.json"
+  ],
+  "evidence_kind": "implementation_result_with_linux_reference_inventory",
+  "files": {
+    "ci-linux-reference.json": {
+      "bytes": 5777,
+      "sha256": "30899d1d10bceced235ebb5eededf3100010c600ef409fc894e5f5451d3487fa"
+    },
+    "ci-unit-tests.log": {
+      "bytes": 2670,
+      "sha256": "1257b206ea1e26b40f49788f15fac861dfe899bbd19e3841ab8ba4c8870a1217"
+    }
+  },
+  "pr_head_revision": "c6c1116ab06d4508bb7b917fd7903930af77743c",
+  "provenance": {
+    "report": "original_tessryn_collector_output_downloaded_unmodified",
+    "test_log": "original_test_result_lines_extracted_from_github_actions_log_no_runner_paths"
+  },
+  "pull_request": 52,
+  "recorded_utc": "2026-10-11T19:13:13.698390+00:00",
+  "repository": "AG187-Lab/tessryn",
+  "result": {
+    "artifact_upload": "success",
+    "collection_exit_code": 0,
+    "collection_timeout_seconds": 30,
+    "kill_after_seconds": 2,
+    "unit_tests_failed": 0,
+    "unit_tests_passed": 18,
+    "workflow_conclusion": "success"
+  },
+  "run_id": 38166939525,
+  "run_url": "https://github.com/AG187-Lab/tessryn/actions/runs/38166939525",
+  "runner": {
+    "configured_image": "ubuntu-24.04",
+    "hypervisor_present": true,
+    "python_version": "3.12.13",
+    "qualification": "unqualified_virtual_linux_reference"
+  },
+  "sample_counts": {
+    "gpu_execution": 0,
+    "inference": 0,
+    "linux_reference_inventories": 1,
+    "native_boot": 0,
+    "performance": 0,
+    "physical_inventories": 0,
+    "recovery_experiments": 0,
+    "rented_machines": 0
+  },
+  "schema_version": 1
+}

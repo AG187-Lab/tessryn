@@ -12,6 +12,7 @@ These documents capture the initial research, architectural decisions and implem
 | [Memory and serving](memory-and-serving.md) | State ownership, batching, precision and multi-user service |
 | [Native CUDA](native-cuda.md) | Accelerator execution and staged compatibility scope |
 | [Platforms](platforms.md) | Hardware qualification and cloud/Apple support boundaries |
+| [Initial platform qualification](platform-qualification.md) | G01 candidate records, rental gates and read-only reference inventory |
 | [Benchmarks](benchmarks.md) | Workloads, baselines, numerical quality and evidence |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
