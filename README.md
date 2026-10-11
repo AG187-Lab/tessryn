@@ -4,7 +4,7 @@ An original operating system for AI agents and distributed inference.
 
 Tessryn is designed to let servers and qualified laptops form a cluster, execute models through native accelerator drivers, and serve models larger than any individual worker can hold. Its kernel, execution interfaces and distributed services are being designed together around memory ownership, asynchronous work and measured resource budgets.
 
-**Status:** design and implementation planning. There is no bootable kernel, supported hardware profile or measured performance result yet. The repository contains the design, research, decisions and implementation backlog.
+**Status:** design and implementation planning, with reproducible build/evaluation tooling validated using original test fixtures. There is no bootable Tessryn kernel, supported hardware profile or measured Tessryn performance result yet.
 
 ## The first product milestone
 
@@ -20,15 +20,17 @@ The first accelerator qualification targets x86-64 and one exact NVIDIA hardware
 - [Research](design/research.md), [review findings](design/review.md) and [decisions](design/decisions/)
 - [Roadmap](design/roadmap.md), [hardware qualification](design/platforms.md) and [benchmark contract](design/benchmarks.md)
 - [Development board](https://github.com/orgs/AG187-Lab/projects/1), [open implementation work](https://github.com/AG187-Lab/tessryn/issues), [milestones](https://github.com/AG187-Lab/tessryn/milestones) and [development coordination](design/development.md)
+- [Build and emulator fixture workflow](design/build-and-evaluation.md) and [evaluation evidence formats](design/evaluation-evidence.md)
 
 ## Contribute
 
 Pick an unblocked issue, agree on its acceptance criteria and open a focused pull request. Architecture changes include a decision record; performance claims include reproducible measurements. [CONTRIBUTING.md](CONTRIBUTING.md) explains the workflow.
 
-Run the repository checks with Python 3.11 or newer:
+Run the repository checks with Python 3.12 or newer (tested with 3.14.6):
 
 ```sh
 python3 tools/validate_design.py
+python3 -m unittest discover -s tests -v
 ```
 
 The machine-readable [backlog](planning/backlog.json) records scope and dependencies. GitHub Issues is the live execution tracker; changes to either must be reconciled before merging.

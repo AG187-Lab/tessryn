@@ -16,6 +16,18 @@ G02 and G03 must validate target/toolchain availability, build reproducibility, 
 
 Do not interpret C ABI as POSIX compatibility, arbitrary foreign binary execution or full CUDA ecosystem support.
 
+## G03 validation profile
+
+G03 selects upstream Rust 1.96.0 with bundled rust-lld and the
+`x86_64-unknown-none` target for a freestanding ELF64 compiler/layout/debug probe.
+QEMU 11.1.2 TCG executes a separate original reset-ROM fixture. Exact hashes,
+commands, provenance and limits are recorded by the
+[build and evaluation workflow](../build-and-evaluation.md). This validates the
+development-tool availability and reproducible fixture binary inputs. The Rust
+probe is not booted; kernel runtime/debugger behavior, native-service C ABI and
+exact GPU device compilation remain unvalidated. The whole-kernel language and
+interface proposal remains Proposed pending G02 and implementation evidence.
+
 ## References
 
 [Native ABI](../native-abi.md) and [NVCC documentation](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html).

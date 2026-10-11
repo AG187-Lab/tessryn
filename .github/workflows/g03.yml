@@ -1,0 +1,55 @@
+name: G03 tooling and emulator fixtures
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Install host QEMU build prerequisites
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+      - name: Check tooling and design contracts
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 tools/validate_design.py
+      - name: Install checksum-pinned toolchain
+        run: python3 tools/setup_toolchain.py --jobs 4
+      - name: Build independently twice
+        run: |
+          python3 tools/build_fixture.py --out build/fixture-a
+          python3 tools/build_fixture.py --out build/fixture-b
+          python3 tools/verify_fixture.py --first build/fixture-a/manifest.json --second build/fixture-b/manifest.json
+      - name: Run the original ROM fixture
+        run: python3 tools/run_emulator.py --manifest build/fixture-a/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --out build/pass
+      - name: Require explicit timeout for the hanging ROM
+        run: |
+          set +e
+          python3 tools/run_emulator.py --manifest build/fixture-a/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --fixture hang --timeout 0.5 --out build/timeout
+          code=$?
+          set -e
+          test "$code" -eq 124
+          python3 -c 'import json; assert json.load(open("build/timeout/result.json"))["status"] == "timeout"'
+      - name: Verify retained evidence
+        run: python3 tools/verify_fixture.py --first build/fixture-a/manifest.json --second build/fixture-b/manifest.json --result build/pass/result.json --result build/timeout/result.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: g03-fixture-evidence
+          path: |
+            build/fixture-a/manifest.json
+            build/fixture-b/manifest.json
+            build/pass/
+            build/timeout/
+          if-no-files-found: warn
+          retention-days: 14

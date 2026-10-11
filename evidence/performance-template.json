@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "format": "tessryn-evaluation-registration",
+  "evidence_kind": "assumption",
+  "subject": "native_service",
+  "registration_id": "future-native-evaluation-template-v1",
+  "registration_state": "template",
+  "authority": {
+    "evaluator": "An independent custodian must protect evaluator, preregistration, held-out data and acceptance authority before future native evaluation.",
+    "candidate_can_modify_evaluator": false,
+    "candidate_can_modify_registration": false,
+    "candidate_can_access_held_out": false,
+    "candidate_has_physical_disk_authority": false,
+    "candidate_has_device_dma_authority": false,
+    "candidate_has_promotion_authority": false
+  },
+  "numerical": {
+    "status": "unavailable",
+    "reason": "No native inference implementation, checkpoint or numerical reference exists. A preregistered plan requires a hashed reference source, per-operator dtype atol/rtol with finite checks, fixed teacher-forced history for logits/probabilities, greedy agreement and declared deterministic replay conditions."
+  },
+  "held_out": {
+    "status": "unavailable",
+    "reason": "No independent held-out workload is enrolled. A preregistered plan requires a workload ID/hash, independent custodian and access policy withholding content from candidate training, selection and modification authority. Public examples are fixtures."
+  },
+  "performance": {
+    "status": "unavailable",
+    "reason": "No Tessryn performance is measured. Before running, register target/warmup sample counts, observation duration, arrival process/offered load, concurrency/admission budgets, prompt/output/tenant distributions, cache state, latency SLOs, sustained thermal duration, ambient temperature, power/frequency policy and exact candidate/evaluator/platform/model identities. Report raw results and request outcome counts even when gates fail."
+  }
+}

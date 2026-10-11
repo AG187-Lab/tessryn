@@ -20,7 +20,7 @@ Explain the problem, resulting behavior, validation and material limits. Tests s
 
 Architecture changes add or amend an ADR. All new interfaces state ownership, errors, cancellation and failure behavior. Imported artifacts need a provenance/license manifest before merging.
 
-Run `python3 tools/validate_design.py` before submitting documentation or planning changes. Kernel/device test commands will be documented when those implementation issues land.
+Run `python3 tools/validate_design.py` before submitting documentation or planning changes and `python3 -m unittest discover -s tests -v` for tooling changes. Follow the [build and emulator fixture workflow](design/build-and-evaluation.md) for clean reproductions and failure evidence. Fixtures do not demonstrate Tessryn boot, GPU execution or inference. Kernel/device profiles remain unavailable until their implementation issues land.
 
 Pull requests to `main` require the successful `design-integrity` check and resolved review conversations. Squash merging preserves linear history. Branch protection disables force pushes and branch deletion; administrators retain recovery authority.
 
