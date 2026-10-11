@@ -10,4 +10,3 @@ Current executable set to 'build/final-a/rust-probe.elf' (x86_64).
        Blocks: id = {0x00000072}, range = [0x00100000-0x00100013)
     LineEntry: [0x0000000000100000-0x0000000000100004): tessryn/fixtures/rust-probe.rs:9
        Symbol: id = {0x00000003}, range = [0x0000000000100000-0x0000000000100013), name="fixture_entry"
-

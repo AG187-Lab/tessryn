@@ -23,7 +23,7 @@ performed. Fixture wall time in the result records is harness metadata.
 
 The pass fixture's stderr was empty. Timeout, rejection and unavailable results
 are retained. The debugger log replaces only the absolute host artifact path
-with its repository-relative path; the original debugger log remains local.
+with its repository-relative path and omits the final blank display line; the original debugger log remains local.
 Emulator logs and result records are unmodified.
 
 | Artifact | Bytes | SHA-256 |
