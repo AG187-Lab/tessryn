@@ -1,0 +1,886 @@
+{
+  "artifact_type": "tessryn-aws-uefi-boot",
+  "artifacts": [
+    {
+      "case": "normal",
+      "path": "normal/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8080,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18105
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3464
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_aws"
+      ],
+      "sha256": "a272b3186db19670ae320e85b60cced9f94acf84bcda894c8c033401076daba3",
+      "size_bytes": 24576
+    },
+    {
+      "case": "normal",
+      "disk": {
+        "block_size_bytes": 524288,
+        "efi_sha256": "a272b3186db19670ae320e85b60cced9f94acf84bcda894c8c033401076daba3",
+        "efi_size_bytes": 24576,
+        "esp": {
+          "boot_path": "EFI/BOOT/BOOTX64.EFI",
+          "cluster_count": 128992,
+          "cluster_size_bytes": 512,
+          "filesystem": "FAT32",
+          "partition_guid": "fe3b962f-3f13-5828-831e-231390c10022",
+          "size_bytes": 67108864,
+          "start_lba": 2048
+        },
+        "gpt": {
+          "backup_header_lba": 2097151,
+          "backup_table_lba": 2097119,
+          "disk_guid": "bd5fe3a3-c47b-5fe7-8680-90fc22256de9",
+          "first_usable_lba": 34,
+          "last_usable_lba": 2097118,
+          "primary_header_lba": 1,
+          "primary_table_lba": 2
+        },
+        "logical_size_bytes": 1073741824,
+        "nonzero_blocks": [
+          {
+            "index": 0,
+            "sha256": "99da4493680267b33a3e1e491b96c772458f69c9cb9ac93a656a206028c049cd",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2,
+            "sha256": "646fb398fc62b20db0f3c8ad61f1cb8042edcf19ec0f1c17f741135259d50555",
+            "size_bytes": 524288
+          },
+          {
+            "index": 3,
+            "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264",
+            "size_bytes": 524288
+          },
+          {
+            "index": 4,
+            "sha256": "232d77fd13cb7109e7e07abc2dc3e6e3933ffdd922e4a014eda692c17f90ea74",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2047,
+            "sha256": "0bbb93142e338c022cc33eaeac722f5fb9d866226e4bf68122bb8622e4dda0db",
+            "size_bytes": 524288
+          }
+        ],
+        "sha256": "78478aebdf6ee303cd100bd811b5dd60fda5e282f03fca0ededda23a16127653"
+      },
+      "path": "normal/boot.img",
+      "sha256": "78478aebdf6ee303cd100bd811b5dd60fda5e282f03fca0ededda23a16127653",
+      "size_bytes": 1073741824
+    },
+    {
+      "case": "int3",
+      "path": "int3/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8080,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18217
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3536
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"int3\"",
+        "--cfg",
+        "k01_aws"
+      ],
+      "sha256": "23f000ff4711b8e1627209b860e818364efe6850e0e2c7d9eb012e804a3e7db0",
+      "size_bytes": 24576
+    },
+    {
+      "case": "int3",
+      "disk": {
+        "block_size_bytes": 524288,
+        "efi_sha256": "23f000ff4711b8e1627209b860e818364efe6850e0e2c7d9eb012e804a3e7db0",
+        "efi_size_bytes": 24576,
+        "esp": {
+          "boot_path": "EFI/BOOT/BOOTX64.EFI",
+          "cluster_count": 128992,
+          "cluster_size_bytes": 512,
+          "filesystem": "FAT32",
+          "partition_guid": "0c702761-305f-5985-a29f-451d12a184b1",
+          "size_bytes": 67108864,
+          "start_lba": 2048
+        },
+        "gpt": {
+          "backup_header_lba": 2097151,
+          "backup_table_lba": 2097119,
+          "disk_guid": "a92d9ac8-ab15-51b3-9131-32e950b507c4",
+          "first_usable_lba": 34,
+          "last_usable_lba": 2097118,
+          "primary_header_lba": 1,
+          "primary_table_lba": 2
+        },
+        "logical_size_bytes": 1073741824,
+        "nonzero_blocks": [
+          {
+            "index": 0,
+            "sha256": "2ad6e56639463316a698dea9782eeef4931449512ea322c373a470ffb9ac1e33",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2,
+            "sha256": "ad67255434a6acd663f0fe71036c571b97cef8d4c1572e25eac03a3f6ab28930",
+            "size_bytes": 524288
+          },
+          {
+            "index": 3,
+            "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264",
+            "size_bytes": 524288
+          },
+          {
+            "index": 4,
+            "sha256": "94b8178e68d72ee733b113fe8ba283ed5a00d156bf8b9c8219d253a079456dcb",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2047,
+            "sha256": "2f1b9e836015a01fb45946c71d3e2fede234d7041efeaad2555a291420bfbd9c",
+            "size_bytes": 524288
+          }
+        ],
+        "sha256": "03ddac93670a2b38cc7946e6daa4795cf19ea96abcff03f7cfa210cabd53a29e"
+      },
+      "path": "int3/boot.img",
+      "sha256": "03ddac93670a2b38cc7946e6daa4795cf19ea96abcff03f7cfa210cabd53a29e",
+      "size_bytes": 1073741824
+    },
+    {
+      "case": "invalid_opcode",
+      "path": "invalid_opcode/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8080,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18137
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3472
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"invalid_opcode\"",
+        "--cfg",
+        "k01_aws"
+      ],
+      "sha256": "933272aa8aa604a4bb636e21a85679e75039aba068bf2aa68431dd1c10e57804",
+      "size_bytes": 24576
+    },
+    {
+      "case": "invalid_opcode",
+      "disk": {
+        "block_size_bytes": 524288,
+        "efi_sha256": "933272aa8aa604a4bb636e21a85679e75039aba068bf2aa68431dd1c10e57804",
+        "efi_size_bytes": 24576,
+        "esp": {
+          "boot_path": "EFI/BOOT/BOOTX64.EFI",
+          "cluster_count": 128992,
+          "cluster_size_bytes": 512,
+          "filesystem": "FAT32",
+          "partition_guid": "d5c90c43-7894-586e-ac17-8fc47ef7615c",
+          "size_bytes": 67108864,
+          "start_lba": 2048
+        },
+        "gpt": {
+          "backup_header_lba": 2097151,
+          "backup_table_lba": 2097119,
+          "disk_guid": "479c1432-0feb-5029-920d-ef7add1901f9",
+          "first_usable_lba": 34,
+          "last_usable_lba": 2097118,
+          "primary_header_lba": 1,
+          "primary_table_lba": 2
+        },
+        "logical_size_bytes": 1073741824,
+        "nonzero_blocks": [
+          {
+            "index": 0,
+            "sha256": "867d6590312c937919e55cfc15ad1fceaacfa5488e83f67e5d260961199cdac8",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2,
+            "sha256": "f049d1d9575984fd2c5f88ea246dcaf5122cf748f1ad207a403c208e0509c804",
+            "size_bytes": 524288
+          },
+          {
+            "index": 3,
+            "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264",
+            "size_bytes": 524288
+          },
+          {
+            "index": 4,
+            "sha256": "2cd174e9864f4650802a304dc83d9fe8b3777aeb1df93df04a9cfdf21033684a",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2047,
+            "sha256": "b9942bf1f852e4ac483418522357ae2c44eaf2e664254bb1eda3f697b379511c",
+            "size_bytes": 524288
+          }
+        ],
+        "sha256": "756b47969a1edb334a54d6ed95bf50b7ebffb908e13c51f46245a21fda071f53"
+      },
+      "path": "invalid_opcode/boot.img",
+      "sha256": "756b47969a1edb334a54d6ed95bf50b7ebffb908e13c51f46245a21fda071f53",
+      "size_bytes": 1073741824
+    },
+    {
+      "case": "page_fault",
+      "path": "page_fault/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8080,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18185
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3496
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"page_fault\"",
+        "--cfg",
+        "k01_aws"
+      ],
+      "sha256": "9b47109d0ef601b33810d42d17bfd44ee8f57deb5f941d3d5e3bc67408c28e47",
+      "size_bytes": 24576
+    },
+    {
+      "case": "page_fault",
+      "disk": {
+        "block_size_bytes": 524288,
+        "efi_sha256": "9b47109d0ef601b33810d42d17bfd44ee8f57deb5f941d3d5e3bc67408c28e47",
+        "efi_size_bytes": 24576,
+        "esp": {
+          "boot_path": "EFI/BOOT/BOOTX64.EFI",
+          "cluster_count": 128992,
+          "cluster_size_bytes": 512,
+          "filesystem": "FAT32",
+          "partition_guid": "97c3ef8e-e0ce-5dd5-99f3-93e701399dca",
+          "size_bytes": 67108864,
+          "start_lba": 2048
+        },
+        "gpt": {
+          "backup_header_lba": 2097151,
+          "backup_table_lba": 2097119,
+          "disk_guid": "9896ecc2-c89b-5bdd-b0b4-d62d19dcf040",
+          "first_usable_lba": 34,
+          "last_usable_lba": 2097118,
+          "primary_header_lba": 1,
+          "primary_table_lba": 2
+        },
+        "logical_size_bytes": 1073741824,
+        "nonzero_blocks": [
+          {
+            "index": 0,
+            "sha256": "2f523ec30a7cc912d1e0383a88fb5e3d599039c161f269389915ac9a88fd7b8c",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2,
+            "sha256": "954dc9d5d732de5bb95a24de2463f50324221c83cedb0cbd15390207eea4b465",
+            "size_bytes": 524288
+          },
+          {
+            "index": 3,
+            "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264",
+            "size_bytes": 524288
+          },
+          {
+            "index": 4,
+            "sha256": "b7162cc3e70cf1f90e1b29011045fb42fe0b51281c289c8438cfc0835ee64445",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2047,
+            "sha256": "134e44fa7d928005e55a593a92289b33b9a6586bceb26215caa411951c7dab82",
+            "size_bytes": 524288
+          }
+        ],
+        "sha256": "a4a44ef887635c54ade3b28f471eefea90411c14bac785ba85ed26e65cc40f16"
+      },
+      "path": "page_fault/boot.img",
+      "sha256": "a4a44ef887635c54ade3b28f471eefea90411c14bac785ba85ed26e65cc40f16",
+      "size_bytes": 1073741824
+    },
+    {
+      "case": "panic",
+      "path": "panic/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8080,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18089
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3504
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"panic\"",
+        "--cfg",
+        "k01_aws"
+      ],
+      "sha256": "e897a21ce2c85ab3bf3e3caac5595a62750e9359ebef1d9c7363c5f83adeb8fd",
+      "size_bytes": 24576
+    },
+    {
+      "case": "panic",
+      "disk": {
+        "block_size_bytes": 524288,
+        "efi_sha256": "e897a21ce2c85ab3bf3e3caac5595a62750e9359ebef1d9c7363c5f83adeb8fd",
+        "efi_size_bytes": 24576,
+        "esp": {
+          "boot_path": "EFI/BOOT/BOOTX64.EFI",
+          "cluster_count": 128992,
+          "cluster_size_bytes": 512,
+          "filesystem": "FAT32",
+          "partition_guid": "b0b6840a-b3e5-5d1b-ab4f-0a8691a3301a",
+          "size_bytes": 67108864,
+          "start_lba": 2048
+        },
+        "gpt": {
+          "backup_header_lba": 2097151,
+          "backup_table_lba": 2097119,
+          "disk_guid": "22436538-7205-5eb1-9fb9-3aaab8263b05",
+          "first_usable_lba": 34,
+          "last_usable_lba": 2097118,
+          "primary_header_lba": 1,
+          "primary_table_lba": 2
+        },
+        "logical_size_bytes": 1073741824,
+        "nonzero_blocks": [
+          {
+            "index": 0,
+            "sha256": "3ac0b7aa9101aec1198a66c77e324f99c683780fd43ba437c2c3fc23bc80ecfc",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2,
+            "sha256": "af31f02cb56ba8c57484954e985008498dcbb3d748c56881303846661f636586",
+            "size_bytes": 524288
+          },
+          {
+            "index": 3,
+            "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264",
+            "size_bytes": 524288
+          },
+          {
+            "index": 4,
+            "sha256": "32504f0d3c304091336ebb4700bc891acd3b9b1b314531dbd916597f285b5d98",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2047,
+            "sha256": "3f696ffac04b6f5982f337cb2ce356eaea0084397b5f48eb13497ea6fb7d9f18",
+            "size_bytes": 524288
+          }
+        ],
+        "sha256": "e903c3c99e6bb6b6b0700bbf34efe8c45e6d8f04b4fdf6a0e91d8b459d70129e"
+      },
+      "path": "panic/boot.img",
+      "sha256": "e903c3c99e6bb6b6b0700bbf34efe8c45e6d8f04b4fdf6a0e91d8b459d70129e",
+      "size_bytes": 1073741824
+    },
+    {
+      "case": "reboot",
+      "path": "reboot/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8080,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18105
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3504
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"reboot\"",
+        "--cfg",
+        "k01_aws"
+      ],
+      "sha256": "7df7e8591d2ef0a4ecdd82b4048255e0c8f8d178768de0d3702520dd389a74ee",
+      "size_bytes": 24576
+    },
+    {
+      "case": "reboot",
+      "disk": {
+        "block_size_bytes": 524288,
+        "efi_sha256": "7df7e8591d2ef0a4ecdd82b4048255e0c8f8d178768de0d3702520dd389a74ee",
+        "efi_size_bytes": 24576,
+        "esp": {
+          "boot_path": "EFI/BOOT/BOOTX64.EFI",
+          "cluster_count": 128992,
+          "cluster_size_bytes": 512,
+          "filesystem": "FAT32",
+          "partition_guid": "289c9227-95d0-57bb-bde9-a7daa873846b",
+          "size_bytes": 67108864,
+          "start_lba": 2048
+        },
+        "gpt": {
+          "backup_header_lba": 2097151,
+          "backup_table_lba": 2097119,
+          "disk_guid": "a7bfaab2-cfc8-511a-bbf5-08aafdc83e67",
+          "first_usable_lba": 34,
+          "last_usable_lba": 2097118,
+          "primary_header_lba": 1,
+          "primary_table_lba": 2
+        },
+        "logical_size_bytes": 1073741824,
+        "nonzero_blocks": [
+          {
+            "index": 0,
+            "sha256": "bdbaa4ba540b780d8808fa0e1a901deac68288c168afa38bd040bc60f0fed19e",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2,
+            "sha256": "7429753881a5bc30652a278a5be9608f13eede0cd9845b5e3862bdd19c252830",
+            "size_bytes": 524288
+          },
+          {
+            "index": 3,
+            "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264",
+            "size_bytes": 524288
+          },
+          {
+            "index": 4,
+            "sha256": "b4210ebb7a4f3b7abd3710c8cfc5a1ea0e8ef32deee424c76b3f7d93273f6e56",
+            "size_bytes": 524288
+          },
+          {
+            "index": 2047,
+            "sha256": "e7239212b9e125b37eb933dcde26741c2bd06e98126621dd0123ce804c427424",
+            "size_bytes": 524288
+          }
+        ],
+        "sha256": "f3bc856af5e16ff71a410867fef2a6eccc8f2d8cd635bc3661aa4d79a1b15d4d"
+      },
+      "path": "reboot/boot.img",
+      "sha256": "f3bc856af5e16ff71a410867fef2a6eccc8f2d8cd635bc3661aa4d79a1b15d4d",
+      "size_bytes": 1073741824
+    }
+  ],
+  "capabilities": {
+    "aws_native_boot": "unqualified_requires_execution_evidence",
+    "aws_recovery": "unqualified_requires_external_control_evidence",
+    "inference": "unavailable",
+    "native_gpu": "unavailable",
+    "network": "unavailable"
+  },
+  "notices": [
+    {
+      "component": "tessryn",
+      "path": "notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "component": "tessryn",
+      "path": "notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "component": "rust",
+      "path": "notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "component": "rust",
+      "path": "notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "component": "rust",
+      "path": "notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    }
+  ],
+  "profile": {
+    "active_cpu": "boot_CPU_only",
+    "architecture": "x86_64",
+    "diagnostics": "bounded_headless_COM1",
+    "firmware": "UEFI",
+    "framebuffer": "optional",
+    "guest_kernel": "original_tessryn",
+    "qemu_debug_ports": "disabled",
+    "serial_baud": 115200,
+    "serial_framing": "8n1",
+    "storage": "firmware_loads_FAT32_ESP_before_handoff_no_native_storage_driver",
+    "uart_io_base": 1016,
+    "uart_status": "profile_assumption_requires_exact_AWS_execution_evidence"
+  },
+  "schema_version": 1,
+  "snapshot_input_plans": [
+    {
+      "path": "normal/snapshot-inputs.json",
+      "sha256": "a3fb062454211197c2000f70d2152ace8ef8049b55fd6517c7f7083244952e59",
+      "size_bytes": 1938
+    },
+    {
+      "path": "int3/snapshot-inputs.json",
+      "sha256": "7eb61d2cb7ec528a99c967809aca4278e2d5cd74600f8fcefbdad02b7ba4ab54",
+      "size_bytes": 1934
+    },
+    {
+      "path": "invalid_opcode/snapshot-inputs.json",
+      "sha256": "303f5ac123e4b77e5c2d44db12841ec8e91b80ee694df377e0e6e2b754e24edb",
+      "size_bytes": 1954
+    },
+    {
+      "path": "page_fault/snapshot-inputs.json",
+      "sha256": "6dd66765c86d38f4f4796869a2f161c692474fc874de82b410610ef70e6cb8f0",
+      "size_bytes": 1946
+    },
+    {
+      "path": "panic/snapshot-inputs.json",
+      "sha256": "24e8e70d4a0a143b2f7b8a709d51373c5ffa5c4fd1c608e39677a6d3e243cbca",
+      "size_bytes": 1936
+    },
+    {
+      "path": "reboot/snapshot-inputs.json",
+      "sha256": "8d5cf097cf60113d3fdb57562aa79af27d3b36665552a60b4723871fe3b1bd38",
+      "size_bytes": 1938
+    }
+  ],
+  "source": {
+    "dirty": false,
+    "revision": "5ea06b998fcc854851e794aea6235b15fa34be65",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "7c53829d4ef7d52c14ef5633b8e3d8e8c838e51b4578a12333f25eddf23399d6"
+  },
+  "toolchain": {
+    "linker_version": "LLD 22.1.2 (https://github.com/rust-lang/llvm-project.git 1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e) (compatible with GNU linkers)",
+    "rust_flags": [
+      "--edition=2024",
+      "--crate-name=tessryn_kernel",
+      "--crate-type=bin",
+      "--target=x86_64-unknown-uefi",
+      "-Cpanic=abort",
+      "-Copt-level=1",
+      "-Ccodegen-units=1",
+      "-Cdebuginfo=2",
+      "-Cforce-frame-pointers=yes",
+      "-Cno-redzone=yes",
+      "-Cembed-bitcode=no",
+      "-Clink-arg=/timestamp:0",
+      "-Clink-arg=/debug:none"
+    ],
+    "rustc_version": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: aarch64-apple-darwin\nrelease: 1.96.0\nLLVM version: 22.1.2",
+    "setup": {
+      "base_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "base_setup_sha256": "1fbf88153400a389e2d594a47d4d10ba1d896b043195d0627f4c8b27fe39011d",
+      "firmware": {
+        "code": {
+          "path": "firmware/edk2-x86_64-code.fd",
+          "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+          "size_bytes": 3653632
+        },
+        "descriptor": {
+          "path": "firmware/60-edk2-x86_64.json",
+          "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+          "size_bytes": 702
+        },
+        "notice": {
+          "path": "firmware/edk2-licenses.txt",
+          "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+          "size_bytes": 42903
+        },
+        "vars": {
+          "path": "firmware/edk2-i386-vars.fd",
+          "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+          "size_bytes": 540672
+        }
+      },
+      "firmware_archive": {
+        "hash_source": "toolchain.lock.json:qemu.sha256",
+        "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+        "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+        "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+        "version": "11.1.2"
+      },
+      "host": "aarch64-apple-darwin",
+      "lock_sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "rust_library_tree_sha256": "88deac02933678f05f1289c1b5c30edef08282cda5fa298b92830156b72df821",
+      "rust_notices": {
+        "COPYRIGHT": {
+          "path": "notices/rust/COPYRIGHT",
+          "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+          "size_bytes": 1571
+        },
+        "LICENSE-APACHE": {
+          "path": "notices/rust/LICENSE-APACHE",
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+          "size_bytes": 9723
+        },
+        "LICENSE-MIT": {
+          "path": "notices/rust/LICENSE-MIT",
+          "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+          "size_bytes": 1068
+        }
+      },
+      "rust_target_archive": {
+        "hash_source": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+        "hash_source_sha256": "9af50610e1d82699f78a40b985c9277ae1a2c5a0bec86ae430cfe58832038285",
+        "manifest_key": "pkg.rust-std.target.x86_64-unknown-uefi.xz_hash",
+        "sha256": "dd8d565f061389cef66f64aa65bbfabe01954e360ada0b39f1e0d637d588e4f6",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-uefi.tar.xz"
+      },
+      "rust_target_library_tree_sha256": "357151d2712e52bfe9424b55767d8f1bb58f7627ed2b4fadec76e573fc81f3b4",
+      "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+      "schema_version": 1,
+      "verified_tools": {
+        "qemu": {
+          "sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51"
+        },
+        "rust_lld": {
+          "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+        },
+        "rustc": {
+          "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+        }
+      }
+    }
+  }
+}

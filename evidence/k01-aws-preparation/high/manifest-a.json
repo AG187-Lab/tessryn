@@ -1,0 +1,880 @@
+{
+  "artifact_type": "tessryn-k01-high-kernel",
+  "artifacts": [
+    {
+      "case": "image-normal",
+      "extra_rust_flags": [],
+      "path": "image-normal/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8352,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18137
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3464
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "f668b47c9456b624fd856275900758b6d7bc7f1baa5bdd8a3f94c66fc90d2183",
+      "size_bytes": 24576
+    },
+    {
+      "case": "image-normal",
+      "extra_rust_flags": [],
+      "path": "image-normal/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "03171c5a5483ca1dec904cea7f0328916debd2a3c261c193474a8e2a7da35894",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "image-int3",
+      "extra_rust_flags": [],
+      "path": "image-int3/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8352,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18249
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3536
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"int3\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "2307cc2472c0c4ee574849b98f143ccae6fdab22d58eb4b3490757e68f04abc3",
+      "size_bytes": 24576
+    },
+    {
+      "case": "image-int3",
+      "extra_rust_flags": [],
+      "path": "image-int3/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"int3\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "2276251b03f3df2aadf8bd888c1544ffb6466de729373b3d0b4860b4048267f8",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "image-page_fault",
+      "extra_rust_flags": [],
+      "path": "image-page_fault/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8352,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18201
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3496
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"page_fault\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "5a9b8b86e7543dbdf487ec8095f9e1cdc620b955044a76ca0d5f36eea8fd398d",
+      "size_bytes": 24576
+    },
+    {
+      "case": "image-page_fault",
+      "extra_rust_flags": [],
+      "path": "image-page_fault/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"page_fault\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "943272579a676183dc54414174880eae0c356a89315cc17301daaedade2350ac",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "image-reboot",
+      "extra_rust_flags": [],
+      "path": "image-reboot/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8352,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18121
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3504
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"reboot\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "d46f368128d2accae83f28876acc8dce2eb61868e0cd8eda34d388a030c69348",
+      "size_bytes": 24576
+    },
+    {
+      "case": "image-reboot",
+      "extra_rust_flags": [],
+      "path": "image-reboot/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"reboot\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "fd22e053e2428a5a45ad0180ece2fb18788fca10470236c448a3ef10a53552dd",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "handoff-normal",
+      "extra_rust_flags": [],
+      "path": "handoff-normal/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 9104,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18944,
+            "virtual_size": 18713
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3560
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 618656
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 651264,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 655360,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "b50749dbeffe0f0491b18f87e58b1529c79cf6f620505d97e68efd94f2276c13",
+      "size_bytes": 25088
+    },
+    {
+      "case": "handoff-normal",
+      "extra_rust_flags": [],
+      "path": "handoff-normal/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "99632966ca8b2d65e9410b1c89552a5592a0d7262d73963f69197b0d0aa03655",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "handoff-int3",
+      "extra_rust_flags": [],
+      "path": "handoff-int3/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 9104,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18944,
+            "virtual_size": 18825
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 4096,
+            "virtual_size": 3632
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 618656
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 651264,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 655360,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"int3\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "34936af1efdc15c26bbb5fd42c455ed38853548f1b11ab43942aca16739521ef",
+      "size_bytes": 25600
+    },
+    {
+      "case": "handoff-int3",
+      "extra_rust_flags": [],
+      "path": "handoff-int3/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"int3\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "9c9403f8ca24f510c0772f0a295373cce909c387fc48a9bcce4a7cc8a3f8b720",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "handoff-page_fault",
+      "extra_rust_flags": [],
+      "path": "handoff-page_fault/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 9104,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18944,
+            "virtual_size": 18777
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 4096,
+            "virtual_size": 3592
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 618656
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 651264,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 655360,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"page_fault\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "f14fa3301d4bed814f88928712ce8615b2617cfceb7a19a781c0ea5aa34d475b",
+      "size_bytes": 25600
+    },
+    {
+      "case": "handoff-page_fault",
+      "extra_rust_flags": [],
+      "path": "handoff-page_fault/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"page_fault\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "6d05370c2747dc822db54dd8946cf632521e8337fa6ae147e76fb726e0ccf16d",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "handoff-reboot",
+      "extra_rust_flags": [],
+      "path": "handoff-reboot/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 9104,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18944,
+            "virtual_size": 18697
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 4096,
+            "virtual_size": 3600
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 618656
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 651264,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 655360,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"reboot\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "190674cd8cbff0732da9b595ce03504b0748a4e6d0d016acc1615027c4a5296c",
+      "size_bytes": 25600
+    },
+    {
+      "case": "handoff-reboot",
+      "extra_rust_flags": [],
+      "path": "handoff-reboot/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 5368709120,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"reboot\"",
+        "--cfg",
+        "k01_emulator",
+        "--cfg",
+        "k01_high_handoff"
+      ],
+      "sha256": "10ad21ec3acffd9a6d22adc863e0a793361ef94f983517ab5390818e3fcb0e87",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "ram-only",
+      "extra_rust_flags": [
+        "-Clink-arg=/base:0x10000000"
+      ],
+      "path": "ram-only/BOOTX64.EFI",
+      "pe_validation": {
+        "architecture": "x86_64",
+        "entry_rva": 8352,
+        "format": "PE32+",
+        "imports": [],
+        "relocations": true,
+        "sections": [
+          {
+            "flags": 1610612768,
+            "name": ".text",
+            "rva": 4096,
+            "size_bytes": 18432,
+            "virtual_size": 18137
+          },
+          {
+            "flags": 1073741888,
+            "name": ".rdata",
+            "rva": 24576,
+            "size_bytes": 3584,
+            "virtual_size": 3464
+          },
+          {
+            "flags": 3221225536,
+            "name": ".data",
+            "rva": 28672,
+            "size_bytes": 512,
+            "virtual_size": 553120
+          },
+          {
+            "flags": 1073741888,
+            "name": ".eh_fram",
+            "rva": 585728,
+            "size_bytes": 512,
+            "virtual_size": 64
+          },
+          {
+            "flags": 1107296320,
+            "name": ".reloc",
+            "rva": 589824,
+            "size_bytes": 512,
+            "virtual_size": 104
+          }
+        ],
+        "subsystem": "EFI_APPLICATION",
+        "timestamp": 0
+      },
+      "preferred_image_base": 268435456,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "0109d91b8e7e9855a8c8b615ebcfe47f9bbc8cf637690755d8354e1c3580ea15",
+      "size_bytes": 24576
+    },
+    {
+      "case": "ram-only",
+      "extra_rust_flags": [
+        "-Clink-arg=/base:0x10000000"
+      ],
+      "path": "ram-only/boot.img",
+      "pe_validation": null,
+      "preferred_image_base": 268435456,
+      "rust_case_flags": [
+        "--cfg",
+        "k01_case=\"normal\"",
+        "--cfg",
+        "k01_emulator"
+      ],
+      "sha256": "ca3018c9ab2c14aad696ac2f2f5c2ee7cf9b695c7586f0c66cb8b485ba473d5d",
+      "size_bytes": 35651584
+    }
+  ],
+  "notices": [
+    {
+      "component": "tessryn",
+      "path": "notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "component": "tessryn",
+      "path": "notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "component": "rust",
+      "path": "notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "component": "rust",
+      "path": "notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "component": "rust",
+      "path": "notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    }
+  ],
+  "profiles": {
+    "handoff-int3": {
+      "case": "int3",
+      "high_handoff": true,
+      "low_image": false
+    },
+    "handoff-normal": {
+      "case": "normal",
+      "high_handoff": true,
+      "low_image": false
+    },
+    "handoff-page_fault": {
+      "case": "page_fault",
+      "high_handoff": true,
+      "low_image": false
+    },
+    "handoff-reboot": {
+      "case": "reboot",
+      "high_handoff": true,
+      "low_image": false
+    },
+    "image-int3": {
+      "case": "int3",
+      "high_handoff": false,
+      "low_image": false
+    },
+    "image-normal": {
+      "case": "normal",
+      "high_handoff": false,
+      "low_image": false
+    },
+    "image-page_fault": {
+      "case": "page_fault",
+      "high_handoff": false,
+      "low_image": false
+    },
+    "image-reboot": {
+      "case": "reboot",
+      "high_handoff": false,
+      "low_image": false
+    },
+    "ram-only": {
+      "case": "normal",
+      "high_handoff": false,
+      "low_image": true
+    }
+  },
+  "schema_version": 1,
+  "scope": "actual high image/handoff in QEMU OVMF; synthetic paging edges are separately labeled fixtures",
+  "source": {
+    "dirty": false,
+    "revision": "5ea06b998fcc854851e794aea6235b15fa34be65",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "7c53829d4ef7d52c14ef5633b8e3d8e8c838e51b4578a12333f25eddf23399d6"
+  },
+  "toolchain": {
+    "linker_version": "LLD 22.1.2 (https://github.com/rust-lang/llvm-project.git 1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e) (compatible with GNU linkers)",
+    "rust_flags": [
+      "--edition=2024",
+      "--crate-name=tessryn_kernel",
+      "--crate-type=bin",
+      "--target=x86_64-unknown-uefi",
+      "-Cpanic=abort",
+      "-Copt-level=1",
+      "-Ccodegen-units=1",
+      "-Cdebuginfo=2",
+      "-Cforce-frame-pointers=yes",
+      "-Cno-redzone=yes",
+      "-Cembed-bitcode=no",
+      "-Clink-arg=/timestamp:0",
+      "-Clink-arg=/debug:none"
+    ],
+    "rustc_version": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: aarch64-apple-darwin\nrelease: 1.96.0\nLLVM version: 22.1.2",
+    "setup": {
+      "base_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "base_setup_sha256": "1fbf88153400a389e2d594a47d4d10ba1d896b043195d0627f4c8b27fe39011d",
+      "firmware": {
+        "code": {
+          "path": "firmware/edk2-x86_64-code.fd",
+          "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+          "size_bytes": 3653632
+        },
+        "descriptor": {
+          "path": "firmware/60-edk2-x86_64.json",
+          "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+          "size_bytes": 702
+        },
+        "notice": {
+          "path": "firmware/edk2-licenses.txt",
+          "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+          "size_bytes": 42903
+        },
+        "vars": {
+          "path": "firmware/edk2-i386-vars.fd",
+          "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+          "size_bytes": 540672
+        }
+      },
+      "firmware_archive": {
+        "hash_source": "toolchain.lock.json:qemu.sha256",
+        "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+        "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+        "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+        "version": "11.1.2"
+      },
+      "host": "aarch64-apple-darwin",
+      "lock_sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "rust_library_tree_sha256": "88deac02933678f05f1289c1b5c30edef08282cda5fa298b92830156b72df821",
+      "rust_notices": {
+        "COPYRIGHT": {
+          "path": "notices/rust/COPYRIGHT",
+          "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+          "size_bytes": 1571
+        },
+        "LICENSE-APACHE": {
+          "path": "notices/rust/LICENSE-APACHE",
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+          "size_bytes": 9723
+        },
+        "LICENSE-MIT": {
+          "path": "notices/rust/LICENSE-MIT",
+          "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+          "size_bytes": 1068
+        }
+      },
+      "rust_target_archive": {
+        "hash_source": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+        "hash_source_sha256": "9af50610e1d82699f78a40b985c9277ae1a2c5a0bec86ae430cfe58832038285",
+        "manifest_key": "pkg.rust-std.target.x86_64-unknown-uefi.xz_hash",
+        "sha256": "dd8d565f061389cef66f64aa65bbfabe01954e360ada0b39f1e0d637d588e4f6",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-uefi.tar.xz"
+      },
+      "rust_target_library_tree_sha256": "357151d2712e52bfe9424b55767d8f1bb58f7627ed2b4fadec76e573fc81f3b4",
+      "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+      "schema_version": 1,
+      "verified_tools": {
+        "qemu": {
+          "sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51"
+        },
+        "rust_lld": {
+          "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+        },
+        "rustc": {
+          "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+        }
+      }
+    }
+  }
+}

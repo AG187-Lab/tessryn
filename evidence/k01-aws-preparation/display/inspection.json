@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-11",
+  "format": "tessryn-k01-manual-display-inspection",
+  "method": "Primary agent inspected the full-resolution PNG converted losslessly from the original PPM using Pillow; no pixel edits",
+  "omitted_raw_capture": "screenshot.ppm and framebuffer.raw retained in ignored build/aws-ready-display; hashes retained in display/result.json",
+  "original_ppm_sha256": "cf101f238220707b9ec4272eb348ae4fc9d17debe2233a52516a1724d61a5c6a",
+  "png_sha256": "aa71f00928c13edcbda568e3a5c6ac1a9413db866adfe88e16ffc52781e72f13",
+  "scope": "QEMU q35/TCG framebuffer-only deployment image; native AWS and physical hardware unqualified",
+  "source_revision": "5ea06b998fcc854851e794aea6235b15fa34be65",
+  "status": "visually_verified",
+  "visible_markers": [
+    "TESSRYN ORIGINAL KERNEL",
+    "TESSRYN_K01_FRAMEBUFFER STATUS=READY",
+    "TESSRYN_K01_PAGING_READY",
+    "TESSRYN_K01_MEMORY_MAP_VALID",
+    "TESSRYN_K01_EXIT_BOOT_SERVICES_OK",
+    "TESSRYN_K01_CPU_OWNED",
+    "TESSRYN_K01_MEMORY_OWNERSHIP_OK",
+    "TESSRYN_K01_PASS"
+  ]
+}

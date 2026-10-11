@@ -1,0 +1,191 @@
+{
+  "capabilities": {
+    "aws_native_boot": "unqualified",
+    "aws_recovery": "unqualified",
+    "inference": "unavailable",
+    "native_gpu": "unavailable",
+    "network": "unavailable"
+  },
+  "case": "normal",
+  "controls": [
+    {
+      "execute": "query-status",
+      "id": 2,
+      "result": {
+        "running": true,
+        "status": "running"
+      },
+      "stderr_offset": 5400,
+      "stdout_offset": 0
+    },
+    {
+      "execute": "stop",
+      "id": 3,
+      "result": {},
+      "stderr_offset": 13500,
+      "stdout_offset": 1172
+    },
+    {
+      "execute": "query-status",
+      "id": 4,
+      "result": {
+        "running": false,
+        "status": "paused"
+      },
+      "stderr_offset": 13500,
+      "stdout_offset": 1172
+    },
+    {
+      "execute": "system_reset",
+      "id": 5,
+      "result": {},
+      "stderr_offset": 13500,
+      "stdout_offset": 1172
+    },
+    {
+      "execute": "query-status",
+      "id": 6,
+      "result": {
+        "running": false,
+        "status": "prelaunch"
+      },
+      "stderr_offset": 16200,
+      "stdout_offset": 1172
+    },
+    {
+      "execute": "cont",
+      "id": 7,
+      "result": {},
+      "stderr_offset": 16200,
+      "stdout_offset": 1172
+    },
+    {
+      "execute": "stop",
+      "id": 8,
+      "result": {},
+      "stderr_offset": 24300,
+      "stdout_offset": 2344
+    },
+    {
+      "execute": "query-status",
+      "id": 9,
+      "result": {
+        "running": false,
+        "status": "paused"
+      },
+      "stderr_offset": 24300,
+      "stdout_offset": 2344
+    },
+    {
+      "execute": "quit",
+      "id": 10,
+      "result": {},
+      "stderr_offset": 24300,
+      "stdout_offset": 2344
+    }
+  ],
+  "disk_sha256": "78478aebdf6ee303cd100bd811b5dd60fda5e282f03fca0ededda23a16127653",
+  "emulator_sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51",
+  "evaluator_sha256": "2614caa24dbb1374723f5d13a94175f370ccf2f4761213333c0535f3081346a1",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg",
+      "-cpu",
+      "qemu64",
+      "-m",
+      "2G",
+      "-smp",
+      "2",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-drive",
+      "if=none,id=boot,format=raw,snapshot=on,file=boot.img",
+      "-device",
+      "nvme,drive=boot,serial=TESSRYN_BOOT_TEST",
+      "-boot",
+      "order=c",
+      "-qmp",
+      "unix:qmp.sock,server=on,wait=off",
+      "-d",
+      "cpu_reset"
+    ],
+    "elapsed_seconds": 3.872378915984882,
+    "max_log_bytes": 1048576,
+    "returncode": 0,
+    "timeout_seconds": 60
+  },
+  "firmware": {
+    "code": {
+      "path": "firmware/edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    "descriptor": {
+      "path": "firmware/60-edk2-x86_64.json",
+      "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+      "size_bytes": 702
+    },
+    "notice": {
+      "path": "firmware/edk2-licenses.txt",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    "vars": {
+      "path": "firmware/edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  },
+  "format": "tessryn-aws-headless-result",
+  "kernel_sha256": "a272b3186db19670ae320e85b60cced9f94acf84bcda894c8c033401076daba3",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "bed43c16a801d7471bc516565266ded27d21fdd4568f7b4a111231dec37075be",
+      "size_bytes": 2344
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "c4a1d2854e983562fb255f46b8a106257017d166ff061a8249c9d2f3685388dc",
+      "size_bytes": 24300
+    },
+    {
+      "path": "qmp.jsonl",
+      "sha256": "9290e35d1fe8cbcc59eb987321ef506bbb809227db1e42adbdfe31c732be070a",
+      "size_bytes": 1494
+    }
+  ],
+  "manifest_sha256": "5cc73ac570ea11f70c52d7497a150633030fe75f706c8b14f36f1659e4859e36",
+  "phases": [
+    {
+      "index": 0,
+      "stdout_begin": 0,
+      "stdout_end": 1172
+    },
+    {
+      "index": 1,
+      "stdout_begin": 1172,
+      "stdout_end": 2344
+    }
+  ],
+  "reason": "headless serial markers and independent control matched",
+  "schema_version": 1,
+  "scope": "QEMU TCG q35/OVMF only; native AWS unqualified",
+  "status": "pass"
+}
