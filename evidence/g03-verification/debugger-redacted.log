@@ -1,0 +1,12 @@
+(lldb) target create build/final-a/rust-probe.elf
+Current executable set to 'build/final-a/rust-probe.elf' (x86_64).
+(lldb) image lookup -v -a 0x100000
+      Address: rust-probe.elf[0x0000000000100000] (rust-probe.elf.PT_LOAD[0]..text + 0)
+      Summary: rust-probe.elf`fixture_entry at rust-probe.rs:9
+       Module: file = "build/final-a/rust-probe.elf", arch = "x86_64"
+  CompileUnit: id = {0x00000000}, file = "tessryn/fixtures/rust-probe.rs/@/g03_probe.908852ff5ba66fe-cgu.0", language = "rust"
+     Function: id = {0x00000072}, name = "fixture_entry", range = [0x0000000000100000-0x0000000000100013)
+     FuncType: id = {0x00000072}, byte-size = 0, decl = rust-probe.rs:9, compiler_type = "void (void)"
+       Blocks: id = {0x00000072}, range = [0x00100000-0x00100013)
+    LineEntry: [0x0000000000100000-0x0000000000100004): tessryn/fixtures/rust-probe.rs:9
+       Symbol: id = {0x00000003}, range = [0x0000000000100000-0x0000000000100013), name="fixture_entry"

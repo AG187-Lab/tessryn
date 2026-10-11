@@ -2,7 +2,7 @@
 
 Status: research and inventory tooling, dated 2026-10-11. No supported native
 profile has been selected. No machine has been rented, no firmware or compiler
-binary has been acquired, and no Tessryn boot, GPU or inference experiment has
+binary has been acquired for G01, and no Tessryn boot, GPU or inference experiment has
 run. The intended first product still requires three stable nodes and an exact
 wired, mains-powered notebook; a cloud rental cannot replace the notebook gate.
 
@@ -160,7 +160,7 @@ specific booking are still required. No cloud account was inspected here.
 | Before clock starts | Freeze collector revision/hash; run tests; confirm quote and rescue/console access; arrange deletion deadline | Source revision, test log, redacted quote and provider answers |
 | Hours 0–2 | Start directly into verified RAM rescue; confirm no physical filesystem is mounted or used for swap; inspect available console/recovery controls | Linux reference inventory, public firmware identities; private access details remain private |
 | Hours 2–4 | Run the collector; review and redact before public upload; correlate NIC/NVMe/GPU IDs and missing topology | Hashed public report plus manual unknowns; zero native/performance samples |
-| Hours 4–6 | If ready, run G03's original fixtures under QEMU TCG wholly in RAM, with no physical drives attached | Emulator fixture records only; G03 is still in PR #51, not main |
+| Hours 4–6 | If ready, run G03's original fixtures under QEMU TCG wholly in RAM, with no physical drives attached | Emulator fixture records only; use the G03 workflow now on main |
 | Remaining time | Resolve inventory questions or end early; rehearse return to known-good RAM rescue if authorized; export sanitized evidence | Recovery observation or explicit unavailable result |
 | By hour 24 | Delete rented resources and release separately billed IP/console services; verify removal in provider control plane | Redacted deletion/billing record, no credentials or account identifiers |
 
@@ -175,7 +175,7 @@ Later original UEFI RAM/virtual-media boot is K01 work
 and needs its payload and the provider's exact boot authority first.
 
 GitHub Actions can continue exercising software-emulated profiles without a
-bare-metal rental after the G03 branch is accepted. Original-OS EC2 image
+bare-metal rental using the [G03 workflow](build-and-evaluation.md). Original-OS EC2 image
 registration is a separate future cloud qualification path: VM Import has an
 OS allowlist; a direct snapshot/UEFI AMI route is documented but does not make
 an absent kernel boot. Neither route belongs to this inventory session.

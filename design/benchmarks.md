@@ -2,6 +2,8 @@
 
 Status: measurement plan. There are no Tessryn performance results. Before testing, register the model/checkpoint, quantization, hardware/firmware, topology, admission budgets, offered arrival process, prompt/output distributions, duration, sample counts, and latency SLOs.
 
+G03 implements [evidence formats and preregistration validation](evaluation-evidence.md) and a [bounded emulator fixture workflow](build-and-evaluation.md). Fixture results are implementation evidence for the tooling with zero performance samples. Numerical references, genuine held-out workloads, native execution and thermal measurements remain unavailable. Use the schemas and independent evaluator authority before publishing future measurements.
+
 ## Serving evidence
 
 Measure short and long prompts, shared and unrelated prefixes, concurrent tenants, cold and warm caches, and sustained thermal operation. Report accepted, rejected, canceled, failed, and SLO-compliant requests separately. Report p50/p95/p99 time to first token, inter-token latency, completion latency, aggregate throughput, and goodput: completed requests meeting the declared SLOs per unit time. Include queueing and transport time in user-visible metrics.

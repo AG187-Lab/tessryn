@@ -1,0 +1,83 @@
+{
+  "actual_sample_count": 0,
+  "bindings": {
+    "artifact_manifest": "f7e2beb4d7b7093e1e0e8d6063bc1085505d5ffba5664cf055b15ca05e703f8f",
+    "evaluator": "7cb1bf26fe9bfa92c72f5c366ea67b5ddf632f3b01909ea92f009038f2cc4c97",
+    "registration": "12560aebbda586764142b46d8361126ec256cb7a7d16f9ddd8269b633ea63c1c"
+  },
+  "capabilities": {
+    "gpu_execution": {
+      "reason": "No native GPU driver or qualified device artifact exists",
+      "status": "unavailable"
+    },
+    "inference": {
+      "reason": "No model execution implementation exists",
+      "status": "unavailable"
+    },
+    "kernel_boot": {
+      "reason": "Tessryn kernel is not implemented; ROM is a harness fixture",
+      "status": "unavailable"
+    }
+  },
+  "evidence_kind": "implementation_result",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "pc,accel=tcg",
+      "-cpu",
+      "qemu64",
+      "-m",
+      "16M",
+      "-smp",
+      "1",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "none",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-bios",
+      "pass.rom",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-global",
+      "apic.vapic=off",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04"
+    ],
+    "elapsed_seconds": 0,
+    "emulator": null,
+    "max_log_bytes": 65536,
+    "reason": "artifact integrity validation rejected: ValueError",
+    "returncode": null,
+    "timeout_seconds": 5
+  },
+  "format": "tessryn-evaluation-result",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "performance": {
+    "reason": "Fixture wall time is harness metadata, not Tessryn performance",
+    "status": "unavailable"
+  },
+  "schema_version": 1,
+  "status": "fail",
+  "subject": "test_fixture"
+}

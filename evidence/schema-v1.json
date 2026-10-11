@@ -1,0 +1,2345 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AG187-Lab/tessryn/evidence/schema-v1.json",
+  "title": "Tessryn G03 evidence contract v1",
+  "description": "Registrations declare assumptions; fixture runs establish tooling implementation behavior only. The stdlib validator additionally checks canonical registration/evaluator/artifact bindings, timestamps, count accounting, percentile ordering, combined log limits, preregistered load/thermal/sample gates and numerical gate outcomes. Schema validation cannot establish the truth of claims or trusted evaluator independence. Latency sample_count counts completed request summaries; inter_token_ms uses one declared per-request summary. Throughput and goodput use completed requests per second. A native measured-performance pass requires available kernel boot; a device-artifact measured-performance pass additionally requires available GPU execution. Failed records can retain unavailable capabilities. Measured records require retained performance-trace, statistical, numerical and held-out report artifacts; the CLI additionally verifies their bytes, payload contracts and summary bindings. All measured formats describe inference workloads and passing records require available inference. Thermal duration cannot exceed observed duration; passing thermal identity matches preregistration. Rates equal completed/SLO-compliant counts divided by observation duration (relative tolerance 1e-9, absolute tolerance 1e-12 requests/s). A probed emulator is required for passing test fixtures; native records may identify a runner with emulator null, while all passing records require a nonnegative observed exit code.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/registration"
+    },
+    {
+      "$ref": "#/$defs/result"
+    },
+    {
+      "$ref": "#/$defs/performance_trace"
+    },
+    {
+      "$ref": "#/$defs/statistical_report"
+    },
+    {
+      "$ref": "#/$defs/numerical_report"
+    },
+    {
+      "$ref": "#/$defs/held_out_report"
+    }
+  ],
+  "$defs": {
+    "unavailable": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "unavailable"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        }
+      },
+      "required": [
+        "status",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "properties": {
+        "evaluator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "candidate_can_modify_evaluator": {
+          "const": false
+        },
+        "candidate_can_modify_registration": {
+          "const": false
+        },
+        "candidate_can_access_held_out": {
+          "const": false
+        },
+        "candidate_has_physical_disk_authority": {
+          "const": false
+        },
+        "candidate_has_device_dma_authority": {
+          "const": false
+        },
+        "candidate_has_promotion_authority": {
+          "const": false
+        }
+      },
+      "required": [
+        "evaluator",
+        "candidate_can_modify_evaluator",
+        "candidate_can_modify_registration",
+        "candidate_can_access_held_out",
+        "candidate_has_physical_disk_authority",
+        "candidate_has_device_dma_authority",
+        "candidate_has_promotion_authority"
+      ],
+      "additionalProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "candidate": {
+          "type": "object",
+          "properties": {
+            "source_revision": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "artifact_manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "source_revision",
+            "artifact_manifest_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "evaluator": {
+          "type": "object",
+          "properties": {
+            "source_revision": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "source_revision",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "platform": {
+          "type": "object",
+          "properties": {
+            "hardware": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "firmware": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "topology": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "compiler": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "binary_target": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "model_checkpoint": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "quantization": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "state_format": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            }
+          },
+          "required": [
+            "hardware",
+            "firmware",
+            "topology",
+            "compiler",
+            "binary_target",
+            "model_checkpoint",
+            "quantization",
+            "state_format"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "candidate",
+        "evaluator",
+        "platform"
+      ],
+      "additionalProperties": false
+    },
+    "numerical": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "declared"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "source_url": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "source_url",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "comparisons": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "operator": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "dtype": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "atol": {
+                "type": "number",
+                "minimum": 0
+              },
+              "rtol": {
+                "type": "number",
+                "minimum": 0
+              },
+              "finite_required": {
+                "const": true
+              },
+              "kind": {
+                "enum": [
+                  "operator",
+                  "logits",
+                  "probabilities"
+                ]
+              },
+              "tolerance_rationale": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              }
+            },
+            "required": [
+              "operator",
+              "dtype",
+              "atol",
+              "rtol",
+              "finite_required",
+              "kind",
+              "tolerance_rationale"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "teacher_forced": {
+          "type": "object",
+          "properties": {
+            "history_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "outputs": {
+              "const": [
+                "logits",
+                "probabilities"
+              ]
+            }
+          },
+          "required": [
+            "history_sha256",
+            "outputs"
+          ],
+          "additionalProperties": false
+        },
+        "greedy_agreement": {
+          "const": true
+        },
+        "exact_replay_conditions": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        }
+      },
+      "required": [
+        "status",
+        "reference",
+        "comparisons",
+        "teacher_forced",
+        "greedy_agreement",
+        "exact_replay_conditions"
+      ],
+      "additionalProperties": false
+    },
+    "held_out": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "declared"
+        },
+        "workload_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "custodian": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "access_policy": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "candidate_visible": {
+          "const": false
+        },
+        "quality_metric": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "quality_gate": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "enum": [
+                "at_least",
+                "at_most"
+              ]
+            },
+            "threshold": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "direction",
+            "threshold"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "status",
+        "workload_id",
+        "sha256",
+        "custodian",
+        "access_policy",
+        "candidate_visible",
+        "quality_metric",
+        "quality_gate"
+      ],
+      "additionalProperties": false
+    },
+    "load": {
+      "type": "object",
+      "properties": {
+        "arrival_process": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "offered_requests_per_second": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "admission_budget": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "cache_state": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "prompt_distribution": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "output_distribution": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "tenant_distribution": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        }
+      },
+      "required": [
+        "arrival_process",
+        "offered_requests_per_second",
+        "concurrency",
+        "admission_budget",
+        "cache_state",
+        "prompt_distribution",
+        "output_distribution",
+        "tenant_distribution"
+      ],
+      "additionalProperties": false
+    },
+    "thermal": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "const": "sustained"
+        },
+        "sustained_duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "ambient_celsius": {
+          "type": "number",
+          "minimum": -273.15
+        },
+        "power_mode": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "frequency_policy": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        }
+      },
+      "required": [
+        "mode",
+        "sustained_duration_seconds",
+        "ambient_celsius",
+        "power_mode",
+        "frequency_policy"
+      ],
+      "additionalProperties": false
+    },
+    "performance_plan": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "declared"
+        },
+        "target_sample_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "warmup_sample_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "load": {
+          "$ref": "#/$defs/load"
+        },
+        "thermal": {
+          "$ref": "#/$defs/thermal"
+        },
+        "latency_slos": {
+          "type": "object",
+          "properties": {
+            "ttft_ms": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "inter_token_ms": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "completion_ms": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "ttft_ms",
+            "inter_token_ms",
+            "completion_ms"
+          ],
+          "additionalProperties": false
+        },
+        "metrics": {
+          "const": [
+            "ttft_ms",
+            "inter_token_ms",
+            "completion_ms",
+            "throughput",
+            "goodput"
+          ]
+        },
+        "methodology": {
+          "type": "object",
+          "properties": {
+            "independent_runs": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "run_order": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "quantile_estimator": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "confidence_interval": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "exclusion_policy": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "stopping_rule": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "warmup_policy": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            "confidence_level": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "exclusiveMaximum": 1
+            }
+          },
+          "required": [
+            "independent_runs",
+            "run_order",
+            "quantile_estimator",
+            "confidence_interval",
+            "exclusion_policy",
+            "stopping_rule",
+            "warmup_policy",
+            "confidence_level"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "status",
+        "target_sample_count",
+        "warmup_sample_count",
+        "duration_seconds",
+        "load",
+        "thermal",
+        "latency_slos",
+        "metrics",
+        "methodology"
+      ],
+      "additionalProperties": false
+    },
+    "registration": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "tessryn-evaluation-registration"
+        },
+        "evidence_kind": {
+          "const": "assumption"
+        },
+        "subject": {
+          "enum": [
+            "test_fixture",
+            "tessryn_kernel",
+            "native_service",
+            "device_artifact"
+          ]
+        },
+        "registration_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "registration_state": {
+          "enum": [
+            "fixture_protocol",
+            "template",
+            "preregistered"
+          ]
+        },
+        "authority": {
+          "$ref": "#/$defs/authority"
+        },
+        "registered_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "profile": {
+          "$ref": "#/$defs/profile"
+        },
+        "numerical": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/unavailable"
+            },
+            {
+              "$ref": "#/$defs/numerical"
+            }
+          ]
+        },
+        "held_out": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/unavailable"
+            },
+            {
+              "$ref": "#/$defs/held_out"
+            }
+          ]
+        },
+        "performance": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/unavailable"
+            },
+            {
+              "$ref": "#/$defs/performance_plan"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "evidence_kind",
+        "subject",
+        "registration_id",
+        "registration_state",
+        "authority",
+        "numerical",
+        "held_out",
+        "performance"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "registration_state": {
+                "const": "preregistered"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "registered_at_utc",
+              "profile"
+            ],
+            "properties": {
+              "subject": {
+                "enum": [
+                  "tessryn_kernel",
+                  "native_service",
+                  "device_artifact"
+                ]
+              },
+              "numerical": {
+                "$ref": "#/$defs/numerical"
+              },
+              "held_out": {
+                "$ref": "#/$defs/held_out"
+              },
+              "performance": {
+                "$ref": "#/$defs/performance_plan"
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "registered_at_utc"
+                  ]
+                },
+                {
+                  "required": [
+                    "profile"
+                  ]
+                }
+              ]
+            },
+            "properties": {
+              "numerical": {
+                "$ref": "#/$defs/unavailable"
+              },
+              "held_out": {
+                "$ref": "#/$defs/unavailable"
+              },
+              "performance": {
+                "$ref": "#/$defs/unavailable"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "subject": {
+                "const": "test_fixture"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "registration_state": {
+                "const": "fixture_protocol"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "registration_state": {
+                "enum": [
+                  "template",
+                  "preregistered"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        }
+      },
+      "required": [
+        "status",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              {
+                "not": {
+                  "pattern": "(?:^|[=,])/|\\.\\./"
+                }
+              }
+            ]
+          }
+        },
+        "emulator": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S",
+                  "not": {
+                    "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                  }
+                },
+                "binary_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "version",
+                "binary_sha256"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "timeout_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_log_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "elapsed_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "returncode": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        }
+      },
+      "required": [
+        "command",
+        "emulator",
+        "timeout_seconds",
+        "max_log_bytes",
+        "elapsed_seconds",
+        "returncode",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "log": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "allOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            {
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+"
+            }
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "distribution": {
+      "type": "object",
+      "properties": {
+        "p50": {
+          "type": "number",
+          "minimum": 0
+        },
+        "p95": {
+          "type": "number",
+          "minimum": 0
+        },
+        "p99": {
+          "type": "number",
+          "minimum": 0
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        }
+      },
+      "required": [
+        "p50",
+        "p95",
+        "p99",
+        "sample_count"
+      ],
+      "additionalProperties": false
+    },
+    "numerical_results": {
+      "type": "object",
+      "properties": {
+        "reference_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "teacher_forced_history_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "raw_results_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "finite_values": {
+          "type": "boolean"
+        },
+        "operator_tolerances_passed": {
+          "type": "boolean"
+        },
+        "logits_tolerances_passed": {
+          "type": "boolean"
+        },
+        "probabilities_tolerances_passed": {
+          "type": "boolean"
+        },
+        "greedy_token_agreement": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "reference_sha256",
+        "teacher_forced_history_sha256",
+        "raw_results_sha256",
+        "sample_count",
+        "finite_values",
+        "operator_tolerances_passed",
+        "logits_tolerances_passed",
+        "probabilities_tolerances_passed",
+        "greedy_token_agreement"
+      ],
+      "additionalProperties": false
+    },
+    "held_out_results": {
+      "type": "object",
+      "properties": {
+        "workload_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "raw_results_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "quality_metric": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "quality_value": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "workload_sha256",
+        "raw_results_sha256",
+        "sample_count",
+        "quality_metric",
+        "quality_value"
+      ],
+      "additionalProperties": false
+    },
+    "performance_measurement": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "measured"
+        },
+        "registration": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/registration"
+            },
+            {
+              "properties": {
+                "registration_state": {
+                  "const": "preregistered"
+                }
+              }
+            }
+          ]
+        },
+        "started_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "observation_duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "load": {
+          "$ref": "#/$defs/load"
+        },
+        "thermal": {
+          "$ref": "#/$defs/thermal"
+        },
+        "request_outcomes": {
+          "type": "object",
+          "properties": {
+            "accepted": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "completed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "rejected": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "cancelled": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "slo_compliant": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            }
+          },
+          "required": [
+            "accepted",
+            "completed",
+            "rejected",
+            "cancelled",
+            "failed",
+            "slo_compliant"
+          ],
+          "additionalProperties": false
+        },
+        "numerical_results": {
+          "$ref": "#/$defs/numerical_results"
+        },
+        "held_out_results": {
+          "$ref": "#/$defs/held_out_results"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "ttft_ms": {
+              "$ref": "#/$defs/distribution"
+            },
+            "inter_token_ms": {
+              "$ref": "#/$defs/distribution"
+            },
+            "completion_ms": {
+              "$ref": "#/$defs/distribution"
+            },
+            "throughput": {
+              "type": "number",
+              "minimum": 0
+            },
+            "goodput": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "ttft_ms",
+            "inter_token_ms",
+            "completion_ms",
+            "throughput",
+            "goodput"
+          ],
+          "additionalProperties": false
+        },
+        "independent_run_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "report_artifacts": {
+          "type": "object",
+          "properties": {
+            "performance_trace": {
+              "$ref": "#/$defs/report_artifact"
+            },
+            "statistics": {
+              "$ref": "#/$defs/report_artifact"
+            },
+            "numerical": {
+              "$ref": "#/$defs/report_artifact"
+            },
+            "held_out": {
+              "$ref": "#/$defs/report_artifact"
+            }
+          },
+          "required": [
+            "performance_trace",
+            "statistics",
+            "numerical",
+            "held_out"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "status",
+        "registration",
+        "started_at_utc",
+        "observation_duration_seconds",
+        "load",
+        "thermal",
+        "request_outcomes",
+        "numerical_results",
+        "held_out_results",
+        "metrics",
+        "independent_run_count",
+        "report_artifacts"
+      ],
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "tessryn-evaluation-result"
+        },
+        "evidence_kind": {
+          "enum": [
+            "implementation_result",
+            "measured_performance"
+          ]
+        },
+        "subject": {
+          "enum": [
+            "test_fixture",
+            "tessryn_kernel",
+            "native_service",
+            "device_artifact"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "timeout",
+            "cancelled",
+            "unavailable",
+            "log_limit"
+          ]
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "kernel_boot": {
+              "$ref": "#/$defs/capability"
+            },
+            "gpu_execution": {
+              "$ref": "#/$defs/capability"
+            },
+            "inference": {
+              "$ref": "#/$defs/capability"
+            }
+          },
+          "required": [
+            "kernel_boot",
+            "gpu_execution",
+            "inference"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "type": "object",
+          "properties": {
+            "evaluator": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "artifact_manifest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "registration": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "evaluator",
+            "artifact_manifest",
+            "registration"
+          ],
+          "additionalProperties": false
+        },
+        "execution": {
+          "$ref": "#/$defs/execution"
+        },
+        "logs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/log"
+          }
+        },
+        "actual_sample_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "performance": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/unavailable"
+            },
+            {
+              "$ref": "#/$defs/performance_measurement"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "evidence_kind",
+        "subject",
+        "status",
+        "capabilities",
+        "bindings",
+        "execution",
+        "logs",
+        "actual_sample_count",
+        "performance"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evidence_kind": {
+                "const": "implementation_result"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "actual_sample_count": {
+                "const": 0
+              },
+              "performance": {
+                "$ref": "#/$defs/unavailable"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "subject": {
+                "enum": [
+                  "tessryn_kernel",
+                  "native_service",
+                  "device_artifact"
+                ]
+              },
+              "actual_sample_count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "performance": {
+                "$ref": "#/$defs/performance_measurement"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "subject": {
+                "const": "test_fixture"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_kind": {
+                "const": "implementation_result"
+              },
+              "capabilities": {
+                "type": "object",
+                "properties": {
+                  "kernel_boot": {
+                    "$ref": "#/$defs/unavailable"
+                  },
+                  "gpu_execution": {
+                    "$ref": "#/$defs/unavailable"
+                  },
+                  "inference": {
+                    "$ref": "#/$defs/unavailable"
+                  }
+                },
+                "required": [
+                  "kernel_boot",
+                  "gpu_execution",
+                  "inference"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "pass"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "execution": {
+                "properties": {
+                  "returncode": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9223372036854775807
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "not": {
+                  "const": "unavailable"
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "execution": {
+                "properties": {
+                  "command": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_kind": {
+                "const": "measured_performance"
+              },
+              "status": {
+                "const": "pass"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "capabilities": {
+                "properties": {
+                  "kernel_boot": {
+                    "properties": {
+                      "status": {
+                        "const": "available"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_kind": {
+                "const": "measured_performance"
+              },
+              "status": {
+                "const": "pass"
+              },
+              "subject": {
+                "const": "device_artifact"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "capabilities": {
+                "properties": {
+                  "gpu_execution": {
+                    "properties": {
+                      "status": {
+                        "const": "available"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_kind": {
+                "const": "measured_performance"
+              },
+              "status": {
+                "const": "pass"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "capabilities": {
+                "properties": {
+                  "inference": {
+                    "properties": {
+                      "status": {
+                        "const": "available"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "subject": {
+                "const": "test_fixture"
+              },
+              "status": {
+                "const": "pass"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "execution": {
+                "properties": {
+                  "emulator": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "not": {
+                          "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                        }
+                      },
+                      "binary_sha256": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "binary_sha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "report_artifact": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "allOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "not": {
+                "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+              }
+            },
+            {
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+"
+            }
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "performance_trace": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "tessryn-performance-trace"
+        },
+        "registration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sample_unit": {
+          "const": "request"
+        },
+        "latency_unit": {
+          "const": "ms"
+        },
+        "requests": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "run_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "outcome": {
+                "enum": [
+                  "completed",
+                  "rejected",
+                  "cancelled",
+                  "failed"
+                ]
+              },
+              "slo_compliant": {
+                "type": "boolean"
+              },
+              "ttft_ms": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "inter_token_ms": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "completion_ms": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "per_token_ms": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            "required": [
+              "request_id",
+              "run_id",
+              "outcome",
+              "slo_compliant",
+              "ttft_ms",
+              "inter_token_ms",
+              "completion_ms",
+              "per_token_ms"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "outcome": {
+                      "const": "completed"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "ttft_ms": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "inter_token_ms": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "completion_ms": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "slo_compliant": {
+                      "const": false
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "registration_sha256",
+        "sample_unit",
+        "latency_unit",
+        "requests"
+      ],
+      "additionalProperties": false
+    },
+    "statistical_report": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "tessryn-statistical-report"
+        },
+        "registration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "rate_unit": {
+          "const": "requests/s"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "confidence_interval_method": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "intervals": {
+          "type": "object",
+          "properties": {
+            "ttft_ms.p50": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "ttft_ms.p95": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "ttft_ms.p99": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "inter_token_ms.p50": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "inter_token_ms.p95": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "inter_token_ms.p99": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "completion_ms.p50": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "completion_ms.p95": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "completion_ms.p99": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "throughput": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            },
+            "goodput": {
+              "type": "object",
+              "properties": {
+                "lower": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "upper": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "lower",
+                "upper"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "ttft_ms.p50",
+            "ttft_ms.p95",
+            "ttft_ms.p99",
+            "inter_token_ms.p50",
+            "inter_token_ms.p95",
+            "inter_token_ms.p99",
+            "completion_ms.p50",
+            "completion_ms.p95",
+            "completion_ms.p99",
+            "throughput",
+            "goodput"
+          ],
+          "additionalProperties": false
+        },
+        "independent_runs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "run_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "observation_duration_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "metrics": {
+                "type": "object",
+                "properties": {
+                  "ttft_ms": {
+                    "$ref": "#/$defs/distribution"
+                  },
+                  "inter_token_ms": {
+                    "$ref": "#/$defs/distribution"
+                  },
+                  "completion_ms": {
+                    "$ref": "#/$defs/distribution"
+                  },
+                  "throughput": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "goodput": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ttft_ms",
+                  "inter_token_ms",
+                  "completion_ms",
+                  "throughput",
+                  "goodput"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "run_id",
+              "observation_duration_seconds",
+              "metrics"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "registration_sha256",
+        "rate_unit",
+        "confidence_level",
+        "confidence_interval_method",
+        "intervals",
+        "independent_runs"
+      ],
+      "additionalProperties": false
+    },
+    "numerical_report": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "tessryn-numerical-report"
+        },
+        "registration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "reference_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "teacher_forced_history_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "operator",
+                  "logits",
+                  "probabilities"
+                ]
+              },
+              "operator": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "dtype": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S",
+                "not": {
+                  "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                }
+              },
+              "sample_count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "maximum_absolute_error": {
+                "type": "number",
+                "minimum": 0
+              },
+              "maximum_relative_error": {
+                "type": "number",
+                "minimum": 0
+              },
+              "failure_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              "finite_failure_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              }
+            },
+            "required": [
+              "kind",
+              "operator",
+              "dtype",
+              "sample_count",
+              "maximum_absolute_error",
+              "maximum_relative_error",
+              "failure_count",
+              "finite_failure_count"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "greedy_sample_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "greedy_agreement_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "registration_sha256",
+        "reference_sha256",
+        "teacher_forced_history_sha256",
+        "checks",
+        "greedy_sample_count",
+        "greedy_agreement_count"
+      ],
+      "additionalProperties": false
+    },
+    "held_out_report": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "tessryn-held-out-report"
+        },
+        "registration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "workload_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "quality_metric": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "quality_value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "custody_reference": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+          }
+        },
+        "baseline": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/unavailable"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "measured"
+                },
+                "quality_value": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "raw_results_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "status",
+                "quality_value",
+                "raw_results_sha256"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "registration_sha256",
+        "workload_sha256",
+        "sample_count",
+        "quality_metric",
+        "quality_value",
+        "custody_reference",
+        "baseline"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

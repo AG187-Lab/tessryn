@@ -14,6 +14,8 @@ These documents capture the initial research, architectural decisions and implem
 | [Platforms](platforms.md) | Hardware qualification and cloud/Apple support boundaries |
 | [Initial platform qualification](platform-qualification.md) | G01 candidate records, rental gates and read-only reference inventory |
 | [Benchmarks](benchmarks.md) | Workloads, baselines, numerical quality and evidence |
+| [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
+| [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
 | [Research](research.md) | Dated primary sources, applicability and open questions |
 | [Review findings](review.md) | Adversarial findings and their resolutions |
 | [Decisions](decisions/) | Architectural decision records |

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "format": "tessryn-evaluation-registration",
+  "evidence_kind": "assumption",
+  "subject": "test_fixture",
+  "registration_id": "g03-emulator-fixture-protocol-v1",
+  "registration_state": "fixture_protocol",
+  "authority": {
+    "evaluator": "Reviewer-controlled host tooling outside guest authority; the local operator must protect the trusted checkout.",
+    "candidate_can_modify_evaluator": false,
+    "candidate_can_modify_registration": false,
+    "candidate_can_access_held_out": false,
+    "candidate_has_physical_disk_authority": false,
+    "candidate_has_device_dma_authority": false,
+    "candidate_has_promotion_authority": false
+  },
+  "numerical": {
+    "status": "unavailable",
+    "reason": "The original emulator fixture only emits a diagnostic marker and exits or loops. It executes no model, numerical operator, logits or probabilities."
+  },
+  "held_out": {
+    "status": "unavailable",
+    "reason": "This public fixture validates the harness protocol. It is not a held-out workload and establishes no held-out task quality."
+  },
+  "performance": {
+    "status": "unavailable",
+    "reason": "Host elapsed time tests execution bounds only. Kernel boot, GPU execution, inference, latency, throughput, goodput and sustained thermal performance are unavailable."
+  }
+}

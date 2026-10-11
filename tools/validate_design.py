@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -76,7 +77,17 @@ def validate_backlog() -> tuple[int, int]:
 
 
 def validate_documents() -> int:
-    documents = sorted(ROOT.rglob("*.md"))
+    # Public repository documents exclude ignored build/downloaded tool trees.
+    # Prune before walking: upstream licenses/docs are retained locally but do
+    # not obey this repository's link or planning conventions.
+    documents = []
+    for directory, subdirectories, files in os.walk(ROOT, followlinks=False):
+        excluded = {".git", ".planning-cache", "__pycache__"}
+        if Path(directory) == ROOT:
+            excluded.update({"build", "target", "artifacts"})
+        subdirectories[:] = [name for name in subdirectories if name not in excluded]
+        documents.extend(Path(directory) / name for name in files if name.endswith(".md"))
+    documents.sort()
     for path in documents:
         if any(part in {".git", ".planning-cache"} for part in path.parts):
             continue

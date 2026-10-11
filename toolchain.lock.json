@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "rust": {
+    "version": "1.96.0",
+    "revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "llvm_revision": "1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e",
+    "target": "x86_64-unknown-none",
+    "license": "MIT OR Apache-2.0",
+    "hash_source": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+    "hosts": {
+      "aarch64-apple-darwin": {
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rustc-1.96.0-aarch64-apple-darwin.tar.xz",
+        "sha256": "1bb7b0bad1d2a42fc4173ede6dd460de2774fc1858a8369329d3e081e4e3426c"
+      },
+      "x86_64-unknown-linux-gnu": {
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rustc-1.96.0-x86_64-unknown-linux-gnu.tar.xz",
+        "sha256": "7d7fa1d0cfb0fab71a956bb78f41107202c17f30ab56c45288e869a37fd9633d"
+      }
+    },
+    "target_library": {
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-none.tar.xz",
+      "sha256": "32fc4c50b430533dd605d2ce16c1b0d7bf0f73eb2b2f634d6ed9b1bc4ff5922a"
+    }
+  },
+  "qemu": {
+    "version": "11.1.2",
+    "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+    "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+    "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+    "hash_source": "https://github.com/Homebrew/homebrew-core/blob/ce9c8133903bb35dde4e6e388083721e3c30a864/Formula/q/qemu.rb",
+    "license": "GPL-2.0-only",
+    "configure": ["--without-default-features", "--enable-tcg", "--enable-system", "--target-list=x86_64-softmmu", "--disable-docs", "--disable-tools", "--disable-user", "--disable-rust", "--disable-download"]
+  },
+  "ninja": {
+    "version": "1.13.2",
+    "license": "Apache-2.0",
+    "source": "https://github.com/ninja-build/ninja/releases/tag/v1.13.2",
+    "hash_source": "https://api.github.com/repos/ninja-build/ninja/releases/tags/v1.13.2",
+    "notice": {
+      "url": "https://raw.githubusercontent.com/ninja-build/ninja/v1.13.2/COPYING",
+      "sha256": "eb7e9ab9690124c5c9f42bdc81383d886a3dede26345b6ed15bbad7caf81f7ea"
+    },
+    "hosts": {
+      "aarch64-apple-darwin": {
+        "url": "https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-mac.zip",
+        "sha256": "c99048673aa765960a99cf10c6ddb9f1fad506099ff0a0e137ad8960a88f321b"
+      },
+      "x86_64-unknown-linux-gnu": {
+        "url": "https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-linux.zip",
+        "sha256": "5749cbc4e668273514150a80e387a957f933c6ed3f5f11e03fb30955e2bbead6"
+      }
+    }
+  },
+  "qemu_python_build_dependencies": [
+    {
+      "name": "setuptools",
+      "version": "80.9.0",
+      "url": "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl",
+      "sha256": "062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922",
+      "license": "MIT"
+    },
+    {
+      "name": "wheel",
+      "version": "0.45.1",
+      "url": "https://files.pythonhosted.org/packages/0b/2c/87f3254fd8ffd29e4c02732eee68a83a1d3c346ae39bc6822dcbcb697f2b/wheel-0.45.1-py3-none-any.whl",
+      "sha256": "708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248",
+      "license": "MIT"
+    },
+    {
+      "name": "pip",
+      "version": "25.2",
+      "url": "https://files.pythonhosted.org/packages/b7/3f/945ef7ab14dc4f9d7f40288d2df998d1837ee0888ec3659c813487572faa/pip-25.2-py3-none-any.whl",
+      "sha256": "6d67a2b4e7f14d8b31b8b52648866fa717f45a1eb70e83002f4331d07e953717",
+      "license": "MIT"
+    }
+  ],
+  "python": {
+    "ci_version": "3.14.6",
+    "minimum_version": "3.12",
+    "license": "PSF-2.0",
+    "source": "https://www.python.org/downloads/release/python-3146/"
+  }
+}

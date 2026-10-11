@@ -18,6 +18,17 @@ Record latency sample counts, distributions, offered load, cache state and susta
 
 Improved execution efficiency is software optimization. Claims of improved agent intelligence need separate held-out task evidence. Candidate experiment restrictions are not a prohibition on authorized production installation or native storage drivers.
 
+## G03 tooling foundation
+
+[Evidence schemas](../evaluation-evidence.md) distinguish assumptions, fixture
+implementation results and future registered measurements. The
+[host emulator harness](../build-and-evaluation.md) hashes candidate inputs,
+withholds guest disk/network/host-share/device authority, and preserves bounded
+failure logs. Trusted evaluator and registration hashes bind each result.
+Its fixtures establish no native boot, GPU, inference or performance capability.
+Protected enrollment, promotion/signing, recovery and hostile-candidate sandbox
+qualification remain RSI01; the optimization loop remains unimplemented.
+
 ## References
 
 [Roadmap](../roadmap.md), [numerical accuracy](https://docs.pytorch.org/docs/stable/notes/numerical_accuracy.html), and G03/DEMO01/RSI01–RSI03 in [the backlog](../../planning/backlog.json).
