@@ -148,3 +148,8 @@ G01's [qualification packet](platform-qualification.md) and
 [historical AWS research](../evidence/g01-research/aws-access-notes.md) keep their
 dated scope; the new experiment does not qualify the product's physical nodes
 or notebook, native devices, GPU execution or inference.
+
+The [offline native evidence intake](aws-native-evidence.md) binds private
+snapshot/AMI/root-volume/serial/lifecycle captures for two fresh native boots
+and independent Linux recovery. It makes no cloud calls and returns consistency
+requiring trusted owner review; its synthetic tests are not native observations.
