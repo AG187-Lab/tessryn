@@ -22,10 +22,12 @@ def main() -> int:
         for path, manifest in zip((args.first, args.second), manifests):
             verified_artifact(path, "pass", manifest)
             verified_artifact(path, "hang", manifest)
-        if manifests[0] != manifests[1]:
+        if manifest_bytes[0] != manifest_bytes[1]:
             raise ValueError("fresh build manifests differ")
         registration = parse_json(regular_bytes(args.registration))
         validate_registration(registration)
+        if registration["subject"] != "test_fixture" or registration["registration_state"] != "fixture_protocol":
+            raise ValueError("fixture evidence requires the fixture protocol registration")
         for result_path in args.result:
             result = parse_json(regular_bytes(result_path))
             validate_result(result)
@@ -39,6 +41,11 @@ def main() -> int:
                 raise ValueError("result evaluator binding differs from current trusted tooling")
             if result["subject"] != "test_fixture" or result["execution"]["command"] not in [fixture_command("pass"), fixture_command("hang")]:
                 raise ValueError("result does not use the trusted fixture profile")
+            emulator = result["execution"]["emulator"]
+            pinned_version = load_json(Path(__file__).resolve().parents[1] / "toolchain.lock.json")["qemu"]["version"]
+            if emulator is not None and (emulator["version"] != pinned_version
+                                        or emulator["binary_sha256"] != manifests[0]["toolchain"]["qemu"]["sha256"]):
+                raise ValueError("result emulator identity differs from pinned manifest provenance")
             logs = {}
             for log in result["logs"]:
                 contents = regular_bytes(result_path.parent / log["path"])

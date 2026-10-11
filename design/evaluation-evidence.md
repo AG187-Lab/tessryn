@@ -24,6 +24,11 @@ python3 tools/g03/evidence.py validate evidence/performance-template.json
 python3 tools/g03/evidence.py validate build/pass/result.json
 ```
 
+The CLI accepts only regular files of at most 256 MiB, limits JSON nesting to
+64 container levels, and reports parse/storage errors without a traceback.
+Counts fit the nonnegative signed 64-bit range. Numbers must be representable
+as finite host numeric values. These are format limits, not capability evidence.
+
 Schema validation establishes shape and consistency, not empirical truth or an
 independent evaluator. A public example is not a held-out dataset. No sample
 performance values are published as measurements.
@@ -53,8 +58,16 @@ power mode, frequency policy, ambient temperature and sustained thermal duration
 Thermal conditions unsupported by an emulator must be unavailable, never inferred
 from a host timing sample.
 
+Numerical comparisons identify `kind` (`operator`, `logits`, or `probabilities`),
+operator, dtype, tolerances, finite-value requirement and `tolerance_rationale`.
+All three kinds are required, including explicit teacher-forced tolerances.
+Each kind/operator/dtype combination is unique. A passing measurement must use
+the registered ambient temperature, power mode and frequency policy; changing
+them requires a new preregistration. Observed sustained thermal duration cannot
+exceed observed duration, and the same rule applies to the registered plan.
+
 Register independent run count/order, warmup rule, stopping rule, excluded sample
-policy, quantile estimator and confidence-interval method before observing a
+policy, quantile estimator, confidence level and confidence-interval method before observing a
 candidate. Prefer at least three paired baseline/candidate repetitions in
 randomized order and at least 10,000 measured requests per registered workload
 when estimating p99. These are methodological recommendations, not measurements
@@ -101,15 +114,62 @@ separately. Independent-run variation and confidence intervals accompany the
 pooled values. Emulated results must identify the emulator and never qualify
 physical thermal behavior or a native device profile.
 
+`throughput` is completed requests divided by observation seconds; `goodput` is
+SLO-compliant completed requests divided by the same duration. Validation permits
+rounding error of at most `max(1e-12 requests/s, 1e-9 × the larger magnitude)`.
+Observation duration and sample counts aggregate the independent runs; the
+retained report also records each run's duration, counts and metrics. Warmup
+requests do not enter measured request traces or rates. Registered sample gates
+apply to that aggregate. Any claim about individual-run adequacy must use the
+individual-run results. Every measured format in v1 describes an inference
+workload, so a passing result requires available inference as well as kernel
+boot (and GPU execution for device artifacts). A failed record may retain
+unavailable capabilities and conditions that missed registered gates.
+
 In format v1, each latency sample is a completed **request**: inter-token latency
 uses one declared summary per request. Register that summary rule in the
 methodology/quantile estimator and retain the raw per-token trace. These
 percentiles do not represent a pooled per-token distribution; a later format
 must declare token sample units explicitly before publishing that distribution.
 
-The result validator checks registered/observed identities and sample/count
-consistency. It does not compute inference metrics or replace review of raw
-observations. No model executor, GPU driver, metric collector or optimization
+## Required retained reports
+
+A measured result's `performance.report_artifacts` requires four distinct
+bundle-relative files, each with its byte length and SHA-256. The numerical and
+held-out summaries' `raw_results_sha256` must match their report artifacts.
+Every payload binds the canonical preregistration hash. Files that escape the
+bundle, symlinks, nonregular files, modified bytes and missing files fail CLI
+validation. Fixture results require none of these reports and retain zero
+performance samples.
+
+| Payload `format` | Required public content |
+| --- | --- |
+| `tessryn-performance-trace` | `sample_unit: request`, `latency_unit: ms`, unique run/request IDs, completed/rejected/cancelled/failed outcomes, SLO outcome, TTFT/inter-token/completion summaries, and raw `per_token_ms` intervals. Failed requests may retain partial or null latencies; a completed request requires all summaries. A one-token output has an empty interval array. |
+| `tessryn-statistical-report` | `rate_unit: requests/s`, confidence level and registered interval method, lower/upper intervals for all latency p50/p95/p99 and both rates, and distinct independent run IDs with duration and metrics. |
+| `tessryn-numerical-report` | Reference/history hashes; per-kind/operator/dtype sample counts, maximum absolute/relative errors, tolerance failure counts and nonfinite failure counts; greedy token sample/agreement counts. Maximum errors describe finite comparisons; nonfinite cases have their own counts. |
+| `tessryn-held-out-report` | Workload hash, aggregate sample count, metric/value, an independent `custody_reference`, and a separately labeled measured or unavailable baseline. A measured baseline binds its raw results hash. No private workload, prompt, expected answer or raw held-out content belongs in this public report. |
+
+The CLI checks raw request/outcome/SLO counts, run identities and durations,
+per-run rate/count consistency, interval bounds around the reported estimates,
+registered statistical method, numerical comparison coverage/failure summaries,
+greedy agreement, and held-out aggregate identities/counts. Numerical summary
+`sample_count` is the sum of the comparison sample counts; greedy agreement has
+its separate token count. Report `format` values also validate independently:
+
+```sh
+python3 tools/g03/evidence.py validate results/native/result.json
+python3 tools/g03/evidence.py validate results/native/statistics.json
+```
+
+These are commands for future retained native evidence. Those files do not
+exist in this repository. Unit tests create explicitly synthetic payloads only.
+Validation does not recompute quantiles, confidence intervals, inference output
+errors or held-out task quality. Review their raw observations and independent
+custody evidence before treating the supplied summaries as measurements.
+
+The in-memory result validator checks registered/observed identities and
+sample/count consistency; CLI result validation additionally reads and verifies
+the required retained report bundle. No model executor, GPU driver, metric collector or optimization
 loop is supplied by G03. Maintain the [benchmark contract](benchmarks.md) and
 [ADR 0008 authority policy](decisions/0008-evaluation-and-recursive-improvement.md)
 when those implementations arrive.

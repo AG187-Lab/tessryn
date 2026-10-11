@@ -71,7 +71,7 @@ bad exit/marker, malformed inputs, log overflow, version mismatch, cancellation
 and descendants retaining pipes. The synthetic tests are identified in their
 source and do not constitute native execution or performance evidence.
 
-## Acceptance coverage and remaining evidence
+## Acceptance coverage and future qualification
 
 G03's tool versions/hashes/source provenance/commands, bounded emulator harness,
 distinct evidence formats, numerical-reference/held-out/preregistration
@@ -82,7 +82,12 @@ retained-result classification.
 
 Native kernel/service/device artifact reproductions, actual kernel boot,
 GPU/inference execution, real numerical/held-out measurements and physical thermal
-performance evidence remain unmet/unavailable because those implementations do
-not exist. The final Rust/C ABI decision remains Proposed pending G02; hostile
+performance evidence are unavailable future qualifications, not G03 tooling
+blockers. Those implementations do not exist and no fixture substitutes for their
+evidence. The final Rust/C ABI decision remains Proposed pending G02; hostile
 candidate sandbox/promotion/recovery qualification remains RSI01. Linux CI is a
 separate observed result on the PR, not claimed by these macOS records.
+
+These records describe the original implementation at the commit above. Review
+fixes and their subsequent clean reproduction are recorded separately; verify
+each bundle with the evaluator revision it identifies.

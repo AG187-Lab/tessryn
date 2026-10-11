@@ -10,6 +10,7 @@ import os
 from pathlib import Path, PurePosixPath
 import platform
 import shutil
+import stat
 import subprocess
 import sys
 import tarfile
@@ -27,6 +28,68 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def regular_tree_digest(directory: Path) -> str:
+    """Hash a complete installed tree, refusing symbolic links and special files."""
+    if not directory.is_dir() or directory.is_symlink():
+        raise ValueError("installed library tree is unavailable")
+    digest = hashlib.sha256()
+    files = []
+    for path in sorted(directory.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("installed library trees must not contain symbolic links")
+        if path.is_dir():
+            continue
+        if not stat.S_ISREG(path.stat().st_mode):
+            raise ValueError("installed library trees must contain regular files")
+        name = path.relative_to(directory).as_posix()
+        files.append(name)
+        digest.update(name.encode() + b"\0" + sha256(path).encode() + b"\0")
+    if not files:
+        raise ValueError("installed library tree is empty")
+    return digest.hexdigest()
+
+
+def rust_target_library_digest(sysroot: Path, target: str) -> str:
+    """Identify the actual target libraries consumed by the freestanding build."""
+    directory = sysroot / "lib" / "rustlib" / target / "lib"
+    if not any(directory.glob("libcore-*.rlib")):
+        raise ValueError("pinned Rust core library is unavailable")
+    return regular_tree_digest(directory)
+
+
+def fresh_directory(directory: Path) -> None:
+    """Discard unverified setup products rather than overlaying trusted archives."""
+    if directory.is_symlink() or directory.exists() and not directory.is_dir():
+        raise ValueError("setup product directory must be a regular directory")
+    if directory.exists():
+        shutil.rmtree(directory)
+    directory.mkdir(parents=True)
+
+
+def installation_identity(result: dict, lock: dict) -> dict:
+    """Bind setup provenance to the binaries and target libraries it installed."""
+    compiler = PREFIX / "bin" / "rustc"
+    version = subprocess.check_output([str(compiler), "--version", "--verbose"], text=True, timeout=30)
+    if (f"release: {lock['rust']['version']}\n" not in version + "\n"
+            or f"commit-hash: {lock['rust']['revision']}\n" not in version + "\n"):
+        raise ValueError("installed Rust compiler version/revision does not match lock")
+    host_line = next(line for line in version.splitlines() if line.startswith("host: "))
+    selected_host = host_line.split(": ", 1)[1]
+    if selected_host != result["host"]:
+        raise ValueError("installed Rust compiler host does not match setup")
+    sysroot = Path(subprocess.check_output([str(compiler), "--print", "sysroot"], text=True, timeout=30).strip())
+    linker = sysroot / "lib" / "rustlib" / selected_host / "bin" / "rust-lld"
+    result["lock_sha256"] = sha256(ROOT / "toolchain.lock.json")
+    result["verified_tools"] = {name: {"sha256": sha256(path)} for name, path in (
+        ("rustc", compiler), ("rust_lld", linker),
+    )}
+    result["rust_target_library_tree_sha256"] = rust_target_library_digest(sysroot, lock["rust"]["target"])
+    result["rust_library_tree_sha256"] = regular_tree_digest(sysroot / "lib")
+    if "qemu" in result:
+        result["verified_tools"]["qemu"] = {"sha256": sha256(PREFIX / "bin" / "qemu-system-x86_64")}
+    return result
 
 
 def fetch(spec: dict) -> Path:
@@ -66,8 +129,8 @@ def extract(archive: Path) -> Path:
         if root.is_symlink() or not root.resolve().is_relative_to(destination.resolve()):
             raise ValueError("archive root escapes local source directory")
         complete = root / ".tessryn-extraction.json"
-        if complete.is_file() and json.loads(complete.read_text())["archive_sha256"] == sha256(archive):
-            return root
+        # A receipt identifies the archive, not mutable extracted bytes. Always
+        # stage a fresh extraction before executing installers or building QEMU.
         skipped = []
 
         def filter_member(member: tarfile.TarInfo, target: str) -> tarfile.TarInfo | None:
@@ -118,6 +181,11 @@ def setup(*, rust_only: bool, jobs: int) -> dict:
     lock = json.loads((ROOT / "toolchain.lock.json").read_text())
     selected_host = host()
     PREFIX.mkdir(parents=True, exist_ok=True)
+    (PREFIX / "installed.json").unlink(missing_ok=True)
+    # Rust's installer and wheel extraction overlay files; stale runtime files,
+    # extra Python modules and bytecode must not survive a verified setup.
+    for name in ("bin", "lib", "libexec", "share", "etc", "notices", "python-deps", "pip-cache"):
+        fresh_directory(PREFIX / name)
     # Prevent the upstream setup from putting caches in the contributor's home.
     os.environ["PIP_CACHE_DIR"] = str(PREFIX / "pip-cache")
     rust = lock["rust"]
@@ -143,7 +211,6 @@ def setup(*, rust_only: bool, jobs: int) -> dict:
         shutil.copy2(fetch(lock["ninja"]["notice"]), ninja_notices / "COPYING")
         os.environ["PATH"] = str(PREFIX / "bin") + os.pathsep + os.environ.get("PATH", "")
         python_deps = PREFIX / "python-deps"
-        python_deps.mkdir(exist_ok=True)
         for spec in lock["qemu_python_build_dependencies"]:
             with zipfile.ZipFile(fetch(spec)) as wheel:
                 for name in wheel.namelist():
@@ -153,7 +220,7 @@ def setup(*, rust_only: bool, jobs: int) -> dict:
         os.environ["PYTHONPATH"] = str(python_deps)
         source = extract(fetch(qemu))
         output = PREFIX / "qemu-build"
-        output.mkdir(exist_ok=True)
+        fresh_directory(output)
         print(f"Configuring QEMU {qemu['version']} (TCG, x86_64 system emulator)", flush=True)
         run([str(source / "configure"), f"--prefix={PREFIX}", *qemu["configure"]], cwd=output)
         print("Building QEMU", flush=True)
@@ -187,7 +254,10 @@ def setup(*, rust_only: bool, jobs: int) -> dict:
                       for language, spec in group.items()}
             for machine, group in compilers.items()
         }
-    (PREFIX / "installed.json").write_text(json.dumps(result, indent=2) + "\n")
+    result = installation_identity(result, lock)
+    staging_record = PREFIX / "installed.json.tmp"
+    staging_record.write_text(json.dumps(result, indent=2) + "\n")
+    staging_record.replace(PREFIX / "installed.json")
     return result
 
 

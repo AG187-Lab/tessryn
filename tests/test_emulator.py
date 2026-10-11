@@ -21,12 +21,39 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "tests"))
 import run_emulator as emulator
 from g03.process import ProcessResult
+from fixtures.rom import make_rom
+from test_build import elf_fixture
 
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def synthetic_manifest(qemu_binary: bytes) -> tuple[dict, dict[str, bytes]]:
+    """A complete public mock record plus independently constructed original ELF.
+
+    Archived provenance supplies realistic upstream identities only. All local
+    source/binary identities here are synthetic and are never native evidence.
+    """
+    manifest = json.loads((ROOT / "evidence/g03-verification/manifest-a.json").read_text())
+    manifest["source"].update(revision="1" * 40, dirty=False, tree_sha256="2" * 64,
+                              snapshot_algorithm="git-worktree-v2")
+    manifest["components"][0]["revision"] = "1" * 40
+    toolchain = manifest["toolchain"]
+    toolchain.update(setup_lock_sha256=digest((ROOT / "toolchain.lock.json").read_bytes()),
+                     rust_target_library_tree_sha256="3" * 64, rust_library_tree_sha256="4" * 64)
+    toolchain["qemu"]["sha256"] = digest(qemu_binary)
+    toolchain["qemu_setup"].update(lock_sha256=toolchain["setup_lock_sha256"],
+        rust_target_library_tree_sha256=toolchain["rust_target_library_tree_sha256"],
+        rust_library_tree_sha256=toolchain["rust_library_tree_sha256"],
+        verified_tools={name: {"sha256": toolchain[name]["sha256"]} for name in ("rustc", "rust_lld", "qemu")})
+    artifacts = {"pass.rom": make_rom(), "hang.rom": make_rom(hang=True), "rust-probe.elf": elf_fixture()}
+    for row in manifest["artifacts"]:
+        row.update(sha256=digest(artifacts[row["path"]]), size_bytes=len(artifacts[row["path"]]))
+    return manifest, artifacts
 
 
 class EmulatorHarnessTests(unittest.TestCase):
@@ -34,25 +61,18 @@ class EmulatorHarnessTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory(prefix="tessryn-emulator-test-")
         self.cwd = Path(self.temporary.name)
         self.addCleanup(self.temporary.cleanup)
-        # Deliberately synthetic images: executor mocks must not be mistaken
-        # for emulator validation of these bytes.
-        rom = bytes(65536)
+        # Original ROM and independently constructed ELF test bytes: executor
+        # mocks provide no emulator validation or kernel evidence.
         self.manifest = self.cwd / "manifest.json"
         self.registration = self.cwd / "registration.json"
         self.out = self.cwd / "result"
         self.executable = self.cwd / "mock-qemu"
         self.executable.write_bytes(b"Independent executor mock; never launched.\n")
         self.executable.chmod(0o700)
-        for name in ("pass.rom", "hang.rom"):
-            (self.cwd / name).write_bytes(rom)
-        self.manifest.write_text(json.dumps({
-            "schema_version": 1,
-            "artifact_type": "test_fixture",
-            "artifacts": [
-                {"path": name, "sha256": digest(rom), "size_bytes": len(rom)}
-                for name in ("pass.rom", "hang.rom")
-            ],
-        }))
+        manifest, artifacts = synthetic_manifest(self.executable.read_bytes())
+        for name, data in artifacts.items():
+            (self.cwd / name).write_bytes(data)
+        self.manifest.write_text(json.dumps(manifest))
         self.registration.write_bytes((ROOT / "evidence/fixture-registration.json").read_bytes())
         version = json.loads((ROOT / "toolchain.lock.json").read_text())["qemu"]["version"]
         self.version_result = ProcessResult(
@@ -185,6 +205,68 @@ class EmulatorHarnessTests(unittest.TestCase):
         self.assertEqual(result["status"], "fail")
         self.assertEqual(len(self.calls), 0)
 
+    def test_incomplete_or_unbound_manifest_is_rejected_before_execution(self) -> None:
+        original = json.loads(self.manifest.read_text())
+        edits = [
+            lambda data: data.pop("source"),
+            lambda data: data["source"].pop("revision"),
+            lambda data: data["source"].update(snapshot_algorithm="unknown"),
+            lambda data: data["toolchain"].pop("rustc"),
+            lambda data: data["toolchain"].update(setup_lock_sha256="4" * 64),
+            lambda data: data["toolchain"]["qemu_setup"]["verified_tools"].pop("qemu"),
+            lambda data: data["toolchain"]["qemu_setup"].update(verified_tools=[]),
+            lambda data: data["toolchain"]["qemu_setup"].update(qemu_host_compilers={"host": {"c": 1}}),
+            lambda data: data["components"].pop(),
+            lambda data: data["components"][1].pop("notices"),
+            lambda data: data["components"][1].update(source=1),
+            lambda data: data["components"][2].update(archive_sha256="4" * 64),
+            lambda data: data["artifacts"].pop(),
+            lambda data: data["artifacts"][0].update(role="kernel"),
+            lambda data: data["binary_validation"].update(entry_address=0),
+            lambda data: data["capabilities"].update(tessryn_kernel_boot="available"),
+            lambda data: data["components"][0].update(distribution_requirements="Retain /Users/private/project/LICENSE"),
+            lambda data: data["components"][0].update(distribution_requirements="Retain /opt/private/project/LICENSE"),
+            lambda data: data["components"][0].update(distribution_requirements=r"Retain (C:\private\project\LICENSE)"),
+        ]
+        for index, edit in enumerate(edits):
+            with self.subTest(index=index):
+                data = json.loads(json.dumps(original))
+                edit(data)
+                self.manifest.write_text(json.dumps(data))
+                self.out = self.cwd / f"incomplete-{index}"
+                result = self.invoke()
+                self.assertEqual(result["status"], "fail")
+                self.assertEqual(len(self.calls), 0)
+                self.assert_logs_match(result)
+
+    def test_different_emulator_binary_is_rejected_before_version_probe(self) -> None:
+        self.executable.write_bytes(b"Different binary with no bound provenance\n")
+        result = self.invoke()
+        self.assertEqual(result["status"], "fail")
+        self.assertEqual(len(self.calls), 0)
+        self.assert_logs_match(result)
+
+    def test_forged_original_rom_is_rejected_even_with_matching_artifact_hash(self) -> None:
+        image = bytes(65536)
+        (self.cwd / "pass.rom").write_bytes(image)
+        manifest = json.loads(self.manifest.read_text())
+        manifest["artifacts"][0].update(sha256=digest(image), size_bytes=len(image))
+        self.manifest.write_text(json.dumps(manifest))
+        result = self.invoke()
+        self.assertEqual(result["status"], "fail")
+        self.assertEqual(len(self.calls), 0)
+        self.assert_logs_match(result)
+
+    def test_deep_manifest_cli_preserves_rejected_result_and_logs(self) -> None:
+        self.manifest.write_text('{"nested":' + '[' * 10000 + '0' + ']' * 10000 + '}')
+        execution = subprocess.run([sys.executable, str(ROOT / "tools/run_emulator.py"),
+            "--manifest", str(self.manifest), "--registration", str(self.registration), "--out", str(self.out)],
+            capture_output=True, timeout=3)
+        self.assertEqual(execution.returncode, 1, execution.stderr)
+        result = json.loads((self.out / "result.json").read_text())
+        self.assertEqual(result["status"], "fail")
+        self.assert_logs_match(result)
+
     def test_kernel_artifact_cannot_enter_the_fixture_harness(self) -> None:
         manifest = json.loads(self.manifest.read_text())
         manifest["artifact_type"] = "kernel"
@@ -241,7 +323,8 @@ class EmulatorHarnessTests(unittest.TestCase):
         authority = self.cwd / "authority"
         (authority / "tools/g03").mkdir(parents=True)
         (authority / "evidence").mkdir()
-        for name in ("tools/run_emulator.py", "tools/verify_fixture.py", "tools/g03/evidence.py", "toolchain.lock.json"):
+        (authority / "fixtures").mkdir()
+        for name in ("tools/run_emulator.py", "tools/verify_fixture.py", "tools/build_fixture.py", "tools/setup_toolchain.py", "fixtures/rom.py", "tools/g03/evidence.py", "toolchain.lock.json"):
             (authority / name).write_text("trusted evaluator input\n")
         schema = authority / "evidence/schema-v1.json"
         schema.write_text('{"criteria": "first"}\n')
@@ -281,6 +364,10 @@ class EmulatorHarnessTests(unittest.TestCase):
             " print('simulated emulator started', flush=True)\n"
             " time.sleep(60)\n"
         )
+        manifest = json.loads(self.manifest.read_text())
+        manifest["toolchain"]["qemu"]["sha256"] = digest(self.executable.read_bytes())
+        manifest["toolchain"]["qemu_setup"]["verified_tools"]["qemu"]["sha256"] = manifest["toolchain"]["qemu"]["sha256"]
+        self.manifest.write_text(json.dumps(manifest))
         wrapper = subprocess.Popen(
             [sys.executable, str(ROOT / "tools/run_emulator.py"),
              "--manifest", str(self.manifest), "--registration", str(self.registration),

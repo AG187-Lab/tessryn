@@ -8,11 +8,14 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import os
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from tools.g03.evidence import (
-    load_json, main, parse_json, registration_digest, validate_registration, validate_result,
+    load_json, main, parse_json, registration_digest, validate_measurement_reports,
+    validate_registration, validate_report, validate_result,
 )
 
 
@@ -63,7 +66,10 @@ def synthetic_preregistration() -> dict:
         "numerical": {
             "status": "declared",
             "reference": {"id": "synthetic-reference", "source_url": "https://example.org/synthetic-reference", "sha256": DIGEST},
-            "comparisons": [{"operator": "synthetic-add", "dtype": "f32", "atol": 1e-6, "rtol": 1e-5, "finite_required": True}],
+            "comparisons": [{"kind": kind, "operator": f"synthetic-{kind}", "dtype": "f32", "atol": 1e-6,
+                             "rtol": 1e-5, "finite_required": True,
+                             "tolerance_rationale": "Synthetic format-test tolerances only; no empirical claim."}
+                            for kind in ("operator", "logits", "probabilities")],
             "teacher_forced": {"history_sha256": DIGEST, "outputs": ["logits", "probabilities"]},
             "greedy_agreement": True,
             "exact_replay_conditions": "Exact replay is required only with matched seed, binary, device, dtype and execution order.",
@@ -89,6 +95,7 @@ def synthetic_preregistration() -> dict:
             "methodology": {
                 "independent_runs": 3, "run_order": "paired randomized order", "quantile_estimator": "nearest rank",
                 "confidence_interval": "preregistered bootstrap interval", "exclusion_policy": "retain all failures",
+                "confidence_level": 0.95,
                 "stopping_rule": "fixed sample count and duration", "warmup_policy": "exclude exactly two warmups per run",
             },
         },
@@ -102,6 +109,7 @@ def synthetic_measurement() -> dict:
     registration = synthetic_preregistration()
     result.update({"evidence_kind": "measured_performance", "subject": "native_service", "actual_sample_count": 10})
     result["capabilities"]["kernel_boot"] = {"status": "available", "reason": "Synthetic capability record for validator tests only."}
+    result["capabilities"]["inference"] = {"status": "available", "reason": "Synthetic capability record for validator tests only."}
     result["bindings"]["registration"] = registration_digest(registration)
     result["performance"] = {
         "status": "measured", "registration": registration, "started_at_utc": "2026-01-01T00:00:01Z",
@@ -111,7 +119,7 @@ def synthetic_measurement() -> dict:
         "request_outcomes": {"accepted": 10, "completed": 10, "rejected": 0, "cancelled": 0, "failed": 0, "slo_compliant": 10},
         "numerical_results": {
             "reference_sha256": DIGEST, "teacher_forced_history_sha256": DIGEST, "raw_results_sha256": DIGEST,
-            "sample_count": 10, "finite_values": True, "operator_tolerances_passed": True,
+            "sample_count": 30, "finite_values": True, "operator_tolerances_passed": True,
             "logits_tolerances_passed": True, "probabilities_tolerances_passed": True, "greedy_token_agreement": 0.99,
         },
         "held_out_results": {
@@ -120,10 +128,60 @@ def synthetic_measurement() -> dict:
         },
         "metrics": {
             **{key: {"p50": 1, "p95": 2, "p99": 3, "sample_count": 10} for key in ("ttft_ms", "inter_token_ms", "completion_ms")},
-            "throughput": 1, "goodput": 0.9,
+            "throughput": 10 / 30, "goodput": 10 / 30,
         },
+        "report_artifacts": {name: {"path": f"synthetic-{name}.json", "sha256": DIGEST, "size_bytes": 128}
+                             for name in ("performance_trace", "statistics", "numerical", "held_out")},
     }
     return result
+
+
+def synthetic_reports(result: dict) -> dict:
+    """Invented unit-test payloads only; they are not retained project evidence."""
+    registration = result["performance"]["registration"]
+    common = {"schema_version": 1, "registration_sha256": result["bindings"]["registration"]}
+    requests = [{"request_id": f"synthetic-{index}", "run_id": f"synthetic-run-{index % 3}",
+                 "outcome": "completed", "slo_compliant": True,
+                 **{name: 1 + index % 3 for name in ("ttft_ms", "inter_token_ms", "completion_ms")},
+                 "per_token_ms": [1, 2]} for index in range(10)]
+    runs = []
+    for index in range(3):
+        count = sum(row["run_id"] == f"synthetic-run-{index}" for row in requests)
+        metrics = copy.deepcopy(result["performance"]["metrics"])
+        for name in ("ttft_ms", "inter_token_ms", "completion_ms"):
+            metrics[name]["sample_count"] = count
+        metrics.update(throughput=count / 10, goodput=count / 10)
+        runs.append({"run_id": f"synthetic-run-{index}", "observation_duration_seconds": 10, "metrics": metrics})
+    return {
+        "performance_trace": {**common, "format": "tessryn-performance-trace", "sample_unit": "request", "latency_unit": "ms", "requests": requests},
+        "statistics": {**common, "format": "tessryn-statistical-report", "rate_unit": "requests/s", "confidence_level": 0.95,
+                       "confidence_interval_method": registration["performance"]["methodology"]["confidence_interval"],
+                       "intervals": {**{f"{name}.{percentile}": {"lower": 0, "upper": 4}
+                                        for name in ("ttft_ms", "inter_token_ms", "completion_ms") for percentile in ("p50", "p95", "p99")},
+                                     "throughput": {"lower": 0, "upper": 1}, "goodput": {"lower": 0, "upper": 1}},
+                       "independent_runs": runs},
+        "numerical": {**common, "format": "tessryn-numerical-report", "reference_sha256": DIGEST,
+                      "teacher_forced_history_sha256": DIGEST, "greedy_sample_count": 100, "greedy_agreement_count": 99,
+                      "checks": [{"kind": row["kind"], "operator": row["operator"], "dtype": row["dtype"], "sample_count": 10,
+                                  "maximum_absolute_error": 1e-8, "maximum_relative_error": 1e-8,
+                                  "failure_count": 0, "finite_failure_count": 0} for row in registration["numerical"]["comparisons"]]},
+        "held_out": {**common, "format": "tessryn-held-out-report", "workload_sha256": DIGEST,
+                     "sample_count": 10, "quality_metric": "synthetic_accuracy", "quality_value": 0.95,
+                     "custody_reference": "synthetic-custody-record-only", "baseline": {"status": "unavailable", "reason": "Synthetic unit-test data has no real baseline."}},
+    }
+
+
+def write_synthetic_bundle(directory: Path, result: dict, reports: dict) -> Path:
+    for name, report in reports.items():
+        artifact = result["performance"]["report_artifacts"][name]
+        contents = (json.dumps(report, sort_keys=True) + "\n").encode()
+        (directory / artifact["path"]).write_bytes(contents)
+        artifact.update(sha256=hashlib.sha256(contents).hexdigest(), size_bytes=len(contents))
+    result["performance"]["numerical_results"]["raw_results_sha256"] = result["performance"]["report_artifacts"]["numerical"]["sha256"]
+    result["performance"]["held_out_results"]["raw_results_sha256"] = result["performance"]["report_artifacts"]["held_out"]["sha256"]
+    path = directory / "synthetic-result.json"
+    path.write_text(json.dumps(result))
+    return path
 
 
 class EvidenceTests(unittest.TestCase):
@@ -177,6 +235,36 @@ class EvidenceTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 load_json(path)
 
+    def test_deep_json_is_a_reported_validation_error(self):
+        data = '{"nested":' + '[' * 2000 + '0' + ']' * 2000 + '}'
+        with self.assertRaisesRegex(ValueError, "nesting"):
+            parse_json(data)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "deep.json"
+            path.write_text(data)
+            with redirect_stderr(io.StringIO()) as errors:
+                self.assertEqual(main(["validate", str(path)]), 1)
+            self.assertIn("Evidence validation failed", errors.getvalue())
+            self.assertNotIn("Traceback", errors.getvalue())
+        with patch("tools.g03.evidence.json.loads", side_effect=RecursionError):
+            with self.assertRaisesRegex(ValueError, "nesting"):
+                parse_json("{}")
+
+    def test_cli_rejects_fifo_and_oversized_numeric_evidence_without_traceback(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "fifo.json"
+            os.mkfifo(path)
+            with redirect_stderr(io.StringIO()) as errors:
+                self.assertEqual(main(["validate", str(path)]), 1)
+            self.assertIn("regular file", errors.getvalue())
+            path.unlink()
+            result = synthetic_measurement()
+            result["performance"]["metrics"]["throughput"] = 10**310
+            path.write_text(json.dumps(result))
+            with redirect_stderr(io.StringIO()) as errors:
+                self.assertEqual(main(["validate", str(path)]), 1)
+            self.assertNotIn("Traceback", errors.getvalue())
+
     def test_canonical_registration_binding_is_independent_of_whitespace_and_key_order(self):
         data = load_json(ROOT / "evidence/fixture-registration.json")
         expected = hashlib.sha256(json.dumps(data, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
@@ -187,6 +275,7 @@ class EvidenceTests(unittest.TestCase):
     def test_invalid_counts_tolerances_and_authority_are_rejected(self):
         for mutate in (
             lambda data: data["authority"].update(candidate_can_modify_evaluator=True),
+            lambda data: data["authority"].update(evaluator="Owner at /opt/private-workspace/evaluator"),
             lambda data: data["held_out"].update(candidate_visible=True),
             lambda data: data["held_out"].update(custodian=""),
             lambda data: data["numerical"]["comparisons"][0].update(atol=-1),
@@ -196,6 +285,10 @@ class EvidenceTests(unittest.TestCase):
             lambda data: data["performance"]["thermal"].update(sustained_duration_seconds=0),
             lambda data: data["performance"]["load"].update(arrival_process=""),
             lambda data: data["performance"]["methodology"].update(exclusion_policy=""),
+            lambda data: data["performance"]["methodology"].update(confidence_level=1),
+            lambda data: data["numerical"]["comparisons"][0].update(tolerance_rationale=""),
+            lambda data: data["numerical"]["comparisons"].pop(),
+            lambda data: data["performance"]["thermal"].update(sustained_duration_seconds=31),
             lambda data: data["profile"]["candidate"].update(source_revision="main"),
             lambda data: data.update(registered_at_utc="2026-02-30T00:00:00Z"),
         ):
@@ -207,6 +300,7 @@ class EvidenceTests(unittest.TestCase):
     def test_public_results_reject_local_paths_and_combined_log_overflow(self):
         for mutate in (
             lambda data: data["execution"]["command"].append("/Users/operator/private.img"),
+            lambda data: data["execution"].update(reason="Private input was C:\\Users\\operator\\candidate.img"),
             lambda data: data["execution"]["command"].append("file=/tmp/operator.img,format=raw"),
             lambda data: data["logs"][0].update(path="../private.log"),
             lambda data: data["execution"].update(emulator=None),
@@ -246,6 +340,16 @@ class EvidenceTests(unittest.TestCase):
             lambda data: data["performance"]["metrics"].update(goodput=2),
             lambda data: data["performance"]["load"].update(cache_state="warm"),
             lambda data: data["performance"]["thermal"].update(sustained_duration_seconds=20),
+            lambda data: data["performance"]["thermal"].update(sustained_duration_seconds=31),
+            lambda data: data["performance"]["thermal"].update(ambient_celsius=80),
+            lambda data: data["performance"]["thermal"].update(power_mode="battery"),
+            lambda data: data["performance"]["thermal"].update(frequency_policy="boost"),
+            lambda data: data["performance"]["metrics"].update(throughput=1e6, goodput=999999),
+            lambda data: data["performance"]["metrics"].update(goodput=0),
+            lambda data: data["performance"]["report_artifacts"].pop("statistics"),
+            lambda data: data["performance"]["report_artifacts"]["statistics"].update(path="../private.json"),
+            lambda data: data["performance"]["report_artifacts"]["numerical"].update(sha256="b" * 64),
+            lambda data: data["performance"]["report_artifacts"]["held_out"].update(sha256="b" * 64),
             lambda data: data["performance"].update(observation_duration_seconds=20),
             lambda data: data["performance"].update(independent_run_count=2),
         ):
@@ -271,6 +375,13 @@ class EvidenceTests(unittest.TestCase):
         validate_result(data)
 
         data = synthetic_measurement()
+        data["capabilities"]["inference"]["status"] = "unavailable"
+        with self.assertRaisesRegex(ValueError, "available inference"):
+            validate_result(data)
+        data["status"] = "fail"
+        validate_result(data)
+
+        data = synthetic_measurement()
         data["subject"] = "device_artifact"
         data["performance"]["registration"]["subject"] = "device_artifact"
         data["bindings"]["registration"] = registration_digest(data["performance"]["registration"])
@@ -278,6 +389,104 @@ class EvidenceTests(unittest.TestCase):
             validate_result(data)
         data["capabilities"]["gpu_execution"] = {"status": "available", "reason": "Synthetic capability record for validator tests only."}
         validate_result(data)
+
+    def test_request_rates_allow_only_documented_rounding_tolerance(self):
+        data = synthetic_measurement()
+        data["performance"]["metrics"]["throughput"] += 1e-11
+        validate_result(data)
+        data["performance"]["metrics"]["throughput"] += 1e-5
+        with self.assertRaisesRegex(ValueError, "request count"):
+            validate_result(data)
+
+    def test_synthetic_retained_reports_validate_and_bind_to_the_result(self):
+        result = synthetic_measurement()
+        reports = synthetic_reports(result)
+        for report in reports.values():
+            validate_report(report)
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_synthetic_bundle(Path(directory), result, reports)
+            validate_measurement_reports(result, Path(directory))
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(main(["validate", str(path)]), 0)
+
+    def test_report_payload_contracts_reject_omissions_and_invalid_statistics(self):
+        mutations = (
+            ("performance_trace", lambda d: d["requests"][0].pop("per_token_ms")),
+            ("performance_trace", lambda d: d["requests"].append(copy.deepcopy(d["requests"][0]))),
+            ("performance_trace", lambda d: d["requests"][0].update(outcome="failed", slo_compliant=True)),
+            ("statistics", lambda d: d["intervals"].pop("ttft_ms.p99")),
+            ("statistics", lambda d: d["intervals"]["ttft_ms.p99"].update(lower=5, upper=1)),
+            ("statistics", lambda d: d["independent_runs"].append(copy.deepcopy(d["independent_runs"][0]))),
+            ("numerical", lambda d: d["checks"][0].pop("maximum_absolute_error")),
+            ("numerical", lambda d: d["checks"][0].update(failure_count=11)),
+            ("numerical", lambda d: d["checks"].pop()),
+            ("held_out", lambda d: d.pop("custody_reference")),
+        )
+        for name, mutate in mutations:
+            report = synthetic_reports(synthetic_measurement())[name]
+            mutate(report)
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                validate_report(report)
+
+    def test_retained_bundles_reject_changed_bytes_missing_reports_and_path_escape(self):
+        for failure in ("changed", "missing", "symlink", "parent_symlink"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside:
+                root = Path(directory)
+                result = synthetic_measurement()
+                write_synthetic_bundle(root, result, synthetic_reports(result))
+                artifact = result["performance"]["report_artifacts"]["statistics"]
+                path = root / artifact["path"]
+                if failure == "changed":
+                    path.write_bytes(b"changed")
+                elif failure == "missing":
+                    path.unlink()
+                else:
+                    target = Path(outside) / path.name
+                    path.rename(target)
+                    if failure == "symlink":
+                        path.symlink_to(target)
+                    else:
+                        (root / "escape").symlink_to(Path(outside), target_is_directory=True)
+                        artifact["path"] = f"escape/{target.name}"
+                with self.assertRaises((ValueError, OSError)):
+                    validate_measurement_reports(result, root)
+
+    def test_valid_hashes_do_not_allow_report_summaries_to_disagree(self):
+        mutations = (
+            ("performance_trace", lambda d: d["requests"][0].update(outcome="failed", slo_compliant=False)),
+            ("performance_trace", lambda d: d["requests"][0].update(ttft_ms=1000)),
+            ("statistics", lambda d: d.update(confidence_interval_method="post hoc method")),
+            ("statistics", lambda d: d.update(confidence_level=0.01)),
+            ("statistics", lambda d: d["independent_runs"].pop()),
+            ("statistics", lambda d: d["independent_runs"][0]["metrics"]["ttft_ms"].update(sample_count=1)),
+            ("statistics", lambda d: d["independent_runs"][0]["metrics"].update(throughput=999)),
+            ("statistics", lambda d: d["intervals"]["ttft_ms.p99"].update(lower=0, upper=1)),
+            ("numerical", lambda d: d["checks"][0].update(failure_count=1)),
+            ("numerical", lambda d: d.update(reference_sha256="b" * 64)),
+            ("held_out", lambda d: d.update(sample_count=9)),
+        )
+        for name, mutate in mutations:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                result = synthetic_measurement()
+                reports = synthetic_reports(result)
+                mutate(reports[name])
+                path = write_synthetic_bundle(Path(directory), result, reports)
+                with self.assertRaises(ValueError):
+                    validate_measurement_reports(result, Path(directory))
+                with redirect_stderr(io.StringIO()) as errors:
+                    self.assertEqual(main(["validate", str(path)]), 1)
+                self.assertNotIn("Traceback", errors.getvalue())
+
+    def test_lower_sample_gate_cannot_allow_dropped_completed_latency_samples(self):
+        result = synthetic_measurement()
+        result["performance"]["registration"]["performance"]["target_sample_count"] = 9
+        result["bindings"]["registration"] = registration_digest(result["performance"]["registration"])
+        for name in ("ttft_ms", "inter_token_ms", "completion_ms"):
+            result["performance"]["metrics"][name]["sample_count"] = 9
+        with tempfile.TemporaryDirectory() as directory:
+            write_synthetic_bundle(Path(directory), result, synthetic_reports(result))
+            with self.assertRaisesRegex(ValueError, "aggregate latency sample"):
+                validate_measurement_reports(result, Path(directory))
 
     def test_cli_accepts_examples_and_reports_invalid_evidence(self):
         with redirect_stdout(io.StringIO()):

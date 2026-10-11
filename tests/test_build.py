@@ -85,6 +85,47 @@ class FixtureTests(unittest.TestCase):
 
 
 class ToolchainIntegrityTests(unittest.TestCase):
+    def make_archive(self, prefix):
+        archive = prefix / "tool.tar.xz"
+        with tarfile.open(archive, "w:xz") as output:
+            member = tarfile.TarInfo("tool/install.sh")
+            contents = b"echo original\n"
+            member.size = len(contents)
+            output.addfile(member, io.BytesIO(contents))
+        return archive
+
+    def test_cached_extraction_cannot_reuse_tampered_installer(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary)
+            archive = self.make_archive(prefix)
+            with patch.object(setup_toolchain, "PREFIX", prefix):
+                root = setup_toolchain.extract(archive)
+                (root / "install.sh").write_text("echo tampered\n")
+                (root / "unexpected.py").write_text("unverified extra module\n")
+                extracted = setup_toolchain.extract(archive)
+            self.assertEqual((extracted / "install.sh").read_text(), "echo original\n")
+            self.assertFalse((extracted / "unexpected.py").exists())
+
+    def test_fresh_setup_products_remove_unverified_files(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary) / "python-deps"
+            directory.mkdir()
+            (directory / "unexpected.py").write_text("unverified cached dependency")
+            setup_toolchain.fresh_directory(directory)
+            self.assertEqual(list(directory.iterdir()), [])
+
+    def test_fresh_setup_product_rejects_external_symlink(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary)
+            external = prefix / "external"
+            external.mkdir()
+            (external / "preserved").write_text("original")
+            product = prefix / "python-deps"
+            product.symlink_to(external, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "regular directory"):
+                setup_toolchain.fresh_directory(product)
+            self.assertEqual((external / "preserved").read_text(), "original")
+
     def test_exact_qemu_version_with_optional_package_suffix(self):
         for line in ("QEMU emulator version 11.1.2", "QEMU emulator version 11.1.2 (distribution)"):
             self.assertTrue(setup_toolchain.qemu_version_matches(line, "11.1.2"))
@@ -157,6 +198,147 @@ class ToolchainIntegrityTests(unittest.TestCase):
             self.assertEqual(metadata["archive_sha256"], hashlib.sha256(archive.read_bytes()).hexdigest())
             self.assertEqual(metadata["omitted_links"], ["tool/roms/edk2/unused"])
             self.assertFalse((root / "roms/edk2/unused").exists())
+
+
+class SetupProvenanceTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.prefix = self.root / "build" / "toolchain"
+        self.prefix.mkdir(parents=True)
+        self.lock = json.loads((build_fixture.ROOT / "toolchain.lock.json").read_text())
+        (self.root / "toolchain.lock.json").write_text(json.dumps(self.lock))
+        self.host = "aarch64-apple-darwin"
+        self.compiler = self.prefix / "rustc"
+        self.linker = self.prefix / "rust-lld"
+        self.qemu = self.prefix / "qemu"
+        for path in (self.compiler, self.linker, self.qemu):
+            path.write_text(path.name)
+        libraries = self.prefix / "lib" / "rustlib" / self.lock["rust"]["target"] / "lib"
+        libraries.mkdir(parents=True)
+        self.core = libraries / "libcore-original.rlib"
+        self.core.write_text("original library")
+        self.driver = self.prefix / "lib" / "librustc_driver.dylib"
+        self.driver.write_text("original compiler driver")
+        self.record = {
+            "schema_version": 1, "host": self.host,
+            "lock_sha256": build_fixture.sha256(self.root / "toolchain.lock.json"),
+            "verified_tools": {name: {"sha256": build_fixture.sha256(path)} for name, path in (
+                ("rustc", self.compiler), ("rust_lld", self.linker), ("qemu", self.qemu))},
+            "rust_target_library_tree_sha256": setup_toolchain.rust_target_library_digest(self.prefix, self.lock["rust"]["target"]),
+            "rust_library_tree_sha256": setup_toolchain.regular_tree_digest(self.prefix / "lib"),
+            "qemu_extraction": {"archive_sha256": self.lock["qemu"]["sha256"], "omitted_links": []},
+            "qemu_configure": self.lock["qemu"]["configure"], "qemu": "QEMU emulator version " + self.lock["qemu"]["version"],
+            "ninja": self.lock["ninja"]["version"],
+            "qemu_python_build_dependencies": self.lock["qemu_python_build_dependencies"],
+            "qemu_host_dependencies": [{"name": "glib-2.0", "version": "fixture"}],
+            "qemu_host_compilers": {"host": {"c": {"id": "fixture", "version": "fixture"}}},
+        }
+        self.record_path = self.prefix / "installed.json"
+        self.write_record()
+        self.root_patch = patch.object(build_fixture, "ROOT", self.root)
+        self.root_patch.start()
+        self.addCleanup(self.root_patch.stop)
+
+    def write_record(self):
+        self.record_path.write_text(json.dumps(self.record))
+
+    def verify(self):
+        return build_fixture.verified_setup(self.lock, self.compiler, self.linker, self.qemu, self.prefix, self.host)
+
+    def test_verified_tools_and_source_record_accepted(self):
+        self.assertEqual(self.verify(), self.record)
+
+    def test_version_spoofing_override_cannot_claim_upstream_source(self):
+        self.qemu.write_text("#!/bin/sh\necho 'QEMU emulator version 11.1.2'\n")
+        with self.assertRaisesRegex(ValueError, "selected qemu"):
+            self.verify()
+
+    def test_modified_target_core_rejected(self):
+        self.core.write_text("changed core without changing rustc")
+        with self.assertRaisesRegex(ValueError, "target libraries"):
+            self.verify()
+
+    def test_modified_compiler_runtime_rejected(self):
+        self.driver.write_text("changed compiler driver without changing rustc")
+        with self.assertRaisesRegex(ValueError, "runtime libraries"):
+            self.verify()
+
+    def test_stale_lock_record_rejected(self):
+        self.record["lock_sha256"] = "0" * 64
+        self.write_record()
+        with self.assertRaisesRegex(ValueError, "stale"):
+            self.verify()
+
+    def test_missing_verified_record_rejected(self):
+        self.record_path.unlink()
+        with self.assertRaisesRegex(ValueError, "setup record unavailable"):
+            self.verify()
+
+    def test_missing_qemu_source_record_rejected(self):
+        del self.record["qemu_extraction"]
+        self.write_record()
+        with self.assertRaisesRegex(ValueError, "source/configuration"):
+            self.verify()
+
+    def test_malformed_record_and_binary_identity_rejected(self):
+        for value in ([], {**self.record, "verified_tools": []}):
+            with self.subTest(value=value):
+                self.record_path.write_text(json.dumps(value))
+                with self.assertRaisesRegex(ValueError, "stale|malformed"):
+                    self.verify()
+
+    def test_linked_target_library_rejected(self):
+        self.core.unlink()
+        self.core.symlink_to(self.driver)
+        with self.assertRaisesRegex(ValueError, "symbolic links"):
+            self.verify()
+
+
+class SourceSnapshotTests(unittest.TestCase):
+    def identity(self, root, names):
+        def output(command):
+            return "f" * 40 if command[1] == "rev-parse" else "dirty"
+        with patch.object(build_fixture, "ROOT", root), patch.object(build_fixture, "command_output", side_effect=output), \
+                patch.object(build_fixture.subprocess, "check_output", return_value="\0".join(names).encode() + b"\0"):
+            return build_fixture.source_identity()
+
+    def test_executable_mode_changes_source_snapshot(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            script = root / "script"
+            script.write_text("same bytes")
+            script.chmod(0o644)
+            first = self.identity(root, ["script"])
+            script.chmod(0o755)
+            self.assertNotEqual(first, self.identity(root, ["script"]))
+
+    def test_symlink_target_and_referenced_bytes_identified(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name in ("first", "second"):
+                (root / name).write_text("same bytes")
+            link = root / "source"
+            link.symlink_to("first")
+            first = self.identity(root, ["source"])
+            link.unlink()
+            link.symlink_to("second")
+            second = self.identity(root, ["source"])
+            self.assertNotEqual(first, second)
+            (root / "second").write_text("changed bytes")
+            self.assertNotEqual(second, self.identity(root, ["source"]))
+
+    def test_external_source_symlink_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            root = directory / "repo"
+            root.mkdir()
+            external = directory / "external"
+            external.write_text("private")
+            (root / "source").symlink_to(external)
+            with self.assertRaisesRegex(ValueError, "within the repository"):
+                self.identity(root, ["source"])
 
 
 if __name__ == "__main__":

@@ -12,6 +12,8 @@ its exact compiler revision and `x86_64-unknown-none` core archive), QEMU 11.1.2
 source, and Python 3.14.6 for CI. The installer verifies archive SHA-256 values
 before extraction. Tooling uses the Python standard library; setup requires
 Python 3.12 or newer. The selected Python version is the tested profile.
+CI also runs the tooling contracts on Python 3.12.13 to cover the minimum
+supported minor version, including malformed-input failure reporting.
 The lock also pins Ninja 1.13.2 and the QEMU build-only Python wheels: setuptools
 80.9.0, wheel 0.45.1 and pip 25.2. QEMU's release archive provides its bundled
 Meson source; dependency licenses remain in the downloaded archives/local setup.
@@ -47,9 +49,11 @@ python3 tools/run_emulator.py --manifest build/fixture-a/manifest.json --qemu bu
 
 Directories for builds and results must be empty/new. Keep previous failures
 and choose new names for subsequent runs. `TESSRYN_RUSTC` and `TESSRYN_QEMU` can
-select installed tools for the builder; their exact versions are checked and
-their binary hashes recorded. The harness checks the selected QEMU version and
-records its binary hash independently.
+select tools that match the setup inventory; version strings alone do not prove
+upstream provenance. The builder checks the selected binaries and target library
+and compiler runtime libraries against the checksum-bound installation record.
+The harness independently checks
+the QEMU version and requires its binary hash to match the build manifest.
 
 Exercise a real emulator timeout and verify retained evidence:
 
@@ -90,8 +94,13 @@ versions and binary hashes, exact Rust flags, each artifact's hash/length/role,
 binary inspection results, unavailable capabilities, and component provenance.
 Provenance includes upstream source, revision/archive hash, licenses, modified
 files, notices, build/runtime role and distribution requirements. The snapshot
-hash covers sorted Git-tracked and nonignored source filenames and file hashes;
-generated outputs are ignored. A dirty checkout is identified explicitly.
+hash covers sorted Git-tracked and nonignored source filenames, file types,
+executable modes, file hashes and symlink destinations; generated outputs are
+ignored. A dirty checkout is identified explicitly. Setup extracts verified
+archives into fresh source trees instead of trusting mutable extracted caches.
+It also rebuilds QEMU in a fresh directory and replaces installed Rust/runtime
+and Python dependency trees, so stale build objects or extra modules cannot
+silently inherit the pinned archive provenance.
 
 Fresh builds use separate output directories with no incremental state. Verification
 checks every artifact against its manifest and requires identical complete
@@ -100,6 +109,12 @@ hosts; compiler and host tool hashes may differ, so cross-host manifests need
 not be identical. No native kernel, service or device artifact is fabricated to
 fill a manifest. These profiles remain unavailable until their implementations
 and qualification evidence exist.
+
+Unavailable native profiles do not block G03's tooling acceptance. A missing or
+incorrect toolchain, provenance record, bounded failure result, evidence format,
+or reproducible fixture check does block it. Kernel boot, native-service ABI,
+exact GPU targets, model execution and physical performance qualification belong
+to their implementation and qualification issues; G03 records their absence.
 
 ## Emulator ownership and failure behavior
 
@@ -123,6 +138,9 @@ including build or input hashing. The process session is terminated and killed
 when needed, including descendants whose leader has exited. SIGINT/SIGTERM
 cancels an active subprocess and preserves a cancellation result. Output is
 retained up to the declared cap, with truncation reported as `log_limit`.
+If the host denies session termination or reaping, cleanup still closes pipes
+and restores signal handlers; the retained outcome is an explicit failure with
+its original execution reason and cleanup error, never a pass.
 
 | Result | CLI exit | Meaning |
 | --- | ---: | --- |

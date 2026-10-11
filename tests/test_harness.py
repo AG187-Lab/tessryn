@@ -192,6 +192,56 @@ class ProcessHarnessTests(unittest.TestCase):
             if pid_path.exists():
                 self._kill_if_alive(int(pid_path.read_text()))
 
+    def test_denied_group_cleanup_reports_failure_and_reaps_owned_leader(self) -> None:
+        script = "import time; print('started', flush=True); time.sleep(60)"
+        original_handlers = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+        children = []
+        actual_popen = subprocess.Popen
+
+        def retain_child(*args, **kwargs):
+            child = actual_popen(*args, **kwargs)
+            children.append(child)
+            return child
+
+        with patch("tools.g03.process.subprocess.Popen", side_effect=retain_child), patch(
+                "tools.g03.process.os.killpg", side_effect=PermissionError("simulated host restriction")):
+            result = self.run_script(script, timeout=0.25)
+        self.assertEqual(result.status, "fail")
+        self.assertIn("cleanup failed", result.reason)
+        self.assertIn("PermissionError", result.reason)
+        self.assertIn(b"started", result.stdout)
+        self.assertIsNotNone(result.returncode)
+        self.assertLess(result.elapsed_seconds, 2)
+        self.assertTrue(children[0].stdout.closed)
+        self.assertTrue(children[0].stderr.closed)
+        self.assertIsNotNone(children[0].poll())
+        for sig, handler in original_handlers.items():
+            self.assertIs(signal.getsignal(sig), handler)
+
+    def test_capture_error_reports_failure_and_still_cleans_child(self) -> None:
+        children = []
+        actual_popen, actual_read = subprocess.Popen, os.read
+
+        def retain_child(*args, **kwargs):
+            child = actual_popen(*args, **kwargs)
+            children.append(child)
+            return child
+
+        def reject_captured_pipe(descriptor, size):
+            if children and descriptor in (children[0].stdout.fileno(), children[0].stderr.fileno()):
+                raise OSError("simulated capture failure")
+            return actual_read(descriptor, size)
+
+        with patch("tools.g03.process.subprocess.Popen", side_effect=retain_child), patch(
+                "tools.g03.process.os.read", side_effect=reject_captured_pipe):
+            result = self.run_script("import time; print('started', flush=True); time.sleep(60)")
+        self.assertEqual(result.status, "fail")
+        self.assertIn("capture failed", result.reason)
+        self.assertIsNotNone(result.returncode)
+        self.assertTrue(children[0].stdout.closed)
+        self.assertTrue(children[0].stderr.closed)
+        self.assertIsNotNone(children[0].poll())
+
     def test_interrupt_cancels_child_and_produces_a_result(self) -> None:
         child_script = (
             "import os, pathlib, time\n"

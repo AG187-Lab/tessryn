@@ -16,6 +16,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from fixtures.rom import make_rom  # noqa: E402
+from tools.setup_toolchain import regular_tree_digest, rust_target_library_digest  # noqa: E402
 
 
 def sha256(path: Path) -> str:
@@ -40,16 +41,34 @@ def source_identity() -> dict:
     digest = hashlib.sha256()
     for name in sorted(set(filter(None, names))):
         path = ROOT / name
-        if path.is_file():
-            digest.update(name.encode() + b"\0" + sha256(path).encode() + b"\0")
-        else:
+        if path.is_symlink():
+            if not path.resolve().is_relative_to(ROOT.resolve()):
+                raise ValueError("source symbolic links must stay within the repository")
+            kind, contents = "120000", os.readlink(path)
+            if path.is_file():
+                contents += "\0" + sha256(path)
+            elif path.exists():
+                raise ValueError("source symbolic links must name regular source files")
+        elif path.is_file():
+            kind = "100755" if path.stat().st_mode & 0o111 else "100644"
+            contents = sha256(path)
+        elif not path.exists():
             digest.update(name.encode() + b"\0deleted\0")
-    return {"revision": revision, "dirty": dirty, "tree_sha256": digest.hexdigest()}
+            continue
+        else:
+            raise ValueError("source snapshot requires files or symbolic links")
+        digest.update(name.encode() + b"\0" + kind.encode() + b"\0" + contents.encode() + b"\0")
+    return {"revision": revision, "dirty": dirty, "tree_sha256": digest.hexdigest(),
+            "snapshot_algorithm": "git-worktree-v2"}
 
 
 def inspect_elf(path: Path) -> dict:
     """Check layout/runtime requirements directly, with no external inspection tool."""
-    data = path.read_bytes()
+    return inspect_elf_bytes(path.read_bytes())
+
+
+def inspect_elf_bytes(data: bytes) -> dict:
+    """Inspect the same byte snapshot that a verifier hashed."""
     if len(data) < 64 or data[:7] != b"\x7fELF\x02\x01\x01":
         raise ValueError("Rust probe must be little-endian ELF64")
     header = struct.unpack_from("<16sHHIQQQIHHHHHH", data)
@@ -126,6 +145,53 @@ def resolve_tool(name: str, environment: str) -> Path:
     return path
 
 
+def verified_setup(lock: dict, compiler: Path, linker: Path, qemu: Path,
+                   sysroot: Path, host: str) -> dict:
+    """Never attribute arbitrary version-reporting binaries to upstream archives."""
+    record_path = ROOT / "build" / "toolchain" / "installed.json"
+    if not record_path.is_file():
+        raise ValueError("verified toolchain setup record unavailable; run python3 tools/setup_toolchain.py")
+    record = json.loads(record_path.read_text())
+    if (not isinstance(record, dict) or record.get("schema_version") != 1 or record.get("host") != host
+            or record.get("lock_sha256") != sha256(ROOT / "toolchain.lock.json")):
+        raise ValueError("toolchain setup record is stale; run python3 tools/setup_toolchain.py")
+    tools = record.get("verified_tools", {})
+    if not isinstance(tools, dict):
+        raise ValueError("toolchain binary identity record is malformed; rerun setup")
+    for name, path in (("rustc", compiler), ("rust_lld", linker), ("qemu", qemu)):
+        if not isinstance(tools.get(name), dict) or tools[name].get("sha256") != sha256(path):
+            raise ValueError(f"selected {name} does not match verified setup provenance; rerun setup")
+    actual_libraries = rust_target_library_digest(sysroot, lock["rust"]["target"])
+    if record.get("rust_target_library_tree_sha256") != actual_libraries:
+        raise ValueError("Rust target libraries do not match verified setup provenance; rerun setup")
+    if record.get("rust_library_tree_sha256") != regular_tree_digest(sysroot / "lib"):
+        raise ValueError("Rust compiler runtime libraries do not match verified setup provenance; rerun setup")
+    if (not isinstance(record.get("qemu_extraction"), dict)
+            or record["qemu_extraction"].get("archive_sha256") != lock["qemu"]["sha256"]
+            or not isinstance(record["qemu_extraction"].get("omitted_links"), list)
+            or record.get("qemu_configure") != lock["qemu"]["configure"]):
+        raise ValueError("QEMU source/configuration setup provenance is missing or stale; rerun setup")
+    if any(not isinstance(name, str) or not name.startswith(f"qemu-{lock['qemu']['version']}/roms/edk2/")
+           or ".." in Path(name).parts for name in record["qemu_extraction"]["omitted_links"]):
+        raise ValueError("QEMU extraction provenance is malformed; rerun setup")
+    if (record.get("ninja") != lock["ninja"]["version"]
+            or record.get("qemu_python_build_dependencies") != lock["qemu_python_build_dependencies"]
+            or not isinstance(record.get("qemu"), str)
+            or record["qemu"].split()[:4] != ["QEMU", "emulator", "version", lock["qemu"]["version"]]):
+        raise ValueError("QEMU build dependency provenance is missing or stale; rerun setup")
+    dependencies, compilers = record.get("qemu_host_dependencies"), record.get("qemu_host_compilers")
+    if (not isinstance(dependencies, list) or not dependencies
+            or any(not isinstance(item, dict) or not all(isinstance(item.get(key), str) and item[key]
+                                                        for key in ("name", "version")) for item in dependencies)
+            or not isinstance(compilers, dict) or not compilers
+            or any(not isinstance(group, dict) or not group
+                   or any(not isinstance(spec, dict) or not all(isinstance(spec.get(key), str) and spec[key]
+                                                               for key in ("id", "version")) for spec in group.values())
+                   for group in compilers.values())):
+        raise ValueError("QEMU host dependency/compiler provenance is malformed; rerun setup")
+    return record
+
+
 def build(out: Path) -> dict:
     source = source_identity()
     lock = json.loads((ROOT / "toolchain.lock.json").read_text())
@@ -149,6 +215,7 @@ def build(out: Path) -> dict:
     linker = sysroot / "lib" / "rustlib" / host / "bin" / "rust-lld"
     if not linker.is_file():
         raise ValueError("bundled rust-lld unavailable; use the pinned upstream toolchain")
+    setup = verified_setup(lock, compiler, linker, qemu, sysroot, host)
     rust_flags = [
         "--edition=2024", "--crate-name=g03_probe", "--crate-type=bin",
         "--target=x86_64-unknown-none", "-Cpanic=abort", "-Copt-level=1",
@@ -225,16 +292,18 @@ def build(out: Path) -> dict:
             "qemu": {"version": qemu_version, "sha256": sha256(qemu)},
             "python": {"version": platform_python_version(), "sha256": sha256(Path(sys.executable).resolve())},
             "binary_target": lock["rust"]["target"], "rust_flags": rust_flags,
+            "setup_lock_sha256": setup["lock_sha256"],
+            "rust_target_library_tree_sha256": setup["rust_target_library_tree_sha256"],
+            "rust_library_tree_sha256": setup["rust_library_tree_sha256"],
+            "qemu_setup": setup,
         },
         "components": components, "artifacts": artifacts, "binary_validation": validation,
         "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
     }
-    setup_record = ROOT / "build" / "toolchain" / "installed.json"
-    if setup_record.is_file():
-        setup = json.loads(setup_record.read_text())
-        manifest["toolchain"]["qemu_setup"] = setup
-        components[2]["omitted_source_links"] = setup.get("qemu_extraction", {}).get("omitted_links", [])
-        components[2]["modified_files"] = [name.split("/", 1)[1] for name in components[2]["omitted_source_links"]]
+    components[2]["omitted_source_links"] = setup["qemu_extraction"]["omitted_links"]
+    components[2]["modified_files"] = [name.split("/", 1)[1] for name in components[2]["omitted_source_links"]]
+    if verified_setup(lock, compiler, linker, qemu, sysroot, host) != setup:
+        raise ValueError("toolchain setup changed during build; retry after setup completes")
     if source_identity() != source:
         raise ValueError("source changed during build; retry with a fresh output directory")
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")

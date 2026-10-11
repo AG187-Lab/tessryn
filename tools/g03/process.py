@@ -100,20 +100,50 @@ def run_bounded(command: list[str], cwd: Path, timeout_seconds: float,
                     break
         except KeyboardInterrupt:
             status, reason = "cancelled", "execution cancelled by host signal"
+        except OSError as error:
+            status, reason = "fail", f"process capture failed: {type(error).__name__}"
         finally:
             # Always kill remaining descendants, even when the process leader has
             # exited. A descendant may close its pipes and keep running otherwise.
-            kill_group(signal.SIGTERM)
-            if child.poll() is None:
+            cleanup_errors = []
+            try:
                 try:
-                    child.wait(timeout=0.2)
+                    kill_group(signal.SIGTERM)
+                except OSError as error:
+                    cleanup_errors.append(type(error).__name__)
+                if child.poll() is None:
+                    try:
+                        child.wait(timeout=0.2)
+                    except subprocess.TimeoutExpired:
+                        pass
+                try:
+                    kill_group(signal.SIGKILL)
+                except OSError as error:
+                    cleanup_errors.append(type(error).__name__)
+                # A denied group signal must not skip reaping the owned leader.
+                # This fallback cannot establish descendant cleanup; any group
+                # error is retained as an explicit failure, even if it succeeds.
+                if child.poll() is None:
+                    try:
+                        child.kill()
+                    except ProcessLookupError:
+                        pass
+                    except OSError as error:
+                        cleanup_errors.append(type(error).__name__)
+                try:
+                    child.wait(timeout=1)
                 except subprocess.TimeoutExpired:
-                    pass
-            kill_group(signal.SIGKILL)
-            child.wait(timeout=1)
-            child.stdout.close()
-            child.stderr.close()
-            for sig, handler in handlers.items():
-                signal.signal(sig, handler)
+                    cleanup_errors.append("reaping deadline exceeded")
+            finally:
+                for pipe in (child.stdout, child.stderr):
+                    try:
+                        pipe.close()
+                    except OSError as error:
+                        cleanup_errors.append(type(error).__name__)
+                for sig, handler in handlers.items():
+                    signal.signal(sig, handler)
+            if cleanup_errors:
+                status = "fail"
+                reason += "; process session cleanup failed: " + ", ".join(sorted(set(cleanup_errors)))
     return ProcessResult(status, reason, child.returncode,
                          time.monotonic() - started, bytes(output["stdout"]), bytes(output["stderr"]))

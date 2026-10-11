@@ -15,9 +15,11 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "tests"))
 import run_emulator as emulator
 import verify_fixture as verifier
 from g03.process import ProcessResult
+from test_emulator import synthetic_manifest
 
 
 def digest(data: bytes) -> str:
@@ -32,20 +34,14 @@ class RetainedFixtureVerificationTests(unittest.TestCase):
         self.first = self.cwd / "first" / "manifest.json"
         self.second = self.cwd / "second" / "manifest.json"
         self.registration = ROOT / "evidence/fixture-registration.json"
-        rom = bytes(65536)
-        manifest = {
-            "schema_version": 1, "artifact_type": "test_fixture",
-            "source": {"revision": "1" * 40, "dirty": False, "tree_sha256": "2" * 64},
-            "artifacts": [{"path": name, "sha256": digest(rom), "size_bytes": len(rom)}
-                          for name in ("pass.rom", "hang.rom")],
-        }
-        for path in (self.first, self.second):
-            path.parent.mkdir()
-            for name in ("pass.rom", "hang.rom"):
-                (path.parent / name).write_bytes(rom)
-            path.write_text(json.dumps(manifest, sort_keys=True) + "\n")
         executable = self.cwd / "mock-qemu"
         executable.write_bytes(b"Synthetic test executor; never launched\n")
+        manifest, artifacts = synthetic_manifest(executable.read_bytes())
+        for path in (self.first, self.second):
+            path.parent.mkdir()
+            for name, contents in artifacts.items():
+                (path.parent / name).write_bytes(contents)
+            path.write_text(json.dumps(manifest, sort_keys=True) + "\n")
         version = json.loads((ROOT / "toolchain.lock.json").read_text())["qemu"]["version"]
         process_results = [
             ProcessResult("completed", "exit", 0, 0.01, f"QEMU emulator version {version}\n".encode(), b""),
@@ -88,6 +84,20 @@ class RetainedFixtureVerificationTests(unittest.TestCase):
         self.second.write_text(json.dumps(manifest))
         self.reject()
 
+    def test_matching_incomplete_manifests_are_rejected(self) -> None:
+        manifest = json.loads(self.first.read_text())
+        manifest.pop("components")
+        for path in (self.first, self.second):
+            path.write_text(json.dumps(manifest))
+        with self.assertRaises(SystemExit) as raised:
+            self.verify(result=False)
+        self.assertEqual(raised.exception.code, 1)
+
+    def test_semantically_equal_but_different_manifest_bytes_are_rejected(self) -> None:
+        manifest = json.loads(self.second.read_text())
+        self.second.write_text(json.dumps(manifest, indent=2))
+        self.reject()
+
     def test_changed_retained_log_is_rejected(self) -> None:
         (self.result_path.parent / "stdout.log").write_bytes(b"changed after capture")
         self.reject()
@@ -105,6 +115,15 @@ class RetainedFixtureVerificationTests(unittest.TestCase):
         self.result["execution"]["returncode"] = 0
         self.save_result()
         self.reject()
+
+    def test_result_emulator_must_match_pinned_manifest_binary_and_version(self) -> None:
+        original = self.result["execution"]["emulator"].copy()
+        for key, replacement in (("version", "0.0.0"), ("binary_sha256", "f" * 64)):
+            with self.subTest(key=key):
+                self.result["execution"]["emulator"] = original.copy()
+                self.result["execution"]["emulator"][key] = replacement
+                self.save_result()
+                self.reject()
 
     def test_passing_bundle_requires_the_stdout_marker(self) -> None:
         empty = b""
