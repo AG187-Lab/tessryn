@@ -1,6 +1,6 @@
 # Tessryn implementation roadmap
 
-Tessryn is an original kernel and operating system for agent execution and distributed inference. This roadmap describes implementation work, not an implemented system. No native boot, accelerator execution or performance result has been produced by the design review.
+Tessryn is an original kernel and operating system for agent execution and distributed inference. The [first K01 kernel](first-kernel.md) now boots and exercises fault paths in the declared QEMU/OVMF profile. The remaining roadmap describes planned work; physical native boot, accelerator execution and performance remain unqualified.
 
 The implementation backlog is [planning/backlog.json](../planning/backlog.json). Logical issue keys become GitHub issue links when published. Milestones have no due dates until hardware qualification and the first accelerator bring-up establish a credible critical path.
 

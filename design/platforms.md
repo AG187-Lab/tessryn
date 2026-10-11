@@ -1,6 +1,6 @@
 # Platform qualification
 
-Status: target profiles, with no implemented support. Qualify CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
+Status: physical target profiles remain unqualified. The [K01 emulator profile](first-kernel.md) has original-kernel CPU boot and fault evidence. Qualify physical CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
 
 ## First platforms
 

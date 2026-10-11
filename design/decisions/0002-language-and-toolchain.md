@@ -28,6 +28,15 @@ probe is not booted; kernel runtime/debugger behavior, native-service C ABI and
 exact GPU device compilation remain unvalidated. The whole-kernel language and
 interface proposal remains Proposed pending G02 and implementation evidence.
 
+## K01 implementation profile
+
+K01 executes original Rust `no_std` kernel code with small x86 assembly boundaries
+using the separately pinned `x86_64-unknown-uefi` library for the same compiler.
+This demonstrates actual firmware handoff, owned CPU state, exception diagnostics,
+Rust panic and reset under QEMU/OVMF. It strengthens the kernel language evidence;
+the native-service C ABI and GPU compiler/interface contracts remain G02 work.
+See [ADR 0010](0010-first-uefi-kernel.md) and [the kernel workflow](../first-kernel.md).
+
 ## References
 
 [Native ABI](../native-abi.md) and [NVCC documentation](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html).

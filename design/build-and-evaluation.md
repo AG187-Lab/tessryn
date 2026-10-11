@@ -1,7 +1,9 @@
 # G03 build and evaluation foundation
 
-Status: host tooling with original test fixtures. Tessryn kernel boot, native
-services, GPU execution and inference remain **unavailable**. A fixture pass
+Status: G03 host tooling with original test fixtures. This fixture workflow
+establishes no kernel boot, native services, GPU execution or inference. The
+separate [K01 workflow](first-kernel.md) builds and boots the original kernel.
+A fixture pass
 establishes only that this harness observed its marker and expected emulator
 exit. The freestanding Rust ELF probe is inspected, never executed.
 

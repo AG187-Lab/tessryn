@@ -4,7 +4,7 @@ An original operating system for AI agents and distributed inference.
 
 Tessryn is designed to let servers and qualified laptops form a cluster, execute models through native accelerator drivers, and serve models larger than any individual worker can hold. Its kernel, execution interfaces and distributed services are being designed together around memory ownership, asynchronous work and measured resource budgets.
 
-**Status:** design and implementation planning, with reproducible build/evaluation tooling validated using original test fixtures. There is no bootable Tessryn kernel, supported hardware profile or measured Tessryn performance result yet.
+**Status:** the first original x86-64 UEFI kernel boots in QEMU/OVMF, exits firmware boot services, owns its CPU tables and memory handoff, and exercises exceptions, panic and reset. A bootable ISO is available for recoverable hardware experiments. Physical hardware, native GPU execution and Tessryn performance remain unqualified. [First kernel workflow](design/first-kernel.md).
 
 ## The first product milestone
 
@@ -21,6 +21,7 @@ The first accelerator qualification targets x86-64 and one exact NVIDIA hardware
 - [Roadmap](design/roadmap.md), [hardware qualification](design/platforms.md) and [benchmark contract](design/benchmarks.md)
 - [Development board](https://github.com/orgs/AG187-Lab/projects/1), [open implementation work](https://github.com/AG187-Lab/tessryn/issues), [milestones](https://github.com/AG187-Lab/tessryn/milestones) and [development coordination](design/development.md)
 - [Build and emulator fixture workflow](design/build-and-evaluation.md) and [evaluation evidence formats](design/evaluation-evidence.md)
+- [First UEFI kernel, boot media and GPU Mart test path](design/first-kernel.md)
 
 ## Contribute
 
