@@ -24,16 +24,7 @@ jobs:
           mkdir -p build
           timeout --signal=TERM --kill-after=2s 30s python3 tools/collect_platform_inventory.py --public-summary --out build/ci-linux-reference.json
           sha256sum tools/collect_platform_inventory.py build/ci-linux-reference.json
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path('build/ci-linux-reference.json').read_text())
-          assert report['evidence_kind'] == 'linux_reference_inventory'
-          assert report['publication_profile'] == 'numeric_summary'
-          assert report['support_status'] == 'unqualified'
-          assert all(item['status'] == 'unavailable' for item in report['tessryn_capabilities'].values())
-          assert report['measured_admission']['status'] == 'unknown'
-          PY
+          python3 tools/verify_platform_inventory.py build/ci-linux-reference.json --expected-kind linux_reference_inventory
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: g01-ci-linux-reference

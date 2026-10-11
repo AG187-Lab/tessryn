@@ -6,6 +6,8 @@ import io
 import json
 import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -35,6 +37,14 @@ class InventoryTests(unittest.TestCase):
         for field, value in {"vendor": "0x10de", "device": "0x1234", "class": "0x030000", "subsystem_vendor": "0x1028", "subsystem_device": "0xabcd", "revision": "0x01"}.items():
             self.write(f"{base}/{field}", value)
         return self.root / base
+
+    def copied_collector(self):
+        source = Path(self.temp.name) / "collector.py"
+        source.write_bytes(SCRIPT.read_bytes())
+        spec = importlib.util.spec_from_file_location("copied_inventory", source)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return source, module
 
     def test_public_whitelist_and_fixture_classification(self):
         self.write("proc/cpuinfo", "processor: 0\nmodel name: Original Fixture CPU\nflags: lm sse2 hypervisor\n\n")
@@ -137,7 +147,7 @@ class InventoryTests(unittest.TestCase):
         os.mkfifo(fifo)
         with mock.patch.object(inventory.os, "open", wraps=os.open) as opened:
             result = inventory.collect(self.root)
-        self.assertFalse(any(call.args[0] == fifo for call in opened.call_args_list))
+        self.assertFalse(any(call.args[0] in (fifo, "meminfo") for call in opened.call_args_list))
         self.assertEqual(result["cpu"]["status"], "unavailable")
         self.assertEqual(result["memory"]["status"], "unavailable")
         self.assertNotIn("PRIVATE_ESCAPE", json.dumps(result))
@@ -213,11 +223,11 @@ class InventoryTests(unittest.TestCase):
         path = self.write("proc/meminfo", "MemTotal: 2048 kB").resolve()
         real_open = os.open
 
-        def replace_then_open(name, flags):
-            if name == path:
-                name.rename(name.with_name("original-meminfo"))
-                name.write_text("PRIVATE_REPLACEMENT")
-            return real_open(name, flags)
+        def replace_then_open(name, flags, **kwargs):
+            if name == "meminfo":
+                path.rename(path.with_name("original-meminfo"))
+                path.write_text("PRIVATE_REPLACEMENT")
+            return real_open(name, flags, **kwargs)
 
         reader = inventory.Inventory(self.root)
         with mock.patch.object(inventory.os, "open", side_effect=replace_then_open):
@@ -225,6 +235,119 @@ class InventoryTests(unittest.TestCase):
         self.assertEqual(result["status"], "unavailable")
         self.assertNotIn("PRIVATE_REPLACEMENT", json.dumps(result))
         self.assertIn({"field": "memory", "reason": "file_changed"}, reader.diagnostics)
+
+    def test_replaced_parent_symlink_cannot_read_outside_fixture(self):
+        self.write("proc/meminfo", "MemTotal: 2048 kB")
+        outside = Path(self.temp.name).resolve() / "outside"
+        outside.mkdir()
+        (outside / "meminfo").write_text("MemTotal: 999999 kB")
+        reader = inventory.Inventory(self.root)
+        self.addCleanup(reader.close)
+        safe = reader.safe
+        path = reader.root / "proc/meminfo"
+
+        def resolve_then_replace(name):
+            resolved = safe(name)
+            if name == path:
+                (reader.root / "proc").rename(reader.root / "original-proc")
+                (reader.root / "proc").symlink_to(outside, target_is_directory=True)
+            return resolved
+
+        with mock.patch.object(reader, "safe", side_effect=resolve_then_replace):
+            result = reader.memory()
+        self.assertEqual(result["status"], "unavailable")
+        self.assertNotIn(999999 * 1024, result.values())
+        self.assertIn({"field": "memory", "reason": "read_rejected"}, reader.diagnostics)
+
+    def test_replaced_directory_cannot_enumerate_outside_fixture(self):
+        devices = self.root / "sys/class/block"
+        devices.mkdir(parents=True)
+        outside = Path(self.temp.name).resolve() / "outside"
+        outside.mkdir()
+        (outside / "PRIVATE_DEVICE").mkdir()
+        reader = inventory.Inventory(self.root)
+        self.addCleanup(reader.close)
+        safe = reader.safe
+        path = reader.root / "sys/class/block"
+        swapped = False
+
+        def resolve_then_replace(name):
+            nonlocal swapped
+            resolved = safe(name)
+            if name == path and not swapped:
+                path.rename(path.with_name("original-block"))
+                path.symlink_to(outside, target_is_directory=True)
+                swapped = True
+            return resolved
+
+        with mock.patch.object(reader, "safe", side_effect=resolve_then_replace):
+            result = reader.entries(path, "block", 128)
+        self.assertEqual(result, [])
+        self.assertIn({"field": "block", "reason": "directory_rejected"}, reader.diagnostics)
+
+    def test_root_descriptor_keeps_authority_when_root_path_is_replaced(self):
+        self.write("proc/meminfo", "MemTotal: 2048 kB")
+        reader = inventory.Inventory(self.root)
+        self.addCleanup(reader.close)
+        original = reader.root.with_name("original-fixture")
+        reader.root.rename(original)
+        reader.root.mkdir()
+        (reader.root / "proc").mkdir()
+        (reader.root / "proc/meminfo").write_text("MemTotal: 999999 kB")
+        result = reader.memory()
+        self.assertEqual(result["reference_os_usable_bytes"], 2048 * 1024)
+
+    def test_unrelated_driver_target_is_not_reported_as_a_pci_driver(self):
+        device = self.device()
+        unrelated = self.root / "PRIVATE_DRIVER"
+        unrelated.mkdir()
+        (device / "driver").symlink_to(unrelated)
+        result = inventory.collect(self.root)
+        self.assertEqual(result["pci"]["devices"][0]["reference_os_driver"]["status"], "unavailable")
+        self.assertNotIn("PRIVATE_DRIVER", json.dumps(result))
+
+    def test_regular_file_is_not_reported_as_a_block_device(self):
+        self.write("sys/class/block/not-a-device", "original fixture")
+        result = inventory.collect(self.root)
+        self.assertEqual(result["block"]["devices"], [])
+        self.assertIn({"field": "block", "reason": "device_rejected"}, result["diagnostics"])
+
+    def test_missing_and_valid_partition_facts_classify_blocks(self):
+        self.write("sys/class/block/whole/size", "16")
+        self.write("sys/class/block/part/size", "8")
+        self.write("sys/class/block/part/partition", "1")
+        result = inventory.collect(self.root)
+        self.assertEqual([(item["name"], item["kind"]) for item in result["block"]["devices"]],
+                         [("part", "partition"), ("whole", "block_device")])
+
+    def test_rejected_partition_facts_do_not_claim_whole_devices(self):
+        for value in ("malformed", "0", "65536"):
+            with self.subTest(value=value):
+                self.write("sys/class/block/fixture0/size", "16")
+                self.write("sys/class/block/fixture0/partition", value)
+                result = inventory.collect(self.root)
+                self.assertEqual(result["block"]["devices"], [])
+                self.assertIn({"field": "block.partition", "reason": "entry_rejected"}, result["diagnostics"])
+
+    def test_dangling_and_nonregular_partition_fields_are_rejected(self):
+        self.write("sys/class/block/dangling/size", "16")
+        (self.root / "sys/class/block/dangling/partition").symlink_to(self.root / "MISSING")
+        self.write("sys/class/block/fifo/size", "16")
+        os.mkfifo(self.root / "sys/class/block/fifo/partition")
+        self.write("sys/class/block/linked/size", "16")
+        target = self.write("valid-partition-target", "1")
+        (self.root / "sys/class/block/linked/partition").symlink_to(target)
+        result = inventory.collect(self.root)
+        self.assertEqual(result["block"]["devices"], [])
+        self.assertIn({"field": "block.partition", "reason": "entry_rejected"}, result["diagnostics"])
+
+    def test_decode_errors_do_not_publish_exception_text(self):
+        path = self.write("proc/cpuinfo", "original fixture")
+        path.write_bytes(b"\xff")
+        result = inventory.collect(self.root)
+        self.assertEqual(result["cpu"]["status"], "unavailable")
+        self.assertIn({"field": "cpu", "reason": "read_rejected"}, result["diagnostics"])
+        self.assertNotIn("codec", json.dumps(result))
 
     def test_public_summary_omits_unrecognizable_private_identity_strings(self):
         self.write("proc/cpuinfo", "model name: PRIVATE_MODEL\nflags: lm PRIVATE_FEATURE\n\n")
@@ -267,6 +390,78 @@ class InventoryTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()) as stdout:
             self.assertEqual(inventory.main(["--root", str(self.root)]), 0)
         self.assertEqual(json.loads(stdout.getvalue())["evidence_kind"], "synthetic_fixture")
+
+    def test_changed_loaded_source_cannot_publish_new_source_identity(self):
+        source, module = self.copied_collector()
+        source.write_text(source.read_text() + "\n# Changed after loading.\n")
+        output = Path(self.temp.name) / "rejected.json"
+        with contextlib.redirect_stderr(io.StringIO()) as stderr:
+            self.assertEqual(module.main(["--root", str(self.root), "--out", str(output)]), 2)
+        self.assertFalse(output.exists())
+        self.assertIn("invalid source", stderr.getvalue())
+        self.assertNotIn(str(source), stderr.getvalue())
+
+    def test_source_changed_during_collection_prevents_publication(self):
+        source, module = self.copied_collector()
+        original_power = module.Inventory.power
+
+        def change_source(reader):
+            source.write_text(source.read_text() + "\n# Changed while collecting.\n")
+            return original_power(reader)
+
+        with mock.patch.object(module.Inventory, "power", change_source):
+            with contextlib.redirect_stdout(io.StringIO()) as stdout, contextlib.redirect_stderr(io.StringIO()) as stderr:
+                self.assertEqual(module.main(["--root", str(self.root)]), 2)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertNotIn(str(source), stderr.getvalue())
+
+    def test_source_unavailable_at_initialization_is_a_fixed_cli_failure(self):
+        source = Path(self.temp.name) / "PRIVATE_STARTUP.py"
+        source.write_bytes(SCRIPT.read_bytes())
+        launch = """
+from pathlib import Path
+import sys
+source = Path(sys.argv[1])
+contents = source.read_text()
+source.unlink()
+sys.argv = [str(source), '--root', sys.argv[2]]
+exec(compile(contents, str(source), 'exec'), {'__file__': str(source), '__name__': '__main__'})
+"""
+        result = subprocess.run([sys.executable, "-c", launch, str(source), str(self.root)],
+                                capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.stdout, "")
+        self.assertIn("invalid source", result.stderr)
+        self.assertNotIn("PRIVATE_STARTUP", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_deferred_stdout_failure_is_reported_before_success(self):
+        class FailedFlush(io.StringIO):
+            def flush(self):
+                raise OSError("PRIVATE_OUTPUT_DETAIL")
+
+        with contextlib.redirect_stdout(FailedFlush()), contextlib.redirect_stderr(io.StringIO()) as stderr:
+            self.assertEqual(inventory.main(["--root", str(self.root)]), 2)
+        self.assertIn("inventory collection failed", stderr.getvalue())
+        self.assertNotIn("PRIVATE_OUTPUT_DETAIL", stderr.getvalue())
+
+    def test_closed_stdout_pipe_exits_with_explicit_failure(self):
+        process = subprocess.Popen(
+            [sys.executable, str(SCRIPT), "--root", str(self.root)],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        process.stdout.close()
+        self.addCleanup(process.stderr.close)
+        try:
+            self.assertEqual(process.wait(timeout=5), 2)
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait()
+        stderr = process.stderr.read().decode("utf-8")
+        self.assertIn("inventory collection failed", stderr)
+        self.assertNotIn("Exception ignored", stderr)
+        self.assertNotIn("Traceback", stderr)
 
 
 if __name__ == "__main__":

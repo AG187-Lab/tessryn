@@ -19,16 +19,46 @@ retains actual synthetic CLI results, test logs and evaluated source hashes.
 
 | G01 requirement | Present evidence | Remaining gate |
 | --- | --- | --- |
-| CPU/UEFI, PCIe, IOMMU, interrupts, storage, NIC, GPU and notebook power | Vendor candidate descriptions; read-only inventory collector; explicit inventory checklist below | Exact delivered-machine inventory, firmware versions and native-access experiments; notebook absent |
-| Acquisition, provenance and redistribution constraints | Versioned NVIDIA source/firmware/compiler reference terms, provider boot/recovery sources | Exact acquired artifacts, hashes, notices, applicable distribution permissions and successful native initialization |
-| Select initial profiles and device/compiler targets after native-access evidence | Conditional laboratory candidate and GPU research targets | No supported SKU or compiler/device execution target frozen; critical native-access questions unanswered |
-| Per-profile support status | Every candidate is unqualified; boot/GPU/inference unavailable | Future evidence from K01, IO01–IO05, GPU01–GPU03 and inference work |
+| CPU/UEFI, PCIe, IOMMU, interrupts, storage, NIC, GPU and notebook power | Vendor candidate descriptions; read-only inventory collector; explicit inventory checklist below | Exact physical stable-node/laboratory and notebook inventories, firmware versions, topology diagrams and access prerequisites; notebook absent |
+| Acquisition, provenance and redistribution constraints | Versioned NVIDIA source/firmware/compiler reference terms, provider boot/recovery sources | Artifact requirements and applicable acquisition/distribution constraints for the chosen targets; hashes and notices for any artifacts actually acquired |
+| Select initial profiles and device/compiler targets after native-access evidence | Conditional laboratory candidate and GPU research targets | Evidence-backed engineering-target decision after critical boot-authority, device-access, recovery and artifact questions are resolved; no target selected |
+| Per-profile support status | Every candidate is unqualified; boot/GPU/inference unavailable | Maintain separate engineering-target and capability statuses in the initial decision; no execution claim follows from G01 completion |
 
 G01 remains open. Passing the collector tests establishes behavior of the
 collector, not hardware support. A Linux reference inventory identifies what
 Linux exposes; it does not prove the original kernel can initialize, isolate or
 recover that hardware. A provider catalog's topology is not an observed PCIe
 tree. Emulated boot must remain separate from physical native boot.
+
+### G01 exit boundary
+
+G01 supplies the hardware and access evidence needed to begin implementation.
+It requires exact physical candidate inventories for the initial stable-node
+and wired mains-powered notebook profiles, plus a recoverable laboratory
+target; observed topology and firmware identities; memory estimates with
+declared reserves and unknowns; and a recorded initial profile/device/compiler
+decision. Critical native-access questions concern permission and feasibility:
+available UEFI boot routes, console and independent recovery controls,
+device/BAR/interrupt/IOMMU exposure, notebook power prerequisites and artifact
+acquisition constraints. Record which answers are documented, observed on the
+exact machine or still assumptions. An unresolved critical question prevents
+selecting that target.
+
+An engineering target may be selected for implementation while its Tessryn
+boot, drivers, GPU execution and inference remain unavailable. G01 does not
+require an original kernel boot, GPU initialization, native DMA isolation,
+inference, measured admission or sustained thermal performance: those tests
+belong to K01, IO01–IO05, GPU01–GPU03, inference/cluster work and DEMO01.
+Advertised support still requires their exact-profile execution evidence.
+Acquiring a binary solely to complete this research gate is unnecessary; if
+one is acquired, preserve its exact hash, notices and applicable rights.
+
+The current blockers are missing exact physical inventories and notebook
+access, incomplete topology/firmware and access evidence, unresolved artifact
+constraints for the eventual targets, and the absent engineering-target
+decision. The candidate data separates these `g01_gates` from
+`later_qualification` requirements. Collector fixtures and virtual CI reference
+inventories do not resolve the physical qualification gates.
 
 ## Candidate laboratory and GPU profiles
 
@@ -41,10 +71,11 @@ the offer name cannot select native drivers. Catalog RAM is not measured usable
 memory. [Public pricing](https://www.scaleway.com/en/pricing/elastic-metal/)
 and [ordering guide](https://www.scaleway.com/en/docs/elastic-metal/quickstart/).
 
-The displayed server rate is €0.11/hour before tax. **24-hour arithmetic**, not
+The dated research observed a displayed server rate of €0.11/hour before tax.
+**24-hour arithmetic**, not
 a checkout quote: €2.64 server plus €0.12 for an optional €0.005/hour flexible
 IPv4 address gives €2.76 **before setup fees, remote-access charges, other
-services, tax and currency conversion**. Current documentation announces that
+services, tax and currency conversion**. The dated documentation records that
 the EM-A610R fee promotion ended in October 2026, while the pricing page still
 shows a waiver and generic hourly-no-commitment language. The public catalog
 does not resolve this conflict. A hypothetical €39.99 fee would make this
@@ -114,21 +145,24 @@ for UEFI/EC, GPU subsystem, ACPI power, topology or thermal testing.
 Before choosing native drivers or freezing G02's device-dependent contracts,
 record these observations for the delivered laboratory machine:
 
-| Area | Required record and later native check |
-| --- | --- |
-| CPU and firmware | CPUID/features, cores/threads, UEFI boot mode, board identity, BIOS/UEFI version/date, memory-map handoff and recovery authority |
-| PCIe | Endpoint and bridge BDFs, vendor/device/subsystem/revision IDs, parent relationships, BAR capabilities, ACS/reset domains and exact GPU multifunction layout |
-| Memory and DMA | Reported physical capacity versus usable map/reserves; IVRS/DMAR and IOMMU groups as Linux reference only; native translation, revocation and isolation tests later |
-| Interrupts | APIC/interrupt-remapping prerequisites and MSI/MSI-X capability; native routing, masking, faults and teardown later |
-| Storage and NIC | Exact controller PCI IDs, model and firmware versions, NVMe namespaces/capacity and NIC interfaces; no disk writes or driver reset during this session |
-| GPU | Exact board/subsystem/ISA, BAR/mapping/reset authority, firmware versions and source/license/hash of every acquired artifact; native verified compute later |
-| Notebook | Exact SKU/UEFI/EC, ACPI `_PR0`/`_PR3` and multifunction power/reset behavior, wired NIC, mains/sleep policy; sustained thermal/load measurements later |
+| Area | G01 record | Later implementation qualification |
+| --- | --- | --- |
+| CPU and firmware | CPUID/features, cores/threads, UEFI boot mode and permitted boot route, board identity, BIOS/UEFI version/date, console and recovery authority | Original-kernel boot and memory-map handoff |
+| PCIe | Endpoint and bridge BDFs, vendor/device/subsystem/revision IDs, parent relationships, BAR capabilities, ACS/reset-domain metadata and exact GPU multifunction layout | Native enumeration, mapping, reset and teardown behavior |
+| Memory and DMA | Reported physical capacity and reference reservations; analytical reserve estimates; IVRS/DMAR and IOMMU groups as Linux reference only | Native usable memory, translation, revocation and isolation tests |
+| Interrupts | APIC/interrupt-remapping prerequisites and MSI/MSI-X capabilities | Native routing, masking, faults and teardown |
+| Storage and NIC | Exact controller PCI IDs, model and firmware versions, NVMe namespaces/capacity, wired NIC identity and access constraints | Native storage/network execution and link measurements |
+| GPU | Exact board/subsystem/ISA, BAR/mapping/reset authority and constraints, firmware identities, acquisition terms and hashes of acquired artifacts | Native firmware initialization, DMA safety and verified compute |
+| Notebook | Exact SKU/UEFI/EC, reference ACPI `_PR0`/`_PR3` and multifunction power/reset prerequisites, wired NIC, mains/sleep policy and available thermal sensors | Native power restoration, sleep/reset behavior and sustained thermal/load measurements |
 
 The collector deliberately does not dump PCI configuration space, ACPI table
 contents or device firmware. Its PCI IDs and Linux group memberships are an
-initial inventory, not the entire list above. Bridge/BAR/ACS/MSI-X details,
-controller firmware and native DMA safety stay unavailable until separate
-authorized probes and implementation tests provide them.
+initial inventory, not the entire G01 list above. Bridge/BAR/ACS/MSI-X details,
+controller firmware and notebook ACPI metadata require separate authorized
+read-only reference probes and source records. Exercise of reset, firmware
+startup and DMA safety belongs to later implementation tests, with their own
+authority and recovery plan. No disk write or driver/device reset is included
+in the inventory session.
 
 NVIDIA open-module source and binary firmware have separate terms. The pinned
 580.95.05 research reference requires matching Linux userspace/GSP components;
@@ -144,8 +178,11 @@ firmware reservations, original-kernel/service reserves, DMA/staging buffers,
 device workspace, weights and KV/recurrent state. For the CPU candidate the
 vendor total is 34,359,738,368 bytes; every reserve and admitted capacity is
 currently unknown. For the GPU candidate, eight separate 16 GiB devices must
-not be represented as one contiguous 128 GiB allocation. No model-fit or
-inference-capacity result can be calculated without measured budgets.
+not be represented as one contiguous 128 GiB allocation. G01 may publish
+analytical memory estimates with explicit assumptions and unknown reserves;
+native usable/admitted capacity and model-fit claims require later measured
+budgets. Missing inference measurements do not prevent recording the initial
+hardware estimate.
 
 ## Bounded 24-hour session
 
@@ -215,6 +252,26 @@ CPU/DMI/driver/storage/power identity strings. CI uploads only this derived
 numeric inventory, never a full unreviewed identity report. It preserves
 parsed PCI IDs/group membership, numeric capacities, fixed status fields and
 the collector hash; it cannot establish the omitted model or firmware identity.
+
+Validate a retained numeric report before publication:
+
+```sh
+python3 tools/verify_platform_inventory.py inventory.json --expected-kind linux_reference_inventory
+```
+
+The verifier requires the complete v1 numeric-summary contract, the current
+collector source hash, bounded numeric values, fixed diagnostic labels,
+consistent retained PCI/IOMMU records and unavailable native capabilities.
+It rejects extra identity fields, malformed or duplicate-key JSON, symlinks,
+nonregular inputs and reports larger than 16 MiB. Historical reports can use
+`--collector-sha256` with the independently retained original source hash.
+Supply `--expected-kind synthetic_fixture` for invented fixture inputs.
+Validation checks structure, bytes and consistency; it does not authenticate
+physical custody or turn a declared Linux reference into native evidence.
+Full identity reports still require manual review and are not accepted by this
+numeric publication verifier. Collection is partial: rejected/missing facts
+remain unavailable, and `record_limit` diagnostics identify truncated lists.
+Linux IOMMU groups are reference observations, not a proof of Tessryn DMA safety.
 
 `--root` selects a test filesystem and always marks the report
 `synthetic_fixture` unless it is the real system root. Such fixtures can test

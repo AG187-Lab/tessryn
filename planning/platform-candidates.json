@@ -2,7 +2,8 @@
   "format": "tessryn-platform-candidates-v1",
   "researched_on": "2026-10-11",
   "issue": "G01",
-  "decision": "No advertised supported profile or validated compiler/device target selected",
+  "decision": "No initial engineering profile or device/compiler target selected; no advertised supported profile",
+  "gate_boundary": "g01_gates cover inventory, access, artifact constraints and engineering-target decisions; later_qualification covers native implementation and measured support",
   "rental_executed": false,
   "physical_inventory_count": 0,
   "native_boot_sample_count": 0,
@@ -19,7 +20,8 @@
       "price_scenario": {"basis": "analytical_example", "currency": "EUR", "server_hourly": "0.11", "optional_ipv4_hourly": "0.005", "hours": 24, "server_and_ipv4_before_fees_tax": "2.76", "setup_fee": null, "remote_access_fee": null, "final_quote": null, "fee_source_conflict": true},
       "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
       "measured_admitted_memory_bytes": null,
-      "blockers": ["current_setup_fee_quote", "no_install_ram_rescue_route", "delivered_machine_console_and_uefi", "exact_pci_firmware_and_iommu_inventory", "original_kernel_and_native_drivers"],
+      "g01_gates": ["current_setup_fee_quote", "no_install_ram_rescue_route", "delivered_machine_console_uefi_and_recovery_authority", "exact_physical_pci_firmware_interrupt_and_iommu_inventory", "artifact_requirements_and_acquisition_constraints", "memory_estimates_and_engineering_target_decision"],
+      "later_qualification": ["k01_original_kernel_boot", "io_native_drivers_dma_and_recovery"],
       "sources": ["https://www.scaleway.com/en/pricing/elastic-metal/", "https://www.scaleway.com/en/docs/elastic-metal/", "https://www.scaleway.com/en/docs/elastic-metal/how-to/use-rescue-mode/", "https://www.scaleway.com/en/docs/elastic-metal/how-to/activate-remote-access/"]
     },
     {
@@ -33,7 +35,8 @@
       "price_scenario": {"basis": "analytical_example", "currency": "USD", "linux_reference_hourly": "4.284", "four_compute_hours_before_extras_tax": "17.136", "twenty_four_compute_hours_before_extras_tax": "102.816", "native_os_billing_verified": false, "final_quote": null},
       "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
       "measured_admitted_memory_bytes": null,
-      "blockers": ["paid_account_and_authorized_lab_access", "regional_standard_quota_and_capacity", "exact_supported_boot_modes", "external_serial_and_recovery_controls", "verified_native_boot_image_and_storage_boundary"],
+      "g01_gates": ["paid_account_and_authorized_lab_access", "regional_standard_quota_and_capacity", "exact_supported_boot_modes", "external_serial_and_recovery_controls", "authorized_read_only_reference_collection_path", "exact_physical_pci_firmware_interrupt_and_iommu_inventory", "artifact_requirements_and_acquisition_constraints", "memory_estimates_and_engineering_target_decision"],
+      "later_qualification": ["k01_original_kernel_boot", "io_native_drivers_dma_and_recovery", "cloud_native_boot_image_and_storage_boundary"],
       "sources": ["https://docs.aws.amazon.com/ec2/latest/instancetypes/co.html", "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-type-boot-mode.html", "https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-quotas.html", "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-serial-console-prerequisites.html"]
     },
     {
@@ -48,7 +51,8 @@
       "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
       "device_compiler_research": {"t4_compute_capability": "7.5", "device_code_target": "sm_75", "cuda_reference_version": "13.1.1", "compiled": false, "executed": false, "target_selected": false},
       "measured_admitted_memory_bytes": null,
-      "blockers": ["exact_supported_boot_modes", "regional_quota_and_capacity", "recovery_controls", "firmware_acquisition_and_terms", "native_gpu_initialization_and_dma_isolation"],
+      "g01_gates": ["authorized_lab_access_and_regional_quota_capacity", "exact_supported_boot_modes", "recovery_controls", "exact_physical_pci_gpu_firmware_interrupt_and_iommu_inventory", "firmware_compiler_requirements_and_acquisition_terms", "memory_estimates_and_engineering_device_compiler_target_decision"],
+      "later_qualification": ["k01_original_kernel_boot", "io_native_drivers_dma_and_recovery", "gpu_native_initialization_and_verified_compute", "inference_native_numerical_and_model_execution", "cluster_measured_admission_thermal_and_link_behavior"],
       "sources": ["https://aws.amazon.com/ec2/instance-types/g4/", "https://developer.nvidia.com/cuda/gpus", "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launch-instance-boot-mode.html"]
     },
     {
@@ -61,7 +65,8 @@
       "vendor_inventory": {"cpu": "AMD EPYC 7R32", "vcpus": 4, "ram_gib": 16, "gpu": "NVIDIA A10G", "gpu_count": 1, "product_gpu_gb": 24, "technical_table_gpu_gib": 22},
       "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
       "measured_admitted_memory_bytes": null,
-      "blockers": ["exact_guest_device_topology_and_authority", "exact_isa_query", "firmware_acquisition_and_terms", "original_kernel_and_native_drivers"],
+      "g01_gates": ["exact_guest_device_topology_and_authority", "exact_device_isa_evidence", "firmware_compiler_requirements_and_acquisition_terms", "memory_estimates_and_comparison_scope_decision"],
+      "later_qualification": ["k01_original_kernel_boot", "io_native_drivers_dma_and_recovery", "gpu_native_initialization_and_verified_compute", "inference_native_numerical_and_model_execution", "cluster_measured_admission_thermal_and_link_behavior"],
       "sources": ["https://aws.amazon.com/ec2/instance-types/g5/", "https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"]
     },
     {
@@ -74,7 +79,8 @@
       "vendor_inventory": {"cpu": "Intel Core i9-11950H", "gpu": "NVIDIA RTX A2000", "gpu_gb": 4, "ram_gb": 32, "storage_tb": 1, "wired_rj45": true, "mains_adapter_watts": 170},
       "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
       "measured_admitted_memory_bytes": null,
-      "blockers": ["physical_unit_access", "uefi_ec_and_gpu_subsystem_inventory", "acpi_power_and_reset", "sustained_thermal_and_wired_link_measurements", "original_kernel_and_native_drivers"],
+      "g01_gates": ["physical_unit_access", "uefi_ec_and_gpu_subsystem_inventory", "exact_physical_pci_firmware_interrupt_and_iommu_inventory", "acpi_power_reset_wired_mains_and_thermal_sensor_prerequisites", "firmware_compiler_requirements_and_acquisition_terms", "memory_estimates_and_engineering_device_compiler_target_decision"],
+      "later_qualification": ["k01_original_kernel_boot", "io_native_drivers_dma_and_recovery", "gpu_native_initialization_and_verified_compute", "notebook_native_power_restoration_and_sleep_reset_behavior", "inference_native_numerical_and_model_execution", "cluster_measured_admission_thermal_and_link_behavior"],
       "sources": ["https://psref.lenovo.com/Detail/ThinkPad_P15_Gen_2?M=20YQ003FUS", "https://download.nvidia.com/XFree86/Linux-x86_64/580.95.05/README/dynamicpowermanagement.html"]
     }
   ]

@@ -58,10 +58,84 @@ def available(value: object) -> dict:
 
 class Inventory:
     def __init__(self, root: Path):
+        self.root_fd: int | None = None
         self.root = root.resolve(strict=True)
-        if not self.root.is_dir():
+        before = self.root.stat()
+        if not stat.S_ISDIR(before.st_mode):
             raise ValueError("inventory root must be a directory")
+        self.root_fd = self.open_directory(self.root)
+        after = os.fstat(self.root_fd)
+        if (before.st_dev, before.st_ino) != (after.st_dev, after.st_ino):
+            self.close()
+            raise ValueError("inventory root changed")
         self.diagnostics: list[dict] = []
+
+    @staticmethod
+    def open_directory(path: Path) -> int:
+        """Anchor an absolute directory without following replaced ancestors."""
+        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+        fd = os.open("/", flags)
+        try:
+            for name in path.parts[1:]:
+                child = os.open(name, flags, dir_fd=fd)
+                os.close(fd)
+                fd = child
+            return fd
+        except BaseException:
+            os.close(fd)
+            raise
+
+    def close(self) -> None:
+        if self.root_fd is not None:
+            fd, self.root_fd = self.root_fd, None
+            os.close(fd)
+
+    def __del__(self) -> None:
+        try:
+            self.close()
+        except OSError:
+            pass
+
+    def parent(self, path: Path) -> tuple[int, str, Path]:
+        """Resolve legitimate sysfs links, then traverse canonical components by fd."""
+        resolved = self.safe(path)
+        parts = resolved.relative_to(self.root).parts
+        if not parts or self.root_fd is None:
+            raise ValueError("not_regular")
+        fd = os.dup(self.root_fd)
+        try:
+            for name in parts[:-1]:
+                child = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+                os.close(fd)
+                fd = child
+            return fd, parts[-1], resolved
+        except BaseException:
+            os.close(fd)
+            raise
+
+    def directory(self, path: Path) -> tuple[int, Path]:
+        resolved = self.safe(path)
+        if resolved == self.root:
+            if self.root_fd is None:
+                raise ValueError("not_directory")
+            return os.dup(self.root_fd), resolved
+        parent, name, resolved = self.parent(resolved)
+        try:
+            return os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent), resolved
+        finally:
+            os.close(parent)
+
+    def is_directory(self, path: Path) -> bool:
+        fd, _ = self.directory(path)
+        os.close(fd)
+        return True
+
+    def regular_presence(self, path: Path) -> bool:
+        parent, name, _ = self.parent(path)
+        try:
+            return stat.S_ISREG(os.stat(name, dir_fd=parent, follow_symlinks=False).st_mode)
+        finally:
+            os.close(parent)
 
     def problem(self, field: str, reason: str) -> None:
         # Labels describe fields, never source paths or operating-system errors.
@@ -78,13 +152,16 @@ class Inventory:
 
     def read(self, path: Path, field: str, limit: int = 4096, *, first_record: bool = False) -> str | None:
         try:
-            resolved = self.safe(path)
+            parent, name, _ = self.parent(path)
             # Reject device nodes and FIFOs before opening them. The second
             # check below also rejects replacement between stat and open.
-            before = resolved.stat()
-            if not stat.S_ISREG(before.st_mode):
-                raise ValueError("not_regular")
-            fd = os.open(resolved, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+            try:
+                before = os.stat(name, dir_fd=parent, follow_symlinks=False)
+                if not stat.S_ISREG(before.st_mode):
+                    raise ValueError("not_regular")
+                fd = os.open(name, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW, dir_fd=parent)
+            finally:
+                os.close(parent)
             with os.fdopen(fd, "rb") as stream:
                 after = os.fstat(stream.fileno())
                 if not stat.S_ISREG(after.st_mode):
@@ -100,22 +177,26 @@ class Inventory:
         except FileNotFoundError:
             return None
         except (OSError, RuntimeError, UnicodeError, ValueError) as error:
-            reason = str(error) if isinstance(error, ValueError) else "read_rejected"
+            allowed = {"outside_root", "not_regular", "file_changed", "read_limit"}
+            reason = str(error) if type(error) is ValueError and str(error) in allowed else "read_rejected"
             self.problem(field, reason)
             return None
 
     def entries(self, path: Path, field: str, limit: int, *, complete_required: bool = False) -> list[Path]:
         try:
-            resolved = self.safe(path)
+            fd, resolved = self.directory(path)
             entries = []
-            with os.scandir(resolved) as scan:
-                for entry in scan:
-                    if len(entries) == limit:
-                        self.problem(field, "record_limit")
-                        if complete_required:
-                            raise ValueError("record_limit")
-                        break
-                    entries.append(Path(entry.path))
+            try:
+                with os.scandir(fd) as scan:
+                    for entry in scan:
+                        if len(entries) == limit:
+                            self.problem(field, "record_limit")
+                            if complete_required:
+                                raise ValueError("record_limit")
+                            break
+                        entries.append(resolved / entry.name)
+            finally:
+                os.close(fd)
             return sorted(entries, key=lambda entry: entry.name)
         except FileNotFoundError:
             return []
@@ -192,8 +273,7 @@ class Inventory:
         for name in ("APIC", "DMAR", "IVRS"):
             path = self.root / "sys/firmware/acpi/tables" / name
             try:
-                resolved = self.safe(path)
-                tables[name] = {"status": "present"} if resolved.is_file() else unavailable("not_regular")
+                tables[name] = {"status": "present"} if self.regular_presence(path) else unavailable("not_regular")
             except FileNotFoundError:
                 tables[name] = unavailable()
             except (OSError, RuntimeError, ValueError):
@@ -235,7 +315,7 @@ class Inventory:
                 continue
             try:
                 device = self.safe(entry)
-                if not device.is_dir():
+                if not self.is_directory(device):
                     raise ValueError("not_directory")
             except (OSError, RuntimeError, ValueError):
                 self.problem("pci", "device_rejected")
@@ -245,7 +325,10 @@ class Inventory:
                 maximum = 0xFFFFFF if field == "class" else (0xFF if field == "revision" else 0xFFFF)
                 item[field] = self.number(device / field, f"pci.{field}", maximum=maximum, base=16)
             try:
-                driver = self.safe(device / "driver").name
+                target = self.safe(device / "driver")
+                if target != self.safe(self.root / "sys/bus/pci/drivers" / target.name) or not self.is_directory(target):
+                    raise ValueError("invalid_driver")
+                driver = target.name
                 item["reference_os_driver"] = available(driver) if public_text(driver, NAME) else unavailable("malformed_value")
             except FileNotFoundError:
                 item["reference_os_driver"] = unavailable("unbound_or_not_reported")
@@ -263,15 +346,35 @@ class Inventory:
                 self.problem("block", "invalid_name")
                 continue
             try:
-                self.safe(entry)
+                self.is_directory(entry)
             except (OSError, RuntimeError, ValueError):
                 self.problem("block", "device_rejected")
                 continue
+            # A missing partition field denotes a whole block device. A
+            # present but rejected field must not make that positive claim.
+            try:
+                fd, _ = self.directory(entry)
+                try:
+                    try:
+                        partition_stat = os.stat("partition", dir_fd=fd, follow_symlinks=False)
+                    except FileNotFoundError:
+                        kind = "block_device"
+                    else:
+                        if not stat.S_ISREG(partition_stat.st_mode):
+                            raise ValueError("not_regular")
+                        partition = self.number(entry / "partition", "block.partition", maximum=65535)
+                        if partition["status"] != "available" or partition["value"] == 0:
+                            raise ValueError("invalid_partition")
+                        kind = "partition"
+                finally:
+                    os.close(fd)
+            except (OSError, RuntimeError, ValueError):
+                self.problem("block.partition", "entry_rejected")
+                continue
             sectors = self.number(entry / "size", "block.size", maximum=1 << 55)
-            partition = self.number(entry / "partition", "block.partition", maximum=65535)
             devices.append({
                 "name": entry.name,
-                "kind": "partition" if partition["status"] == "available" else "block_device",
+                "kind": kind,
                 "reference_os_scsi_type": self.number(entry / "device/type", "block.type", maximum=31),
                 "model": self.text(entry / "device/model", "block.model"),
                 "size_bytes": available(sectors["value"] * 512) if sectors["status"] == "available" else unavailable(),
@@ -290,28 +393,67 @@ class Inventory:
         return {"status": "available" if supplies else "unavailable", "ac_supplies": supplies}
 
 
+def collector_source_digest() -> str:
+    """Identify the bounded regular source file without following swapped parents."""
+    source = Path(__file__).resolve(strict=True)
+    parent = Inventory.open_directory(source.parent)
+    try:
+        before = os.stat(source.name, dir_fd=parent, follow_symlinks=False)
+        if not stat.S_ISREG(before.st_mode) or before.st_size > 256 * 1024:
+            raise ValueError("collector source rejected")
+        fd = os.open(source.name, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW, dir_fd=parent)
+    finally:
+        os.close(parent)
+    with os.fdopen(fd, "rb") as stream:
+        after = os.fstat(stream.fileno())
+        if not stat.S_ISREG(after.st_mode) or (before.st_dev, before.st_ino) != (after.st_dev, after.st_ino):
+            raise ValueError("collector source changed")
+        contents = stream.read(256 * 1024 + 1)
+    if len(contents) > 256 * 1024:
+        raise ValueError("collector source rejected")
+    return hashlib.sha256(contents).hexdigest()
+
+
+try:
+    COLLECTOR_SHA256 = collector_source_digest()
+except (OSError, RuntimeError, ValueError):
+    # Module initialization has no report yet. Defer a fixed, public failure
+    # to the CLI handler instead of exposing source paths in a traceback.
+    COLLECTOR_SHA256 = None
+
+
+def unchanged_collector() -> None:
+    if COLLECTOR_SHA256 is None or collector_source_digest() != COLLECTOR_SHA256:
+        raise ValueError("collector source changed")
+
+
 def collect(root: Path) -> dict:
+    unchanged_collector()
     real_root = os.path.abspath(root) == "/"
     if real_root and platform.system() != "Linux":
         raise ValueError("the default root requires Linux")
     inventory = Inventory(root)
-    result = {
-        "schema_version": 1,
-        "evidence_kind": "linux_reference_inventory" if real_root else "synthetic_fixture",
-        "support_status": "unqualified",
-        "collected_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        "collector_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        "cpu": inventory.cpu(real_root),
-        "memory": inventory.memory(),
-        "firmware": inventory.firmware(),
-        "pci": inventory.pci(),
-        "block": inventory.blocks(),
-        "power": inventory.power(),
-        "tessryn_capabilities": {name: unavailable("not_tested_by_reference_inventory") for name in ("native_boot", "gpu_execution", "inference")},
-        "measured_admission": {"status": "unknown", "reason": "no_tessryn_measurement"},
-        "diagnostics": inventory.diagnostics,
-    }
-    return result
+    try:
+        result = {
+            "schema_version": 1,
+            "evidence_kind": "linux_reference_inventory" if real_root else "synthetic_fixture",
+            "support_status": "unqualified",
+            "collected_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "collector_sha256": COLLECTOR_SHA256,
+            "cpu": inventory.cpu(real_root),
+            "memory": inventory.memory(),
+            "firmware": inventory.firmware(),
+            "pci": inventory.pci(),
+            "block": inventory.blocks(),
+            "power": inventory.power(),
+            "tessryn_capabilities": {name: unavailable("not_tested_by_reference_inventory") for name in ("native_boot", "gpu_execution", "inference")},
+            "measured_admission": {"status": "unknown", "reason": "no_tessryn_measurement"},
+            "diagnostics": inventory.diagnostics,
+        }
+        unchanged_collector()
+        return result
+    finally:
+        inventory.close()
 
 
 def public_summary(report: dict) -> dict:
@@ -357,13 +499,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, help="new regular JSON file; existing paths are rejected")
     parser.add_argument("--public-summary", action="store_true", help="omit host-provided identity strings for automatic publication")
     args = parser.parse_args(argv)
+    writing_stdout = False
     try:
         report = collect(args.root)
         if args.public_summary:
             report = public_summary(report)
         payload = json.dumps(report, indent=2, sort_keys=True) + "\n"
+        unchanged_collector()
         if args.out is None:
+            writing_stdout = True
             sys.stdout.write(payload)
+            sys.stdout.flush()
         else:
             fd = os.open(args.out, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
             with os.fdopen(fd, "w", encoding="utf-8") as stream:
@@ -371,8 +517,19 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("output must be a new regular file")
                 stream.write(payload)
         return 0
-    except (OSError, RuntimeError, ValueError):
-        print("inventory collection failed: invalid root or output; existing output is never replaced", file=sys.stderr)
+    except (OSError, RuntimeError, ValueError) as error:
+        if writing_stdout and isinstance(error, OSError):
+            # Avoid a second buffered-pipe failure changing exit 2 to Python's
+            # shutdown error code after the explicit failure was reported.
+            try:
+                sink = os.open(os.devnull, os.O_WRONLY)
+                try:
+                    os.dup2(sink, sys.stdout.fileno())
+                finally:
+                    os.close(sink)
+            except (OSError, ValueError, AttributeError):
+                pass
+        print("inventory collection failed: invalid source, root or output; existing output is never replaced", file=sys.stderr)
         return 2
 
 
