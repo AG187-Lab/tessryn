@@ -42,8 +42,20 @@ thermal/load performance are unknown. Unit-test duration is not a performance
 measurement. Held-out model workloads and thermal/load conditions do not
 apply to these collector tests; no inference samples were taken.
 
-GitHub Actions separately exercises the collector on its hosted Linux runner
-under a 30-second external deadline, using Python 3.12.13. Its numeric-only
-`g01-ci-linux-reference` artifact expires after 14 days. Any such run is Linux
-reference evidence, never bare-metal or native Tessryn qualification. The PR
-links the actual run and reports its outcome after CI completes.
+GitHub Actions [run 38166939525](https://github.com/AG187-Lab/tessryn/actions/runs/38166939525)
+passed all 18 tests on Python 3.12.13 and collected one hosted Linux reference
+inventory under a 30-second external deadline. The downloaded numeric-only
+[report](ci-linux-reference.json), [test-log excerpt](ci-unit-tests.log) and
+[CI verification metadata](ci-verification.json) are retained here because the
+uploaded artifact expires after 14 days. The excerpt preserves test result
+lines and excludes runner paths and access configuration.
+
+This separate CI record evaluates PR head
+`c6c1116ab06d4508bb7b917fd7903930af77743c` through GitHub's temporary PR merge
+checkout, whose exact revision is recorded in the metadata; the PR itself was
+not merged. The collector hash matches the local implementation record. The
+runner reported a hypervisor, 64-bit UEFI, one PCI endpoint and no IOMMU group
+for that endpoint. It is a virtual Linux reference, never a rented physical
+inventory or native Tessryn qualification. It adds one Linux reference sample;
+physical rental/recovery, native boot, GPU, inference and performance sample
+counts remain zero. The local record above excludes this separate CI sample.

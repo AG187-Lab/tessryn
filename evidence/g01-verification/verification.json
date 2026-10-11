@@ -35,9 +35,9 @@
   "evidence_kind": "implementation_result",
   "files": {
     "evidence/g01-verification/README.md": {
-      "bytes": 2716,
+      "bytes": 3545,
       "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
-      "sha256": "19c5efec44d7b66a6b0ac6e4d97251f89d4312eece4b2409fc5b260125345fe2"
+      "sha256": "486eb169a114205a0a4a145d92515aeabb931125536370843a2c72d100fb4ed0"
     },
     "evidence/g01-verification/cli-failure.log": {
       "bytes": 87,
@@ -87,6 +87,7 @@
   },
   "host_architecture": "arm64",
   "host_os": "Darwin",
+  "manifest_updated_utc": "2026-10-11T19:13:13.698687+00:00",
   "performance_conditions": {
     "background_load": "unavailable",
     "held_out_model_workloads": "not_applicable_no_inference",
