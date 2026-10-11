@@ -115,6 +115,26 @@ class SyntheticCaptureBundle:
         raw = response if isinstance(response, bytes) else json.dumps(response).encode()
         self.index["captures"][alias]["response"] = self.ref(alias + ".json", raw)
 
+    def volume_not_found(self, alias, sdk=False):
+        """Create a SYNTHETIC receipt, never reconstruct a historical AWS error."""
+        row = self.index["captures"][alias]
+        volume = row["request"]["VolumeIds"][0]
+        message = f"The volume '{volume}' does not exist."
+        if sdk:
+            row["format"], row["exit_status"] = "boto3_json", 1
+            self.responses[alias] = {"Error": {"Code": "InvalidVolume.NotFound", "Message": message},
+                                     "ResponseMetadata": {"HTTPStatusCode": 400,
+                                       "RequestId": "PRIVATE_SYNTHETIC_REQUEST_ID", "RetryAttempts": 0,
+                                       "HTTPHeaders": {"x-amzn-requestid": "PRIVATE_SYNTHETIC_REQUEST_ID"}}}
+            stderr = b""
+        else:
+            row["format"], row["exit_status"] = "aws_cli_v2_json", 254
+            self.responses[alias] = b""
+            stderr = ("\nAn error occurred (InvalidVolume.NotFound) when calling the "
+                      f"ListVolumesInRecycleBin operation: {message}\n").encode()
+        self.update(alias)
+        row["stderr"] = self.ref(alias + ".stderr", stderr)
+
     def phase(self, label, number, image, serial, recovery=False):
         instance, volume, eni = (f"{prefix}-{number:017x}" for prefix in ("i", "vol", "eni"))
         client = f"synthetic-{label}-launch-unique-token"
@@ -454,6 +474,170 @@ class SyntheticNativeIntakeTests(unittest.TestCase):
         row["request"] = {"ResourceType": "EC2_IMAGE"}
         self.reject()
 
+    def test_synthetic_provider_absence_receipts_keep_originals_and_require_owner_review(self):
+        for alias, sdk in (("a_volume_recycle_absent", False), ("r_volume_recycle_absent", True),
+                           ("b_volume_recycle_absent", False)):
+            self.bundle.volume_not_found(alias, sdk=sdk)
+        result = self.bundle.verify()
+        self.assertEqual(result["status"], "needs_owner_review")
+        self.assertEqual(result["capture_kind"], "synthetic_fixture")
+        self.assertEqual(result["capture_origin"], "unverified_offline")
+        self.assertIn("time_bound", result["cleanup"])
+        for phase, label in zip(result["phases"], ("a", "r", "b")):
+            alias = label + "_volume_recycle_absent"
+            self.assertEqual(phase["root_retention"], {"basis": "provider_volume_not_found",
+                "capture_completed_at": self.bundle.index["captures"][alias]["completed_at"]})
+        encoded = json.dumps(result)
+        for private in ("PRIVATE_SYNTHETIC_REQUEST_ID", "InvalidVolume.NotFound", ACCOUNT,
+                        "vol-00000000000000065", "vol-00000000000000066", "vol-00000000000000067"):
+            self.assertNotIn(private, encoded)
+
+    def test_successful_empty_volume_list_has_separate_sanitized_observation_basis(self):
+        result = self.bundle.verify()
+        self.assertEqual([row["root_retention"]["basis"] for row in result["phases"]],
+                         ["successful_empty_list"] * 3)
+
+    def test_cli_volume_not_found_requires_exact_service_exit_status(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias)
+        row = self.bundle.index["captures"][alias]
+        for status in (0, 1, 130, 252, 253, 255, -1, True):
+            with self.subTest(status=status):
+                row["exit_status"] = status
+                self.reject()
+        row["exit_status"] = 254
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_cli_volume_not_found_full_stderr_match_rejects_other_errors_and_extra_text(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias)
+        row = self.bundle.index["captures"][alias]
+        original = (self.bundle.root / row["stderr"]["path"]).read_bytes()
+        variants = [original.replace(b"InvalidVolume.NotFound", code) for code in
+                    (b"UnauthorizedOperation", b"AuthFailure", b"InvalidVolume.Malformed", b"InvalidVolume.NotFoundX")]
+        variants += [original.replace(b"ListVolumesInRecycleBin", b"DescribeVolumes"),
+                     original.replace(b"vol-00000000000000065", b"vol-00000000000000099"),
+                     original.replace(b"does not exist", b"could not connect to endpoint"),
+                     b"banner\n" + original, original + b"UnauthorizedOperation\n",
+                     b"\x1b[31m" + original, original.replace(b"\n", b"\r\n"),
+                     original + original]
+        for stderr in variants:
+            with self.subTest(stderr=stderr):
+                row["stderr"] = self.bundle.ref(alias + ".stderr", stderr)
+                self.reject()
+        for stderr in (original.strip(b"\n"), original.replace(b"exist.", b"exist"), b"\n" + original + b"\n"):
+            with self.subTest(canonical=stderr):
+                row["stderr"] = self.bundle.ref(alias + ".stderr", stderr)
+                self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_cli_volume_not_found_requires_untouched_empty_stdout(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias)
+        for stdout in (b"\n", b"{}", b'{"Volumes":[]}', b"partial request output"):
+            with self.subTest(stdout=stdout):
+                self.bundle.responses[alias] = stdout
+                self.bundle.update(alias)
+                self.reject()
+
+    def test_sdk_volume_not_found_requires_error_status_code_and_capture_exit(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias, sdk=True)
+        row, response = self.bundle.index["captures"][alias], self.bundle.responses[alias]
+        for status in (0, 254, 255, 130, True):
+            with self.subTest(exit_status=status):
+                row["exit_status"] = status
+                self.reject()
+        row["exit_status"] = 1
+        for status in (200, 403, 404, "400", True):
+            with self.subTest(http_status=status):
+                response["ResponseMetadata"]["HTTPStatusCode"] = status
+                self.bundle.update(alias)
+                self.reject()
+        response["ResponseMetadata"]["HTTPStatusCode"] = 400
+        for code in ("UnauthorizedOperation", "AuthFailure", "InvalidVolume.Malformed", "InvalidVolume.NotFoundX"):
+            with self.subTest(code=code):
+                response["Error"]["Code"] = code
+                self.bundle.update(alias)
+                self.reject()
+        response["Error"]["Code"] = "InvalidVolume.NotFound"
+        self.bundle.update(alias)
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_sdk_volume_not_found_requires_one_matching_target_and_real_request_identity(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias, sdk=True)
+        response = self.bundle.responses[alias]
+        original = response["Error"]["Message"]
+        for message in ("The volume does not exist", original.replace("65", "99"),
+                        original + " vol-00000000000000099", original + " vol-00000000000000065",
+                        original.replace("65", "65f"), original + "\n", None):
+            with self.subTest(message=message):
+                response["Error"]["Message"] = message
+                self.bundle.update(alias)
+                self.reject()
+        response["Error"]["Message"] = original
+        for request_id in (None, "", " ", "invalid\nrequest", 123):
+            with self.subTest(request_id=request_id):
+                response["ResponseMetadata"]["RequestId"] = request_id
+                self.bundle.update(alias)
+                self.reject()
+        del response["ResponseMetadata"]["RequestId"]
+        self.bundle.update(alias)
+        self.reject()
+
+    def test_sdk_volume_not_found_cannot_mix_competing_results_or_cli_receipts(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias, sdk=True)
+        row, response = self.bundle.index["captures"][alias], self.bundle.responses[alias]
+        for key, value in (("Volumes", []), ("NextToken", None), ("Errors", []), ("Return", True)):
+            with self.subTest(extra_key=key):
+                response[key] = value
+                self.bundle.update(alias)
+                self.reject()
+                del response[key]
+        self.bundle.update(alias)
+        row["stderr"] = self.bundle.ref(alias + ".stderr", b"An error occurred (InvalidVolume.NotFound)\n")
+        self.reject()
+        row["stderr"] = self.bundle.ref(alias + ".stderr", b"")
+        row["format"] = "aws_cli_v2_json"
+        self.reject()
+        self.bundle.volume_not_found(alias)
+        row["format"], row["exit_status"] = "boto3_json", 1
+        self.reject()  # Raw CLI stderr is not an SDK ClientError.response.
+
+    def test_provider_volume_absence_errors_remain_exactly_scoped_and_time_bound(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias)
+        row = self.bundle.index["captures"][alias]
+        original = copy.deepcopy(row)
+        for field, value in (("region", "us-west-2"), ("operation", "DescribeVolumes"),
+                             ("request", {}), ("request", {"VolumeIds": ["vol-00000000000000099"]}),
+                             ("request", {"VolumeIds": ["vol-00000000000000065", "vol-00000000000000099"]}),
+                             ("request", {"VolumeIds": ["vol-00000000000000065"], "NextToken": "skip-page"}),
+                             ("started_at", stamp(-1)), ("completed_at", stamp(7201))):
+            with self.subTest(field=field, value=value):
+                row[field] = value
+                self.reject()
+                row[field] = original[field]
+        row["started_at"] = self.bundle.index["captures"]["a_volume_absent"]["started_at"]
+        self.reject()
+        row["started_at"] = original["started_at"]
+        self.bundle.index["captures"]["r_launch"]["started_at"] = row["started_at"]
+        self.reject()
+
+    def test_provider_volume_absence_still_requires_original_hashes_and_sanitized_rejection(self):
+        alias = "a_volume_recycle_absent"
+        self.bundle.volume_not_found(alias)
+        row = self.bundle.index["captures"][alias]
+        original = row["stderr"]["sha256"]
+        row["stderr"]["sha256"] = "0" * 64
+        self.reject()
+        row["stderr"]["sha256"] = original
+        row["stderr"] = self.bundle.ref(alias + ".stderr", b"PRIVATE_SENTINEL UnauthorizedOperation\n")
+        with self.assertRaises(ValueError) as caught:
+            self.bundle.verify()
+        self.assertNotIn("PRIVATE_SENTINEL", str(caught.exception))
+
     def test_absence_queries_cannot_filter_out_disabled_images_or_wrong_targets(self):
         request = self.bundle.index["captures"]["image_absent"]["request"]
         request["IncludeDisabled"] = False
@@ -613,6 +797,58 @@ class SyntheticNativeIntakeTests(unittest.TestCase):
 
 
 class CaptureTransportTests(unittest.TestCase):
+    def test_exceptional_volume_absence_never_enters_or_bypasses_success_cache(self):
+        for sdk in (False, True):
+            with self.subTest(sdk=sdk), tempfile.TemporaryDirectory() as temporary:
+                bundle = SyntheticCaptureBundle(Path(temporary))
+                alias = "a_volume_recycle_absent"
+                bundle.volume_not_found(alias, sdk=sdk)
+                captures = verifier.CaptureSet(bundle.index_path, bundle.index)
+                with self.assertRaises(ValueError):
+                    captures.take(alias, "ListVolumesInRecycleBin")
+                volume = bundle.index["captures"][alias]["request"]["VolumeIds"][0]
+                receipt = captures.take_volume_recycle_absence(alias, volume)
+                self.assertEqual(receipt.absence_basis, "provider_volume_not_found")
+                self.assertEqual(receipt.response, bundle.responses[alias] if sdk else {})
+                self.assertNotIn("Volumes", receipt.response)
+                self.assertEqual(receipt.started, verifier.timestamp(bundle.index["captures"][alias]["started_at"]))
+                self.assertEqual(receipt.completed, verifier.timestamp(bundle.index["captures"][alias]["completed_at"]))
+                self.assertNotIn(alias, captures.cache)
+                with self.assertRaises(ValueError):
+                    captures.take(alias, "ListVolumesInRecycleBin")
+                with self.assertRaises(ValueError):
+                    captures.take_volume_recycle_absence(alias, "vol-00000000000000099")
+                self.assertNotIn(alias, captures.cache)
+
+    def test_successful_empty_volume_capture_stays_an_ordinary_success(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            bundle = SyntheticCaptureBundle(Path(temporary))
+            alias = "a_volume_recycle_absent"
+            captures = verifier.CaptureSet(bundle.index_path, bundle.index)
+            normal = captures.take(alias, "ListVolumesInRecycleBin")
+            volume = bundle.index["captures"][alias]["request"]["VolumeIds"][0]
+            absence = captures.take_volume_recycle_absence(alias, volume)
+            self.assertIsNone(normal.absence_basis)
+            self.assertEqual(absence.absence_basis, "successful_empty_list")
+            self.assertIs(captures.take(alias, "ListVolumesInRecycleBin"), normal)
+
+    def test_volume_service_errors_do_not_relax_image_or_snapshot_capture_success(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            bundle = SyntheticCaptureBundle(Path(temporary))
+            for alias, operation in (("image_recycle_absent", "ListImagesInRecycleBin"),
+                                      ("snapshot_recycle_absent", "ListSnapshotsInRecycleBin")):
+                row = bundle.index["captures"][alias]
+                row["format"], row["exit_status"] = "boto3_json", 1
+                bundle.responses[alias] = {"Error": {"Code": "InvalidVolume.NotFound",
+                    "Message": "The volume 'vol-00000000000000065' does not exist."},
+                    "ResponseMetadata": {"HTTPStatusCode": 400, "RequestId": "SYNTHETIC_REQUEST_ID"}}
+                bundle.update(alias)
+                captures = verifier.CaptureSet(bundle.index_path, bundle.index)
+                with self.subTest(operation=operation), self.assertRaises(ValueError):
+                    captures.take(alias, operation)
+                with self.assertRaises(ValueError):
+                    captures.take_volume_recycle_absence(alias, "vol-00000000000000065")
+
     def test_real_ebs_success_status_codes_are_accepted(self):
         with tempfile.TemporaryDirectory() as temporary:
             bundle = SyntheticCaptureBundle(Path(temporary))

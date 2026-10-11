@@ -118,6 +118,7 @@ class Capture:
     started: datetime
     completed: datetime
     format: str
+    absence_basis: str | None = None
 
 
 class CaptureSet:
@@ -161,7 +162,8 @@ class CaptureSet:
         self.total_bytes += new_bytes
         return raw
 
-    def take(self, alias: str, operation: str) -> Capture:
+    def _raw_capture(self, alias: str, operation: str) -> tuple[dict, bytes, bytes, datetime, datetime]:
+        """Load the original bounded receipt without classifying service success."""
         require(isinstance(alias, str) and alias in self.rows, "capture alias missing")
         row = self.rows[alias]
         require(isinstance(row, dict) and set(row) == {
@@ -170,14 +172,18 @@ class CaptureSet:
         require(row["operation"] == operation and row["region"] == self.index["region"]
                 and row["format"] in FORMATS and isinstance(row["tool_version"], str)
                 and 0 < len(row["tool_version"]) <= 256 and type(row["exit_status"]) is int
-                and row["exit_status"] == 0 and isinstance(row["request"], dict), "capture operation failed or differs")
-        self.used.add(alias)
-        if alias in self.cache:
-            return self.cache[alias]
+                and isinstance(row["request"], dict), "capture operation failed or differs")
         start, end = timestamp(row["started_at"]), timestamp(row["completed_at"])
         require(self.started <= start <= end <= self.deadline, "capture outside trial lifetime")
         raw = self.read(row["response"])
-        self.read(row["stderr"])
+        stderr = self.read(row["stderr"])
+        return row, raw, stderr, start, end
+
+    def take(self, alias: str, operation: str) -> Capture:
+        row, raw, _, start, end = self._raw_capture(alias, operation)
+        require(row["exit_status"] == 0, "capture operation failed or differs")
+        if alias in self.cache:
+            return self.cache[alias]
         require(raw or operation in EMPTY_RESPONSES, "missing service response")
         response = capture_json(raw) if raw else {}
         require("Error" not in response and "Errors" not in response, "service response contains an error")
@@ -189,8 +195,53 @@ class CaptureSet:
                 and metadata.get("HTTPStatusCode", 200) in success_codes,
                 "service response unsuccessful")
         result = Capture(row["request"], response, start, end, row["format"])
+        self.used.add(alias)
         self.cache[alias] = result
         return result
+
+    def take_volume_recycle_absence(self, alias: str, volume_id: str) -> Capture:
+        """Accept only an exact-volume empty list or the specific provider absence error.
+
+        Error receipts remain original errors and never enter the success cache.
+        This checks supplied bytes, not AWS authenticity or permanent deletion.
+        """
+        identifier(volume_id, "vol")
+        operation = "ListVolumesInRecycleBin"
+        row, raw, stderr, start, end = self._raw_capture(alias, operation)
+        require(row["request"] == {"VolumeIds": [volume_id]}, "volume Recycle Bin query differs")
+        if row["exit_status"] == 0:
+            result = self.take(alias, operation)
+            require(result.response.get("Volumes") == [] and result.response.get("NextToken") is None,
+                    "volume Recycle Bin absence is unconfirmed")
+            return Capture(result.request, result.response, result.started, result.completed, result.format,
+                           "successful_empty_list")
+        if row["format"] == "aws_cli_v2_json":
+            # This canonical legacy form is a future capture contract. A past
+            # summary without the original bytes cannot be replayed through it.
+            pattern = (rb"\n*An error occurred \(InvalidVolume\.NotFound\) when calling the "
+                       rb"ListVolumesInRecycleBin operation: The volume '" + re.escape(volume_id.encode())
+                       + rb"' does not exist\.?\n*")
+            require(row["exit_status"] == 254 and raw == b"" and re.fullmatch(pattern, stderr) is not None,
+                    "volume provider absence receipt differs")
+            response = {}
+        else:
+            require(row["exit_status"] == 1 and stderr == b"" and raw,
+                    "volume SDK absence capture failed or differs")
+            response = capture_json(raw)
+            require(set(response) == {"Error", "ResponseMetadata"}, "volume SDK error structure differs")
+            error, metadata = response["Error"], response["ResponseMetadata"]
+            require(isinstance(error, dict) and set(error) == {"Code", "Message"}
+                    and error["Code"] == "InvalidVolume.NotFound" and isinstance(metadata, dict)
+                    and type(metadata.get("HTTPStatusCode")) is int and metadata["HTTPStatusCode"] == 400,
+                    "volume SDK service error differs")
+            request_id, message = metadata.get("RequestId"), error["Message"]
+            require(isinstance(request_id, str)
+                    and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/+=-]{0,255}", request_id) is not None
+                    and isinstance(message, str) and re.fullmatch(r"[\x20-\x7e]{1,4096}", message) is not None
+                    and re.findall(r"\bvol-[A-Za-z0-9_-]+", message) == [volume_id],
+                    "volume SDK error target or request identity differs")
+        self.used.add(alias)
+        return Capture(row["request"], response, start, end, row["format"], "provider_volume_not_found")
 
 
 def single_instance(response: dict) -> dict:
@@ -252,6 +303,9 @@ def target_absent(captures: CaptureSet, alias: str, operation: str, collection: 
 
 def recycle_absent(captures: CaptureSet, alias: str, operation: str, collection: str,
                    parameter: str, resource_id: str) -> Capture:
+    if operation == "ListVolumesInRecycleBin":
+        require(collection == "Volumes" and parameter == "VolumeIds", "invalid volume absence contract")
+        return captures.take_volume_recycle_absence(alias, resource_id)
     capture = captures.take(alias, operation)
     require(capture.request == {parameter: [resource_id]} and capture.response.get(collection) == []
             and capture.response.get("NextToken") is None,
@@ -371,7 +425,8 @@ def boot(captures: CaptureSet, spec: dict, role: str, ami_id: str, snapshot_id: 
     require(volume_absent.completed <= recycled.started, "volume retention observation precedes deletion")
     return {"role": role, "instance_id": instance_id, "client_token": client_token, "volume_id": volume_id,
             "eni_id": eni_id, "started": launch.started, "ended": max(recycled.completed, eni_absent.completed),
-            "observations": serial}
+            "observations": serial, "root_retention": {"basis": recycled.absence_basis,
+                                                      "capture_completed_at": recycled.completed.isoformat()}}
 
 
 def verify(index_path: Path, manifest_path: Path) -> dict:
@@ -471,8 +526,9 @@ def verify(index_path: Path, manifest_path: Path) -> dict:
             "logical_disk_sha256": expected_disk["sha256"], "capture_index_sha256": hashlib.sha256(index_raw).hexdigest(),
             "evaluator_sha256": digest.hexdigest(), "profile": {"region": index["region"], "instance_type": index["instance_type"],
             "boot_mode": "uefi", "encrypted": index["encrypted"]},
-            "phases": [{"role": row["role"], "observations": row["observations"]} for row in phases],
-            "cleanup": "resource_and_recycle_bin_absence_with_no_current_retention_rules_in_supplied_captures",
+            "phases": [{"role": row["role"], "observations": row["observations"],
+                        "root_retention": row["root_retention"]} for row in phases],
+            "cleanup": "time_bound_resource_and_recycle_bin_absence_with_no_current_retention_rules_in_supplied_captures",
             "private_capture_files": len(captures.raw_hashes)}
 
 

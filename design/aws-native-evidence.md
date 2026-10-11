@@ -66,6 +66,20 @@ when supplied. EBS creation/writes can return HTTP 201 and completion HTTP 202.
 Some successful CLI deletions have empty stdout; retain those exact bytes and
 later absence queries. Do not fabricate `{}` to replace an empty raw capture.
 
+Only the single-volume `ListVolumesInRecycleBin` absence check has a narrowly
+defined service-error alternative. A first request containing exactly one
+historically bound root ID can return `InvalidVolume.NotFound`. Preserve the
+untouched error rather than converting it into a successful empty list. A CLI
+receipt requires its actual service-error exit status 254, empty stdout and the
+complete legacy stderr line naming that operation, code and same volume. A
+structured SDK receipt requires runner exit status 1 and the original
+`ClientError.response`, with that code, a message bound to the same volume,
+HTTP 400 and the observed request ID. Do not invent SDK metadata from CLI text.
+Authorization, malformed-request, timeout, generic exit 255 and multi-ID errors
+cannot establish absence. All other operations remain success-only.
+[CLI exit codes](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-returncodes.html),
+[SDK errors](https://docs.aws.amazon.com/boto3/latest/guide/error-handling.html).
+
 `GetConsoleOutput` requests must bind `InstanceId` and `Latest=true`. Its response
 binds `InstanceId`, `Timestamp` and `Output`. CLI JSON output is already decoded;
 SDK/API output needs explicit Base64 decoding. `Timestamp` is the buffer's last
@@ -147,7 +161,8 @@ Deregister after final instance cleanup, confirm ordinary and Recycle Bin image
 absence before deleting the snapshot, then confirm snapshot absence. Each deleted volume and the native
 AMI/snapshot also requires an exact-ID `ListVolumesInRecycleBin`,
 `ListImagesInRecycleBin` or `ListSnapshotsInRecycleBin` query, an empty collection
-and no continuation token. Its request contains only the corresponding
+and no continuation token, or the narrowly bound volume-not-found receipt
+described above for volumes only. Its request contains only the corresponding
 `VolumeIds`, `ImageIds` or `SnapshotIds` array. Use a client model that supports
 these current operations; older user-guide response examples do not replace
 current CLI/SDK fields. [Volume query](https://docs.aws.amazon.com/cli/latest/reference/ec2/list-volumes-in-recycle-bin.html),
@@ -164,3 +179,13 @@ assessment and budget accounting; this first intake does not infer them gone.
 [Retention behavior](https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-factors.html).
 Temporary access revocation, actual capture origin, approval, deadlines and
 the cost ledger remain separate owner review gates.
+
+Each phase reports whether its root retention observation was a successful
+empty list or a provider volume-not-found error; both remain observations at
+capture time. They do not establish permanent deletion, historical charges or
+global account absence. EC2 is eventually consistent, so retain the earlier
+root binding, confirmed termination and ordinary volume-absence observation.
+A summary of per-ID error codes without the original raw error receipts is
+not a replayable native capture packet.
+[Volume error meaning](https://docs.aws.amazon.com/ec2/latest/devguide/errors-overview.html),
+[consistency limits](https://docs.aws.amazon.com/ec2/latest/devguide/eventual-consistency.html).
