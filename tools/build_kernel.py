@@ -83,6 +83,17 @@ def build(out: Path) -> dict:
              "--target=x86_64-unknown-uefi", "-Cpanic=abort", "-Copt-level=1", "-Ccodegen-units=1",
              "-Cdebuginfo=2", "-Cforce-frame-pointers=yes", "-Cno-redzone=yes", "-Cembed-bitcode=no",
              "-Clink-arg=/timestamp:0", "-Clink-arg=/debug:none"]
+    notices = []
+    notice_directory = out / "notices"
+    notice_directory.mkdir()
+    notice_sources = [("tessryn", name, ROOT / name) for name in ("LICENSE", "NOTICE")]
+    notice_sources.extend(("rust", name, prefix / "notices" / "rust" / name)
+                          for name in ("LICENSE-APACHE", "LICENSE-MIT", "COPYRIGHT"))
+    for component, name, original in notice_sources:
+        destination = notice_directory / f"{component}-{name}"
+        destination.write_bytes(original.read_bytes())
+        notices.append({"component": component, "path": destination.relative_to(out).as_posix(),
+                        "sha256": sha256(destination), "size_bytes": destination.stat().st_size})
     artifacts = []
     for case in (*CASES, "deployment"):
         directory = out / case
@@ -112,7 +123,7 @@ def build(out: Path) -> dict:
                                   "pe_validation": validation if name == "BOOTX64.EFI" else None})
     manifest = {"schema_version": 1, "artifact_type": "tessryn-k01-kernel", "source": source,
                 "toolchain": {"rustc_version": version, "linker_version": linker_version, "rust_flags": flags,
-                              "setup": setup}, "artifacts": artifacts,
+                              "setup": setup}, "artifacts": artifacts, "notices": notices,
                 "capabilities": {"uefi_kernel": "implemented_requires_execution_evidence",
                                  "native_gpu": "unavailable", "network": "unavailable", "inference": "unavailable"}}
     if verify_installation() != setup or source_identity() != source:

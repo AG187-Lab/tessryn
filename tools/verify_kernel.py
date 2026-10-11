@@ -26,6 +26,15 @@ def validate_build(path: Path) -> dict:
         raise ValueError("unsupported kernel manifest")
     if manifest["toolchain"]["setup"] != verify_installation():
         raise ValueError("manifest setup differs from pinned installed tools")
+    expected_notices = {"notices/tessryn-LICENSE", "notices/tessryn-NOTICE", "notices/rust-LICENSE-APACHE",
+                        "notices/rust-LICENSE-MIT", "notices/rust-COPYRIGHT"}
+    notices = manifest.get("notices", [])
+    if len(notices) != len(expected_notices) or {row["path"] for row in notices} != expected_notices:
+        raise ValueError("kernel redistribution notices incomplete or duplicate")
+    for row in notices:
+        data = _regular_bytes(path.parent / row["path"])
+        if hashlib.sha256(data).hexdigest() != row["sha256"] or len(data) != row["size_bytes"]:
+            raise ValueError("kernel redistribution notice hash or size mismatch")
     expected = {f"{case}/{name}" for case in (*CASES, "deployment") for name in ("BOOTX64.EFI", "boot.img")}
     expected.update(("normal/boot.iso", "deployment/boot.iso"))
     names = [row["path"] for row in manifest["artifacts"]]

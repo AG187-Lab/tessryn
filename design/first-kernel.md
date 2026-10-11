@@ -50,6 +50,9 @@ Final linking disables PDB/CodeView output: its path-dependent GUID otherwise
 changes the EFI bytes between independent output directories. Kernel images
 retain runtime panic and exception diagnostics; a kernel debugger symbol profile
 remains future work. CI publishes only the explicit artifact allowlist.
+Kernel bundles include the project's license/notice and Rust's pinned license
+and copyright notices for the linked core/compiler-builtins. The manifest hashes
+these notices alongside the original boot artifacts.
 
 ## Boot contract
 
