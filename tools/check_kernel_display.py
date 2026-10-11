@@ -234,6 +234,8 @@ def capture(command: list[str], scratch: Path, timeout: float, capture_after: fl
     if (not math.isfinite(timeout) or not 0 < timeout <= 30 or not math.isfinite(capture_after)
             or not 0 <= capture_after < timeout or type(max_log_bytes) is not int or max_log_bytes <= 0):
         raise ValueError("display execution budgets must be positive, bounded and finite")
+    # Allocate resources that can fail before owning a child or replacing signals.
+    selector = selectors.DefaultSelector()
     started = time.monotonic()
     deadline = started + timeout
     output = {"stdout": bytearray(), "stderr": bytearray()}
@@ -255,15 +257,12 @@ def capture(command: list[str], scratch: Path, timeout: float, capture_after: fl
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True,
                                  env={"PATH": os.defpath, "LANG": "C", "TZ": "UTC"})
     except OSError:
+        selector.close()
         for sig, handler in handlers.items():
             signal.signal(sig, handler)
         return Capture("unavailable", "emulator process launch failed", None,
                        time.monotonic() - started, b"", b"", None, [])
-    with selectors.DefaultSelector() as selector:
-        for name, pipe in (("stdout", child.stdout), ("stderr", child.stderr)):
-            os.set_blocking(pipe.fileno(), False)
-            selector.register(pipe, selectors.EVENT_READ, name)
-
+    with selector:
         def pump():
             if cancelled:
                 raise InterruptedError("display capture cancelled")
@@ -282,6 +281,11 @@ def capture(command: list[str], scratch: Path, timeout: float, capture_after: fl
                 raise ValueError("emulator exited before framebuffer capture")
 
         try:
+            # From the first post-spawn operation, cleanup owns the child and
+            # both pipes even when descriptor setup or registration fails.
+            for name, pipe in (("stdout", child.stdout), ("stderr", child.stderr)):
+                os.set_blocking(pipe.fileno(), False)
+                selector.register(pipe, selectors.EVENT_READ, name)
             while connection is None:
                 pump()
                 attempt = socket.socket(socket.AF_UNIX)
@@ -355,10 +359,12 @@ def capture(command: list[str], scratch: Path, timeout: float, capture_after: fl
                     child.kill()
                     child.wait(timeout=1)
             finally:
-                if connection is not None:
-                    connection.close()
-                child.stdout.close()
-                child.stderr.close()
+                for resource in (connection, child.stdout, child.stderr):
+                    if resource is not None:
+                        try:
+                            resource.close()
+                        except OSError:
+                            status, reason = "fail", "emulator pipe/socket cleanup failed"
                 for sig, handler in handlers.items():
                     signal.signal(sig, handler)
     return Capture(status, reason, child.returncode, time.monotonic() - started,

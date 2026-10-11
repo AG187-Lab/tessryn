@@ -1,7 +1,10 @@
 """Check display evidence parsing, QMP identity and bounded child cleanup."""
 
 import json
+import os
 from pathlib import Path
+import selectors
+import signal
 import socket
 import struct
 import sys
@@ -9,6 +12,7 @@ import tempfile
 import threading
 import time
 import unittest
+from unittest.mock import patch
 
 from tools import check_kernel_display as display
 
@@ -88,6 +92,55 @@ class QMPTests(unittest.TestCase):
 
 
 class CaptureTests(unittest.TestCase):
+    def test_selector_allocation_failure_does_not_spawn_or_replace_signals(self):
+        original = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}
+        with patch.object(display.selectors, "DefaultSelector", side_effect=OSError("descriptor exhaustion")), patch.object(
+                display.subprocess, "Popen") as spawn:
+            with self.assertRaisesRegex(OSError, "descriptor exhaustion"):
+                display.capture([sys.executable, "-c", "import time; time.sleep(60)"], Path("."), 2, 0.1)
+            spawn.assert_not_called()
+        self.assertEqual({sig: signal.getsignal(sig) for sig in original}, original)
+
+    def test_pipe_initialization_failure_reaps_child_and_restores_signals(self):
+        for failure in ("set_blocking", "register"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as temporary:
+                original = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}
+                real_spawn = display.subprocess.Popen
+                child = None
+
+                def spawn(*args, **kwargs):
+                    nonlocal child
+                    child = real_spawn(*args, **kwargs)
+                    return child
+
+                selector = selectors.DefaultSelector()
+                target = display.os if failure == "set_blocking" else selector
+                try:
+                    with patch.object(display.selectors, "DefaultSelector", return_value=selector), patch.object(
+                            display.subprocess, "Popen", side_effect=spawn), patch.object(
+                            target, failure, side_effect=OSError("injected pipe initialization failure")):
+                        result = display.capture([sys.executable, "-c", "import time; time.sleep(60)"],
+                                                 Path(temporary), 2, 0.1)
+                    self.assertEqual(result.status, "fail")
+                    self.assertIsNotNone(child)
+                    self.assertIsNotNone(result.returncode)
+                    self.assertIsNotNone(child.poll())
+                    with self.assertRaises(ProcessLookupError):
+                        os.kill(child.pid, 0)
+                    self.assertTrue(child.stdout.closed)
+                    self.assertTrue(child.stderr.closed)
+                    self.assertEqual({sig: signal.getsignal(sig) for sig in original}, original)
+                finally:
+                    # Keep the test safe if a regression escapes the cleanup guard.
+                    if child is not None and child.poll() is None:
+                        os.killpg(child.pid, signal.SIGKILL)
+                        child.wait(timeout=1)
+                        child.stdout.close()
+                        child.stderr.close()
+                    selector.close()
+                    for sig, handler in original.items():
+                        signal.signal(sig, handler)
+
     def test_capture_controls_live_qmp_child_and_retains_actual_pixels(self):
         # A separate original fixture implements the documented QMP messages,
         # writes a real PPM file and exits only after the evaluator requests quit.
