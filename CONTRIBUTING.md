@@ -4,6 +4,8 @@ Tessryn welcomes original kernel, driver, inference, distributed-systems and mea
 
 ## Work coordination
 
+Use the public [development board](https://github.com/orgs/AG187-Lab/projects/1) and its Ready to start view to find work. The [development guide](design/development.md) explains the initial tasks and planning reconciliation.
+
 1. Select an unblocked issue and discuss its deliverable and acceptance criteria before expanding scope.
 2. Record dependencies using GitHub's native blocked-by relationships. A milestone is an exit gate, not a delivery-date promise.
 3. Keep issue state and Project fields current: Todo, In Progress and Done; priority P0/P1/P2; horizon Now/Next/Later.
@@ -19,6 +21,8 @@ Explain the problem, resulting behavior, validation and material limits. Tests s
 Architecture changes add or amend an ADR. All new interfaces state ownership, errors, cancellation and failure behavior. Imported artifacts need a provenance/license manifest before merging.
 
 Run `python3 tools/validate_design.py` before submitting documentation or planning changes. Kernel/device test commands will be documented when those implementation issues land.
+
+Pull requests to `main` require the successful `design-integrity` check and resolved review conversations. Squash merging preserves linear history. Branch protection disables force pushes and branch deletion; administrators retain recovery authority.
 
 ## Licensing and conduct
 
