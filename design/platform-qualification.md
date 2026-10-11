@@ -88,6 +88,13 @@ not a promised BIOS console. [Boot modes](https://docs.aws.amazon.com/AWSEC2/lat
 [console limitations](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/troubleshoot-unreachable-instance.html),
 [root-replacement limits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/replace-root.html).
 
+If AWS account access is preferred, the [AWS access plan](../evidence/g01-research/aws-access-notes.md)
+recommends `c7i.metal-24xl` as the first conditional CPU trial and records
+Paid Plan, regional quota, serial/recovery and exact boot-mode prerequisites.
+Its Linux reference rate is $4.284/hour; 24 compute hours are $102.816 before
+other charges. This adds a cloud laboratory candidate, not a supported
+original-kernel profile or a verified RAM-only UEFI boot path.
+
 AWS `g5.xlarge` is a **virtualized** A10G comparison candidate, not bare metal.
 AWS reports 24 GB on its product page and 22 GiB in its technical table; neither
 is a measured Tessryn admission limit. Its Linux reference quote is

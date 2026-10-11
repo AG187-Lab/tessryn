@@ -23,6 +23,20 @@
       "sources": ["https://www.scaleway.com/en/pricing/elastic-metal/", "https://www.scaleway.com/en/docs/elastic-metal/", "https://www.scaleway.com/en/docs/elastic-metal/how-to/use-rescue-mode/", "https://www.scaleway.com/en/docs/elastic-metal/how-to/activate-remote-access/"]
     },
     {
+      "id": "aws-c7i-metal-24xl-us-east-1",
+      "role": "conditional_aws_cpu_laboratory",
+      "environment": "bare_metal_catalog",
+      "support_status": "unqualified_candidate",
+      "basis": "vendor_specification",
+      "identity": {"instance_type": "c7i.metal-24xl", "region": "us-east-1"},
+      "vendor_inventory": {"cpu": "Intel Sapphire Rapids", "vcpus": 96, "physical_cores": 48, "ram_gib": 192, "storage": "EBS only", "gpu": "none"},
+      "price_scenario": {"basis": "analytical_example", "currency": "USD", "linux_reference_hourly": "4.284", "four_compute_hours_before_extras_tax": "17.136", "twenty_four_compute_hours_before_extras_tax": "102.816", "native_os_billing_verified": false, "final_quote": null},
+      "capabilities": {"tessryn_kernel_boot": "unavailable", "native_gpu": "unavailable", "model_inference": "unavailable"},
+      "measured_admitted_memory_bytes": null,
+      "blockers": ["paid_account_and_authorized_lab_access", "regional_standard_quota_and_capacity", "exact_supported_boot_modes", "external_serial_and_recovery_controls", "verified_native_boot_image_and_storage_boundary"],
+      "sources": ["https://docs.aws.amazon.com/ec2/latest/instancetypes/co.html", "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-type-boot-mode.html", "https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-quotas.html", "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-serial-console-prerequisites.html"]
+    },
+    {
       "id": "aws-g4dn-metal-us-east-1",
       "role": "gpu_research_candidate",
       "environment": "bare_metal_catalog",
