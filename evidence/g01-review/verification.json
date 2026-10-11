@@ -1,0 +1,219 @@
+{
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "unit-tests-python314.log",
+      "passed": 142
+    },
+    {
+      "command": [
+        "python3.12",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "unit-tests-python312.log",
+      "passed": 142
+    },
+    {
+      "command": [
+        "python3",
+        "evidence/g01-verification/reproduce_fixture.py",
+        "build/g01-review-results/fixture"
+      ],
+      "exit_code": 0,
+      "log": "fixture-cli.log"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_platform_inventory.py",
+        "evidence/g01-review/synthetic-public.json",
+        "--expected-kind",
+        "synthetic_fixture"
+      ],
+      "exit_code": 0,
+      "log": "numeric-verification.log"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_platform_inventory.py",
+        "evidence/g01-review/synthetic-full.json",
+        "--expected-kind",
+        "synthetic_fixture"
+      ],
+      "exit_code": 1,
+      "expected_rejection": true,
+      "log": "identity-rejection.log"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/validate_design.py"
+      ],
+      "exit_code": 0,
+      "log": "design-validation.log"
+    }
+  ],
+  "evaluated_implementation_revision": "0dbd7e86b5017799f43e188fc5f945f6f7e90187",
+  "evidence_kind": "implementation_result",
+  "host_architecture": "arm64",
+  "host_os": "Darwin",
+  "performance_conditions": {
+    "background_load": "unavailable",
+    "held_out_model_workloads": "not_applicable_no_inference",
+    "numerical_inference_reference": "not_applicable_no_inference",
+    "thermal": "unavailable"
+  },
+  "python_versions": {
+    "python3": "Python 3.14.6",
+    "python3.12": "Python 3.12.7"
+  },
+  "record_files": {
+    "evidence/g01-review/README.md": {
+      "bytes": 6620,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "917cff3dcac391f7d11ab157eff32420feadd12382bdf64885e8f40ee39c57cb"
+    },
+    "evidence/g01-review/cli-failure.log": {
+      "bytes": 95,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "2c4ab65a5c4e2471db5ae22b1e3f6b11911839225e837fd7e1289485d60bc716"
+    },
+    "evidence/g01-review/design-validation.log": {
+      "bytes": 74,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "16e328ebfba56c4bbc69459d82a60c2891fb45c927c3faaffa2b1c2d17adf2d3"
+    },
+    "evidence/g01-review/fixture-cli.log": {
+      "bytes": 237,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "1d06edc9b4aa4d1c00e8527d3cb2a262fcc77d52a95c9551cbbf7392c714ed22"
+    },
+    "evidence/g01-review/identity-rejection.log": {
+      "bytes": 90,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "8d51483cd3d5895a611d3be853ed6cd2f1da83b53f93728445f016483acebe8b"
+    },
+    "evidence/g01-review/numeric-verification.log": {
+      "bytes": 141,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "f1001667e1be2ec8de146e1ba22474fdb775370550fe180d736615c047afc10b"
+    },
+    "evidence/g01-review/synthetic-full.json": {
+      "bytes": 3765,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "7473ab050a2c853bb739498ce54a8066a5b83e4e7704c17df616871ed15e4451"
+    },
+    "evidence/g01-review/synthetic-public.json": {
+      "bytes": 2894,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "8ad10f8af50c69b20c35a23d98c47088c5f4736cb30eac4caca9747c2a4c3c46"
+    },
+    "evidence/g01-review/unit-tests-python312.log": {
+      "bytes": 21863,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "7c867cd4bed007289ecfba4b7d84193a6c89d977172a88b5c6715d808d57e706"
+    },
+    "evidence/g01-review/unit-tests-python314.log": {
+      "bytes": 21863,
+      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "sha256": "aaec8c9f3611d7857fb2ae299860d9ecee0a770708a084fd7af6504388e637ec"
+    }
+  },
+  "recorded_utc": "2026-10-11T20:05:01.779680+00:00",
+  "sample_counts": {
+    "gpu_execution": 0,
+    "inference": 0,
+    "linux_reference_inventories_in_this_local_record": 0,
+    "native_boot": 0,
+    "performance": 0,
+    "physical_inventories": 0,
+    "physical_recovery": 0,
+    "rented_machines": 0,
+    "synthetic_fixture_datasets": 1
+  },
+  "schema_version": 1,
+  "source_files": {
+    ".github/workflows/platform-qualification.yml": {
+      "bytes": 1215,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "2385b5b43b2b3b65f99071502f98198ab33f09419bc0c8701e28fe698350b3b9"
+    },
+    "evidence/g01-verification/reproduce_fixture.py": {
+      "bytes": 3612,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "a9a8628ab1f393b46e731fd4e0f474297ca7676dae72f97e92aacbe9961104a3"
+    },
+    "planning/platform-candidates.json": {
+      "bytes": 8617,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "d921c43a21dc993ca1353016d181a022fe4066818b5a880c15c249d2575c1a63"
+    },
+    "tests/test_platform_inventory.py": {
+      "bytes": 24264,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "1455985bbbd5e5fda9b82b39d31fd63c86cb47e8adc1759791f501b4fc657c3f"
+    },
+    "tests/test_platform_verification.py": {
+      "bytes": 6727,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "21c7519b2b437eca86b41a5b4ed58048a69e199ebadde352fb0e461ed9ecf151"
+    },
+    "tools/collect_platform_inventory.py": {
+      "bytes": 24143,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "4c4bf2a62d476c54c08061d8003885dc6b1d61611e8746643b6973b2a56c27ad"
+    },
+    "tools/verify_platform_inventory.py": {
+      "bytes": 9668,
+      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "sha256": "4e02baf40e73f671275908d8fdfccab8626896e2d033594e38ed9cac808c1c38"
+    }
+  },
+  "synthetic_cli": {
+    "existing_output_exit_code": 2,
+    "full_exit_code": 0,
+    "full_identity_rejection_exit_code": 1,
+    "numeric_summary_exit_code": 0,
+    "numeric_verification_exit_code": 0,
+    "original_output_preserved": true,
+    "per_invocation_timeout_seconds": 10
+  },
+  "tessryn_capabilities": {
+    "gpu_execution": {
+      "reason": "no_native_experiment",
+      "status": "unavailable"
+    },
+    "inference": {
+      "reason": "no_native_experiment",
+      "status": "unavailable"
+    },
+    "native_boot": {
+      "reason": "no_native_experiment",
+      "status": "unavailable"
+    }
+  },
+  "unit_tests": {
+    "collector": 32,
+    "failed": 0,
+    "inherited_g03": 100,
+    "numeric_verifier": 10,
+    "per_run_passed": 142,
+    "runs": 2
+  }
+}

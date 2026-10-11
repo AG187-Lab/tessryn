@@ -14,6 +14,8 @@ separates vendor specifications, analytical costs and missing observations.
 references. These are original summaries of public sources, not imported
 drivers or redistributed firmware. [Tooling verification](../evidence/g01-verification/README.md)
 retains actual synthetic CLI results, test logs and evaluated source hashes.
+The [PR review verification](../evidence/g01-review/README.md) records the later
+collector hardening, numeric publication checks and acceptance disposition.
 
 ## Decisions and unresolved acceptance
 
