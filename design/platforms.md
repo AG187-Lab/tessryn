@@ -2,6 +2,15 @@
 
 Status: physical target profiles remain unqualified. The [K01 emulator profile](first-kernel.md) has original-kernel CPU boot and fault evidence. Qualify physical CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
 
+The [initial G01 qualification record](platform-qualification.md) prepares a short bare-metal inventory session without selecting supported hardware. Its candidate descriptions and costs are vendor facts and analytical examples; actual device/firmware/topology, notebook access and native execution remain unavailable.
+
+G01 selects exact engineering targets only after physical inventories,
+boot/device-access feasibility, recovery prerequisites and artifact constraints
+have evidence. That decision can leave Tessryn capability statuses
+unavailable. Original-kernel boot, native device initialization, GPU compute,
+inference and thermal/load qualification are subsequent implementation and
+support gates, rather than prerequisites for finishing G01.
+
 ## First platforms
 
 Start with modern x86-64 UEFI hardware on Intel or AMD CPUs, a fixed wired NIC, NVMe storage, and the selected NVIDIA family. AMD CPU support is independent of an AMD GPU/ROCm backend. Legacy 32-bit i386 is a later research target, not an initial inference promise.

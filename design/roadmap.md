@@ -21,11 +21,19 @@ The implementation backlog is [planning/backlog.json](../planning/backlog.json).
 
 ## First work and critical path
 
-G01 qualifies hardware before a particular server, GPU or notebook SKU is advertised as supported; that work remains open in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52). G03's [build and evaluation tooling](build-and-evaluation.md) is merged for its declared fixture profile. The initial backlog marked G01 and G03 as ready; current readiness follows live issue state, prerequisites and acceptance evidence. G02 records the native interfaces and exact compatibility scope once its required inputs are available.
+G01 establishes exact physical inventories, access/artifact prerequisites and initial engineering profiles before native implementation. Its tooling foundation landed in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52), while the qualification issue remains open. G03's [reproducible build and evaluation tooling](build-and-evaluation.md) is complete for its fixture profile. G02 records the wider native interfaces and exact compatibility scope once G01's inputs are available. The bounded [K01 CPU bring-up profile](first-kernel.md) has emulator evidence under [ADR 0010](decisions/0010-first-uefi-kernel.md), while G02 and physical qualification remain open. Current readiness follows live issue state, dependencies and acceptance evidence.
+
+The [G01 qualification packet](platform-qualification.md) records conditional cloud laboratory candidates, a bounded rental plan and reference inventory tooling. It does not complete hardware qualification or remove G02's platform dependency. No physical notebook or native-supported profile is available yet. G01 can select evidence-backed engineering targets while native boot, device execution and sustained-performance qualification remain later gates; it must not depend on those downstream implementations to complete.
 
 The first product path is original kernel, native physical devices, native NVIDIA execution, native model serving, measured transport, authenticated cluster control and four-participant sharding. Work on kernel interfaces, native networking and accelerator bring-up can proceed in parallel once their dependencies are satisfied.
 
-The first notebook profile is one exact supported wired, mains-powered machine. Its own OS must initialize the platform and accelerator. An application running on an existing deployment OS can be a development reference but does not satisfy this gate. Notebook PCIe, ACPI and device power sequencing require their own evidence, even when desktop and notebook GPUs share an architecture.
+G01 must identify one exact wired, mains-powered notebook and record its PCIe,
+ACPI, firmware, power and access prerequisites. Later advertised support and
+the positive product demonstration require Tessryn to initialize that
+platform and accelerator. An application running on an existing deployment
+OS is reference evidence. Native device power sequencing and sustained
+thermal behavior need their own implementation evidence, even when desktop
+and notebook GPUs share an architecture.
 
 ## Positive product demonstration
 

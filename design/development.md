@@ -6,10 +6,10 @@ The public [Tessryn development Project](https://github.com/orgs/AG187-Lab/proje
 
 The initial backlog designated G01 and G03 as prerequisite-free P0 tasks with the `phase:Now` label. That planning graph does not establish their current execution state:
 
-- [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1) remains open, with qualification preparation in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52). Exact physical hardware, native-access constraints and recovery evidence remain qualification work.
-- [G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2) is merged and closed. Its [tooling foundation](build-and-evaluation.md) provides pinned builds, provenance, bounded evaluation and evidence formats; numerical/model and performance observations remain unavailable.
+- [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1) remains open. [PR #52](https://github.com/AG187-Lab/tessryn/pull/52) landed its inventory tooling and [qualification packet](platform-qualification.md); exact physical records, access/artifact constraints and the initial engineering-target decision remain qualification work. Fixtures and virtual reference inventory do not replace those gates.
+- [G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2) is complete through [PR #51](https://github.com/AG187-Lab/tessryn/pull/51). Its [tooling foundation](build-and-evaluation.md) provides pinned builds, provenance, bounded evaluation and evidence formats; numerical/model and performance observations remain unavailable.
 
-Select an open task using its live state, prerequisites and acceptance evidence. The versioned native-interface task follows its recorded dependencies. [K01](first-kernel.md) implements original UEFI CPU bring-up in the declared emulator profile; claiming a working driver or supported physical platform requires separate evidence.
+Select an open task using its live state, prerequisites and acceptance evidence. G02's wider native interfaces remain dependent on G01's platform inputs. [K01](first-kernel.md) implements a bounded original UEFI CPU bring-up profile under [ADR 0010](decisions/0010-first-uefi-kernel.md); it does not complete G02 or native-device contracts. G01 supplies exact inventories, access/artifact constraints and engineering-target selection. Native initialization, supported physical platforms and measured inference require subsequent implementation evidence.
 
 ## Track execution
 
@@ -20,7 +20,7 @@ Use **Todo**, **In Progress** and **Done** for execution state; **P0**, **P1** a
 | View | Purpose |
 | --- | --- |
 | Development board | Track execution by status across all planned work |
-| Ready to start | Items labeled `phase:Now`; inspect live issue state and prerequisites before starting, and maintain the label as work becomes ready |
+| Ready to start | Open items labeled `phase:Now`; inspect live issue state and native dependencies, and maintain the label as work becomes ready |
 | First product | Initial-product work, excluding `phase:Later` programs |
 | Roadmap | Unscheduled planning view; dates follow credible qualification evidence |
 
