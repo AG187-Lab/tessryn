@@ -1,6 +1,6 @@
 # Development coordination
 
-[GitHub Issues](https://github.com/AG187-Lab/tessryn/issues) is the live work tracker. The [milestones](https://github.com/AG187-Lab/tessryn/milestones) group work into evidence gates; the [roadmap](roadmap.md) explains their exit criteria. The machine-readable [backlog](../planning/backlog.json) records logical work IDs and the initial dependency graph.
+The public [Tessryn development Project](https://github.com/orgs/AG187-Lab/projects/1) coordinates work across [GitHub Issues](https://github.com/AG187-Lab/tessryn/issues). The [milestones](https://github.com/AG187-Lab/tessryn/milestones) group work into evidence gates; the [roadmap](roadmap.md) explains their exit criteria. The machine-readable [backlog](../planning/backlog.json) records logical work IDs and the initial dependency graph; the [GitHub map](../planning/github-map.json) resolves them to live resource URLs.
 
 ## Start with the ready work
 
@@ -15,7 +15,14 @@ Select one task, take ownership in its issue and agree on the acceptance evidenc
 
 Every planned issue has a stable logical ID in its title and managed body, a milestone, workstream labels, priority, horizon, deliverable, acceptance checkboxes and required evidence. Native GitHub blocked-by relationships record prerequisites. Review both the relationships and the acceptance evidence before treating an issue as ready.
 
-Use **Todo**, **In Progress** and **Done** for execution state; **P0**, **P1** and **P2** for priority; **Now**, **Next** and **Later** for planning horizon. Horizon is a planning choice and must be updated when work becomes ready. The initial [Project configuration](../planning/project.json) defines a development board, a ready-work view, a first-product view and an unscheduled roadmap.
+Use **Todo**, **In Progress** and **Done** for execution state; **P0**, **P1** and **P2** for priority; **Now**, **Next** and **Later** for planning horizon. Horizon is a planning choice and must be updated when work becomes ready. The [Project configuration](../planning/project.json) defines four views:
+
+| View | Purpose |
+| --- | --- |
+| Development board | Track execution by status across all planned work |
+| Ready to start | The two initial `phase:Now` tasks; maintain this label as work becomes ready |
+| First product | Initial-product work, excluding `phase:Later` programs |
+| Roadmap | Unscheduled planning view; dates follow credible qualification evidence |
 
 Keep changes focused. Reference the issue from the pull request, attach its requested evidence and update affected design/decision records. A milestone closes when its exit gate is demonstrated, not when a calendar date arrives. No delivery dates are assigned before hardware and bring-up evidence support them.
 
