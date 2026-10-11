@@ -106,3 +106,31 @@ remain unavailable. Thermal and background-load conditions were not measured;
 held-out model workloads and numerical inference references are inapplicable
 because no inference experiment ran. Fixtures and virtual Linux reference
 inventories establish tooling behavior, never Tessryn hardware support.
+
+## Separate hosted Linux reference result
+
+[Platform CI run 38170742906](https://github.com/AG187-Lab/tessryn/actions/runs/38170742906)
+passed all **142 tests** on Python **3.12.13**, collected under a **30-second
+external deadline**, verified the numeric report and uploaded its artifact.
+It tested PR head `8380b6de55dc050b5c3c5af0ef85cd631655c3a8` through temporary
+merge checkout `47875b49b2bce511e38b9e96acf5e56a3b7ec79f`; this does not merge
+the PR. The collector bytes match the evaluated implementation above.
+
+The unmodified [numeric Linux report](ci-linux-reference.json),
+[test-result excerpt](ci-unit-tests.log), [verification log](ci-numeric-verification.log)
+and [CI metadata](ci-verification.json) are retained permanently because the
+uploaded artifact expires after 14 days. The excerpt preserves all test-result
+lines and removes timestamps, CI prefixes and runner/access configuration.
+Report SHA-256:
+`6e287180353a9923b630ef07322e08a1c00369f103983f9f775d981c482aa49a`.
+
+This separate record adds **one virtual Linux reference inventory**. It
+reports hypervisor presence, 64-bit UEFI and two PCI endpoints whose IOMMU
+groups are unavailable. It adds **zero** physical rental/notebook inventories,
+recovery, native boot, GPU, inference or performance samples. Neither Linux
+device exposure nor a successful virtual reference collection qualifies an
+engineering target for the physical G01 profiles.
+
+```sh
+python3 tools/verify_platform_inventory.py evidence/g01-review/ci-linux-reference.json --expected-kind linux_reference_inventory
+```

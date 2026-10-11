@@ -1,0 +1,96 @@
+{
+  "artifact": {
+    "archive_digest_reported_by_github": "sha256:101d91fe71e8fcd29b67201aa5612c34126b75b29e6f3512f6a19ca24aed7104",
+    "id": 11714212293,
+    "name": "g01-ci-linux-reference",
+    "retained_report_is_unmodified": true,
+    "retention_days": 14
+  },
+  "basis": "virtual_hosted_linux_reference_not_physical_qualification",
+  "collector_sha256": "4c4bf2a62d476c54c08061d8003885dc6b1d61611e8746643b6973b2a56c27ad",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=2s",
+        "30s",
+        "python3",
+        "tools/collect_platform_inventory.py",
+        "--public-summary",
+        "--out",
+        "build/ci-linux-reference.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_platform_inventory.py",
+        "build/ci-linux-reference.json",
+        "--expected-kind",
+        "linux_reference_inventory"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "evidence_kind": "linux_reference_inventory",
+  "files": {
+    "ci-linux-reference.json": {
+      "bytes": 6483,
+      "provenance": "unmodified_numeric_linux_reference_from_github_actions",
+      "sha256": "6e287180353a9923b630ef07322e08a1c00369f103983f9f775d981c482aa49a"
+    },
+    "ci-numeric-verification.log": {
+      "bytes": 141,
+      "provenance": "original_tessryn_numeric_verification_result",
+      "sha256": "6da3de3ac853e79d3ee2369978cfd47a418df65b2fff5f7a87073b93394be8c3"
+    },
+    "ci-unit-tests.log": {
+      "bytes": 21837,
+      "provenance": "sanitized_original_tessryn_ci_test_result_excerpt",
+      "sha256": "2695d574bb49988050dbc63439bf16ad0cda0d5b32ff6012109a24b40440ceef"
+    }
+  },
+  "performance_conditions": {
+    "background_load": "unavailable",
+    "held_out_model_workloads": "not_applicable_no_inference",
+    "thermal": "unavailable"
+  },
+  "public_excerpt": "All 142 original test result lines and result summary; runner paths, CI prefixes, timestamps and access configuration omitted",
+  "sample_counts": {
+    "gpu_execution": 0,
+    "inference": 0,
+    "native_boot": 0,
+    "performance": 0,
+    "physical_inventories": 0,
+    "physical_recovery": 0,
+    "rented_machines": 0,
+    "virtual_linux_reference_inventories": 1
+  },
+  "schema_version": 1,
+  "source_run": {
+    "base_revision": "3a8e8932e515a1bfd870e289a94f2008433787cf",
+    "checkout_revision": "47875b49b2bce511e38b9e96acf5e56a3b7ec79f",
+    "conclusion": "success",
+    "id": 38170742906,
+    "job_id": 114562640190,
+    "pr_head_revision": "8380b6de55dc050b5c3c5af0ef85cd631655c3a8",
+    "python_version": "3.12.13",
+    "test_failed": 0,
+    "test_passed": 142,
+    "url": "https://github.com/AG187-Lab/tessryn/actions/runs/38170742906"
+  }
+}

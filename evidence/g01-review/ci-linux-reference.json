@@ -1,0 +1,284 @@
+{
+  "block": {
+    "devices": [
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 0
+        }
+      },
+      {
+        "kind": "block_device",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 161061273600
+        }
+      },
+      {
+        "kind": "partition",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 159986466304
+        }
+      },
+      {
+        "kind": "partition",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 4194304
+        }
+      },
+      {
+        "kind": "partition",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 111149056
+        }
+      },
+      {
+        "kind": "partition",
+        "reference_os_scsi_type": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "size_bytes": {
+          "status": "available",
+          "value": 957350400
+        }
+      }
+    ],
+    "status": "available"
+  },
+  "collected_utc": "2026-10-11T20:05:54.375192+00:00",
+  "collector_sha256": "4c4bf2a62d476c54c08061d8003885dc6b1d61611e8746643b6973b2a56c27ad",
+  "cpu": {
+    "hypervisor_present": {
+      "status": "available",
+      "value": true
+    },
+    "scope": "first_logical_cpu",
+    "status": "available"
+  },
+  "diagnostics": [],
+  "evidence_kind": "linux_reference_inventory",
+  "firmware": {
+    "acpi_table_presence": {
+      "APIC": {
+        "status": "present"
+      },
+      "DMAR": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      },
+      "IVRS": {
+        "reason": "not_reported",
+        "status": "unavailable"
+      }
+    },
+    "uefi_bitness": {
+      "status": "available",
+      "value": 64
+    }
+  },
+  "measured_admission": {
+    "reason": "no_tessryn_measurement",
+    "status": "unknown"
+  },
+  "memory": {
+    "reference_os_usable_bytes": 16766414848,
+    "status": "available"
+  },
+  "omitted_identity_fields": [
+    "cpu_model_architecture_features",
+    "dmi_identity",
+    "driver_names",
+    "block_names_models",
+    "power_supply_names"
+  ],
+  "pci": {
+    "devices": [
+      {
+        "bdf": "93f9:00:02.0",
+        "class": {
+          "status": "available",
+          "value": 131072
+        },
+        "device": {
+          "status": "available",
+          "value": 4122
+        },
+        "iommu": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "revision": {
+          "status": "available",
+          "value": 128
+        },
+        "subsystem_device": {
+          "status": "available",
+          "value": 295
+        },
+        "subsystem_vendor": {
+          "status": "available",
+          "value": 5555
+        },
+        "vendor": {
+          "status": "available",
+          "value": 5555
+        }
+      },
+      {
+        "bdf": "c05b:00:00.0",
+        "class": {
+          "status": "available",
+          "value": 67586
+        },
+        "device": {
+          "status": "available",
+          "value": 169
+        },
+        "iommu": {
+          "reason": "not_reported",
+          "status": "unavailable"
+        },
+        "revision": {
+          "status": "available",
+          "value": 0
+        },
+        "subsystem_device": {
+          "status": "available",
+          "value": 0
+        },
+        "subsystem_vendor": {
+          "status": "available",
+          "value": 5140
+        },
+        "vendor": {
+          "status": "available",
+          "value": 5140
+        }
+      }
+    ],
+    "status": "available"
+  },
+  "power": {
+    "ac_supplies": [],
+    "status": "unavailable"
+  },
+  "publication_profile": "numeric_summary",
+  "schema_version": 1,
+  "support_status": "unqualified",
+  "tessryn_capabilities": {
+    "gpu_execution": {
+      "reason": "not_tested_by_reference_inventory",
+      "status": "unavailable"
+    },
+    "inference": {
+      "reason": "not_tested_by_reference_inventory",
+      "status": "unavailable"
+    },
+    "native_boot": {
+      "reason": "not_tested_by_reference_inventory",
+      "status": "unavailable"
+    }
+  }
+}

@@ -1,4 +1,8 @@
 {
+  "ci_record": {
+    "path": "evidence/g01-review/ci-verification.json",
+    "scope": "separate_virtual_linux_reference_record; local sample counts above exclude CI"
+  },
   "commands": [
     {
       "command": [
@@ -73,6 +77,7 @@
   "evidence_kind": "implementation_result",
   "host_architecture": "arm64",
   "host_os": "Darwin",
+  "manifest_updated_utc": "2026-10-11T20:07:09.721084+00:00",
   "performance_conditions": {
     "background_load": "unavailable",
     "held_out_model_workloads": "not_applicable_no_inference",
@@ -85,53 +90,73 @@
   },
   "record_files": {
     "evidence/g01-review/README.md": {
-      "bytes": 6620,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
-      "sha256": "917cff3dcac391f7d11ab157eff32420feadd12382bdf64885e8f40ee39c57cb"
+      "bytes": 8177,
+      "provenance": "original_tessryn_documentation_or_tooling_result",
+      "sha256": "8ca58274212ddd0c62b1101985f6dec7922d30416dca110be07415e27e0d6ee6"
+    },
+    "evidence/g01-review/ci-linux-reference.json": {
+      "bytes": 6483,
+      "provenance": "unmodified_numeric_linux_reference_from_github_actions",
+      "sha256": "6e287180353a9923b630ef07322e08a1c00369f103983f9f775d981c482aa49a"
+    },
+    "evidence/g01-review/ci-numeric-verification.log": {
+      "bytes": 141,
+      "provenance": "original_tessryn_numeric_verification_result",
+      "sha256": "6da3de3ac853e79d3ee2369978cfd47a418df65b2fff5f7a87073b93394be8c3"
+    },
+    "evidence/g01-review/ci-unit-tests.log": {
+      "bytes": 21837,
+      "provenance": "sanitized_original_tessryn_ci_test_result_excerpt",
+      "sha256": "2695d574bb49988050dbc63439bf16ad0cda0d5b32ff6012109a24b40440ceef"
+    },
+    "evidence/g01-review/ci-verification.json": {
+      "bytes": 2914,
+      "provenance": "original_tessryn_documentation_or_tooling_result",
+      "sha256": "d7608911511e9d9fab6d6a2e57356b46a1c56ce8d336927379cdf96e27902dd6"
     },
     "evidence/g01-review/cli-failure.log": {
       "bytes": 95,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "2c4ab65a5c4e2471db5ae22b1e3f6b11911839225e837fd7e1289485d60bc716"
     },
     "evidence/g01-review/design-validation.log": {
       "bytes": 74,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "16e328ebfba56c4bbc69459d82a60c2891fb45c927c3faaffa2b1c2d17adf2d3"
     },
     "evidence/g01-review/fixture-cli.log": {
       "bytes": 237,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "1d06edc9b4aa4d1c00e8527d3cb2a262fcc77d52a95c9551cbbf7392c714ed22"
     },
     "evidence/g01-review/identity-rejection.log": {
       "bytes": 90,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "8d51483cd3d5895a611d3be853ed6cd2f1da83b53f93728445f016483acebe8b"
     },
     "evidence/g01-review/numeric-verification.log": {
       "bytes": 141,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "f1001667e1be2ec8de146e1ba22474fdb775370550fe180d736615c047afc10b"
     },
     "evidence/g01-review/synthetic-full.json": {
       "bytes": 3765,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "7473ab050a2c853bb739498ce54a8066a5b83e4e7704c17df616871ed15e4451"
     },
     "evidence/g01-review/synthetic-public.json": {
       "bytes": 2894,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "8ad10f8af50c69b20c35a23d98c47088c5f4736cb30eac4caca9747c2a4c3c46"
     },
     "evidence/g01-review/unit-tests-python312.log": {
       "bytes": 21863,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "7c867cd4bed007289ecfba4b7d84193a6c89d977172a88b5c6715d808d57e706"
     },
     "evidence/g01-review/unit-tests-python314.log": {
       "bytes": 21863,
-      "provenance": "original_tessryn_documentation_or_synthetic_tooling_result",
+      "provenance": "original_tessryn_documentation_or_tooling_result",
       "sha256": "aaec8c9f3611d7857fb2ae299860d9ecee0a770708a084fd7af6504388e637ec"
     }
   },
@@ -161,7 +186,7 @@
     },
     "planning/platform-candidates.json": {
       "bytes": 8617,
-      "provenance": "original_tessryn_tooling_and_synthetic_fixture_source",
+      "provenance": "original_tessryn_planning_with_attributed_vendor_research",
       "sha256": "d921c43a21dc993ca1353016d181a022fe4066818b5a880c15c249d2575c1a63"
     },
     "tests/test_platform_inventory.py": {
