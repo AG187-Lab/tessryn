@@ -100,6 +100,8 @@ scratch snapshot; virtual CDs are read-only). It
 exposes no host filesystem, network, physical disk or passthrough device. Results
 bind source/build manifest, emulator, firmware, evaluator and raw log hashes.
 Verification requires two equal independent manifests and all seven boot cases.
+The checked-in [K01 evidence](../evidence/k01-verification/README.md) records a
+clean implementation build, raw case transcripts and the visual disposition.
 The physical image is booted separately with no test ports; the display capture
 retains its framebuffer for explicit visual inspection. A captured image alone
 does not automatically prove boot success.

@@ -1,6 +1,6 @@
 # Research and evidence
 
-Status: design proposal; checked 2026-10-11. Tessryn has no implemented kernel, accelerator backend, or benchmark results. Published experiments and vendor reports motivate tests; they do not establish Tessryn's performance.
+Status: research inputs checked 2026-10-11. The [K01 profile](first-kernel.md) has original-kernel CPU boot and fault-path evidence in QEMU/OVMF. Physical platforms remain unqualified; native accelerator execution and benchmark results remain unavailable. Published experiments and vendor reports motivate tests; they do not establish Tessryn's performance.
 
 ## Serving and distribution
 

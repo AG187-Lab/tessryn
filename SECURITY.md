@@ -1,6 +1,6 @@
 # Security
 
-This project is in design and implementation planning and has no supported release.
+This project is in early implementation and has no supported release. The [K01 profile](design/first-kernel.md) demonstrates original-kernel CPU boot in QEMU/OVMF; physical platforms remain unqualified.
 
 Report a suspected vulnerability privately through GitHub's **Report a vulnerability** option in this repository's Security tab. Do not include credentials, private prompts, model state or exploitable details in public issues. General design questions without sensitive details can use Discussions.
 

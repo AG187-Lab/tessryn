@@ -21,7 +21,7 @@ The implementation backlog is [planning/backlog.json](../planning/backlog.json).
 
 ## First work and critical path
 
-G01 qualifies hardware before a particular server, GPU or notebook SKU is advertised as supported. G03 establishes build and evaluation tooling independently. These are the two ready work items. G02 records the native interfaces and exact compatibility scope once those inputs are available.
+G01 qualifies hardware before a particular server, GPU or notebook SKU is advertised as supported; that work remains open in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52). G03's [build and evaluation tooling](build-and-evaluation.md) is merged for its declared fixture profile. The initial backlog marked G01 and G03 as ready; current readiness follows live issue state, prerequisites and acceptance evidence. G02 records the native interfaces and exact compatibility scope once its required inputs are available.
 
 The first product path is original kernel, native physical devices, native NVIDIA execution, native model serving, measured transport, authenticated cluster control and four-participant sharding. Work on kernel interfaces, native networking and accelerator bring-up can proceed in parallel once their dependencies are satisfied.
 

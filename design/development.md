@@ -2,14 +2,14 @@
 
 The public [Tessryn development Project](https://github.com/orgs/AG187-Lab/projects/1) coordinates work across [GitHub Issues](https://github.com/AG187-Lab/tessryn/issues). The [milestones](https://github.com/AG187-Lab/tessryn/milestones) group work into evidence gates; the [roadmap](roadmap.md) explains their exit criteria. The machine-readable [backlog](../planning/backlog.json) records logical work IDs and the initial dependency graph; the [GitHub map](../planning/github-map.json) resolves them to live resource URLs.
 
-## Start with the ready work
+## Read current work and acceptance evidence
 
-Two P0 tasks have no prerequisites and are labeled `phase:Now`:
+The initial backlog designated G01 and G03 as prerequisite-free P0 tasks with the `phase:Now` label. That planning graph does not establish their current execution state:
 
-- [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1). Establish exact hardware, firmware, native-access constraints and the recoverable laboratory profile.
-- [G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2). Establish the toolchain, build provenance and numerical/performance evaluation before accepting optimization claims.
+- [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1) remains open, with qualification preparation in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52). Exact physical hardware, native-access constraints and recovery evidence remain qualification work.
+- [G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2) is merged and closed. Its [tooling foundation](build-and-evaluation.md) provides pinned builds, provenance, bounded evaluation and evidence formats; numerical/model and performance observations remain unavailable.
 
-Select one task, take ownership in its issue and agree on the acceptance evidence. The versioned native-interface task follows these prerequisites. Initial scope is qualification and design; claiming a working driver or supported platform requires its implementation evidence.
+Select an open task using its live state, prerequisites and acceptance evidence. The versioned native-interface task follows its recorded dependencies. [K01](first-kernel.md) implements original UEFI CPU bring-up in the declared emulator profile; claiming a working driver or supported physical platform requires separate evidence.
 
 ## Track execution
 
@@ -20,7 +20,7 @@ Use **Todo**, **In Progress** and **Done** for execution state; **P0**, **P1** a
 | View | Purpose |
 | --- | --- |
 | Development board | Track execution by status across all planned work |
-| Ready to start | The two initial `phase:Now` tasks; maintain this label as work becomes ready |
+| Ready to start | Items labeled `phase:Now`; inspect live issue state and prerequisites before starting, and maintain the label as work becomes ready |
 | First product | Initial-product work, excluding `phase:Later` programs |
 | Roadmap | Unscheduled planning view; dates follow credible qualification evidence |
 
