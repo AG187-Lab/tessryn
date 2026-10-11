@@ -1,0 +1,133 @@
+{
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "unit-tests.log"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/validate_design.py"
+      ],
+      "exit_code": 0,
+      "log": "design-validation.log"
+    },
+    {
+      "command": [
+        "python3",
+        "evidence/g01-verification/reproduce_fixture.py",
+        "build/g01-fixture-evidence"
+      ],
+      "exit_code": 0,
+      "log": "fixture-cli.log"
+    }
+  ],
+  "evaluated_implementation_revision": "8e8b2cfb3cd0da7da73b82ff01032478220f87ed",
+  "evidence_kind": "implementation_result",
+  "files": {
+    "evidence/g01-verification/README.md": {
+      "bytes": 2716,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "19c5efec44d7b66a6b0ac6e4d97251f89d4312eece4b2409fc5b260125345fe2"
+    },
+    "evidence/g01-verification/cli-failure.log": {
+      "bytes": 87,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "839bfb8baec11b6e8904298a3f6f78509a9fe30b566b5c1f3f355ea36513ed98"
+    },
+    "evidence/g01-verification/design-validation.log": {
+      "bytes": 74,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "5900600d41da49beae786a0b02fb88dbbe8c76bdf9749b926ed04d6461ac4163"
+    },
+    "evidence/g01-verification/fixture-cli.log": {
+      "bytes": 237,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "1d06edc9b4aa4d1c00e8527d3cb2a262fcc77d52a95c9551cbbf7392c714ed22"
+    },
+    "evidence/g01-verification/reproduce_fixture.py": {
+      "bytes": 3612,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "a9a8628ab1f393b46e731fd4e0f474297ca7676dae72f97e92aacbe9961104a3"
+    },
+    "evidence/g01-verification/synthetic-full.json": {
+      "bytes": 3765,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "a99fc6e8dc336c877ad8dd1615ffa5b9020586fdfd9716f70307a26d1863b0e4"
+    },
+    "evidence/g01-verification/synthetic-public.json": {
+      "bytes": 2894,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "6e6c26695cc392a7ab8df86e2851f5ac6a0536d663d5ec8edb6514b3a717ee5a"
+    },
+    "evidence/g01-verification/unit-tests.log": {
+      "bytes": 2743,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "46e4ee82fe518777fc7f07b80b16b5fb1b37c92085d843b305553e272264e9cd"
+    },
+    "tests/test_platform_inventory.py": {
+      "bytes": 14788,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "49330064c5f0971ff1668c00a3714c84eceeb7c8f82a5f055feaf36b8a71df88"
+    },
+    "tools/collect_platform_inventory.py": {
+      "bytes": 17791,
+      "provenance": "original_tessryn_tooling_or_synthetic_test_evidence",
+      "sha256": "36867274affa19a8c619acad1a565660022703f8ce5101639c837fd1e4abaaee"
+    }
+  },
+  "host_architecture": "arm64",
+  "host_os": "Darwin",
+  "performance_conditions": {
+    "background_load": "unavailable",
+    "held_out_model_workloads": "not_applicable_no_inference",
+    "thermal": "unavailable"
+  },
+  "python_version": "3.14.6",
+  "recorded_utc": "2026-10-11T19:09:52.463008+00:00",
+  "sample_counts": {
+    "gpu_execution": 0,
+    "inference": 0,
+    "linux_reference_inventories_in_this_record": 0,
+    "native_boot": 0,
+    "performance": 0,
+    "rented_machines": 0,
+    "synthetic_fixture_datasets": 1
+  },
+  "schema_version": 1,
+  "synthetic_cli": {
+    "existing_output_exit_code": 2,
+    "full_exit_code": 0,
+    "numeric_summary_exit_code": 0,
+    "original_output_preserved": true,
+    "per_invocation_timeout_seconds": 10
+  },
+  "tessryn_capabilities": {
+    "gpu_execution": {
+      "reason": "no_native_experiment",
+      "status": "unavailable"
+    },
+    "inference": {
+      "reason": "no_native_experiment",
+      "status": "unavailable"
+    },
+    "native_boot": {
+      "reason": "no_native_experiment",
+      "status": "unavailable"
+    }
+  },
+  "unit_tests": {
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 18
+  }
+}

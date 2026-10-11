@@ -1,0 +1,23 @@
+test_escaping_symlink_and_fifo_rejected_without_read (test_platform_inventory.InventoryTests.test_escaping_symlink_and_fifo_rejected_without_read) ... ok
+test_extended_linux_pci_domain_and_revision_are_preserved (test_platform_inventory.InventoryTests.test_extended_linux_pci_domain_and_revision_are_preserved) ... ok
+test_identity_text_rejects_network_identifiers_and_credentials (test_platform_inventory.InventoryTests.test_identity_text_rejects_network_identifiers_and_credentials) ... ok
+test_iommu_membership_correlates_with_pci_device_and_driver (test_platform_inventory.InventoryTests.test_iommu_membership_correlates_with_pci_device_and_driver) ... ok
+test_large_cpu_file_keeps_only_first_logical_cpu (test_platform_inventory.InventoryTests.test_large_cpu_file_keeps_only_first_logical_cpu) ... ok
+test_malformed_numeric_values_and_private_text_are_unavailable (test_platform_inventory.InventoryTests.test_malformed_numeric_values_and_private_text_are_unavailable) ... ok
+test_mismatched_iommu_membership_rejected (test_platform_inventory.InventoryTests.test_mismatched_iommu_membership_rejected) ... ok
+test_nonreciprocal_iommu_group_is_rejected (test_platform_inventory.InventoryTests.test_nonreciprocal_iommu_group_is_rejected) ... ok
+test_oversized_and_non_utf8_reads_rejected (test_platform_inventory.InventoryTests.test_oversized_and_non_utf8_reads_rejected) ... ok
+test_public_summary_omits_unrecognizable_private_identity_strings (test_platform_inventory.InventoryTests.test_public_summary_omits_unrecognizable_private_identity_strings) ... ok
+test_public_whitelist_and_fixture_classification (test_platform_inventory.InventoryTests.test_public_whitelist_and_fixture_classification) ... ok
+test_real_root_cannot_claim_linux_reference_on_another_os (test_platform_inventory.InventoryTests.test_real_root_cannot_claim_linux_reference_on_another_os) ... ok
+test_record_counts_bounded (test_platform_inventory.InventoryTests.test_record_counts_bounded) ... ok
+test_replaced_file_is_not_read_as_the_validated_source (test_platform_inventory.InventoryTests.test_replaced_file_is_not_read_as_the_validated_source) ... ok
+test_sparse_root_reports_unknown_facts (test_platform_inventory.InventoryTests.test_sparse_root_reports_unknown_facts) ... ok
+test_stdout_and_no_overwrite_or_symlink_output (test_platform_inventory.InventoryTests.test_stdout_and_no_overwrite_or_symlink_output) ... ok
+test_truncated_iommu_group_cannot_appear_complete (test_platform_inventory.InventoryTests.test_truncated_iommu_group_cannot_appear_complete) ... ok
+test_uefi_acpi_and_mains (test_platform_inventory.InventoryTests.test_uefi_acpi_and_mains) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.385s
+
+OK

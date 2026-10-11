@@ -12,7 +12,8 @@ separates vendor specifications, analytical costs and missing observations.
 [Rental sources](../evidence/g01-research/rental-source-notes.md) and
 [GPU sources](../evidence/g01-research/gpu-source-notes.md) retain the research
 references. These are original summaries of public sources, not imported
-drivers or redistributed firmware.
+drivers or redistributed firmware. [Tooling verification](../evidence/g01-verification/README.md)
+retains actual synthetic CLI results, test logs and evaluated source hashes.
 
 ## Decisions and unresolved acceptance
 
