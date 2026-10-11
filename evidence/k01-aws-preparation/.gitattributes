@@ -1,5 +1,4 @@
-*.log -text -whitespace
-*.json -text
-*.jsonl -text
-*.bin -text -diff
-notices/* -text -whitespace
+* -text
+*.log -whitespace
+*.bin -diff
+notices/* -whitespace
