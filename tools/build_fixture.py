@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import struct
 import subprocess
@@ -29,6 +30,20 @@ def sha256(path: Path) -> str:
 
 def command_output(command: list[str]) -> str:
     return subprocess.check_output(command, cwd=ROOT, text=True, timeout=30).strip()
+
+
+def public_linker_version(version: str, revision: str) -> str:
+    """Normalize Rust's known Linux upstream source placeholder, never host paths."""
+    match = re.fullmatch(
+        r"LLD (\d+\.\d+\.\d+) \((https://github\.com/rust-lang/llvm-project(?:\.git)?|"
+        r"/checkout/src/llvm-project/llvm) ([0-9a-f]{40})\) \(compatible with GNU linkers\)",
+        version,
+    )
+    if match is None:
+        raise ValueError("bundled linker version has an unsupported source identity")
+    if match[3] != revision:
+        raise ValueError("bundled linker source revision does not match toolchain.lock.json")
+    return version.replace("/checkout/src/llvm-project/llvm", "https://github.com/rust-lang/llvm-project.git")
 
 
 def source_identity() -> dict:
@@ -216,6 +231,8 @@ def build(out: Path) -> dict:
     if not linker.is_file():
         raise ValueError("bundled rust-lld unavailable; use the pinned upstream toolchain")
     setup = verified_setup(lock, compiler, linker, qemu, sysroot, host)
+    linker_version = public_linker_version(command_output([str(linker), "-flavor", "gnu", "--version"]),
+                                         lock["rust"]["llvm_revision"])
     rust_flags = [
         "--edition=2024", "--crate-name=g03_probe", "--crate-type=bin",
         "--target=x86_64-unknown-none", "-Cpanic=abort", "-Copt-level=1",
@@ -288,7 +305,7 @@ def build(out: Path) -> dict:
         "schema_version": 1, "artifact_type": "test_fixture", "source": source,
         "toolchain": {
             "rustc": {"version": rust_version, "sha256": sha256(compiler)},
-            "rust_lld": {"version": command_output([str(linker), "-flavor", "gnu", "--version"]), "sha256": sha256(linker)},
+            "rust_lld": {"version": linker_version, "sha256": sha256(linker)},
             "qemu": {"version": qemu_version, "sha256": sha256(qemu)},
             "python": {"version": platform_python_version(), "sha256": sha256(Path(sys.executable).resolve())},
             "binary_target": lock["rust"]["target"], "rust_flags": rust_flags,

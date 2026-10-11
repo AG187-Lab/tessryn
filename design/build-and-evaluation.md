@@ -92,6 +92,9 @@ There are no Cargo dependencies. No device compiler or GPU target is selected.
 dirty flag, source snapshot SHA-256, actual compiler/linker/emulator/Python
 versions and binary hashes, exact Rust flags, each artifact's hash/length/role,
 binary inspection results, unavailable capabilities, and component provenance.
+The linker version replaces only a known upstream build-root placeholder with
+its canonical LLVM source URL after checking the pinned LLVM revision. Its actual
+binary hash is retained; unexpected source paths or revisions fail the build.
 Provenance includes upstream source, revision/archive hash, licenses, modified
 files, notices, build/runtime role and distribution requirements. The snapshot
 hash covers sorted Git-tracked and nonignored source filenames, file types,

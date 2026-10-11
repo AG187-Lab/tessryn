@@ -44,6 +44,25 @@ def elf_fixture(*, dynamic=False, undefined=False, debug=True):
 
 
 class FixtureTests(unittest.TestCase):
+    def test_linux_linker_source_placeholder_normalizes_to_upstream(self):
+        revision = "1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e"
+        linux = f"LLD 22.1.2 (/checkout/src/llvm-project/llvm {revision}) (compatible with GNU linkers)"
+        upstream = f"LLD 22.1.2 (https://github.com/rust-lang/llvm-project.git {revision}) (compatible with GNU linkers)"
+        self.assertEqual(build_fixture.public_linker_version(linux, revision), upstream)
+        self.assertEqual(build_fixture.public_linker_version(upstream, revision), upstream)
+
+    def test_linker_wrong_revision_and_unknown_source_paths_rejected(self):
+        revision = "1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e"
+        wrong = "0" * 40
+        with self.assertRaisesRegex(ValueError, "revision does not match"):
+            build_fixture.public_linker_version(
+                f"LLD 22.1.2 (/checkout/src/llvm-project/llvm {wrong}) (compatible with GNU linkers)", revision)
+        for source in ("/Users/private/llvm", "/opt/llvm", "/checkout/src/other/llvm",
+                       "https://example.invalid/llvm-project"):
+            with self.subTest(source=source), self.assertRaisesRegex(ValueError, "unsupported source identity"):
+                build_fixture.public_linker_version(
+                    f"LLD 22.1.2 ({source} {revision}) (compatible with GNU linkers)", revision)
+
     def test_rom_contracts(self):
         image = make_rom()
         self.assertEqual(len(image), 65536)
