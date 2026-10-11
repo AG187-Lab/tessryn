@@ -82,7 +82,7 @@ def build(out: Path) -> dict:
     flags = ["--edition=2024", "--crate-name=tessryn_kernel", "--crate-type=bin",
              "--target=x86_64-unknown-uefi", "-Cpanic=abort", "-Copt-level=1", "-Ccodegen-units=1",
              "-Cdebuginfo=2", "-Cforce-frame-pointers=yes", "-Cno-redzone=yes", "-Cembed-bitcode=no",
-             "-Clink-arg=/timestamp:0", "-Clink-arg=/debug:dwarf"]
+             "-Clink-arg=/timestamp:0", "-Clink-arg=/debug:none"]
     artifacts = []
     for case in (*CASES, "deployment"):
         directory = out / case

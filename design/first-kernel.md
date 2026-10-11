@@ -46,8 +46,10 @@ firmware and Rust notices, and uses a separate `build/uefi` sysroot so G03's
 freestanding fixture toolchain remains unchanged. Third-party firmware stays
 inside ignored build directories and CI artifacts contain only original kernel
 media, build logs/manifests and controlled results.
-The linker also emits local PDB files containing build-machine metadata. They
-stay in ignored build directories and are excluded by CI's publication allowlist.
+Final linking disables PDB/CodeView output: its path-dependent GUID otherwise
+changes the EFI bytes between independent output directories. Kernel images
+retain runtime panic and exception diagnostics; a kernel debugger symbol profile
+remains future work. CI publishes only the explicit artifact allowlist.
 
 ## Boot contract
 
