@@ -1,0 +1,33 @@
+name: Implementation task
+description: A bounded engineering task with dependencies and acceptance evidence.
+title: "[Task] "
+labels: ["type:implementation"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What concrete behavior or artifact will this deliver?
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies and design
+      description: Link prerequisite issues and relevant design documents. Add native blocked-by relationships too.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Use checkboxes for observable results, including ownership, failure and isolation where applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Required evidence
+      description: Tests, exact hardware profile, traces, measurements or review artifacts.
+    validations:
+      required: true

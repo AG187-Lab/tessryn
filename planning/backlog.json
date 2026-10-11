@@ -1,0 +1,993 @@
+{
+  "milestones": [
+    {
+      "key": "M0",
+      "title": "Platform qualification and contracts",
+      "description": "Qualify exact initial server/notebook profiles; record hardware, firmware and artifact constraints; establish versioned native interfaces and reproducible evidence before implementation claims."
+    },
+    {
+      "key": "M1",
+      "title": "Original kernel and native services",
+      "description": "Boot the original x86-64 kernel, implement isolation, scheduling and registered asynchronous channels, and run native services through a documented SDK."
+    },
+    {
+      "key": "M2",
+      "title": "Native devices and installation",
+      "description": "Implement native physical-device support, storage, networking, secure channels and installation; qualify the exact wired mains-powered notebook independently."
+    },
+    {
+      "key": "M3",
+      "title": "Native CUDA execution and inference",
+      "description": "Initialize selected NVIDIA hardware, execute exact-target device-only cubins, implement the required CUDA Driver API subset, and qualify one model architecture/precision with native execution."
+    },
+    {
+      "key": "M4",
+      "title": "Native transport and cluster control",
+      "description": "Qualify an independently implemented pinned Homa version, bounded transfers and collectives; implement authenticated membership, three-node quorum, measured admission and native model/task APIs."
+    },
+    {
+      "key": "M5",
+      "title": "Four-device distributed inference product",
+      "description": "Demonstrate three stable workers plus one native-OS notebook executing resident shards, independently feasible prefill/decode handoff, tenant isolation, failure semantics, signed recovery and measured service results."
+    },
+    {
+      "key": "M6",
+      "title": "Cloud and geographic operation",
+      "description": "Qualify named cloud profiles separately for native boot, permitted networking and accelerator execution; implement regional locality and explicitly measured remote work/state movement."
+    },
+    {
+      "key": "M7",
+      "title": "Bounded recursive software improvement",
+      "description": "Generate and evaluate compute/runtime/driver/kernel candidates under independent evaluation, promotion and recovery authority; preserve provenance and held-out evidence."
+    },
+    {
+      "key": "M8",
+      "title": "AArch64 and native Apple M5",
+      "description": "Port the original core, qualify exact Apple M5 platform/boot, implement independent Apple GPU execution and inference, and separately qualify native Thunderbolt transport."
+    },
+    {
+      "key": "M9",
+      "title": "Additional backend and compatibility programs",
+      "description": "Individually qualify broader CUDA ecosystem compatibility, direct GPU/NIC DMA, and an optional native AMD GPU backend without expanding initial support claims."
+    }
+  ],
+  "issues": [
+    {
+      "key": "G01",
+      "title": "Qualify the first stable-node and native notebook platforms",
+      "milestone": "M0",
+      "labels": [
+        "area:hardware",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Now",
+      "body": "## Deliverable\n\nProduce the initial hardware qualification record before selecting advertised supported SKUs. Identify candidate modern x86-64 stable nodes and an exact wired mains-powered NVIDIA notebook, plus a recoverable laboratory target.\n\n## Acceptance\n\n- [ ] Record UEFI/CPU, PCIe topology, IOMMU, interrupts, storage, NIC, GPU device/ISA/firmware and notebook ACPI power prerequisites.\n- [ ] Identify firmware/artifact acquisition and redistribution constraints; distinguish documented interfaces from experimental assumptions.\n- [ ] Select exact initial profiles and device/compiler targets only after the critical native-access questions have evidence.\n- [ ] Record support status per profile; do not treat architecture family or nameplate memory as proof of execution.\n\n## Evidence to attach\n\nAttach device inventories, source links, firmware versions, topology diagrams, memory estimates and the initial supported-profile decision.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n",
+      "depends_on": []
+    },
+    {
+      "key": "G02",
+      "title": "Specify versioned native interfaces and compatibility contracts",
+      "milestone": "M0",
+      "labels": [
+        "area:architecture",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nTurn the native ABI proposal into reviewable kernel/service, inference-state and transport contracts. Resolve proposed language/toolchain choices explicitly rather than treating them as implemented.\n\n## Acceptance\n\n- [ ] Define capabilities, domain/region lifetimes, queue layouts, ownership generations, budgets and completion/fault semantics.\n- [ ] Define model/shard/operator/precision/state descriptors and supported conversion or rejection behavior.\n- [ ] Pin the first Homa version and required CUDA Driver API subset; list non-goals and unsupported calls.\n- [ ] Record the Rust core/small assembly/C ABI proposal as accepted or revised with reproducible target/toolchain evidence.\n\n## Evidence to attach\n\nAttach interface layouts, conformance test vectors, threat assumptions, compatibility matrix and decision updates.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Proposed language/toolchain decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0002-language-and-toolchain.md)\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n",
+      "depends_on": [
+        "G01",
+        "G03"
+      ]
+    },
+    {
+      "key": "G03",
+      "title": "Establish reproducible builds and independent evaluation tooling",
+      "milestone": "M0",
+      "labels": [
+        "area:toolchain",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Now",
+      "body": "## Deliverable\n\nCreate a reproducible build and evaluation workflow for original kernel images, native services and exact-target device artifacts. Keep test tooling outside candidate modification authority.\n\n## Acceptance\n\n- [ ] Record toolchain versions, artifact hashes, source provenance and emulator execution commands.\n- [ ] Provide an emulator harness and test-result format that distinguishes design assumptions, implementation results and measurements.\n- [ ] Define numerical references, held-out workload handling and preregistered performance methodology with sample counts and thermal/load conditions.\n- [ ] Do not fabricate boot, GPU or performance evidence; report missing capabilities explicitly.\n\n## Evidence to attach\n\nAttach clean build reproductions, harness examples, evidence schema and validation of the tooling itself.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n- [Numerical accuracy reference](https://docs.pytorch.org/docs/stable/notes/numerical_accuracy.html)\n",
+      "depends_on": []
+    },
+    {
+      "key": "K01",
+      "title": "Implement original x86-64 UEFI boot and exception handling",
+      "milestone": "M1",
+      "labels": [
+        "area:kernel",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement the original kernel entry, UEFI memory handoff, early diagnostics and exception/fault paths.\n\n## Acceptance\n\n- [ ] Boot the original image in the declared emulator without an existing deployment kernel.\n- [ ] Validate memory-map ownership and transition from firmware services.\n- [ ] Exercise traps, faults, panic diagnostics and controlled reboot with recorded expected behavior.\n\n## Evidence to attach\n\nAttach reproducible emulator transcripts, image hashes and exception/fault cases.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n",
+      "depends_on": [
+        "G02",
+        "G03"
+      ]
+    },
+    {
+      "key": "K02",
+      "title": "Implement address spaces, capabilities and owned memory",
+      "milestone": "M1",
+      "labels": [
+        "area:kernel",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement isolation domains, capability namespaces and physical/virtual region ownership.\n\n## Acceptance\n\n- [ ] Prove through negative tests that domains cannot map, read or write unauthorized regions.\n- [ ] Implement allocation, delegation, sharing, bounds checking, generation checking and revocation.\n- [ ] Account committed/reserved memory and prevent reuse while authorized work still owns a region.\n\n## Evidence to attach\n\nAttach mapping/capability tests, fault traces and ownership/lifetime invariants.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n",
+      "depends_on": [
+        "K01"
+      ]
+    },
+    {
+      "key": "K03",
+      "title": "Implement SMP scheduling, clocks and execution budgets",
+      "milestone": "M1",
+      "labels": [
+        "area:kernel",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement multi-core task execution, monotonic time, accounting and bounded CPU reservations.\n\n## Acceptance\n\n- [ ] Run isolated tasks on multiple cores with accurate accounting under contention.\n- [ ] Exercise budget exhaustion, deadlines, task failure and runnable/blocked transitions.\n- [ ] Document enforcement limits and clock/lease assumptions without implying universal GPU or memory-bandwidth preemption.\n\n## Evidence to attach\n\nAttach scheduler timelines, budget tests, cross-core traces and timing assumptions.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "K02"
+      ]
+    },
+    {
+      "key": "K04",
+      "title": "Implement asynchronous channels and registered-buffer queues",
+      "milestone": "M1",
+      "labels": [
+        "area:kernel",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement bounded submission/completion channels and registered-region transfer between native domains.\n\n## Acceptance\n\n- [ ] Validate explicit descriptor size/version, capability rights, bounds and generation.\n- [ ] Exercise wraparound, backpressure, producer/consumer ordering, faulted peers and teardown.\n- [ ] Separate submission acceptance, execution completion, cancellation and safe memory reuse.\n\n## Evidence to attach\n\nAttach queue-ordering tests, stress traces, descriptor fuzz cases and lifetime checks.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "K02",
+        "K03"
+      ]
+    },
+    {
+      "key": "K05",
+      "title": "Implement native service bootstrap, SDK and diagnostics",
+      "milestone": "M1",
+      "labels": [
+        "area:kernel",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nStart native services through bounded kernel interfaces and publish a minimal native SDK.\n\n## Acceptance\n\n- [ ] Boot and restart isolated services without another deployment kernel.\n- [ ] Provide SDK examples for domains, capabilities, queues, faults and resource accounting.\n- [ ] Record service failure and diagnostics without granting model/network parsers blanket privileged access.\n\n## Evidence to attach\n\nAttach native SDK examples, service launch/recovery transcripts and interface conformance results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n",
+      "depends_on": [
+        "K04"
+      ]
+    },
+    {
+      "key": "IO01",
+      "title": "Implement PCI, ACPI, interrupts and DMA isolation",
+      "milestone": "M2",
+      "labels": [
+        "area:hardware",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement native platform discovery and device authority for the qualified physical profiles.\n\n## Acceptance\n\n- [ ] Enumerate selected PCI devices and ACPI/platform resources with validated mappings.\n- [ ] Configure interrupts and capability-scoped IOMMU/DMA regions.\n- [ ] Reject or contain unauthorized DMA on qualified hardware; record required reset/power behavior.\n\n## Evidence to attach\n\nAttach exact-platform inventories, interrupt traces, DMA negative tests and mapping/reset evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n",
+      "depends_on": [
+        "G01",
+        "K02",
+        "K04"
+      ]
+    },
+    {
+      "key": "IO02",
+      "title": "Implement native storage, persistence and installation",
+      "milestone": "M2",
+      "labels": [
+        "area:storage",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement selected native storage support, a persistent journal/object store and an authorized original-image installation path.\n\n## Acceptance\n\n- [ ] Install and boot the original image on the selected storage profile.\n- [ ] Recover declared state after interrupted writes and journal replay.\n- [ ] Use versioned images and recoverable installation metadata; distinguish production installation authority from untrusted candidate limits.\n\n## Evidence to attach\n\nAttach installation/reboot reproductions, storage integrity tests and interrupted-write/recovery records.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n",
+      "depends_on": [
+        "IO01",
+        "K05"
+      ]
+    },
+    {
+      "key": "IO03",
+      "title": "Implement native NIC and the required IP stack",
+      "milestone": "M2",
+      "labels": [
+        "area:network",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement the qualified NIC plus addressing, packet handling and the UDP/TCP capabilities needed by the native services.\n\n## Acceptance\n\n- [ ] Transmit and receive packets through the original NIC driver.\n- [ ] Validate checksums, MTU/fragmentation boundaries, timers, loss/reordering behavior and bounded buffers.\n- [ ] Document addressing/route/bootstrap configuration and avoid dependence on an existing host network stack.\n\n## Evidence to attach\n\nAttach packet captures, driver queue traces, integrity tests and network stress reproductions.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n",
+      "depends_on": [
+        "IO01",
+        "K04"
+      ]
+    },
+    {
+      "key": "IO04",
+      "title": "Implement authenticated encrypted service channels",
+      "milestone": "M2",
+      "labels": [
+        "area:security",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement the security envelope for enrollment, artifacts, prompts, activations and model state using an explicitly reviewed standards/provider choice.\n\n## Acceptance\n\n- [ ] Authenticate peers and reject invalid credentials, replay and altered data.\n- [ ] Scope keys/capabilities to intended tenants and services; exercise rotation and revocation.\n- [ ] Measure cipher/copy/buffer overhead and document the threat model and source/artifact provenance.\n\n## Evidence to attach\n\nAttach protocol/security review, negative test vectors, rotation tests and measured overhead.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n",
+      "depends_on": [
+        "IO03",
+        "K05",
+        "G02"
+      ]
+    },
+    {
+      "key": "IO05",
+      "title": "Qualify original-OS notebook boot and device power initialization",
+      "milestone": "M2",
+      "labels": [
+        "area:hardware",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nQualify one exact wired mains-powered notebook as a native Tessryn platform.\n\n## Acceptance\n\n- [ ] Boot the installed original OS and initialize its required PCIe/ACPI/power topology.\n- [ ] Establish native GPU prerequisites and wired NIC operation; desktop-family similarity is not sufficient evidence.\n- [ ] Declare unsupported peripherals/power states and exercise planned drain plus abrupt-loss detection prerequisites.\n\n## Evidence to attach\n\nAttach exact notebook/firmware inventory, boot and power/PCIe traces, network results and sustained thermal observations.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n",
+      "depends_on": [
+        "G01",
+        "IO01",
+        "IO02",
+        "IO03"
+      ]
+    },
+    {
+      "key": "GPU01",
+      "title": "Initialize the selected NVIDIA GPU and firmware natively",
+      "milestone": "M3",
+      "labels": [
+        "area:accelerator",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement native device control for the exact NVIDIA profile, including address spaces, firmware/GSP and execution queues.\n\n## Acceptance\n\n- [ ] Reach documented GPU/firmware initialization states without another deployment kernel or its accelerator driver.\n- [ ] Validate BAR, GPU MMU and queue ownership with exact device/firmware identities.\n- [ ] Exercise fault handling and supported reset/recovery; reject mismatched profiles.\n\n## Evidence to attach\n\nAttach native initialization traces, mapping/queue records and fault/recovery evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "G01",
+        "IO01"
+      ]
+    },
+    {
+      "key": "GPU02",
+      "title": "Load and execute exact-target device-only cubins",
+      "milestone": "M3",
+      "labels": [
+        "area:accelerator",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nCompile device-only CUDA artifacts on a development machine and execute them through the native driver.\n\n## Acceptance\n\n- [ ] Execute vector operations and verify output bytes against a reference.\n- [ ] Validate host/device copies, ordering, events and artifact metadata.\n- [ ] Reject incompatible ISA/firmware/artifacts and report the actual DMA/copy path.\n\n## Evidence to attach\n\nAttach nvcc commands, cubin hashes/targets, native launch traces and byte-integrity results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [NVCC compiler documentation](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "GPU01",
+        "K04"
+      ]
+    },
+    {
+      "key": "GPU03",
+      "title": "Implement the CUDA Driver API subset required by inference",
+      "milestone": "M3",
+      "labels": [
+        "area:accelerator",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nExpose a documented cu* subset to source-compiled native inference services.\n\n## Acceptance\n\n- [ ] Conform discovery, contexts, allocation/copies, modules/functions, launches, streams, events and synchronization.\n- [ ] Return explicit unsupported/invalid-state errors for unimplemented entry points.\n- [ ] Publish source/ABI compatibility boundaries without claiming full stock Runtime/library/application support.\n\n## Evidence to attach\n\nAttach per-call conformance tests, supported-entry-point manifest and native service integration evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [NVCC compiler documentation](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html)\n",
+      "depends_on": [
+        "GPU02",
+        "K05"
+      ]
+    },
+    {
+      "key": "INF01",
+      "title": "Implement model operators and numerical qualification",
+      "milestone": "M3",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement the selected architecture's native operators for one declared precision/quantization contract.\n\n## Acceptance\n\n- [ ] Qualify GEMM/GEMV, attention, normalization, position operations, quantization and sampling as required by the selected model.\n- [ ] Pass declared operator tolerances and teacher-forced logit/probability comparisons.\n- [ ] Record held-out quality and deterministic conditions; do not use universal greedy-token equality as the quality gate.\n\n## Evidence to attach\n\nAttach kernel artifacts, operator tests, numerical differences, quality results and unsupported-shape/format cases.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Numerical accuracy reference](https://docs.pytorch.org/docs/stable/notes/numerical_accuracy.html)\n",
+      "depends_on": [
+        "GPU03",
+        "G02",
+        "G03"
+      ]
+    },
+    {
+      "key": "INF02",
+      "title": "Implement native model loading, tokenization and prepared execution",
+      "milestone": "M3",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement complete native inference with reusable registered buffers and prepared operator/transfer graphs.\n\n## Acceptance\n\n- [ ] Load verified model/tokenizer artifacts and complete end-to-end inference.\n- [ ] Account weights, quantization metadata, state, workspace, firmware, queues and output growth before execution.\n- [ ] Exercise prepared graph replay, state lifetimes and backend faults without deployment host-driver dependencies.\n\n## Evidence to attach\n\nAttach complete inference reproductions, allocation ledgers, graph traces and cold/warm execution results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n",
+      "depends_on": [
+        "INF01",
+        "IO02",
+        "K05"
+      ]
+    },
+    {
+      "key": "NET01",
+      "title": "Independently implement and qualify a pinned Homa version",
+      "milestone": "M4",
+      "labels": [
+        "area:network",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement the selected Homa wire behavior from its pinned contract rather than mixing versions.\n\n## Acceptance\n\n- [ ] Pass independent wire interoperability for scheduling/grants, priorities and message limits.\n- [ ] Exercise loss, reordering, retransmission, cancellation and bounded outstanding work.\n- [ ] Distinguish logical region, transport-message and packet-MTU sizes; trace actual switch/queue behavior where claimed.\n\n## Evidence to attach\n\nAttach version pin, packet captures, interoperability cases and failure/window measurements.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [Homa 2018 paper](https://people.csail.mit.edu/alizadeh/papers/homa-sigcomm18.pdf)\n- [Pinned contemporary draft](https://github.com/johnousterhout/homa-rfc/blob/df4bc0d7a1d5c30292e47f474a85c3669dce8612/draft-ousterhout-tsvwg-homa-00.md)\n",
+      "depends_on": [
+        "IO03",
+        "G02",
+        "G03"
+      ]
+    },
+    {
+      "key": "NET02",
+      "title": "Implement bounded authenticated device-state transfers",
+      "milestone": "M4",
+      "labels": [
+        "area:network",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement reusable GPU/host/NIC transfer schedules with explicit copies, fences and parent/tenant budgets.\n\n## Acceptance\n\n- [ ] Verify unchanged-byte integrity and state ownership across the complete device-to-device path.\n- [ ] Overlap bounded outstanding messages, grants, encryption and copies where supported.\n- [ ] Measure cold/warm completion, buffer headroom and competing traffic; do not assume peer DMA or one serialized RTT per chunk.\n\n## Evidence to attach\n\nAttach full-path traces, byte counts, encryption/copy timings and loss/cancellation tests.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [NVIDIA GPUDirect RDMA documentation](https://docs.nvidia.com/cuda/gpudirect-rdma/)\n",
+      "depends_on": [
+        "NET01",
+        "IO04",
+        "GPU02",
+        "K04"
+      ]
+    },
+    {
+      "key": "NET03",
+      "title": "Implement and benchmark native arithmetic collectives",
+      "milestone": "M4",
+      "labels": [
+        "area:network",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement qualified collective arithmetic and topology schedules independently of transport.\n\n## Acceptance\n\n- [ ] Validate reduction/all-to-all correctness for supported shapes and precisions.\n- [ ] Measure actual ring/tree/star completion distributions and device/copy costs where applicable.\n- [ ] Record feasibility and speed results without substituting a toy ring inequality for measured admission.\n\n## Evidence to attach\n\nAttach collective correctness vectors, topology traces and reproducible full-path comparisons.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [TPI-LLM research](https://arxiv.org/abs/2410.00531)\n",
+      "depends_on": [
+        "NET02",
+        "INF01"
+      ]
+    },
+    {
+      "key": "CL01",
+      "title": "Implement authenticated enrollment and automatic worker discovery",
+      "milestone": "M4",
+      "labels": [
+        "area:cluster",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nEnroll owner-approved workers from provisioned cluster identities and bootstrap addresses.\n\n## Acceptance\n\n- [ ] Fresh provisioned workers join and advertise resources without per-task manual configuration.\n- [ ] Unauthorized/expired/replayed enrollment fails and revocation propagates.\n- [ ] Keep identity membership distinct from admission to any model shard group.\n\n## Evidence to attach\n\nAttach multi-node enrollment transcripts, credential negative tests and membership recovery records.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n",
+      "depends_on": [
+        "IO04",
+        "IO02"
+      ]
+    },
+    {
+      "key": "CL02",
+      "title": "Implement quorum desired state, leadership and placement fencing",
+      "milestone": "M4",
+      "labels": [
+        "area:cluster",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement a persistent three-stable-node control quorum and desired-state reconciliation outside the per-token path.\n\n## Acceptance\n\n- [ ] Survive one control-node loss with one authorized leadership/placement history.\n- [ ] Recover committed state across restarts and exercise partitions, stale leaders and term/epoch changes.\n- [ ] Keep ordinary token execution off global consensus and distinguish control persistence from model-state recovery.\n\n## Evidence to attach\n\nAttach quorum/partition tests, journal reproductions and placement-epoch traces.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [State ownership and recovery](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0007-state-ownership-and-recovery.md)\n",
+      "depends_on": [
+        "CL01",
+        "IO02",
+        "K03"
+      ]
+    },
+    {
+      "key": "CL03",
+      "title": "Profile usable memory, sustained compute and actual links",
+      "milestone": "M4",
+      "labels": [
+        "area:cluster",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nProduce expiring worker and topology profiles for actual model shapes, contexts and batch sizes.\n\n## Acceptance\n\n- [ ] Measure complete usable memory and reserves instead of nameplate capacity.\n- [ ] Record sustained prefill/decode, power/thermal state and availability on desktop/notebook profiles.\n- [ ] Measure small-message, bulk and supported collective distributions under competing traffic.\n\n## Evidence to attach\n\nAttach profile schema, sustained runs, device/link distributions and profile expiry/requalification behavior.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Kafila heterogeneous-device research](https://arxiv.org/abs/2609.34045)\n",
+      "depends_on": [
+        "GPU03",
+        "NET02",
+        "IO05"
+      ]
+    },
+    {
+      "key": "CL04",
+      "title": "Implement memory admission and topology-aware placement",
+      "milestone": "M4",
+      "labels": [
+        "area:cluster",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nSelect feasible model/task groups from fresh profiles and complete resource reservations.\n\n## Acceptance\n\n- [ ] Prevent overlapping placement overcommit and reserve declared state/output growth.\n- [ ] Partition by measured stage/link costs; qualify formats/operators and reject unsupported combinations.\n- [ ] Report capacity, latency and goodput objectives separately with explicit infeasibility outcomes.\n\n## Evidence to attach\n\nAttach admission ledgers, placement predictions versus results, degraded-profile tests and rejected-plan evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Kafila heterogeneous-device research](https://arxiv.org/abs/2609.34045)\n",
+      "depends_on": [
+        "CL02",
+        "CL03",
+        "INF02"
+      ]
+    },
+    {
+      "key": "CL05",
+      "title": "Implement native network model API, streams and quotas",
+      "milestone": "M4",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nExpose authenticated inference requests and streamed responses through native OS services.\n\n## Acceptance\n\n- [ ] Clients submit qualified requests and receive bounded streams with stable identity and token positions.\n- [ ] Enforce tenant/request quotas, output/context limits and explicit errors.\n- [ ] Specify cancellation receipt, output fencing and reclamation separately; exercise malformed and unauthorized clients.\n\n## Evidence to attach\n\nAttach API contract, client reproductions, stream/error cases and quota tests.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n",
+      "depends_on": [
+        "CL04",
+        "INF02",
+        "IO04"
+      ]
+    },
+    {
+      "key": "AGT01",
+      "title": "Implement native bounded agent tasks and capability-scoped work",
+      "milestone": "M4",
+      "labels": [
+        "area:agents",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement native task objects for agent workflows, child work, model calls and authorized tool/service execution.\n\n## Acceptance\n\n- [ ] Run fan-out/join workflows with parent-accounted budgets and event streams.\n- [ ] Limit tools/service access through delegated capabilities; denial and child failure remain isolated.\n- [ ] Propagate cancellation/deadlines and persist declared checkpoints without placing prompt/model policy in the privileged core.\n\n## Evidence to attach\n\nAttach native workflow examples, capability-denial tests, budget/cancellation traces and checkpoint recovery cases.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n",
+      "depends_on": [
+        "K05",
+        "K02",
+        "IO02",
+        "CL05"
+      ]
+    },
+    {
+      "key": "DIST01",
+      "title": "Implement resident pipeline model sharding",
+      "milestone": "M5",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nExecute contiguous model stages with resident weights and local per-layer state.\n\n## Acceptance\n\n- [ ] Every active stage executes its assigned layers and transfers verified boundary activations.\n- [ ] Preserve local per-layer KV/recurrent state during normal token execution.\n- [ ] Pass cross-stage numerical checks and account state/workspace/transfer growth.\n\n## Evidence to attach\n\nAttach stage descriptors, activation traces, numerical results and per-node memory ledgers.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [State ownership and recovery](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0007-state-ownership-and-recovery.md)\n- [Kafila heterogeneous-device research](https://arxiv.org/abs/2609.34045)\n",
+      "depends_on": [
+        "CL04",
+        "NET02",
+        "INF02"
+      ]
+    },
+    {
+      "key": "DIST02",
+      "title": "Qualify measured tensor and hybrid model placements",
+      "milestone": "M5",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Next",
+      "body": "## Deliverable\n\nCompare feasible tensor and hybrid placements against the pipeline implementation.\n\n## Acceptance\n\n- [ ] Use qualified operators, device targets and actual collective algorithms.\n- [ ] Report per-request latency and concurrent goodput separately under declared conditions.\n- [ ] Promote a plan only where measured results justify it; document correct rejection of infeasible or slower plans.\n\n## Evidence to attach\n\nAttach placement feasibility, collective/compute traces and equal-condition comparisons.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [TPI-LLM research](https://arxiv.org/abs/2410.00531)\n- [Kafila heterogeneous-device research](https://arxiv.org/abs/2609.34045)\n",
+      "depends_on": [
+        "DIST01",
+        "NET03"
+      ]
+    },
+    {
+      "key": "DIST03",
+      "title": "Implement transactional prefill/decode group handoff",
+      "milestone": "M5",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nTransfer required compatible state between independently feasible prefill and decode placements.\n\n## Acceptance\n\n- [ ] Reserve every destination shard and validate complete model/layout/precision identity.\n- [ ] Verify transfer, commit group ownership/epoch, fence stale source output and release source resources in declared order.\n- [ ] Exercise partial transfer, retry and cancellation without double-counting memory; use a smaller checkpoint if necessary.\n\n## Evidence to attach\n\nAttach dual-group reservation ledgers, state/epoch traces, byte checks and colocated-versus-disaggregated results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [State ownership and recovery](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0007-state-ownership-and-recovery.md)\n",
+      "depends_on": [
+        "DIST01",
+        "CL04",
+        "NET02"
+      ]
+    },
+    {
+      "key": "DIST04",
+      "title": "Implement planned drain, cancellation and conditional recovery",
+      "milestone": "M5",
+      "labels": [
+        "area:cluster",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement failure handling for notebook departure, worker faults, link degradation and coordinator changes.\n\n## Acceptance\n\n- [ ] Fence stale/mixed-placement output and define committed token replay/deduplication.\n- [ ] Resume only with valid state/reconstruction and enough surviving or replacement capacity.\n- [ ] Return explicit capacity/partial-response outcomes otherwise; measure cancellation milestones and planned versus abrupt departure.\n\n## Evidence to attach\n\nAttach fault-injection traces, client stream histories, capacity checks and measured recovery/cancellation results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [State ownership and recovery](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0007-state-ownership-and-recovery.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Fault-tolerant distributed inference research](https://arxiv.org/abs/2312.08361)\n",
+      "depends_on": [
+        "DIST01",
+        "DIST03",
+        "CL02",
+        "CL05"
+      ]
+    },
+    {
+      "key": "DIST05",
+      "title": "Verify cross-tenant model-state and buffer isolation",
+      "milestone": "M5",
+      "labels": [
+        "area:security",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nTest native and distributed authority boundaries independently of model-output correctness.\n\n## Acceptance\n\n- [ ] Reject cross-client region access, cache identity confusion and unauthorized buffer reuse.\n- [ ] Validate malformed state descriptors, ownership generations and transfer authority.\n- [ ] Exercise cleanup/revocation after faults and declare the trusted-worker privacy boundary.\n\n## Evidence to attach\n\nAttach negative security tests, descriptor fuzzing, lifetime traces and tenant/cache policy evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n",
+      "depends_on": [
+        "CL05",
+        "DIST01",
+        "K02",
+        "GPU03",
+        "NET02"
+      ]
+    },
+    {
+      "key": "REL01",
+      "title": "Implement signed image updates and known-good recovery",
+      "milestone": "M5",
+      "labels": [
+        "area:release",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nImplement verified image promotion, node drain and recoverable update activation.\n\n## Acceptance\n\n- [ ] Reject altered/unauthorized images and keep signing authority outside candidate control.\n- [ ] Survive interrupted installation/activation and boot the last known-good version.\n- [ ] Exercise update drain with conditional inference recovery and preserve audit/build provenance.\n\n## Evidence to attach\n\nAttach update images/manifests, interrupted-update drills, signature tests and recovery transcripts.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n",
+      "depends_on": [
+        "IO02",
+        "CL02",
+        "DIST04"
+      ]
+    },
+    {
+      "key": "DEMO01",
+      "title": "Publish the positive four-device notebook-shard product evidence",
+      "milestone": "M5",
+      "labels": [
+        "area:benchmark",
+        "type:implementation"
+      ],
+      "priority": "P0",
+      "phase": "Next",
+      "body": "## Deliverable\n\nDemonstrate the complete original OS on three stable nodes plus one exact wired mains-powered notebook, all executing resident shards.\n\n## Acceptance\n\n- [ ] Prove native boot and accelerator execution on all four, real notebook layer contribution, Homa activation traffic and complete memory accounting.\n- [ ] Choose a model exceeding each worker's realistic admitted local capacity while fitting the group with headroom; publish physical/admitted capacities.\n- [ ] Register numeric latency/goodput/cancellation targets and load/context/cache/thermal conditions before execution; publish sample counts and distributions.\n- [ ] Publish numerical/held-out quality, failure/isolation/update results and separate capacity, single-request latency and concurrent goodput.\n- [ ] Compare feasible smaller groups, placement algorithms and transports separately; record a tuned same-hardware reference where feasible.\n\n## Evidence to attach\n\nAttach one reproducible acceptance report with raw measurements, exact profiles/artifacts, traces and explicit passed/failed support claims.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n",
+      "depends_on": [
+        "IO05",
+        "DIST01",
+        "DIST02",
+        "DIST03",
+        "DIST04",
+        "DIST05",
+        "REL01",
+        "AGT01",
+        "G03"
+      ]
+    },
+    {
+      "key": "CLOUD01",
+      "title": "Qualify an original boot image on a selected cloud VM profile",
+      "milestone": "M6",
+      "labels": [
+        "area:cloud",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement needed native virtual-device support and install/boot Tessryn on a named cloud VM profile.\n\n## Acceptance\n\n- [ ] Record provider/profile boot mode, virtual PCI/storage/NIC, image format and artifact identity.\n- [ ] Boot the original kernel with persistence and native diagnostics, without an existing deployment kernel.\n- [ ] Publish boot support separately from cloud GPU/network-performance qualification.\n\n## Evidence to attach\n\nAttach image-registration/boot records, native virtual-device traces and persistence/reboot results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n",
+      "depends_on": [
+        "IO02",
+        "K01",
+        "K05",
+        "G01"
+      ]
+    },
+    {
+      "key": "CLOUD02",
+      "title": "Implement the selected cloud NIC and permitted transport adapter",
+      "milestone": "M6",
+      "labels": [
+        "area:cloud",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement and qualify native cloud networking and an explicit supported transport/encapsulation.\n\n## Acceptance\n\n- [ ] Pass real provider path, addressing, NAT/MTU, authentication and encryption tests.\n- [ ] Exercise bounded transfer, cluster enrollment and control traffic without assuming raw Homa or switch priorities.\n- [ ] Measure gateway/encapsulation/copy overhead and document interoperability.\n\n## Evidence to attach\n\nAttach cloud captures, exact NIC/profile support, cross-path tests and completion distributions.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n",
+      "depends_on": [
+        "CLOUD01",
+        "IO04",
+        "CL01",
+        "CL02"
+      ]
+    },
+    {
+      "key": "CLOUD03",
+      "title": "Qualify native NVIDIA execution on a cloud accelerator profile",
+      "milestone": "M6",
+      "labels": [
+        "area:cloud",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nBring up the exact cloud GPU/firmware/device-exposure profile and qualify native inference.\n\n## Acceptance\n\n- [ ] Verify actual GPU, MMU/DMA, firmware and reset capabilities rather than inferring from VM boot.\n- [ ] Execute required cubins and complete inference under the native API subset.\n- [ ] Publish numerical, resource and performance results separately from physical-server results.\n\n## Evidence to attach\n\nAttach cloud accelerator inventory, native launch/driver traces, inference results and capability limitations.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n",
+      "depends_on": [
+        "CLOUD02",
+        "GPU03",
+        "INF02"
+      ]
+    },
+    {
+      "key": "GEO01",
+      "title": "Implement regional locality and selective remote execution",
+      "milestone": "M6",
+      "labels": [
+        "area:cluster",
+        "type:implementation"
+      ],
+      "priority": "P2",
+      "phase": "Later",
+      "body": "## Deliverable\n\nRoute independent tasks and selectively offload state/work based on measured regional costs.\n\n## Acceptance\n\n- [ ] Keep latency-sensitive sessions/state local unless an end-to-end comparison supports movement.\n- [ ] Admit remote work only with qualified formats, destination reserves, transport and recovery budgets.\n- [ ] Compare completion latency/goodput, bytes and failure outcomes against regional execution.\n\n## Evidence to attach\n\nAttach regional topology/cost profiles, paired execution results and fault/recovery evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [State ownership and recovery](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0007-state-ownership-and-recovery.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n",
+      "depends_on": [
+        "CLOUD02",
+        "CL04",
+        "DIST03"
+      ]
+    },
+    {
+      "key": "RSI01",
+      "title": "Implement independent candidate evaluation and promotion authority",
+      "milestone": "M7",
+      "labels": [
+        "area:agents",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nCreate bounded candidate jobs with trusted evaluation, enrollment, signing and recovery outside candidate authority.\n\n## Acceptance\n\n- [ ] Prevent candidates from modifying holdouts, acceptance criteria, result records or promotion keys.\n- [ ] Enforce CPU/GPU/memory/storage/experiment budgets and preserve accepted/rejected provenance.\n- [ ] Exercise VM recovery and distinguish candidate device/disk restrictions from authorized production operations.\n\n## Evidence to attach\n\nAttach authority diagram, negative tests, reproducible candidate records and recovery drills.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "G03",
+        "K02",
+        "REL01"
+      ]
+    },
+    {
+      "key": "RSI02",
+      "title": "Implement measured compute and runtime optimization agents",
+      "milestone": "M7",
+      "labels": [
+        "area:agents",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nGenerate, build and evaluate candidate compute kernels and runtime policies in a repeatable optimization loop.\n\n## Acceptance\n\n- [ ] Pass held-out numerical/quality and resource gates before scoring performance.\n- [ ] Compare full-path latency/goodput/energy under registered workloads and retain regressions/rejections.\n- [ ] Promote only reproducible improvements and distinguish execution efficiency from agent-intelligence claims.\n\n## Evidence to attach\n\nAttach baseline/candidate artifacts, held-out results, resource usage and promotion/rejection records.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n",
+      "depends_on": [
+        "RSI01",
+        "INF02"
+      ]
+    },
+    {
+      "key": "RSI03",
+      "title": "Implement recoverable native driver and kernel experiments",
+      "milestone": "M7",
+      "labels": [
+        "area:agents",
+        "type:implementation"
+      ],
+      "priority": "P2",
+      "phase": "Later",
+      "body": "## Deliverable\n\nExtend candidate generation to native drivers/core code using emulator stages and a dedicated recoverable hardware target.\n\n## Acceptance\n\n- [ ] Withhold enrollment/signing/recovery authority and bound physical DMA/storage access for experiments.\n- [ ] Exercise faulted candidates, device resets and independent known-good restoration.\n- [ ] Require correctness, isolation and sustained performance evidence before promotion.\n\n## Evidence to attach\n\nAttach experiment authority manifests, fault/recovery logs and independent acceptance evidence.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Evaluation and recursive improvement](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0008-evaluation-and-recursive-improvement.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n",
+      "depends_on": [
+        "RSI01",
+        "GPU02",
+        "IO05",
+        "REL01"
+      ]
+    },
+    {
+      "key": "ARM01",
+      "title": "Port the original kernel core to AArch64",
+      "milestone": "M8",
+      "labels": [
+        "area:portability",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement an AArch64 architecture boundary and emulator platform without adopting an existing deployment kernel.\n\n## Acceptance\n\n- [ ] Boot original code and native services with validated exceptions, mappings, timers and interrupt handling.\n- [ ] Pass domain/capability/queue/accounting conformance tests.\n- [ ] Document architecture-specific ordering and unsafe boundaries while retaining the native contracts.\n\n## Evidence to attach\n\nAttach emulator images, architecture tests and reproducible native-service traces.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n- [Proposed language/toolchain decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0002-language-and-toolchain.md)\n",
+      "depends_on": [
+        "K01",
+        "K02",
+        "K03",
+        "K04",
+        "K05"
+      ]
+    },
+    {
+      "key": "APPLE01",
+      "title": "Qualify exact M5 boot, platform and first network support",
+      "milestone": "M8",
+      "labels": [
+        "area:hardware",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nInvestigate and implement the original OS's boot/platform path for one exact Apple M5 profile.\n\n## Acceptance\n\n- [ ] Record owner-authorized boot, recovery, interrupt, memory/IOMMU, firmware and initial network prerequisites.\n- [ ] Reach original-kernel diagnostics and native platform tests on the selected target.\n- [ ] Publish unresolved barriers explicitly; existing-OS API or companion execution is not native boot proof.\n\n## Evidence to attach\n\nAttach exact hardware/firmware inventory, platform traces, recovery evidence and support matrix.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Original kernel commitment](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0001-original-kernel.md)\n",
+      "depends_on": [
+        "G01",
+        "ARM01"
+      ]
+    },
+    {
+      "key": "APPLE02",
+      "title": "Implement independent native Apple GPU compute execution",
+      "milestone": "M8",
+      "labels": [
+        "area:accelerator",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement native Apple GPU firmware/queue/mapping control and executable shader support.\n\n## Acceptance\n\n- [ ] Submit compute without deployment macOS/Metal drivers and verify returned results.\n- [ ] Qualify memory ordering, faults, teardown and recovery for the exact GPU target.\n- [ ] Separate ordinary FP16 compute from any independently verified neural-accelerator instruction path.\n\n## Evidence to attach\n\nAttach native command/firmware traces, shader artifacts, numerical checks and unsupported-capability records.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n",
+      "depends_on": [
+        "APPLE01"
+      ]
+    },
+    {
+      "key": "APPLE03",
+      "title": "Qualify Apple inference and distributed-state compatibility",
+      "milestone": "M8",
+      "labels": [
+        "area:inference",
+        "type:implementation"
+      ],
+      "priority": "P1",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement the native Apple model backend and explicitly qualify compatible shard/state exchange.\n\n## Acceptance\n\n- [ ] Complete inference with declared operator/precision/quantization support and held-out quality.\n- [ ] Validate model/layout identity and any state/activation conversions against numerical gates.\n- [ ] Demonstrate qualified native-OS distributed execution or explicit rejection of incompatible paths.\n\n## Evidence to attach\n\nAttach operator/inference results, conversion tests and cross-backend group traces.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n- [Worker eligibility and positive demonstration](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0006-worker-eligibility-and-first-demo.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "APPLE02",
+        "INF02",
+        "DIST01"
+      ]
+    },
+    {
+      "key": "APPLE04",
+      "title": "Implement and qualify native Thunderbolt transport",
+      "milestone": "M8",
+      "labels": [
+        "area:network",
+        "type:implementation"
+      ],
+      "priority": "P2",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement a native Thunderbolt controller/transport path for explicitly qualified Apple hardware and topology.\n\n## Acceptance\n\n- [ ] Validate original controller initialization, registered mappings, queues and DMA authority.\n- [ ] Exercise two-sided transfers, limits, ordering, loss/departure and recovery on the selected physical topology.\n- [ ] Implement and verify application acknowledgement, integrity and retry behavior; UC send completion alone does not prove peer delivery.\n- [ ] Measure full-path performance without treating existing macOS Verbs support as a driver for this OS.\n\n## Evidence to attach\n\nAttach native controller/queue traces, topology maps, DMA isolation tests and transfer results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [Apple Thunderbolt RDMA API and hardware constraints](https://developer.apple.com/documentation/technotes/tn3205-low-latency-communication-with-rdma-over-thunderbolt)\n",
+      "depends_on": [
+        "APPLE01",
+        "NET01",
+        "G01"
+      ]
+    },
+    {
+      "key": "CUDA01",
+      "title": "Qualify broader CUDA host and library compatibility separately",
+      "milestone": "M9",
+      "labels": [
+        "area:accelerator",
+        "type:implementation"
+      ],
+      "priority": "P2",
+      "phase": "Later",
+      "body": "## Deliverable\n\nEvaluate PTX/JIT, Runtime host registration, graph APIs and individual stock library/application compatibility as separately bounded capabilities.\n\n## Acceptance\n\n- [ ] Record proprietary artifact/firmware/ABI and redistribution prerequisites before promising support.\n- [ ] Pass per-feature/per-binary tests and explicitly list unsupported entries.\n- [ ] Do not relabel selected cubin execution as full CUDA ecosystem compatibility.\n\n## Evidence to attach\n\nAttach feature matrix, binary/library tests, artifact constraints and reproducible results.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Native CUDA scope](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0005-native-cuda-scope.md)\n- [NVCC compiler documentation](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html)\n",
+      "depends_on": [
+        "GPU03",
+        "INF02"
+      ]
+    },
+    {
+      "key": "DMA01",
+      "title": "Qualify direct GPU and NIC peer DMA",
+      "milestone": "M9",
+      "labels": [
+        "area:network",
+        "type:implementation"
+      ],
+      "priority": "P2",
+      "phase": "Later",
+      "body": "## Deliverable\n\nImplement optional direct peer DMA for one exact supported GPU/NIC/platform combination.\n\n## Acceptance\n\n- [ ] Validate mappings, ownership, ordering, isolation and recovery independently of CUDA availability.\n- [ ] Exercise fault/revocation and buffer lifetime behavior without exposing unrestricted DMA authority.\n- [ ] Compare complete authenticated transfer paths against pinned-host-buffer staging under equal conditions.\n\n## Evidence to attach\n\nAttach exact topology, mapping/fence traces, isolation tests and full-path performance comparisons.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [NVIDIA GPUDirect RDMA documentation](https://docs.nvidia.com/cuda/gpudirect-rdma/)\n- [Pinned transport decision](https://github.com/AG187-Lab/tessryn/blob/main/design/decisions/0004-pinned-transport-contract.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n",
+      "depends_on": [
+        "NET02",
+        "GPU03",
+        "IO01"
+      ]
+    },
+    {
+      "key": "AMD01",
+      "title": "Evaluate an optional native AMD GPU backend",
+      "milestone": "M9",
+      "labels": [
+        "area:accelerator",
+        "type:implementation"
+      ],
+      "priority": "P2",
+      "phase": "Later",
+      "body": "## Deliverable\n\nQualify a separate AMD GPU execution program without conflating modern AMD x86-64 CPU support with GPU support.\n\n## Acceptance\n\n- [ ] Select exact devices/firmware/toolchain and document native driver/compiler constraints.\n- [ ] Execute verified device compute and qualify the shared inference contracts before advertising backend support.\n- [ ] Publish numerical, state-layout and recovery compatibility separately from NVIDIA or Apple.\n\n## Evidence to attach\n\nAttach platform feasibility, native execution evidence and backend compatibility matrix.\n\nInclude implementation commit, exact build/run commands, artifact versions and raw reproducible results. This issue is planned work; no implementation or hardware result is claimed.\n\n## Design and primary references\n\n- [Roadmap](https://github.com/AG187-Lab/tessryn/blob/main/design/roadmap.md)\n- [Native ABI](https://github.com/AG187-Lab/tessryn/blob/main/design/native-abi.md)\n- [Distributed inference](https://github.com/AG187-Lab/tessryn/blob/main/design/distributed-inference.md)\n",
+      "depends_on": [
+        "G01",
+        "INF02",
+        "IO01"
+      ]
+    }
+  ],
+  "labels": [
+    {
+      "name": "area:accelerator",
+      "color": "5319e7",
+      "description": "Workstream: accelerator"
+    },
+    {
+      "name": "area:agents",
+      "color": "f9d0c4",
+      "description": "Workstream: agents"
+    },
+    {
+      "name": "area:architecture",
+      "color": "5319e7",
+      "description": "Workstream: architecture"
+    },
+    {
+      "name": "area:benchmark",
+      "color": "fbca04",
+      "description": "Workstream: benchmark"
+    },
+    {
+      "name": "area:cloud",
+      "color": "c5def5",
+      "description": "Workstream: cloud"
+    },
+    {
+      "name": "area:cluster",
+      "color": "1d76db",
+      "description": "Workstream: cluster"
+    },
+    {
+      "name": "area:hardware",
+      "color": "bfdadc",
+      "description": "Workstream: hardware"
+    },
+    {
+      "name": "area:inference",
+      "color": "0e8a16",
+      "description": "Workstream: inference"
+    },
+    {
+      "name": "area:kernel",
+      "color": "5319e7",
+      "description": "Workstream: kernel"
+    },
+    {
+      "name": "area:network",
+      "color": "0052cc",
+      "description": "Workstream: network"
+    },
+    {
+      "name": "area:portability",
+      "color": "5319e7",
+      "description": "Workstream: portability"
+    },
+    {
+      "name": "area:release",
+      "color": "b60205",
+      "description": "Workstream: release"
+    },
+    {
+      "name": "area:security",
+      "color": "d93f0b",
+      "description": "Workstream: security"
+    },
+    {
+      "name": "area:storage",
+      "color": "5319e7",
+      "description": "Workstream: storage"
+    },
+    {
+      "name": "area:toolchain",
+      "color": "d4c5f9",
+      "description": "Workstream: toolchain"
+    },
+    {
+      "name": "type:implementation",
+      "color": "1d76db",
+      "description": "Bounded engineering deliverable"
+    },
+    {
+      "name": "type:research",
+      "color": "d4c5f9",
+      "description": "Research question or architectural proposal"
+    },
+    {
+      "name": "priority:P0",
+      "color": "b60205",
+      "description": "Required first-product critical path"
+    },
+    {
+      "name": "priority:P1",
+      "color": "d93f0b",
+      "description": "Important platform or capability work"
+    },
+    {
+      "name": "priority:P2",
+      "color": "0e8a16",
+      "description": "Later optional capability or research"
+    },
+    {
+      "name": "phase:Now",
+      "color": "0e8a16",
+      "description": "Ready to start with current prerequisites"
+    },
+    {
+      "name": "phase:Next",
+      "color": "1d76db",
+      "description": "Initial product work awaiting prerequisites"
+    },
+    {
+      "name": "phase:Later",
+      "color": "ededed",
+      "description": "Longer-term qualification program"
+    }
+  ]
+}

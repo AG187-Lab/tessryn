@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Architecture discussions
+    url: https://github.com/AG187-Lab/tessryn/discussions
+    about: Discuss proposals before turning them into implementation tasks.
+  - name: Private vulnerability report
+    url: https://github.com/AG187-Lab/tessryn/security/advisories/new
+    about: Report sensitive vulnerabilities privately.

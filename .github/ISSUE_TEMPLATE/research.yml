@@ -1,0 +1,26 @@
+name: Research or architecture proposal
+description: A question, experiment or proposed architectural decision.
+title: "[Research] "
+labels: ["type:research"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question and consequence
+      description: What uncertainty does this resolve, and which decision depends on it?
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary evidence
+      description: Link sources and distinguish facts, analytical assumptions and reported results.
+    validations:
+      required: true
+  - type: textarea
+    id: experiment
+    attributes:
+      label: Experiment and decision gate
+      description: Specify comparison, falsification criteria and required hardware or permissions.
+    validations:
+      required: true

@@ -1,0 +1,14 @@
+{
+  "name": "Tessryn",
+  "domain": "tessryn.si",
+  "checked_at": "2026-10-11T16:17:36.667416+00:00",
+  "registry_url": "https://rdap.register.si/domain/tessryn.si",
+  "registry_http_status": 404,
+  "registry_response": {
+    "errorCode": 404,
+    "title": "Domain 'tessryn.si' not found"
+  },
+  "reserved_list_url": "https://www.register.si/en/reserved-domain-names/",
+  "domain_registered_by_project": false,
+  "interpretation": "Unregistered in registry at check time; checked against published reserved names. Not purchased or reserved."
+}

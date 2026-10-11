@@ -1,0 +1,22 @@
+name: Bug report
+description: Report reproducible incorrect behavior without private security details.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Include revision, exact platform and minimal steps.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Do not include credentials, private prompts or exploitable vulnerability details.
