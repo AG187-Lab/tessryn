@@ -46,6 +46,32 @@ jobs:
             --result build/k01-invalid_opcode/result.json --result build/k01-page_fault/result.json \
             --result build/k01-panic/result.json --result build/k01-reboot/result.json \
             --result build/k01-iso/result.json --out build/k01-verification.json
+      - name: Build high-address regressions independently twice
+        run: |
+          python3 tools/build_kernel.py --high --out build/high-kernel-a
+          python3 tools/build_kernel.py --high --out build/high-kernel-b
+      - name: Exercise and verify actual high live addresses
+        run: |
+          results=()
+          for variant in image-normal image-int3 image-page_fault image-reboot handoff-normal handoff-int3 handoff-page_fault handoff-reboot ram-only; do
+            python3 tools/run_kernel_high.py --manifest build/high-kernel-a/manifest.json --variant "$variant" --out "build/k01-high-$variant"
+            results+=(--result "build/k01-high-$variant/result.json")
+          done
+          python3 tools/verify_kernel_high.py --first build/high-kernel-a/manifest.json --second build/high-kernel-b/manifest.json \
+            "${results[@]}" --out build/k01-high-verification.json
+      - name: Build headless AWS inputs independently twice
+        run: |
+          python3 tools/build_aws_boot.py --out build/aws-a
+          python3 tools/build_aws_boot.py --out build/aws-b
+      - name: Exercise headless boot, faults and independent recovery locally
+        run: |
+          results=()
+          for case in normal int3 invalid_opcode page_fault panic reboot; do
+            python3 tools/run_aws_boot.py --manifest build/aws-a/manifest.json --case "$case" --out "build/aws-$case"
+            results+=(--result "build/aws-$case/result.json")
+          done
+          python3 tools/verify_aws_boot.py --first build/aws-a/manifest.json --second build/aws-b/manifest.json \
+            "${results[@]}" --out build/aws-verification.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
@@ -58,7 +84,26 @@ jobs:
             build/kernel-a/*/build.log
             build/kernel-a/notices/
             build/kernel-b/manifest.json
+            build/high-kernel-a/manifest.json
+            build/high-kernel-a/*/BOOTX64.EFI
+            build/high-kernel-a/*/boot.img
+            build/high-kernel-a/*/build.log
+            build/high-kernel-a/notices/
+            build/high-kernel-b/manifest.json
             build/k01-*/
             build/k01-verification.json
+            build/k01-high-verification.json
+            build/aws-a/manifest.json
+            build/aws-a/*/BOOTX64.EFI
+            build/aws-a/*/snapshot-inputs.json
+            build/aws-a/*/build.log
+            build/aws-a/normal/boot.img
+            build/aws-a/notices/
+            build/aws-b/manifest.json
+            build/aws-*/result.json
+            build/aws-*/stdout.log
+            build/aws-*/stderr.log
+            build/aws-*/qmp.jsonl
+            build/aws-verification.json
           if-no-files-found: warn
           retention-days: 14

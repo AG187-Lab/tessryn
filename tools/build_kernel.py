@@ -17,6 +17,57 @@ from tools.k01_media import make_disk, make_iso
 from tools.setup_uefi import verify_installation
 
 CASES = ("normal", "int3", "invalid_opcode", "page_fault", "panic", "reboot")
+HIGH_CASES = ("normal", "int3", "page_fault", "reboot")
+HIGH_PROFILES = {
+    **{f"image-{case}": {"case": case, "high_handoff": False, "low_image": False} for case in HIGH_CASES},
+    **{f"handoff-{case}": {"case": case, "high_handoff": True, "low_image": False} for case in HIGH_CASES},
+    "ram-only": {"case": "normal", "high_handoff": False, "low_image": True},
+}
+
+
+def compiler_profile() -> dict:
+    """Return checked tool paths and the public deterministic compilation record."""
+    setup = verify_installation()
+    prefix = ROOT / "build" / "uefi"
+    compiler = prefix / "bin" / "rustc"
+    version = subprocess.check_output([str(compiler), "--version", "--verbose"], text=True, timeout=30).strip()
+    host = next(line[6:] for line in version.splitlines() if line.startswith("host: "))
+    linker = prefix / "lib" / "rustlib" / host / "bin" / "rust-lld"
+    lock = json.loads((ROOT / "toolchain.lock.json").read_text())
+    linker_version = public_linker_version(subprocess.check_output(
+        [str(linker), "-flavor", "gnu", "--version"], text=True, timeout=30).strip(), lock["rust"]["llvm_revision"])
+    flags = ["--edition=2024", "--crate-name=tessryn_kernel", "--crate-type=bin",
+             "--target=x86_64-unknown-uefi", "-Cpanic=abort", "-Copt-level=1", "-Ccodegen-units=1",
+             "-Cdebuginfo=2", "-Cforce-frame-pointers=yes", "-Cno-redzone=yes", "-Cembed-bitcode=no",
+             "-Clink-arg=/timestamp:0", "-Clink-arg=/debug:none"]
+    return {"compiler": compiler, "linker": linker,
+            "toolchain": {"rustc_version": version, "linker_version": linker_version,
+                          "rust_flags": flags, "setup": setup}}
+
+
+def compile_command(profile: dict, source: Path, output: Path, case_flags: list[str],
+                    extra_flags: list[str] | None = None) -> list[str]:
+    """Build a command without putting native tool paths in public manifests."""
+    prefix = ROOT / "build" / "uefi"
+    return [str(profile["compiler"]), str(source), *profile["toolchain"]["rust_flags"], *case_flags,
+            *([] if extra_flags is None else extra_flags), f'-Clinker={profile["linker"]}',
+            f"--remap-path-prefix={ROOT}=tessryn", f"--remap-path-prefix={prefix}=rust-toolchain",
+            "-o", str(output)]
+
+
+def copy_notices(out: Path) -> list[dict]:
+    notices = []
+    directory = out / "notices"
+    directory.mkdir()
+    sources = [("tessryn", name, ROOT / name) for name in ("LICENSE", "NOTICE")]
+    sources.extend(("rust", name, ROOT / "build" / "uefi" / "notices" / "rust" / name)
+                   for name in ("LICENSE-APACHE", "LICENSE-MIT", "COPYRIGHT"))
+    for component, name, original in sources:
+        destination = directory / f"{component}-{name}"
+        destination.write_bytes(original.read_bytes())
+        notices.append({"component": component, "path": destination.relative_to(out).as_posix(),
+                        "sha256": sha256(destination), "size_bytes": destination.stat().st_size})
+    return notices
 
 
 def inspect_pe(data: bytes) -> dict:
@@ -71,29 +122,10 @@ def build(out: Path) -> dict:
         raise ValueError("kernel output must be inside ignored build/")
     out.mkdir(parents=True, exist_ok=False)
     source = source_identity()
-    setup = verify_installation()
+    profile = compiler_profile()
+    setup = profile["toolchain"]["setup"]
     prefix = ROOT / "build" / "uefi"
-    compiler = prefix / "bin" / "rustc"
-    version = subprocess.check_output([str(compiler), "--version", "--verbose"], text=True, timeout=30).strip()
-    host = next(line[6:] for line in version.splitlines() if line.startswith("host: "))
-    linker = prefix / "lib" / "rustlib" / host / "bin" / "rust-lld"
-    lock = json.loads((ROOT / "toolchain.lock.json").read_text())
-    linker_version = public_linker_version(subprocess.check_output([str(linker), "-flavor", "gnu", "--version"], text=True, timeout=30).strip(), lock["rust"]["llvm_revision"])
-    flags = ["--edition=2024", "--crate-name=tessryn_kernel", "--crate-type=bin",
-             "--target=x86_64-unknown-uefi", "-Cpanic=abort", "-Copt-level=1", "-Ccodegen-units=1",
-             "-Cdebuginfo=2", "-Cforce-frame-pointers=yes", "-Cno-redzone=yes", "-Cembed-bitcode=no",
-             "-Clink-arg=/timestamp:0", "-Clink-arg=/debug:none"]
-    notices = []
-    notice_directory = out / "notices"
-    notice_directory.mkdir()
-    notice_sources = [("tessryn", name, ROOT / name) for name in ("LICENSE", "NOTICE")]
-    notice_sources.extend(("rust", name, prefix / "notices" / "rust" / name)
-                          for name in ("LICENSE-APACHE", "LICENSE-MIT", "COPYRIGHT"))
-    for component, name, original in notice_sources:
-        destination = notice_directory / f"{component}-{name}"
-        destination.write_bytes(original.read_bytes())
-        notices.append({"component": component, "path": destination.relative_to(out).as_posix(),
-                        "sha256": sha256(destination), "size_bytes": destination.stat().st_size})
+    notices = copy_notices(out)
     artifacts = []
     for case in (*CASES, "deployment"):
         directory = out / case
@@ -102,9 +134,7 @@ def build(out: Path) -> dict:
         case_flags = ["--cfg", f'k01_case="{"normal" if case == "deployment" else case}"']
         if case != "deployment":
             case_flags.extend(["--cfg", "k01_emulator"])
-        command = [str(compiler), "kernel/main.rs", *flags, *case_flags,
-                   f"-Clinker={linker}", f"--remap-path-prefix={ROOT}=tessryn",
-                   f"--remap-path-prefix={prefix}=rust-toolchain", "-o", str(path)]
+        command = compile_command(profile, Path("kernel/main.rs"), path, case_flags)
         execution = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=60)
         log = (execution.stdout + execution.stderr).replace(str(ROOT), "tessryn").replace(str(prefix), "rust-toolchain")
         (directory / "build.log").write_text(log)
@@ -122,8 +152,7 @@ def build(out: Path) -> dict:
                                   "rust_case_flags": case_flags,
                                   "pe_validation": validation if name == "BOOTX64.EFI" else None})
     manifest = {"schema_version": 1, "artifact_type": "tessryn-k01-kernel", "source": source,
-                "toolchain": {"rustc_version": version, "linker_version": linker_version, "rust_flags": flags,
-                              "setup": setup}, "artifacts": artifacts, "notices": notices,
+                "toolchain": profile["toolchain"], "artifacts": artifacts, "notices": notices,
                 "capabilities": {"uefi_kernel": "implemented_requires_execution_evidence",
                                  "native_gpu": "unavailable", "network": "unavailable", "inference": "unavailable"}}
     if verify_installation() != setup or source_identity() != source:
@@ -132,12 +161,66 @@ def build(out: Path) -> dict:
     return manifest
 
 
+def high_case_flags(name: str) -> tuple[list[str], list[str]]:
+    row = HIGH_PROFILES[name]
+    flags = ["--cfg", f'k01_case="{row["case"]}"', "--cfg", "k01_emulator"]
+    if row["high_handoff"]:
+        flags.extend(["--cfg", "k01_high_handoff"])
+    return flags, ["-Clink-arg=/base:0x10000000"] if row["low_image"] else []
+
+
+def build_high(out: Path) -> dict:
+    """Keep high-address regressions separate from the baseline K01 artifact set."""
+    out = out.resolve()
+    if not out.is_relative_to(ROOT / "build"):
+        raise ValueError("kernel output must be inside ignored build/")
+    out.mkdir(parents=True, exist_ok=False)
+    source = source_identity()
+    profile = compiler_profile()
+    notices = copy_notices(out)
+    artifacts = []
+    for name in HIGH_PROFILES:
+        directory = out / name
+        directory.mkdir()
+        path = directory / "BOOTX64.EFI"
+        flags, extra = high_case_flags(name)
+        execution = subprocess.run(compile_command(profile, Path("kernel/main.rs"), path, flags, extra),
+                                   cwd=ROOT, capture_output=True, text=True, timeout=60)
+        log = (execution.stdout + execution.stderr).replace(str(ROOT), "tessryn")
+        (directory / "build.log").write_text(log)
+        if execution.returncode:
+            raise ValueError(f"high kernel {name} compile failed; inspect build.log")
+        validation = inspect_pe(path.read_bytes())
+        pe_offset = struct.unpack_from("<I", path.read_bytes(), 60)[0]
+        preferred = struct.unpack_from("<Q", path.read_bytes(), pe_offset + 48)[0]
+        expected = 0x10000000 if HIGH_PROFILES[name]["low_image"] else 0x140000000
+        if preferred != expected:
+            raise ValueError("high profile PE preferred image address differs")
+        (directory / "boot.img").write_bytes(make_disk(path.read_bytes()))
+        for filename in ("BOOTX64.EFI", "boot.img"):
+            artifact = directory / filename
+            artifacts.append({"path": artifact.relative_to(out).as_posix(), "case": name,
+                              "sha256": sha256(artifact), "size_bytes": artifact.stat().st_size,
+                              "rust_case_flags": flags, "extra_rust_flags": extra,
+                              "preferred_image_base": preferred,
+                              "pe_validation": validation if filename == "BOOTX64.EFI" else None})
+    manifest = {"schema_version": 1, "artifact_type": "tessryn-k01-high-kernel", "source": source,
+                "toolchain": profile["toolchain"], "profiles": HIGH_PROFILES,
+                "artifacts": artifacts, "notices": notices,
+                "scope": "actual high image/handoff in QEMU OVMF; synthetic paging edges are separately labeled fixtures"}
+    if verify_installation() != profile["toolchain"]["setup"] or source_identity() != source:
+        raise ValueError("source or toolchain changed during high build")
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    return manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--high", action="store_true", help="build separate high-address regressions")
     args = parser.parse_args()
     try:
-        manifest = build(args.out)
+        manifest = build_high(args.out) if args.high else build(args.out)
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         parser.exit(2, f"kernel build rejected: {error}\n")
     print(json.dumps({"status": "built", "artifacts": len(manifest["artifacts"])}))

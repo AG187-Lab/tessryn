@@ -17,7 +17,30 @@ Start with modern x86-64 UEFI hardware on Intel or AMD CPUs, a fixed wired NIC, 
 
 A notebook can be a native model shard. Admission measures sustained execution under mains power, thermal behavior, usable memory, link latency/jitter, and availability. Initially use a headless profile with sleep disabled. GPU power restoration and multi-function PCI behavior need explicit qualification; [NVIDIA's notebook power documentation](https://download.nvidia.com/XFree86/Linux-x86_64/580.95.05/README/dynamicpowermanagement.html) describes relevant platform dependencies, not a Tessryn driver.
 
-For an initial cloud experiment, target one x86-64 Nitro profile: UEFI, ACPI/interrupts, ENA networking, NVMe storage, and serial diagnostics. AWS documents [snapshot-backed AMI registration with boot mode](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-ami-boot-mode.html) and [direct EBS snapshot writes](https://docs.aws.amazon.com/ebs/latest/userguide/ebs-accessing-snapshot.html). This is a technically targetable image route, not official support for an arbitrary original OS. [VM Import's OS allowlist](https://docs.aws.amazon.com/vm-import/latest/userguide/prerequisites.html) describes that import service; it must not be mistaken for every possible AMI creation route. GPU instances require separate device and firmware qualification. Google also documents [building custom OS images](https://docs.cloud.google.com/compute/docs/images/building-custom-os); its device contracts are distinct targets.
+The user-selected next cloud goal is a minimal original-kernel CPU boot and
+independent recovery experiment on one UEFI-capable x86-64 Nitro guest. The
+[AWS workflow](aws-boot-and-recovery.md) builds fixed GPT/FAT32 media, headless
+COM1 diagnostics and local firmware-NVMe tests. Native EC2 boot/recovery remain
+unqualified. No ENA or native NVMe driver is present, and an EC2 guest boot does
+not qualify bare-metal CPU access, a GPU, networking or inference. The wider
+cloud target still needs ACPI/interrupt, ENA and NVMe implementation evidence.
+
+The resource owner must confirm the exact instance type's `SupportedBootModes`
+and launched `CurrentInstanceBootMode`; generic Nitro guarantees exclude metal.
+Retain dated regional raw and sanitized observations rather than inferring a
+boot mode from Nitro or metal labels. [Exact boot modes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-type-boot-mode.html),
+[UEFI requirements](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launch-instance-boot-mode.html).
+
+AWS documents [snapshot-backed AMI registration with boot mode](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-ami-boot-mode.html)
+and [direct EBS snapshot writes](https://docs.aws.amazon.com/ebs/latest/userguide/writesnapshots.html).
+This is an experimental custom-OS route, not official support for Tessryn.
+[VM Import's OS allowlist](https://docs.aws.amazon.com/vm-import/latest/userguide/prerequisites.html)
+applies to that import service. The separate authorized `t3a.small` Linux-hosted
+QEMU trial, capped at USD 15, supplies emulator evidence; a native Tessryn AMI
+trial needs its own resource approval and independently verified recovery.
+Historical G01 candidate and price records retain their original research scope.
+Google also documents [building custom OS images](https://docs.cloud.google.com/compute/docs/images/building-custom-os);
+its device contracts are distinct targets.
 
 ## Apple M5 and numerical formats
 

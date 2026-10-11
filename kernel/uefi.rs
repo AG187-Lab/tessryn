@@ -11,10 +11,13 @@ pub type ResetSystem = unsafe extern "efiapi" fn(u32, Status, usize, *const u16)
 const INVALID_PARAMETER: Status = (1usize << 63) | 2;
 const UNSUPPORTED: Status = (1usize << 63) | 3;
 const PAGE: u64 = 4096;
-pub const LIMIT: u64 = 1 << 32;
+pub const LIMIT: u64 = crate::paging::LOW_LIMIT;
 pub const STACK_PAGES: usize = 32;
 const MAP_PAGES: usize = 16;
-const RUNTIME: u64 = 1 << 63;
+pub const RUNTIME: u64 = 1 << 63;
+// Initial map discovery uses image-owned storage, never the firmware stack.
+// The final retained map has its own loader allocation.
+static mut EARLY_MAP: [u8; MAP_PAGES * 4096] = [0; MAP_PAGES * 4096];
 
 #[repr(C)]
 pub struct Header {
@@ -96,7 +99,7 @@ struct Framebuffer {
     format: u32,
 }
 
-unsafe fn framebuffer_for_handle(boot: &BootServices, handle: Handle) -> Option<Framebuffer> {
+unsafe fn framebuffer_for_handle(boot: &BootServices, handle: Handle, physical_bits: u8) -> Option<Framebuffer> {
     if handle.is_null() { return None; }
     let mut graphics: *mut c_void = ptr::null_mut();
     // SAFETY: this is a firmware handle queried before any exit attempt. No
@@ -116,15 +119,15 @@ unsafe fn framebuffer_for_handle(boot: &BootServices, handle: Handle) -> Option<
     let required = candidate.stride.checked_mul(candidate.height)?.checked_mul(4)?;
     if candidate.base == 0 || candidate.base % 4 != 0
         || candidate.width < 80 || candidate.height < 40 || candidate.stride < candidate.width
-        || candidate.format > 1 || required > candidate.bytes || required > 32 * 1024 * 1024
-        || candidate.base.checked_add(candidate.bytes as u64)? > LIMIT { return None; }
+        || candidate.format > 1 || required > candidate.bytes || required > 32 * 1024 * 1024 { return None; }
+    crate::paging::mapping_bounds(crate::paging::Range::checked(candidate.base, candidate.bytes as u64).ok()?, physical_bits).ok()?;
     Some(candidate)
 }
 
-unsafe fn select_framebuffer(boot: &BootServices, console: Handle) -> Result<(Framebuffer, &'static str), Status> {
+unsafe fn select_framebuffer(boot: &BootServices, console: Handle, physical_bits: u8) -> Result<(Framebuffer, &'static str), Status> {
     // The firmware's console is authoritative for BMC/IPMI visibility. A
     // discrete accelerator's unrelated GOP must never win by enumeration order.
-    if let Some(candidate) = unsafe { framebuffer_for_handle(boot, console) } {
+    if let Some(candidate) = unsafe { framebuffer_for_handle(boot, console, physical_bits) } {
         return Ok((candidate, "firmware-console"));
     }
     // Some consoles are aggregators without GOP. Enumerate into bounded owned
@@ -136,7 +139,7 @@ unsafe fn select_framebuffer(boot: &BootServices, console: Handle) -> Result<(Fr
         || bytes % size_of::<Handle>() != 0 { return Err(UNSUPPORTED); }
     let mut selected: Option<Framebuffer> = None;
     for handle in &handles[..bytes / size_of::<Handle>()] {
-        let Some(candidate) = (unsafe { framebuffer_for_handle(boot, *handle) }) else { continue; };
+        let Some(candidate) = (unsafe { framebuffer_for_handle(boot, *handle, physical_bits) }) else { continue; };
         match selected {
             None => selected = Some(candidate),
             Some(previous) if previous.base == candidate.base && previous.width == candidate.width
@@ -202,17 +205,10 @@ const _: () = {
     assert!(size_of::<Descriptor>() == 40);
 };
 
-#[derive(Clone, Copy)]
-#[repr(C)]
-pub struct Range { pub start: u64, pub end: u64 }
+pub use crate::paging::Range;
 impl Range {
     fn new(start: u64, length: u64) -> Self {
-        let end = start.checked_add(length).unwrap_or_else(|| fail("range-overflow"));
-        if length == 0 || end > LIMIT { fail("range-outside-4g-profile"); }
-        Self { start, end }
-    }
-    pub fn overlaps(self, other: Self) -> bool {
-        self.start < other.end && other.start < self.end
+        Self::checked(start, length).unwrap_or_else(|error| fail(error.label()))
     }
 }
 
@@ -224,7 +220,11 @@ pub struct Handoff {
     pub stack: Range,
     pub map_allocation: Range,
     pub image: Range,
+    pub framebuffer: Option<Range>,
+    pub high_scratch: Option<Range>,
     pub reset: ResetSystem,
+    pub physical_bits: u8,
+    pub cr3: u64,
     pub free_pages: u64,
     pub scratch: u64,
 }
@@ -272,7 +272,6 @@ impl Handoff {
                     fail("memory-map-overlap");
                 }
             }
-            if d.attributes & RUNTIME != 0 && end > LIMIT { fail("runtime-outside-4g-profile"); }
             // This first allocator owns only conventional RAM. Loader, runtime,
             // ACPI, MMIO, reserved and boot-service ranges remain quarantined.
             if d.kind == 7 && d.attributes & RUNTIME == 0 {
@@ -291,8 +290,31 @@ impl Handoff {
             || !self.range_has_kind(self.map_allocation, &[2]) {
             fail("live-loader-range-ownership");
         }
+        for range in [self.image, self.stack, self.map_allocation] {
+            crate::paging::mapping_bounds(range, self.physical_bits).unwrap_or_else(|error| fail(error.label()));
+        }
+        if self.image.overlaps(self.stack) || self.image.overlaps(self.map_allocation)
+            || self.stack.overlaps(self.map_allocation) { fail("live-loader-range-overlap"); }
         let reset = self.reset as usize as u64;
-        if !self.range_has_kind(Range::new(reset, 1), &[5]) { fail("runtime-reset-ownership"); }
+        let reset_range = Range::new(reset, 1);
+        if !self.range_has_kind(reset_range, &[5]) { fail("runtime-reset-ownership"); }
+        let mut reset_is_runtime = false;
+        for index in 0..self.descriptors() {
+            let d = self.descriptor(index);
+            if d.kind == 5 && d.attributes & RUNTIME != 0
+                && d.start <= reset && reset < d.start + d.pages * PAGE { reset_is_runtime = true; }
+        }
+        if !reset_is_runtime { fail("runtime-reset-attribute"); }
+        crate::paging::mapping_bounds(reset_range, self.physical_bits).unwrap_or_else(|error| fail(error.label()));
+        if let Some(range) = self.high_scratch {
+            if range.start < LIMIT || range.end - range.start != PAGE
+                || !self.range_has_kind(range, &[2]) || range.overlaps(self.image)
+                || range.overlaps(self.stack) || range.overlaps(self.map_allocation) {
+                fail("high-scratch-loader-ownership");
+            }
+            crate::paging::mapping_bounds(range, self.physical_bits).unwrap_or_else(|error| fail(error.label()));
+            self.scratch = range.start;
+        }
         if self.scratch == 0 || self.free_pages == 0 { fail("no-conventional-memory"); }
     }
 }
@@ -303,6 +325,37 @@ unsafe fn allocate(boot: &BootServices, pages: usize) -> Range {
     let status = unsafe { (boot.allocate_pages)(1, 2, pages, &mut address) };
     if status != 0 { fail("allocate-loader-pages"); }
     Range::new(address, pages as u64 * PAGE)
+}
+
+unsafe fn allocate_high(boot: &BootServices, pages: usize, physical_bits: u8) -> Range {
+    // This fixture requests genuine conventional RAM with AllocateAddress.
+    // A fresh discovery precedes each allocation; no fabricated descriptors or
+    // ownership labels enter the final firmware map.
+    let map = ptr::addr_of_mut!(EARLY_MAP).cast::<u8>();
+    let mut length = MAP_PAGES * PAGE as usize;
+    let mut key = 0;
+    let mut stride = 0;
+    let mut version = 0;
+    let status = unsafe { (boot.get_memory_map)(&mut length, map, &mut key, &mut stride, &mut version) };
+    if status != 0 || length == 0 || length > MAP_PAGES * PAGE as usize
+        || stride < size_of::<Descriptor>() || stride % 8 != 0 || length % stride != 0 || version != 1 {
+        fail("high-allocation-memory-map");
+    }
+    let bytes = pages as u64 * PAGE;
+    for index in 0..length / stride {
+        let d = unsafe { ptr::read_unaligned(map.add(index * stride).cast::<Descriptor>()) };
+        let Some(end) = d.pages.checked_mul(PAGE).and_then(|n| d.start.checked_add(n)) else { fail("descriptor-overflow"); };
+        if d.kind != 7 || d.attributes & RUNTIME != 0 || d.start % PAGE != 0 { continue; }
+        let ceiling = core::cmp::min(end, core::cmp::min(1u64 << physical_bits, crate::paging::GUARD));
+        let Some(candidate) = ceiling.checked_sub(bytes) else { continue; };
+        if candidate < core::cmp::max(d.start, LIMIT) { continue; }
+        let mut address = candidate & !(PAGE - 1);
+        if address < core::cmp::max(d.start, LIMIT)
+            || crate::paging::mapping_bounds(Range::new(address, bytes), physical_bits).is_err() { continue; }
+        let status = unsafe { (boot.allocate_pages)(2, 2, pages, &mut address) };
+        if status == 0 { return Range::new(address, bytes); }
+    }
+    fail("no-high-conventional-allocation")
 }
 
 pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Result<Handoff, Status> {
@@ -318,38 +371,50 @@ pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Resul
     if boot.header.signature != 0x5652_4553_544f_4f42 || boot.header.size < size_of::<BootServices>() as u32
         || runtime.header.signature != 0x5652_4553_544e_5552
         || runtime.header.size < size_of::<RuntimeServices>() as u32 { fail("service-table-header"); }
-    let (framebuffer, selection) = match unsafe { select_framebuffer(boot, system.console_out_handle) } {
-        Ok(selected) => selected,
+    let physical_bits = crate::cpu::physical_profile().unwrap_or_else(|reason| fail(reason));
+    let framebuffer = match unsafe { select_framebuffer(boot, system.console_out_handle, physical_bits) } {
+        Ok((framebuffer, selection)) => {
+            let screen = crate::framebuffer::install(framebuffer.base, framebuffer.bytes, framebuffer.width,
+                framebuffer.height, framebuffer.stride, framebuffer.format == 0);
+            if !screen { return Err(UNSUPPORTED); }
+            print(format_args!("TESSRYN ORIGINAL KERNEL\n"));
+            let Some((base, width, height, stride, rgb)) = crate::framebuffer::dimensions() else { return Err(UNSUPPORTED); };
+            print(format_args!("TESSRYN_K01_FRAMEBUFFER status=ready width={} height={} stride={} base={:#x} format={} selection={selection}\n",
+                width, height, stride, base, if rgb { "rgbx" } else { "bgrx" }));
+            Some(Range::new(framebuffer.base, framebuffer.bytes as u64))
+        }
+        Err(_) if cfg!(k01_aws) => {
+            print(format_args!("TESSRYN_K01_FRAMEBUFFER status=unavailable-serial-only reason=optional-gop\n"));
+            None
+        }
         Err(status) => {
             print(format_args!("TESSRYN_K01_FRAMEBUFFER status=unsupported reason=missing-or-ambiguous-console\n"));
             return Err(status);
         }
     };
-    let screen = crate::framebuffer::install(framebuffer.base, framebuffer.bytes, framebuffer.width,
-        framebuffer.height, framebuffer.stride, framebuffer.format == 0);
-    if !screen { return Err(UNSUPPORTED); }
-    print(format_args!("TESSRYN ORIGINAL KERNEL\n"));
-    if let Some((base, width, height, stride, rgb)) = crate::framebuffer::dimensions() {
-        print(format_args!("TESSRYN_K01_FRAMEBUFFER status=ready width={width} height={height} stride={stride} base={base:#x} format={} selection={selection}\n",
-            if rgb { "rgbx" } else { "bgrx" }));
-    } else {
-        print(format_args!("TESSRYN_K01_FRAMEBUFFER status=unavailable-serial-only\n"));
-    }
     // All handle-based work finishes before the first ExitBootServices attempt.
     let mut loaded: *mut c_void = ptr::null_mut();
     let status = unsafe { (boot.handle_protocol)(image, &LOADED_IMAGE, &mut loaded) };
     if status != 0 || loaded.is_null() { fail("loaded-image-protocol"); }
     let loaded = unsafe { &*loaded.cast::<LoadedImage>() };
     let image_range = Range::new(loaded.base, loaded.size);
-    let stack = unsafe { allocate(boot, STACK_PAGES) };
-    let map_allocation = unsafe { allocate(boot, MAP_PAGES) };
+    let stack = if cfg!(k01_high_handoff) && cfg!(k01_emulator) {
+        unsafe { allocate_high(boot, STACK_PAGES, physical_bits) }
+    } else { unsafe { allocate(boot, STACK_PAGES) } };
+    let map_allocation = if cfg!(k01_high_handoff) && cfg!(k01_emulator) {
+        unsafe { allocate_high(boot, MAP_PAGES, physical_bits) }
+    } else { unsafe { allocate(boot, MAP_PAGES) } };
+    let high_scratch = if cfg!(k01_high_handoff) && cfg!(k01_emulator) {
+        Some(unsafe { allocate_high(boot, 1, physical_bits) })
+    } else { None };
+    if cfg!(k01_high_handoff) && !cfg!(k01_emulator) { fail("high-handoff-emulator-only"); }
     // Watchdog disabling is best effort; success also disables it at handoff.
     let _ = unsafe { (boot.set_watchdog)(0, 0, 0, ptr::null()) };
     let reset = runtime.reset_system;
     let mut handoff = Handoff {
         map: map_allocation.start as *const u8, map_length: 0,
         descriptor_size: 0, stack, map_allocation, image: image_range,
-        reset, free_pages: 0, scratch: 0,
+        framebuffer, high_scratch, reset, physical_bits, cr3: 0, free_pages: 0, scratch: 0,
     };
     // A failed exit may partially shut down firmware: only GetMemoryMap and
     // ExitBootServices are used on retries, without allocations or protocols.
@@ -363,7 +428,28 @@ pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Resul
         handoff.map_length = length;
         handoff.descriptor_size = stride;
         handoff.validate();
-        // Diagnostics here perform only port I/O and never touch firmware.
+        let paging = match unsafe { crate::cpu::prepare_mappings(&handoff) } {
+            Ok(paging) => paging,
+            Err(error) => {
+                print(format_args!("TESSRYN_K01_PAGING_REJECT reason={}\n", error.label()));
+                fail("paging-plan");
+            }
+        };
+        handoff.cr3 = paging.root;
+        let mut runtime_high = 0;
+        for index in 0..handoff.descriptors() {
+            let d = handoff.descriptor(index);
+            if d.attributes & RUNTIME != 0 && d.start + d.pages * PAGE > LIMIT { runtime_high += 1; }
+        }
+        let gop = handoff.framebuffer.unwrap_or(Range { start: 0, end: 0 });
+        print(format_args!("TESSRYN_K01_LIVE_RANGES image_start={:#x} image_end={:#x} stack_start={:#x} stack_end={:#x} map_start={:#x} map_end={:#x} scratch={:#x} runtime_high={runtime_high} gop_start={:#x} gop_end={:#x}\n",
+            handoff.image.start, handoff.image.end, handoff.stack.start, handoff.stack.end,
+            handoff.map_allocation.start, handoff.map_allocation.end, handoff.scratch, gop.start, gop.end));
+        print(format_args!("TESSRYN_K01_PAGING_READY cr3={:#x} tables={} leaves={} physical_bits={} guard={:#x} free_scope=low-conventional\n",
+            paging.root, paging.tables, paging.leaves, physical_bits, crate::paging::GUARD));
+        print(format_args!("TESSRYN_K01_RESET_POINTER address={:#x} method=uefi-runtime\n", handoff.reset as usize));
+        // These diagnostics access only owned memory, framebuffer and declared
+        // ports. No firmware service is used between map acquisition and exit.
         print(format_args!("TESSRYN_K01_MEMORY_MAP_VALID descriptors={} stride={} free_pages={} attempt={}\n",
             handoff.descriptors(), stride, handoff.free_pages, attempt));
         let status = unsafe { (boot.exit_boot_services)(image, key) };

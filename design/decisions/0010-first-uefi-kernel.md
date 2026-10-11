@@ -20,8 +20,18 @@ dedicated servers. Exact physical boot/recovery remains a separate qualification
 This narrow bring-up validates actual Rust kernel execution and exception paths.
 It does not freeze the native service ABI, qualify NVIDIA execution, provide
 process isolation, support arbitrary firmware/memory layouts or implement storage.
-Live kernel and runtime regions must fit the first 4 GiB identity-map profile.
+Retain the low 4 GiB supervisor identity map and add bounded 2 MiB mappings for
+required high image, stack, map, owned scratch, GOP and EFI runtime ranges. The
+image includes its own tables. Validate physical width, lower canonical
+addresses, overflow, guard exclusion and the 128-table/16,384-leaf budgets before
+firmware exit. Five-level paging remains unsupported. Conventional free-page
+accounting admits only mapped low RAM; mapping a high region does not reclaim it.
 Firmware runtime services retain their separate provenance and lifetime.
+
+An explicit AWS profile has bounded assumed COM1 diagnostics and optional GOP,
+with no emulator debug ports. The GOP-only physical virtual-CD profile remains
+separate. [ADR 0011](0011-aws-cpu-boot-experiment.md) records the AWS experiment,
+resource authority and native-execution evidence boundary.
 
 The upstream UEFI core archive uses a separate verified sysroot. G03's fixture
 build and evaluator contracts remain intact. Original media and retained results

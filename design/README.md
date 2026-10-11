@@ -16,6 +16,7 @@ These documents capture research, architectural decisions, implementation gates 
 | [Benchmarks](benchmarks.md) | Workloads, baselines, numerical quality and evidence |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [First kernel](first-kernel.md) | Original UEFI kernel, boot/fault tests and GPU Mart virtual-CD workflow |
+| [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
 | [Research](research.md) | Dated primary sources, applicability and open questions |
 | [Review findings](review.md) | Adversarial findings and their resolutions |
@@ -34,6 +35,8 @@ These documents capture research, architectural decisions, implementation gates 
 - **Open question:** requires research or an experiment before a claim is made.
 
 The first original kernel has emulator boot and fault-path evidence under the
-[K01 profile](first-kernel.md). Physical native boot, GPU execution, Thunderbolt
+[K01 profile](first-kernel.md), including actual high image/handoff regressions.
+The [AWS profile](aws-boot-and-recovery.md) prepares local boot inputs; native EC2
+boot and recovery remain unqualified. Physical native boot, GPU execution, Thunderbolt
 support and distributed performance remain unqualified. Planned capabilities
 must remain labeled until their acceptance evidence exists.

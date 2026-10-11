@@ -17,7 +17,7 @@ pub fn install(base: u64, bytes: usize, width: usize, height: usize, stride: usi
     let Some(required) = stride.checked_mul(height).and_then(|n| n.checked_mul(4)) else { return false; };
     if base == 0 || base % 4 != 0 || width < 80 || height < 40 || stride < width
         || required > bytes || required > 32 * 1024 * 1024
-        || base.checked_add(bytes as u64).is_none_or(|end| end > crate::uefi::LIMIT) { return false; }
+        || base.checked_add(bytes as u64).is_none_or(|end| end > crate::paging::GUARD) { return false; }
     // SAFETY: GOP reports this MMIO buffer, identity mapped in the boot profile.
     // One boot CPU owns the framebuffer; interrupts remain masked after handoff.
     unsafe {

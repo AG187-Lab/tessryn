@@ -6,6 +6,7 @@
 mod cpu;
 mod diagnostics;
 mod framebuffer;
+mod paging;
 mod uefi;
 
 use core::arch::asm;
@@ -32,14 +33,14 @@ pub unsafe extern "efiapi" fn efi_main(image: uefi::Handle, system: *const uefi:
     unsafe {
         let destination = ptr::addr_of_mut!(HANDOFF).cast::<uefi::Handoff>();
         destination.write(handoff);
-        cpu::kernel_enter(stack_top, destination)
+        cpu::kernel_enter(stack_top, destination.cast())
     }
 }
 
 #[unsafe(no_mangle)]
 pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     // SAFETY: firmware has exited; kernel owns its loaded image and stack.
-    unsafe { cpu::take_ownership(handoff.stack.end) };
+    unsafe { cpu::take_ownership(handoff) };
     // Read/write one page from conventional RAM only. Every live allocation,
     // runtime, ACPI and reserved descriptor has been excluded by validation.
     let scratch = handoff.scratch as *mut u64;
@@ -51,6 +52,9 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch={:#x} free_pages={} loader=reserved runtime=reserved firmware=quarantined\n",
         handoff.scratch, handoff.free_pages));
+    if cfg!(k01_high_handoff) {
+        print(format_args!("TESSRYN_K01_HIGH_OWNERSHIP_OK scratch={:#x} pattern={pattern:#x}\n", handoff.scratch));
+    }
     if cfg!(k01_case = "int3") {
         // SAFETY: vector 3 is installed with a returning normalized trap stub.
         if unsafe { cpu::probe_int3() } != 1 { fail("trap-fp-state-preservation"); }
@@ -59,8 +63,9 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
         // SAFETY: this intentionally tests the terminal #UD diagnostic path.
         unsafe { asm!("ud2", options(noreturn)) };
     } else if cfg!(k01_case = "page_fault") {
-        // SAFETY: intentional supervisor read beyond the owned 4 GiB mapping.
-        unsafe { asm!("mov rax, qword ptr [rcx]", in("rcx") uefi::LIMIT, out("rax") _, options(nostack)) };
+        // SAFETY: intentional supervisor read from the reserved, unmapped,
+        // canonical guard. High live mappings never consume this region.
+        unsafe { asm!("mov rax, qword ptr [rcx]", in("rcx") paging::GUARD, out("rax") _, options(nostack)) };
         fail("page-fault-did-not-trap");
     } else if cfg!(k01_case = "panic") {
         panic!("intentional K01 panic");

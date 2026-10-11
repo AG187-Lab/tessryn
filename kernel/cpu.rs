@@ -1,5 +1,5 @@
 // Original x86-64 descriptor tables, exception boundary and initial paging.
-use core::arch::{asm, global_asm};
+use core::arch::{asm, global_asm, x86_64::__cpuid};
 use core::mem::{size_of, offset_of};
 use core::ptr;
 use crate::diagnostics::{fail, print, finish};
@@ -7,7 +7,7 @@ use crate::diagnostics::{fail, print, finish};
 global_asm!(include_str!("entry.S"));
 
 unsafe extern "efiapi" {
-    pub fn kernel_enter(stack: u64, handoff: *const crate::uefi::Handoff) -> !;
+    pub fn kernel_enter(stack: u64, handoff: *const core::ffi::c_void) -> !;
 }
 unsafe extern "sysv64" {
     fn load_gdt(pointer: *const TablePointer);
@@ -43,16 +43,52 @@ struct Tss {
 }
 #[repr(C, align(16))]
 struct FaultStack([u8; 16 * 1024]);
-#[repr(C, align(4096))]
-struct PageTable([u64; 512]);
 
 static mut GDT: [u64; 5] = [0, 0x00af_9a00_0000_ffff, 0x00cf_9200_0000_ffff, 0, 0];
 static mut IDT: [Gate; 256] = [EMPTY; 256];
 static mut TSS: Tss = Tss { reserved0: 0, rsp: [0; 3], reserved1: 0, ist: [0; 7], reserved2: 0, reserved3: 0, iomap: 104 };
 static mut FAULT_STACK: FaultStack = FaultStack([0; 16 * 1024]);
-static mut PML4: PageTable = PageTable([0; 512]);
-static mut PDPT: PageTable = PageTable([0; 512]);
-static mut DIRECTORIES: [PageTable; 4] = [const { PageTable([0; 512]) }; 4];
+static mut TABLES: crate::paging::Tables = crate::paging::Tables::empty();
+
+pub struct PagingInfo { pub root: u64, pub tables: usize, pub leaves: usize }
+
+pub fn physical_profile() -> Result<u8, &'static str> {
+    // UEFI x64 enters with identity paging. This implementation deliberately
+    // handles four levels only; changing an active LA57 mode requires a separate
+    // transition and must not be attempted after firmware ownership is lost.
+    let cr4: u64;
+    unsafe { asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack)); }
+    if cr4 & (1 << 12) != 0 { return Err("five-level-paging-unavailable"); }
+    let maximum = __cpuid(0x8000_0000).eax;
+    let bits = if maximum >= 0x8000_0008 { (__cpuid(0x8000_0008).eax & 0xff) as u8 } else { 36 };
+    if !(32..=52).contains(&bits) { return Err("physical-address-width"); }
+    Ok(bits)
+}
+
+pub unsafe fn prepare_mappings(handoff: &crate::uefi::Handoff) -> Result<PagingInfo, crate::paging::Error> {
+    use crate::paging::{Range, LOW_LIMIT};
+    // SAFETY: one boot CPU, before EBS. The pool belongs to the loaded image;
+    // retries only rewrite its contents and never allocate firmware memory.
+    let tables = unsafe { &mut *ptr::addr_of_mut!(TABLES) };
+    let base = ptr::addr_of!(TABLES) as u64;
+    let pool = Range::checked(base, size_of::<crate::paging::Tables>() as u64)?;
+    if pool.start < handoff.image.start || pool.end > handoff.image.end {
+        return Err(crate::paging::Error::TableLink);
+    }
+    tables.reset(handoff.physical_bits, base)?;
+    tables.map_range(Range { start: 0, end: LOW_LIMIT })?;
+    for range in [handoff.image, handoff.stack, handoff.map_allocation] { tables.map_range(range)?; }
+    if let Some(range) = handoff.high_scratch { tables.map_range(range)?; }
+    if let Some(range) = handoff.framebuffer { tables.map_range(range)?; }
+    for index in 0..handoff.descriptors() {
+        let d = handoff.descriptor(index);
+        if d.attributes & crate::uefi::RUNTIME != 0 {
+            tables.map_range(Range::checked(d.start, d.pages * 4096)?)?;
+        }
+    }
+    if tables.translation(crate::paging::GUARD).is_some() { return Err(crate::paging::Error::Guard); }
+    Ok(PagingInfo { root: tables.root(), tables: tables.table_count(), leaves: tables.leaf_count() })
+}
 
 #[repr(C)]
 pub struct ExceptionFrame {
@@ -73,7 +109,8 @@ const _: () = {
     assert!(offset_of!(ExceptionFrame, rip) == 136);
 };
 
-pub unsafe fn take_ownership(stack_top: u64) {
+pub unsafe fn take_ownership(handoff: &crate::uefi::Handoff) {
+    let stack_top = handoff.stack.end;
     // SAFETY: boot CPU is single threaded with interrupts masked. The tables
     // are image-owned memory excluded from allocator ownership and stay live.
     unsafe {
@@ -97,28 +134,26 @@ pub unsafe fn take_ownership(stack_top: u64) {
         let descriptor = TablePointer { limit: (size_of::<[Gate; 256]>() - 1) as u16, base: idt as u64 };
         asm!("lidt [{}]", in(reg) &descriptor, options(readonly, nostack));
 
-        let root = ptr::addr_of_mut!(PML4).cast::<u64>();
-        let pdpt = ptr::addr_of_mut!(PDPT).cast::<u64>();
-        let directories = ptr::addr_of_mut!(DIRECTORIES).cast::<PageTable>();
-        root.write(pdpt as u64 | 3);
-        for gigabyte in 0..4 {
-            let directory = directories.add(gigabyte).cast::<u64>();
-            pdpt.add(gigabyte).write(directory as u64 | 3);
-            for entry in 0..512 {
-                let physical = ((gigabyte * 512 + entry) as u64) << 21;
-                directory.add(entry).write(physical | 0x83);
-            }
-        }
-        // The initial supervisor-only 4 GiB identity mapping deliberately has
-        // no isolation/protection claim; K02 supplies granular mappings.
-        asm!("mov cr3, {}", in(reg) root as u64, options(nostack));
+        // Table capacity, address width, live ranges and guard exclusion were
+        // checked before EBS. Low RAM and only admitted high live regions use
+        // coarse supervisor mappings; K02 supplies protection and isolation.
+        // Clear PGE first to invalidate any global firmware translations;
+        // reloading CR3 alone does not invalidate those entries. The kernel's
+        // own leaves are non-global and its guard must have no stale alias.
+        let cr4: u64;
+        asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack));
+        asm!("mov cr4, {}", in(reg) cr4 & !(1u64 << 7), options(nostack));
+        asm!("mov cr3, {}", in(reg) handoff.cr3, options(nostack));
         let actual_cr3: u64;
         let rsp: u64;
+        let rip: u64;
         asm!("mov {}, cr3", out(reg) actual_cr3, options(nomem, nostack));
         asm!("mov {}, rsp", out(reg) rsp, options(nomem, nostack));
-        if actual_cr3 != root as u64 || rsp >= stack_top
+        asm!("lea {}, [rip]", out(reg) rip, options(nomem, nostack));
+        if actual_cr3 != handoff.cr3 || rsp >= stack_top
             || rsp < stack_top - crate::uefi::STACK_PAGES as u64 * 4096 { fail("cpu-ownership"); }
-        print(format_args!("TESSRYN_K01_CPU_OWNED cr3={actual_cr3:#x} rsp={rsp:#x} gdt=owned idt=owned tss=owned\n"));
+        if rip < handoff.image.start || rip >= handoff.image.end { fail("executing-image-range"); }
+        print(format_args!("TESSRYN_K01_CPU_OWNED cr3={actual_cr3:#x} rsp={rsp:#x} rip={rip:#x} gdt=owned idt=owned tss=owned\n"));
     }
 }
 
@@ -136,7 +171,7 @@ pub extern "sysv64" fn exception_handler(frame: &ExceptionFrame) {
         return;
     }
     let expected = (cfg!(k01_case = "invalid_opcode") && frame.vector == 6 && frame.error == 0)
-        || (cfg!(k01_case = "page_fault") && frame.vector == 14 && frame.error == 0 && cr2 == crate::uefi::LIMIT);
+        || (cfg!(k01_case = "page_fault") && frame.vector == 14 && frame.error == 0 && cr2 == crate::paging::GUARD);
     if expected {
         print(format_args!("TESSRYN_K01_EXPECTED_FAULT\n"));
         finish(true);

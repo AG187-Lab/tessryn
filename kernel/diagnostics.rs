@@ -2,6 +2,9 @@
 use core::arch::asm;
 use core::fmt::{self, Write};
 
+fn serial_enabled() -> bool { cfg!(k01_emulator) || cfg!(k01_aws) }
+fn emulator_ports() -> bool { cfg!(k01_emulator) && !cfg!(k01_aws) }
+
 pub unsafe fn out8(port: u16, value: u8) {
     // SAFETY: the caller has privileged x86 I/O authority for this port.
     unsafe { asm!("out dx, al", in("dx") port, in("al") value, options(nomem, nostack)) };
@@ -9,14 +12,17 @@ pub unsafe fn out8(port: u16, value: u8) {
 
 unsafe fn in8(port: u16) -> u8 {
     let value: u8;
-    // SAFETY: this module owns the declared emulator COM1 device.
+    // SAFETY: the selected early serial profile grants COM1 port authority.
     unsafe { asm!("in al, dx", in("dx") port, out("al") value, options(nomem, nostack)) };
     value
 }
 
 pub fn init() {
-    if !cfg!(k01_emulator) { return; }
-    // SAFETY: the K01 machine profile assigns COM1 to this kernel.
+    if !serial_enabled() { return; }
+    // SAFETY: emulator COM1 is assigned by its evaluator. The explicit AWS
+    // profile assumes an x86 16550-compatible COM1 at 0x3f8, 115200n8. AWS
+    // documents serial port 0/COM1, but this I/O address must be qualified on
+    // the delivered instance. Generic physical deployment grants no UART I/O.
     unsafe {
         out8(0x3f9, 0);
         out8(0x3fb, 0x80);
@@ -33,11 +39,12 @@ impl Write for Console {
     fn write_str(&mut self, text: &str) -> fmt::Result {
         for byte in text.bytes() {
             crate::framebuffer::write(byte);
-            if !cfg!(k01_emulator) { continue; }
-            // SAFETY: debugcon and COM1 are fixed devices in the K01 profile.
+            if !serial_enabled() { continue; }
+            // SAFETY: selected profile owns COM1; QEMU-only ports are never
+            // used by an AWS artifact, even if both cfg flags are supplied.
             // Bounded polling ensures a broken UART cannot suppress debugcon.
             unsafe {
-                out8(0xe9, byte);
+                if emulator_ports() { out8(0xe9, byte); }
                 for _ in 0..1024 {
                     if in8(0x3fd) & 0x20 != 0 {
                         out8(0x3f8, byte);
@@ -59,7 +66,7 @@ pub fn print(arguments: fmt::Arguments<'_>) {
 pub fn finish(success: bool) -> ! {
     // SAFETY: isa-debug-exit is evaluator-controlled and present only in QEMU.
     // Physical boot simply reaches the terminal halt if that device is absent.
-    if cfg!(k01_emulator) {
+    if emulator_ports() {
         unsafe {
             asm!("out dx, eax", in("dx") 0xf4u16,
                  in("eax") if success { 0x10u32 } else { 0x11u32 },
