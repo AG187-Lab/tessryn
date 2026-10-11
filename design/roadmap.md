@@ -23,6 +23,8 @@ The implementation backlog is [planning/backlog.json](../planning/backlog.json).
 
 G01 qualifies hardware before a particular server, GPU or notebook SKU is advertised as supported. G03 establishes build and evaluation tooling independently. These are the two ready work items. G02 records the native interfaces and exact compatibility scope once those inputs are available.
 
+The [G01 qualification packet](platform-qualification.md) records conditional cloud laboratory candidates, a bounded rental plan and reference inventory tooling. It does not complete hardware qualification or remove G02's platform dependency. No physical notebook or native-supported profile is available yet.
+
 The first product path is original kernel, native physical devices, native NVIDIA execution, native model serving, measured transport, authenticated cluster control and four-participant sharding. Work on kernel interfaces, native networking and accelerator bring-up can proceed in parallel once their dependencies are satisfied.
 
 The first notebook profile is one exact supported wired, mains-powered machine. Its own OS must initialize the platform and accelerator. An application running on an existing deployment OS can be a development reference but does not satisfy this gate. Notebook PCIe, ACPI and device power sequencing require their own evidence, even when desktop and notebook GPUs share an architecture.

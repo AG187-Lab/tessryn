@@ -2,6 +2,8 @@
 
 Status: target profiles, with no implemented support. Qualify CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
 
+The [initial G01 qualification record](platform-qualification.md) prepares a short bare-metal inventory session without selecting supported hardware. Its candidate descriptions and costs are vendor facts and analytical examples; actual device/firmware/topology, notebook access and native execution remain unavailable.
+
 ## First platforms
 
 Start with modern x86-64 UEFI hardware on Intel or AMD CPUs, a fixed wired NIC, NVMe storage, and the selected NVIDIA family. AMD CPU support is independent of an AMD GPU/ROCm backend. Legacy 32-bit i386 is a later research target, not an initial inference promise.
