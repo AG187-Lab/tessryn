@@ -86,7 +86,9 @@ No exact auction offer or current price was selected; inventory changes.
 Its [rescue documentation](https://docs.hetzner.com/robot/dedicated-server/troubleshooting/hetzner-rescue-system/)
 describes a Debian environment booted by PXE into memory without touching drives.
 The [KVM documentation](https://docs.hetzner.com/robot/dedicated-server/maintenance/kvm-console/)
-offers three free hours, requests advance scheduling and describes virtual ISO
-media. Availability and successful mounting are conditional. This is a possible
-fallback for provider-confirmed disk-free reference work, not a selected supported
-hardware profile or a guaranteed one-day quote.
+requests advance scheduling and describes virtual ISO media. Its older free
+three-hour statement conflicts with the [October 7 addon table](https://docs.hetzner.com/de/robot/dedicated-server/dedicated-server-hardware/price-server-addons/),
+which lists EUR 10 per three-hour attachment including 19% VAT, charged each
+time. Confirm the fee. Availability and successful mounting are conditional.
+The later [GPU rental research](early-gpu-rentals.md) records an ephemeral Ada
+auction offer. Neither record selects supported hardware or guarantees a quote.
