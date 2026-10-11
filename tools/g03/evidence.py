@@ -377,8 +377,9 @@ def validate_result(data: dict[str, Any]) -> None:
     _text(execution["reason"], "execution.reason")
     if item["status"] == "pass":
         _require(execution["returncode"] is not None and execution["returncode"] >= 0,
-                 "a passing run requires an emulator exit code")
-        _require(execution["emulator"] is not None, "a passing run requires a probed emulator binary")
+                 "a passing run requires an observed runner exit code")
+        if item["subject"] == "test_fixture":
+            _require(execution["emulator"] is not None, "a passing fixture requires a probed emulator binary")
     _require(isinstance(item["logs"], list), "logs must be an array")
     for log in item["logs"]:
         row = _object(log, "log", {"path", "sha256", "size_bytes"})

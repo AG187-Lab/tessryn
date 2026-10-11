@@ -409,6 +409,18 @@ class EvidenceTests(unittest.TestCase):
             with redirect_stdout(io.StringIO()):
                 self.assertEqual(main(["validate", str(path)]), 0)
 
+    def test_synthetic_native_result_can_identify_a_runner_without_an_emulator(self):
+        result = synthetic_measurement()
+        result["execution"].update(command=["native-target-runner"], returncode=0, emulator=None)
+        validate_result(result)
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_synthetic_bundle(Path(directory), result, synthetic_reports(result))
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(main(["validate", str(path)]), 0)
+        result["execution"]["returncode"] = None
+        with self.assertRaisesRegex(ValueError, "exit code"):
+            validate_result(result)
+
     def test_report_payload_contracts_reject_omissions_and_invalid_statistics(self):
         mutations = (
             ("performance_trace", lambda d: d["requests"][0].pop("per_token_ms")),

@@ -40,6 +40,9 @@ hashes use UTF-8 canonical JSON (`sort_keys=True`, `separators=(',', ':')`,
 `allow_nan=False`); manifest and log hashes cover the original bytes. Harness
 results have zero performance samples and all native capabilities unavailable.
 Never convert fixture wall-clock duration into a native performance metric.
+A passing fixture requires a probed emulator; a future native record may name its
+target runner with `emulator: null`, while every passing record retains a
+nonnegative observed runner/emulator exit code.
 
 ## Preregister before execution
 

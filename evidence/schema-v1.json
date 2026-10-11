@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AG187-Lab/tessryn/evidence/schema-v1.json",
   "title": "Tessryn G03 evidence contract v1",
-  "description": "Registrations declare assumptions; fixture runs establish tooling implementation behavior only. The stdlib validator additionally checks canonical registration/evaluator/artifact bindings, timestamps, count accounting, percentile ordering, combined log limits, preregistered load/thermal/sample gates and numerical gate outcomes. Schema validation cannot establish the truth of claims or trusted evaluator independence. Latency sample_count counts completed request summaries; inter_token_ms uses one declared per-request summary. Throughput and goodput use completed requests per second. A native measured-performance pass requires available kernel boot; a device-artifact measured-performance pass additionally requires available GPU execution. Failed records can retain unavailable capabilities. Measured records require retained performance-trace, statistical and numerical report artifacts; the CLI additionally verifies their bytes, payload contracts and summary bindings. All measured formats describe inference workloads and passing records require available inference. Thermal duration cannot exceed observed duration; passing thermal identity matches preregistration. Rates equal completed/SLO-compliant counts divided by observation duration (relative tolerance 1e-9, absolute tolerance 1e-12 requests/s).",
+  "description": "Registrations declare assumptions; fixture runs establish tooling implementation behavior only. The stdlib validator additionally checks canonical registration/evaluator/artifact bindings, timestamps, count accounting, percentile ordering, combined log limits, preregistered load/thermal/sample gates and numerical gate outcomes. Schema validation cannot establish the truth of claims or trusted evaluator independence. Latency sample_count counts completed request summaries; inter_token_ms uses one declared per-request summary. Throughput and goodput use completed requests per second. A native measured-performance pass requires available kernel boot; a device-artifact measured-performance pass additionally requires available GPU execution. Failed records can retain unavailable capabilities. Measured records require retained performance-trace, statistical, numerical and held-out report artifacts; the CLI additionally verifies their bytes, payload contracts and summary bindings. All measured formats describe inference workloads and passing records require available inference. Thermal duration cannot exceed observed duration; passing thermal identity matches preregistration. Rates equal completed/SLO-compliant counts divided by observation duration (relative tolerance 1e-9, absolute tolerance 1e-12 requests/s). A probed emulator is required for passing test fixtures; native records may identify a runner with emulator null, while all passing records require a nonnegative observed exit code.",
   "oneOf": [
     {
       "$ref": "#/$defs/registration"
@@ -1500,28 +1500,6 @@
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 9223372036854775807
-                  },
-                  "emulator": {
-                    "type": "object",
-                    "properties": {
-                      "version": {
-                        "type": "string",
-                        "minLength": 1,
-                        "pattern": "\\S",
-                        "not": {
-                          "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
-                        }
-                      },
-                      "binary_sha256": {
-                        "type": "string",
-                        "pattern": "^[0-9a-f]{64}$"
-                      }
-                    },
-                    "required": [
-                      "version",
-                      "binary_sha256"
-                    ],
-                    "additionalProperties": false
                   }
                 }
               }
@@ -1628,6 +1606,48 @@
                         "const": "available"
                       }
                     }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "subject": {
+                "const": "test_fixture"
+              },
+              "status": {
+                "const": "pass"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "execution": {
+                "properties": {
+                  "emulator": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S",
+                        "not": {
+                          "pattern": "(?:^|[\\s=(])(?:/\\S+|[A-Za-z]:[\\\\/]|\\\\\\\\)"
+                        }
+                      },
+                      "binary_sha256": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "binary_sha256"
+                    ],
+                    "additionalProperties": false
                   }
                 }
               }
