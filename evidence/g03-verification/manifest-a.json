@@ -1,0 +1,318 @@
+{
+  "artifact_type": "test_fixture",
+  "artifacts": [
+    {
+      "path": "pass.rom",
+      "role": "emulator_pass_fixture",
+      "sha256": "7be290c0ac1d6607312077e46736e3b38fc72e4e05ffd1821f14f63667417712",
+      "size_bytes": 65536
+    },
+    {
+      "path": "hang.rom",
+      "role": "emulator_timeout_fixture",
+      "sha256": "a9ac52ad42d333fa367d082f94ab7720389c49dd2bfc94f45e8ece6dcc007c7e",
+      "size_bytes": 65536
+    },
+    {
+      "path": "rust-probe.elf",
+      "role": "compiler_layout_debug_probe",
+      "sha256": "59ded6303908ea2d1c0328184b5b919bde695d3439ff57b53dd44c8d98f9c8a2",
+      "size_bytes": 8112
+    }
+  ],
+  "binary_validation": {
+    "architecture": "x86_64",
+    "debug_sections": [
+      ".debug_info",
+      ".debug_line"
+    ],
+    "dynamic_loader": false,
+    "entry_address": 1048576,
+    "entry_symbol": "fixture_entry",
+    "executed": false,
+    "format": "ELF64",
+    "undefined_symbols": []
+  },
+  "capabilities": {
+    "model_inference": "unavailable",
+    "native_gpu": "unavailable",
+    "tessryn_kernel_boot": "unavailable"
+  },
+  "components": [
+    {
+      "distribution_requirements": "Preserve the repository Apache-2.0 license.",
+      "license": "Apache-2.0",
+      "modified_files": [
+        "fixtures/rom.py",
+        "fixtures/rust-probe.rs",
+        "fixtures/rust-probe.ld"
+      ],
+      "name": "g03-original-fixtures",
+      "notices": [
+        "LICENSE"
+      ],
+      "revision": "e5cd6ca9a6a5b89a3fc86b284cbd68f43099b68e",
+      "roles": [
+        "test_fixture",
+        "compiler_layout_debug_probe"
+      ],
+      "source": "https://github.com/AG187-Lab/tessryn"
+    },
+    {
+      "archive_sha256": "1bb7b0bad1d2a42fc4173ede6dd460de2774fc1858a8369329d3e081e4e3426c",
+      "distribution_requirements": "External tool; retain upstream licenses/notices. Tool binaries are not committed or included in fixture artifacts.",
+      "license": "MIT OR Apache-2.0",
+      "modified_files": [],
+      "name": "rust",
+      "notices": [
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "COPYRIGHT"
+      ],
+      "revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+      "roles": [
+        "build_tool",
+        "freestanding_core_and_compiler_builtins"
+      ],
+      "source": "https://static.rust-lang.org/dist/2026-05-28/rustc-1.96.0-aarch64-apple-darwin.tar.xz",
+      "target_library": {
+        "sha256": "32fc4c50b430533dd605d2ce16c1b0d7bf0f73eb2b2f634d6ed9b1bc4ff5922a",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-none.tar.xz"
+      },
+      "version": "1.96.0"
+    },
+    {
+      "archive_sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+      "distribution_requirements": "External tool; retain upstream licenses/notices. Tool binaries are not committed or included in fixture artifacts.",
+      "license": "GPL-2.0-only",
+      "modified_files": [
+        "roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack"
+      ],
+      "name": "qemu",
+      "notices": [
+        "COPYING",
+        "COPYING.LIB",
+        "LICENSE"
+      ],
+      "omitted_source_links": [
+        "qemu-11.1.2/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack"
+      ],
+      "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+      "roles": [
+        "external_emulator"
+      ],
+      "source": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+      "version": "11.1.2"
+    },
+    {
+      "archive_sha256": "1bb7b0bad1d2a42fc4173ede6dd460de2774fc1858a8369329d3e081e4e3426c",
+      "distribution_requirements": "Bundled external linker; preserve LLVM notices if distributing it. Not included in fixture artifacts.",
+      "license": "Apache-2.0 WITH LLVM-exception",
+      "modified_files": [],
+      "name": "rust-bundled-llvm-linker",
+      "notices": [
+        "https://github.com/rust-lang/llvm-project/blob/1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e/llvm/LICENSE.TXT"
+      ],
+      "revision": "1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e",
+      "roles": [
+        "build_linker"
+      ],
+      "source": "https://github.com/rust-lang/llvm-project/tree/1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e"
+    },
+    {
+      "archive_sha256": "c99048673aa765960a99cf10c6ddb9f1fad506099ff0a0e137ad8960a88f321b",
+      "distribution_requirements": "Build-only external tool, not distributed in fixture artifacts.",
+      "license": "Apache-2.0",
+      "modified_files": [],
+      "name": "ninja",
+      "notice_sha256": "eb7e9ab9690124c5c9f42bdc81383d886a3dede26345b6ed15bbad7caf81f7ea",
+      "notices": [
+        "https://raw.githubusercontent.com/ninja-build/ninja/v1.13.2/COPYING"
+      ],
+      "roles": [
+        "qemu_build_dependency"
+      ],
+      "source": "https://github.com/ninja-build/ninja/releases/tag/v1.13.2",
+      "version": "1.13.2"
+    },
+    {
+      "archive_sha256": "062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922",
+      "distribution_requirements": "Build-only dependency retained under build/toolchain; not distributed in fixture artifacts.",
+      "license": "MIT",
+      "modified_files": [],
+      "name": "setuptools",
+      "notices": [
+        "upstream wheel .dist-info/licenses or .dist-info/LICENSE*"
+      ],
+      "roles": [
+        "qemu_build_dependency"
+      ],
+      "source": "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl",
+      "version": "80.9.0"
+    },
+    {
+      "archive_sha256": "708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248",
+      "distribution_requirements": "Build-only dependency retained under build/toolchain; not distributed in fixture artifacts.",
+      "license": "MIT",
+      "modified_files": [],
+      "name": "wheel",
+      "notices": [
+        "upstream wheel .dist-info/licenses or .dist-info/LICENSE*"
+      ],
+      "roles": [
+        "qemu_build_dependency"
+      ],
+      "source": "https://files.pythonhosted.org/packages/0b/2c/87f3254fd8ffd29e4c02732eee68a83a1d3c346ae39bc6822dcbcb697f2b/wheel-0.45.1-py3-none-any.whl",
+      "version": "0.45.1"
+    },
+    {
+      "archive_sha256": "6d67a2b4e7f14d8b31b8b52648866fa717f45a1eb70e83002f4331d07e953717",
+      "distribution_requirements": "Build-only dependency retained under build/toolchain; not distributed in fixture artifacts.",
+      "license": "MIT",
+      "modified_files": [],
+      "name": "pip",
+      "notices": [
+        "upstream wheel .dist-info/licenses or .dist-info/LICENSE*"
+      ],
+      "roles": [
+        "qemu_build_dependency"
+      ],
+      "source": "https://files.pythonhosted.org/packages/b7/3f/945ef7ab14dc4f9d7f40288d2df998d1837ee0888ec3659c813487572faa/pip-25.2-py3-none-any.whl",
+      "version": "25.2"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "dirty": false,
+    "revision": "e5cd6ca9a6a5b89a3fc86b284cbd68f43099b68e",
+    "tree_sha256": "007f57296c8010336ada80605b5f4fba45ce9c0baa3391ddf035b62d4b0ec3f8"
+  },
+  "toolchain": {
+    "binary_target": "x86_64-unknown-none",
+    "python": {
+      "sha256": "4f00ea2ad53d62437a6a3946b73c73614a97e8accdc5b96dc095ea1a0d9c6a56",
+      "version": "3.14.6"
+    },
+    "qemu": {
+      "sha256": "17796d1af748c68f0533845181fe1a81e500bc29001237dd50937419be9be951",
+      "version": "QEMU emulator version 11.1.2"
+    },
+    "qemu_setup": {
+      "host": "aarch64-apple-darwin",
+      "ninja": "1.13.2",
+      "qemu": "QEMU emulator version 11.1.2",
+      "qemu_configure": [
+        "--without-default-features",
+        "--enable-tcg",
+        "--enable-system",
+        "--target-list=x86_64-softmmu",
+        "--disable-docs",
+        "--disable-tools",
+        "--disable-user",
+        "--disable-rust",
+        "--disable-download"
+      ],
+      "qemu_extraction": {
+        "archive_sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+        "omitted_links": [
+          "qemu-11.1.2/roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack"
+        ]
+      },
+      "qemu_host_compilers": {
+        "build": {
+          "c": {
+            "id": "clang",
+            "version": "21.0.0"
+          }
+        },
+        "host": {
+          "c": {
+            "id": "clang",
+            "version": "21.0.0"
+          },
+          "objc": {
+            "id": "clang",
+            "version": "21.0.0"
+          }
+        }
+      },
+      "qemu_host_dependencies": [
+        {
+          "name": "appleframeworks",
+          "version": "unknown"
+        },
+        {
+          "name": "glib-2.0",
+          "version": "2.88.0"
+        },
+        {
+          "name": "gmp",
+          "version": "6.3.0"
+        },
+        {
+          "name": "threads",
+          "version": "unknown"
+        },
+        {
+          "name": "x11",
+          "version": "1.8.13"
+        },
+        {
+          "name": "zlib",
+          "version": "1.2.12"
+        }
+      ],
+      "qemu_python_build_dependencies": [
+        {
+          "license": "MIT",
+          "name": "setuptools",
+          "sha256": "062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922",
+          "url": "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl",
+          "version": "80.9.0"
+        },
+        {
+          "license": "MIT",
+          "name": "wheel",
+          "sha256": "708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248",
+          "url": "https://files.pythonhosted.org/packages/0b/2c/87f3254fd8ffd29e4c02732eee68a83a1d3c346ae39bc6822dcbcb697f2b/wheel-0.45.1-py3-none-any.whl",
+          "version": "0.45.1"
+        },
+        {
+          "license": "MIT",
+          "name": "pip",
+          "sha256": "6d67a2b4e7f14d8b31b8b52648866fa717f45a1eb70e83002f4331d07e953717",
+          "url": "https://files.pythonhosted.org/packages/b7/3f/945ef7ab14dc4f9d7f40288d2df998d1837ee0888ec3659c813487572faa/pip-25.2-py3-none-any.whl",
+          "version": "25.2"
+        }
+      ],
+      "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+      "schema_version": 1
+    },
+    "rust_flags": [
+      "--edition=2024",
+      "--crate-name=g03_probe",
+      "--crate-type=bin",
+      "--target=x86_64-unknown-none",
+      "-Cpanic=abort",
+      "-Copt-level=1",
+      "-Ccodegen-units=1",
+      "-Ccode-model=small",
+      "-Crelocation-model=static",
+      "-Cdebuginfo=2",
+      "-Cdwarf-version=4",
+      "-Cforce-frame-pointers=yes",
+      "-Cno-redzone=yes",
+      "-Cembed-bitcode=no",
+      "-Clink-arg=--build-id=none",
+      "-Clink-arg=-Tfixtures/rust-probe.ld"
+    ],
+    "rust_lld": {
+      "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063",
+      "version": "LLD 22.1.2 (https://github.com/rust-lang/llvm-project.git 1cb4e3833c1919c2e6fb579a23ac0e2b22587b7e) (compatible with GNU linkers)"
+    },
+    "rustc": {
+      "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe",
+      "version": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: aarch64-apple-darwin\nrelease: 1.96.0\nLLVM version: 22.1.2"
+    }
+  }
+}
