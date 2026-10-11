@@ -62,6 +62,12 @@ inventories do not resolve the physical qualification gates.
 
 ## Candidate laboratory and GPU profiles
 
+For early GPU work, investigate the [inexpensive rental shortlist](../evidence/g01-research/early-gpu-rentals.md)
+before AWS. GPU Mart's anonymous RTX 2060 dedicated preview shows USD 0.22/hour
+and zero setup; exact UEFI/IPMI/RAM-only access and account terms remain gates.
+A Hetzner Ada auction is the documented RAM-rescue fallback. These additional
+price observations are unqualified research, not frozen supported profiles.
+
 The conditional CPU laboratory choice is **Scaleway Elastic Metal
 EM-A610R-NVMe in `fr-par-1`**, hourly billing: Ryzen PRO 3600, 6 cores/12 threads,
 32 GiB catalog RAM, two approximately 1.02 TB NVMe drives, and no listed GPU.
@@ -94,9 +100,11 @@ firmware-menu control. [Rescue prerequisites](https://www.scaleway.com/en/docs/e
 **Hetzner Server Auction** is an alternative to quote at booking time. Its RAM
 rescue and out-of-band reset are documented; exact offer, modern CPU, devices,
 hourly charge and console availability have not been selected. A scheduled KVM
-console supports custom media; the first three hours are free, availability is
-limited, and virtual-media mounting can fail. A stale auction listing cannot
-freeze a hardware profile. [Auction](https://www.hetzner.com/sb/),
+console supports custom media; availability is limited and mounting can fail.
+Its older free-console statement conflicts with the current EUR 10/three-hour
+addon price including 19% VAT; confirm charges. A stale auction listing cannot
+freeze a hardware profile. [Current console fee](https://docs.hetzner.com/de/robot/dedicated-server/dedicated-server-hardware/price-server-addons/),
+[Auction](https://www.hetzner.com/sb/),
 [RAM rescue](https://docs.hetzner.com/robot/dedicated-server/troubleshooting/hetzner-rescue-system/),
 [KVM limits](https://docs.hetzner.com/robot/dedicated-server/maintenance/kvm-console/).
 

@@ -147,7 +147,8 @@ candidate. Console availability, UEFI media mounting and exact hardware must
 still be confirmed. [Hetzner RAM rescue](https://docs.hetzner.com/robot/dedicated-server/troubleshooting/hetzner-rescue-system/),
 [KVM/UEFI virtual media](https://docs.hetzner.com/robot/dedicated-server/maintenance/kvm-console/).
 
-Decision: prepare AWS account access and free/read-only preflight first; defer
-spending until the test has a useful payload and verified recovery. Keep QEMU
-as the reproducible implementation loop. AWS is a separate conditional cloud
-qualification target, and cannot replace the physical notebook gate.
+Decision update: defer AWS account/rental work while evaluating the
+[cheaper early GPU laboratories](early-gpu-rentals.md). Retain this access plan
+for later cloud qualification. Spending still requires a useful payload and
+verified recovery. Keep QEMU as the reproducible implementation loop. AWS
+cannot replace the physical notebook gate.
