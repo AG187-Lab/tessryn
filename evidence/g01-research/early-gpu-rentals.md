@@ -103,9 +103,7 @@ and matching firmware; newer hardware alone supplies no Tessryn driver.
 [Vast](https://docs.vast.ai/guides/instances/virtual-machines) documents VMs.
 The cheap [Edgevana RTX 3060](https://nodes.edgevana.com/gpu-servers/rtx-3060)
 offer is labelled Cloud GPU, with no exact-SKU physical boot authority found.
-These prices cannot qualify an original physical OS boot laboratory. RunPod's
-separate [metal service](https://www.runpod.io/gpu-bare-metal-server) has a
-three-month minimum, unsuitable for this short trial.
+These prices cannot qualify an original physical OS boot laboratory.
 
 Keep QEMU as the implementation loop. Rent only for a defined inventory/recovery
 experiment or, later, a reproducibly bootable original image with serial output
