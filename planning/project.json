@@ -1,0 +1,18 @@
+{
+  "owner": "AG187-Lab",
+  "repository": "AG187-Lab/tessryn",
+  "title": "Tessryn development",
+  "visibility": "PUBLIC",
+  "description": "Build the original AI-native OS: kernel, native accelerators, transport, cluster control and laptop-inclusive distributed inference.",
+  "fields": [
+    {"name": "Priority", "type": "SINGLE_SELECT", "options": ["P0", "P1", "P2"]},
+    {"name": "Horizon", "type": "SINGLE_SELECT", "options": ["Now", "Next", "Later"]}
+  ],
+  "views": [
+    {"name": "Development board", "layout": "BOARD_LAYOUT"},
+    {"name": "Ready to start", "layout": "TABLE_LAYOUT", "filter": "label:phase:Now"},
+    {"name": "First product", "layout": "TABLE_LAYOUT", "filter": "-label:phase:Later"},
+    {"name": "Roadmap", "layout": "ROADMAP_LAYOUT"}
+  ],
+  "policy": "Milestones are evidence gates. Dates are intentionally unset until hardware and bring-up qualification establish a credible schedule. Native blocked-by relationships express readiness; completion status is managed in GitHub."
+}

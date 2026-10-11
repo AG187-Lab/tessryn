@@ -59,6 +59,17 @@ def title(item):
 def identify(items, kind, planned):
     found = {}
     field = "description" if kind == "milestone" else "body"
+    planned_keys = {item["key"] for item in planned}
+    assigned = {}
+    for remote in items:
+        identities = set(re.findall(
+            rf"<!-- tessryn:{re.escape(kind)}:([A-Z][A-Z0-9_-]*) -->",
+            remote.get(field) or ""))
+        if len(identities) > 1:
+            raise ValueError(f"Conflicting identity markers on remote {kind} {remote.get('number')}")
+        prefix = re.match(r"^\[([A-Z][A-Z0-9_-]*)\]", remote["title"])
+        if identities and prefix and prefix[1] in planned_keys and prefix[1] not in identities:
+            raise ValueError(f"Title and identity marker disagree on remote {kind} {remote.get('number')}")
     for item in planned:
         matches = [remote for remote in items if
                    marker(kind, item["key"]) in (remote.get(field) or "") or
@@ -67,6 +78,10 @@ def identify(items, kind, planned):
         if len(matches) > 1:
             raise ValueError(f"Ambiguous remote {kind} key {item['key']}; resolve duplicates first")
         if matches:
+            identity = matches[0].get("id", matches[0].get("number"))
+            if identity in assigned and assigned[identity] != item["key"]:
+                raise ValueError(f"Remote {kind} is assigned to both {assigned[identity]} and {item['key']}")
+            assigned[identity] = item["key"]
             found[item["key"]] = matches[0]
     return found
 
@@ -130,6 +145,17 @@ def replace_managed(old, new):
     before, rest = old.split(BEGIN, 1)
     _, after = rest.split(END, 1)
     return before + new + after
+
+
+def milestone_body(item, remote=None):
+    description = item["description"].rstrip()
+    identity = marker("milestone", item["key"])
+    managed = f"{BEGIN}\n{identity}\n{description}\n{END}"
+    old = (remote or {}).get("description") or ""
+    # Migrate only an exact description emitted by the previous tool version.
+    if old == description + "\n\n" + identity:
+        old = ""
+    return replace_managed(old, managed)
 
 
 class Sync:
@@ -202,6 +228,8 @@ def run(args):
                           if "pull_request" not in item], "issue", issues)
     for remote in issue_map.values():
         replace_managed(remote.get("body"), "")  # Validate before any mutation.
+    for remote in milestone_map.values():
+        replace_managed(remote.get("description"), "")
     complete = False
     try:
         for name, payload in labels.items():
@@ -216,8 +244,7 @@ def run(args):
                             (x for x in sync.read("labels") if x["name"].casefold() == n.casefold()), None))
         for item in milestones:
             key, remote = item["key"], milestone_map.get(item["key"])
-            payload = {"title": title(item), "description": item["description"].rstrip() +
-                       "\n\n" + marker("milestone", key)}
+            payload = {"title": title(item), "description": milestone_body(item, remote)}
             if remote and all(remote.get(field) == value for field, value in payload.items()):
                 continue
             milestone_map[key] = sync.change("milestone", key,
