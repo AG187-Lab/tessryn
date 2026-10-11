@@ -191,6 +191,11 @@ numerical, held-out and performance evidence unavailable. The
 [performance template](../evidence/performance-template.json) is an unfilled
 assumption, not a preregistration or measurement.
 
+The historical [G03 implementation evidence](../evidence/g03-verification/README.md)
+and [review-fix reproduction](../evidence/g03-review/README.md) retain their exact
+recorded commits and scope. The separate [K01 evidence](../evidence/k01-verification/README.md)
+records original-kernel execution.
+
 [G03 CI](../.github/workflows/g03.yml) runs unit failure/cancellation tests,
 design validation, checksum-pinned setup, two independent builds, a QEMU fixture
 pass, a QEMU timeout and retained-evidence verification. It uploads only manifests

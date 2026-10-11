@@ -2,7 +2,7 @@
 
 Status: measurement plan. There are no Tessryn performance results. Before testing, register the model/checkpoint, quantization, hardware/firmware, topology, admission budgets, offered arrival process, prompt/output distributions, duration, sample counts, and latency SLOs.
 
-G03 implements [evidence formats and preregistration validation](evaluation-evidence.md) and a [bounded emulator fixture workflow](build-and-evaluation.md). Fixture results are implementation evidence for the tooling with zero performance samples. Numerical references, genuine held-out workloads, native execution and thermal measurements remain unavailable. Use the schemas and independent evaluator authority before publishing future measurements.
+G03 implements [evidence formats and preregistration validation](evaluation-evidence.md) and a [bounded emulator fixture workflow](build-and-evaluation.md). Fixture results are implementation evidence for the tooling with zero performance samples. Numerical references, genuine held-out workloads, native model execution and thermal measurements remain unavailable. Use the schemas and independent evaluator authority before publishing future measurements.
 
 ## Serving evidence
 

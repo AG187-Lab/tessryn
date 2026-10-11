@@ -1,6 +1,6 @@
 # Design
 
-These documents capture the initial research, architectural decisions and implementation gates. They describe intended behavior rather than implemented capability. Update them when evidence or implementation changes a conclusion.
+These documents capture research, architectural decisions, implementation gates and recorded evidence. Planned behavior and implemented capability are identified separately. Update them when evidence or implementation changes a conclusion.
 
 | Document | Purpose |
 | --- | --- |

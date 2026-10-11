@@ -82,7 +82,7 @@ drawing status on a discrete GPU while an IPMI console displays another adapter.
 | Case | Expected observation |
 | --- | --- |
 | `normal` | Ordered entry/map/exit/CPU/ownership markers, then `TESSRYN_K01_PASS` |
-| `int3` | Owned IDT catches vector 3 and records the fault frame |
+| `int3` | Owned IDT catches vector 3, records its frame and returns with floating-point/SIMD state preserved |
 | `invalid_opcode` | `ud2` reaches vector 6 diagnostics |
 | `page_fault` | Read outside the owned 4 GiB map reaches vector 14 and records CR2 |
 | `panic` | Rust panic handler reports the deliberate panic and halts |
