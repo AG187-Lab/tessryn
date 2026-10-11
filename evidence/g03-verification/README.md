@@ -89,5 +89,5 @@ candidate sandbox/promotion/recovery qualification remains RSI01. Linux CI is a
 separate observed result on the PR, not claimed by these macOS records.
 
 These records describe the original implementation at the commit above. Review
-fixes and their subsequent clean reproduction are recorded separately; verify
-each bundle with the evaluator revision it identifies.
+fixes and their subsequent [clean reproduction](../g03-review/README.md) are
+recorded separately; verify each bundle with the evaluator revision it identifies.
