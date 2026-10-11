@@ -51,7 +51,7 @@
       "notices": [
         "LICENSE"
       ],
-      "revision": "cf6d0eac531c000b07ba2d9988fd3d309f7633c0",
+      "revision": "2adbc2bba74eebe728aaabadace6e7da79d00586",
       "roles": [
         "test_fixture",
         "compiler_layout_debug_probe"
@@ -184,9 +184,9 @@
   "schema_version": 1,
   "source": {
     "dirty": false,
-    "revision": "cf6d0eac531c000b07ba2d9988fd3d309f7633c0",
+    "revision": "2adbc2bba74eebe728aaabadace6e7da79d00586",
     "snapshot_algorithm": "git-worktree-v2",
-    "tree_sha256": "66a747deeba4be0a5e67602ef3e0d8bc60fc57c984f5d3069ddebd3db05d43c8"
+    "tree_sha256": "bfb13a2e901bd773f69256b0322a7eec5634a4b49ab6a686bcd34b009245c3b3"
   },
   "toolchain": {
     "binary_target": "x86_64-unknown-none",

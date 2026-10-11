@@ -1,10 +1,10 @@
 # PR #51 review against G03
 
 These are observed tooling results from clean review-fix commit
-`cf6d0eac531c000b07ba2d9988fd3d309f7633c0`, recorded October 11, 2026 on a macOS
+`2adbc2bba74eebe728aaabadace6e7da79d00586`, recorded October 11, 2026 on a macOS
 arm64 development host. Both manifests record `dirty: false`, snapshot algorithm
 `git-worktree-v2`, and source snapshot
-`66a747deeba4be0a5e67602ef3e0d8bc60fc57c984f5d3069ddebd3db05d43c8`.
+`bfb13a2e901bd773f69256b0322a7eec5634a4b49ab6a686bcd34b009245c3b3`.
 The evidence commit follows the implementation it records. The earlier
 [implementation evidence](../g03-verification/README.md) remains identified with
 its original revision and evaluator.
@@ -25,6 +25,10 @@ Independent review found and fixed these G03 blockers:
   binaries and libraries. Builds reject stale/spoofed overrides and recheck the
   installation before publishing. Source snapshots include file types,
   executable modes and link destinations.
+- The Linux bundled linker exposed an upstream build-root placeholder in its
+  version string. The builder now checks the locked LLVM revision and normalizes
+  only that known placeholder to the canonical source URL. Unexpected paths
+  remain rejected, and the actual linker binary hash remains recorded.
 - Abbreviated manifests without provenance or the compiler probe could verify.
   Verification now requires all three original artifacts, pinned components,
   complete tool/source identities, actual ELF inspection and emulator identity.
@@ -62,9 +66,9 @@ PR #51 and issue #2 remain open; this review does not authorize merging.
 | Missing emulator | Explicit unavailable, harness exit 2 | [Result](unavailable/result.json) |
 | Changed ROM byte | Integrity rejection before launch, harness exit 1 | [Result](rejected/result.json) |
 | Retained verification | Identical artifacts/manifests and all four result/log bundles verified | Reproduce with the command below |
-| Unit tests, Python 3.14.6 | 98 tests, zero failures | [Log](tests-py314.log) |
-| Unit tests, Python 3.12.7 | 98 tests, zero failures | [Log](tests-py312.log) |
-| Design validation at implementation revision | 34 Markdown documents, 10 milestones, 49 acyclic work items | [Log](design.log) |
+| Unit tests, Python 3.14.6 | 100 tests, zero failures | [Log](tests-py314.log) |
+| Unit tests, Python 3.12.7 | 100 tests, zero failures | [Log](tests-py312.log) |
+| Design validation at implementation revision | 35 Markdown documents, 10 milestones, 49 acyclic work items | [Log](design.log) |
 
 The original artifact hashes remain unchanged from the first implementation:
 `pass.rom` and `hang.rom` are 65,536 bytes; `rust-probe.elf` is 8,112 bytes.
@@ -82,36 +86,36 @@ artifacts are not committed.
 ```sh
 git clone https://github.com/AG187-Lab/tessryn.git tessryn-g03-review
 cd tessryn-g03-review
-git checkout cf6d0eac531c000b07ba2d9988fd3d309f7633c0
+git checkout 2adbc2bba74eebe728aaabadace6e7da79d00586
 python3 tools/setup_toolchain.py --jobs 4
-python3 tools/build_fixture.py --out build/g03-review-final-a
-python3 tools/build_fixture.py --out build/g03-review-final-b
-python3 tools/run_emulator.py --manifest build/g03-review-final-a/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --out build/g03-review-final-pass
+python3 tools/build_fixture.py --out build/g03-review-portable-a
+python3 tools/build_fixture.py --out build/g03-review-portable-b
+python3 tools/run_emulator.py --manifest build/g03-review-portable-a/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --out build/g03-review-portable-pass
 set +e
-python3 tools/run_emulator.py --manifest build/g03-review-final-a/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --fixture hang --timeout 0.5 --out build/g03-review-final-timeout
+python3 tools/run_emulator.py --manifest build/g03-review-portable-a/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --fixture hang --timeout 0.5 --out build/g03-review-portable-timeout
 code=$?
 set -e
 test "$code" -eq 124
 set +e
-python3 tools/run_emulator.py --manifest build/g03-review-final-a/manifest.json --qemu missing-g03-emulator --out build/g03-review-final-unavailable
+python3 tools/run_emulator.py --manifest build/g03-review-portable-a/manifest.json --qemu missing-g03-emulator --out build/g03-review-portable-unavailable
 code=$?
 set -e
 test "$code" -eq 2
 python3 - <<'PY'
 from pathlib import Path
 import shutil
-shutil.copytree('build/g03-review-final-a', 'build/g03-review-final-tampered')
-rom = Path('build/g03-review-final-tampered/pass.rom')
+shutil.copytree('build/g03-review-portable-a', 'build/g03-review-portable-tampered')
+rom = Path('build/g03-review-portable-tampered/pass.rom')
 data = bytearray(rom.read_bytes())
 data[0] ^= 1
 rom.write_bytes(data)
 PY
 set +e
-python3 tools/run_emulator.py --manifest build/g03-review-final-tampered/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --out build/g03-review-final-rejected
+python3 tools/run_emulator.py --manifest build/g03-review-portable-tampered/manifest.json --qemu build/toolchain/bin/qemu-system-x86_64 --out build/g03-review-portable-rejected
 code=$?
 set -e
 test "$code" -eq 1
-python3 tools/verify_fixture.py --first build/g03-review-final-a/manifest.json --second build/g03-review-final-b/manifest.json --result build/g03-review-final-pass/result.json --result build/g03-review-final-timeout/result.json --result build/g03-review-final-unavailable/result.json --result build/g03-review-final-rejected/result.json
+python3 tools/verify_fixture.py --first build/g03-review-portable-a/manifest.json --second build/g03-review-portable-b/manifest.json --result build/g03-review-portable-pass/result.json --result build/g03-review-portable-timeout/result.json --result build/g03-review-portable-unavailable/result.json --result build/g03-review-portable-rejected/result.json
 python3 -m unittest discover -s tests -v
 python3 tools/validate_design.py
 ```

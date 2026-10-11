@@ -1,4 +1,6 @@
 test_freestanding_elf (test_build.FixtureTests.test_freestanding_elf) ... ok
+test_linker_wrong_revision_and_unknown_source_paths_rejected (test_build.FixtureTests.test_linker_wrong_revision_and_unknown_source_paths_rejected) ... ok
+test_linux_linker_source_placeholder_normalizes_to_upstream (test_build.FixtureTests.test_linux_linker_source_placeholder_normalizes_to_upstream) ... ok
 test_reject_dynamic_loader (test_build.FixtureTests.test_reject_dynamic_loader) ... ok
 test_reject_truncated_elf (test_build.FixtureTests.test_reject_truncated_elf) ... ok
 test_reject_undefined_entry (test_build.FixtureTests.test_reject_undefined_entry) ... ok
@@ -99,6 +101,6 @@ test_symlink_retained_log_is_rejected (test_verification.RetainedFixtureVerifica
 test_wrong_input_or_evaluator_bindings_are_rejected (test_verification.RetainedFixtureVerificationTests.test_wrong_input_or_evaluator_bindings_are_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 98 tests in 2.641s
+Ran 100 tests in 2.687s
 
 OK

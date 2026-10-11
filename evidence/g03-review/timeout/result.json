@@ -1,8 +1,8 @@
 {
   "actual_sample_count": 0,
   "bindings": {
-    "artifact_manifest": "516e62a974bad8df4b8f672902b3ae19a916aad3bda1be0f6dd5a193c3ab33f1",
-    "evaluator": "cd1c3ca63381f7112f3a3806c640c2f3c0e30e867bc41621e279972480f5305d",
+    "artifact_manifest": "0165d825e61cd037b1b9232df530f7ccba497572eb79985e0afb60dc47743704",
+    "evaluator": "9c5d46a10de9a5706027561e5bfd7f58f3647b541372c2c2e79e3c1afb234926",
     "registration": "12560aebbda586764142b46d8361126ec256cb7a7d16f9ddd8269b633ea63c1c"
   },
   "capabilities": {
@@ -53,7 +53,7 @@
       "-device",
       "isa-debug-exit,iobase=0xf4,iosize=0x04"
     ],
-    "elapsed_seconds": 0.5047403750068042,
+    "elapsed_seconds": 0.5064306249842048,
     "emulator": {
       "binary_sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51",
       "version": "11.1.2"
