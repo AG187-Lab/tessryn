@@ -596,3 +596,236 @@ fn frame_pool_rejects_forged_partial_release_and_coalesces_external_free_extents
     assert_eq!((pool.available_pages(), pool.allocated_pages()), (4, 0));
     assert_eq!(pool.allocate(4).unwrap(), range(BASE, 4));
 }
+
+/// Preflight denials cannot spend authority, counters or a scrub operation.
+fn activation_denied(
+    state: &mut Policy,
+    caller: u64,
+    root: CapabilityRef,
+    pages: u64,
+    expected: Error,
+) {
+    let mut callbacks = 0;
+    assert_eq!(denied(state, |s| s.activate_reserved(caller, root, pages, |_| {
+        callbacks += 1;
+        Ok(())
+    })), expected);
+    assert_eq!(callbacks, 0, "activation rejection reached the scrub backend");
+}
+
+#[test]
+fn reserved_activation_transfers_accounting_without_allocating_or_recharging() {
+    let mut state = policy();
+    let initial = state.allocate(1, 2, 3, Rights::ALL, |_| Ok(())).unwrap();
+    let other = state.allocate(1, 2, 1, Rights::ALL, |_| Ok(())).unwrap();
+    let foreign = state.allocate(2, 1, 1, Rights::ALL, |_| Ok(())).unwrap();
+    let backing = state.region_info(1, initial).unwrap().backing;
+    let frames = (state.frames().available_pages(), state.frames().allocated_pages());
+    let foreign_accounting = state.accounting(2).unwrap();
+    let mut scrubbed = Vec::new();
+    assert_eq!(denied(&mut state, |s| s.authorize(1, initial, Rights::READ, 2 * PAGE_SIZE, 1)), Error::Bounds);
+
+    let grown = state.activate_reserved(1, initial, 2, |extent| {
+        scrubbed.push(extent);
+        Ok(())
+    }).unwrap();
+    assert_eq!((grown.domain, grown.slot, grown.generation), (1, initial.slot, initial.generation + 1));
+    assert_eq!(scrubbed, [range(BASE + 2 * PAGE_SIZE, 2)]);
+    let accounting = state.accounting(1).unwrap();
+    assert_eq!((accounting.budget_pages, accounting.charged_pages, accounting.committed_pages, accounting.reserved_pages), (24, 8, 6, 2));
+    assert_eq!(state.accounting(2).unwrap(), foreign_accounting);
+    assert_eq!((state.frames().available_pages(), state.frames().allocated_pages()), frames);
+    assert_eq!(state.region_info(1, grown).unwrap().backing, backing);
+    state.authorize(1, grown, Rights::READ, 0, 4 * PAGE_SIZE).unwrap();
+    denied(&mut state, |s| s.authorize(1, grown, Rights::READ, 4 * PAGE_SIZE, 1));
+    activation_denied(&mut state, 1, initial, 1, Error::StaleHandle);
+    denied(&mut state, |s| s.release_capability(1, initial));
+
+    let final_root = state.activate_reserved(1, grown, 1, |extent| {
+        scrubbed.push(extent);
+        Ok(())
+    }).unwrap();
+    assert_eq!(final_root.generation, initial.generation + 2);
+    assert_eq!(scrubbed, [range(BASE + 2 * PAGE_SIZE, 2), range(BASE + 4 * PAGE_SIZE, 1)]);
+    let accounting = state.accounting(1).unwrap();
+    assert_eq!((accounting.charged_pages, accounting.committed_pages, accounting.reserved_pages), (8, 7, 1));
+    assert_eq!(state.region_info(1, final_root).unwrap().backing, backing);
+    assert_eq!((state.frames().available_pages(), state.frames().allocated_pages()), frames);
+    state.authorize(1, final_root, Rights::READ, 0, 5 * PAGE_SIZE).unwrap();
+    activation_denied(&mut state, 1, grown, 1, Error::StaleHandle);
+    activation_denied(&mut state, 1, final_root, 1, Error::Bounds);
+
+    state.release_capability(1, final_root).unwrap();
+    let accounting = state.accounting(1).unwrap();
+    assert_eq!((accounting.charged_pages, accounting.committed_pages, accounting.reserved_pages), (3, 2, 1));
+    assert_eq!((state.frames().available_pages(), state.frames().allocated_pages()), (frames.0 + 5, frames.1 - 5));
+    state.authorize(1, other, Rights::READ, 0, 1).unwrap();
+    state.authorize(2, foreign, Rights::READ, 0, 1).unwrap();
+}
+
+#[test]
+fn reserved_activation_scrubs_only_the_new_tail_and_preserves_existing_bytes() {
+    let mut state = policy();
+    let mut memory = MockBacking::new(32);
+    let root = state.allocate(1, 2, 3, Rights::ALL, |extent| memory.scrub(extent)).unwrap();
+    let committed = range(BASE, 2);
+    let activated = range(BASE + 2 * PAGE_SIZE, 2);
+    let still_reserved = range(BASE + 4 * PAGE_SIZE, 1);
+    memory.fill(committed, 0x11);
+    memory.fill(activated, 0xa5);
+    memory.fill(still_reserved, 0xdd);
+    memory.scrubbed.clear();
+
+    let replacement = state.activate_reserved(1, root, 2, |extent| memory.scrub(extent)).unwrap();
+    assert_eq!(memory.scrubbed, [activated]);
+    assert!(memory.contents(committed).iter().all(|byte| *byte == 0x11));
+    assert!(memory.contents(activated).iter().all(|byte| *byte == 0));
+    assert!(memory.contents(still_reserved).iter().all(|byte| *byte == 0xdd));
+    assert_eq!(state.authorize(1, replacement, Rights::READ, 2 * PAGE_SIZE, 2 * PAGE_SIZE).unwrap().physical_start, activated.start());
+    denied(&mut state, |s| s.authorize(1, replacement, Rights::READ, 4 * PAGE_SIZE, 1));
+}
+
+#[test]
+fn reserved_activation_preserves_rights_and_can_delegate_new_bounds_explicitly() {
+    let mut state = policy();
+    let root = state.allocate(1, 1, 1, Rights::READ | Rights::DELEGATE, |_| Ok(())).unwrap();
+    let replacement = state.activate_reserved(1, root, 1, |_| Ok(())).unwrap();
+    state.authorize(1, replacement, Rights::READ, PAGE_SIZE, PAGE_SIZE).unwrap();
+    assert_eq!(denied(&mut state, |s| s.authorize(1, replacement, Rights::WRITE, PAGE_SIZE, 1)), Error::InsufficientRights);
+    denied(&mut state, |s| s.map_intent(1, replacement, Access::Read, PAGE_SIZE, PAGE_SIZE));
+    denied(&mut state, |s| s.acquire(1, replacement, Access::Read, PAGE_SIZE, 1));
+    let child = state.delegate(1, replacement, 2, Rights::READ, PAGE_SIZE, PAGE_SIZE).unwrap();
+    state.authorize(2, child, Rights::READ, 0, PAGE_SIZE).unwrap();
+    state.revoke(1, replacement).unwrap();
+    assert_eq!(denied(&mut state, |s| s.authorize(2, child, Rights::READ, 0, 1)), Error::Revoked);
+    state.release_capability(2, child).unwrap();
+    state.release_capability(1, replacement).unwrap();
+    assert_eq!(state.accounting(1).unwrap().charged_pages, 0);
+}
+
+#[test]
+fn reserved_activation_rejects_foreign_forged_delegated_and_revoked_authority() {
+    let mut state = policy();
+    let root = state.allocate(1, 1, 2, Rights::ALL, |_| Ok(())).unwrap();
+    activation_denied(&mut state, 2, root, 1, Error::InvalidAuthority);
+    activation_denied(&mut state, 99, root, 1, Error::UnknownDomain);
+    activation_denied(&mut state, 1, CapabilityRef { generation: 0, ..root }, 1, Error::InvalidAuthority);
+    activation_denied(&mut state, 1, CapabilityRef { slot: u32::MAX, ..root }, 1, Error::StaleHandle);
+    activation_denied(&mut state, 1, CapabilityRef { generation: root.generation + 1, ..root }, 1, Error::StaleHandle);
+
+    // Full bounds and every data right still do not make a child the arena owner.
+    let same_domain = state.delegate(1, root, 1, Rights::ALL, 0, PAGE_SIZE).unwrap();
+    activation_denied(&mut state, 1, root, 1, Error::Busy);
+    let foreign_domain = state.delegate(1, root, 2, Rights::ALL, 0, PAGE_SIZE).unwrap();
+    activation_denied(&mut state, 1, same_domain, 1, Error::InvalidAuthority);
+    activation_denied(&mut state, 2, foreign_domain, 1, Error::InvalidAuthority);
+    state.release_capability(1, same_domain).unwrap();
+    state.release_capability(2, foreign_domain).unwrap();
+    state.revoke(1, root).unwrap();
+    activation_denied(&mut state, 1, root, 1, Error::Revoked);
+}
+
+#[test]
+fn reserved_activation_requires_every_alias_to_be_released_even_after_revocation() {
+    let mut state = policy();
+    let root = state.allocate(1, 1, 2, Rights::ALL, |_| Ok(())).unwrap();
+    let child = state.delegate(1, root, 2, Rights::ALL, 0, PAGE_SIZE).unwrap();
+    let grandchild = state.delegate(2, child, 3, Rights::READ, 0, 1).unwrap();
+    activation_denied(&mut state, 1, root, 1, Error::Busy);
+    state.revoke(2, child).unwrap();
+    activation_denied(&mut state, 1, root, 1, Error::Busy);
+    state.release_capability(3, grandchild).unwrap();
+    activation_denied(&mut state, 1, root, 1, Error::Busy);
+    state.release_capability(2, child).unwrap();
+    state.activate_reserved(1, root, 1, |_| Ok(())).unwrap();
+}
+
+#[test]
+fn reserved_activation_waits_for_operations_in_every_phase_to_quiesce() {
+    for phase in 0..3 {
+        let mut state = policy();
+        let root = state.allocate(1, 1, 1, Rights::ALL, |_| Ok(())).unwrap();
+        let lease = state.acquire(1, root, Access::Read, 0, 1).unwrap();
+        if phase == 1 { state.complete(1, lease).unwrap(); }
+        if phase == 2 { state.fence(lease).unwrap(); }
+        activation_denied(&mut state, 1, root, 1, Error::Busy);
+        if phase == 0 { state.complete(1, lease).unwrap(); }
+        state.quiesce(lease).unwrap();
+        state.activate_reserved(1, root, 1, |_| Ok(())).unwrap();
+        assert_eq!(denied(&mut state, |s| s.quiesce(lease)), Error::StaleLease);
+    }
+}
+
+#[test]
+fn reserved_activation_waits_for_active_and_fenced_mapping_teardown() {
+    for fenced in [false, true] {
+        let mut state = policy();
+        let root = state.allocate(1, 1, 1, Rights::ALL, |_| Ok(())).unwrap();
+        let lease = state.map_intent(1, root, Access::Write, 0, PAGE_SIZE).unwrap();
+        if fenced { state.fence(lease).unwrap(); }
+        activation_denied(&mut state, 1, root, 1, Error::Busy);
+        if !fenced { state.fence(lease).unwrap(); }
+        state.quiesce(lease).unwrap();
+        state.activate_reserved(1, root, 1, |_| Ok(())).unwrap();
+    }
+}
+
+#[test]
+fn reserved_activation_preflights_zero_reservation_bounds_and_overflow_sized_input() {
+    let mut state = policy();
+    let root = state.allocate(1, 1, 2, Rights::ALL, |_| Ok(())).unwrap();
+    activation_denied(&mut state, 1, root, 0, Error::Empty);
+    activation_denied(&mut state, 1, root, 3, Error::Bounds);
+    activation_denied(&mut state, 1, root, u64::MAX / PAGE_SIZE + 1, Error::Bounds);
+    activation_denied(&mut state, 1, root, u64::MAX, Error::Bounds);
+    let unreserved = state.allocate(1, 1, 0, Rights::ALL, |_| Ok(())).unwrap();
+    activation_denied(&mut state, 1, unreserved, 1, Error::Bounds);
+    state.authorize(1, root, Rights::READ, 0, PAGE_SIZE).unwrap();
+}
+
+#[test]
+fn reserved_activation_generation_exhaustion_cannot_revalidate_old_authority() {
+    let mut state = policy();
+    let allocated = state.allocate(1, 1, 2, Rights::ALL, |_| Ok(())).unwrap();
+    state.capabilities[0][allocated.slot as usize].generation = u32::MAX - 1;
+    let penultimate = CapabilityRef { generation: u32::MAX - 1, ..allocated };
+    let final_root = state.activate_reserved(1, penultimate, 1, |_| Ok(())).unwrap();
+    assert_eq!((final_root.slot, final_root.generation), (allocated.slot, u32::MAX));
+    activation_denied(&mut state, 1, final_root, 1, Error::Capacity);
+    activation_denied(&mut state, 1, penultimate, 1, Error::StaleHandle);
+    state.authorize(1, final_root, Rights::READ, 0, 2 * PAGE_SIZE).unwrap();
+    state.release_capability(1, final_root).unwrap();
+    let replacement = state.allocate(1, 1, 1, Rights::ALL, |_| Ok(())).unwrap();
+    assert_ne!(replacement.slot, final_root.slot, "an exhausted capability slot must remain retired");
+    assert_eq!(replacement.generation, 1);
+    activation_denied(&mut state, 1, final_root, 1, Error::StaleHandle);
+}
+
+#[test]
+fn partially_failed_activation_scrub_publishes_nothing_and_retry_reuses_the_same_tail() {
+    let mut state = policy();
+    let mut memory = MockBacking::new(32);
+    let root = state.allocate(1, 1, 2, Rights::ALL, |extent| memory.scrub(extent)).unwrap();
+    let tail = range(BASE + PAGE_SIZE, 1);
+    memory.fill(range(BASE, 1), 0x11);
+    memory.fill(range(BASE + PAGE_SIZE, 2), 0xa5);
+    let mut callbacks = 0;
+    assert_eq!(denied(&mut state, |s| s.activate_reserved(1, root, 1, |extent| {
+        callbacks += 1;
+        assert_eq!(extent, tail);
+        memory.fill(extent, 0x7f);
+        Err(())
+    })), Error::ScrubFailed);
+    assert_eq!(callbacks, 1);
+    assert!(memory.contents(tail).iter().all(|byte| *byte == 0x7f));
+    state.authorize(1, root, Rights::READ, 0, PAGE_SIZE).unwrap();
+    assert_eq!(denied(&mut state, |s| s.authorize(1, root, Rights::READ, PAGE_SIZE, 1)), Error::Bounds);
+
+    memory.scrubbed.clear();
+    let replacement = state.activate_reserved(1, root, 1, |extent| memory.scrub(extent)).unwrap();
+    assert_eq!(replacement.generation, root.generation + 1, "failed scrubbing must not spend a generation");
+    assert_eq!(memory.scrubbed, [tail]);
+    assert!(memory.contents(tail).iter().all(|byte| *byte == 0));
+    assert!(memory.contents(range(BASE, 1)).iter().all(|byte| *byte == 0x11));
+    assert!(memory.contents(range(BASE + 2 * PAGE_SIZE, 1)).iter().all(|byte| *byte == 0xa5));
+}
