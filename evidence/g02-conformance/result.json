@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "kind": "g02_host_conformance",
+  "status": "passed",
+  "scope": "host_layout_bytes_and_reference_state_machine",
+  "source_revision": "ae041f61a926571326f8f3415d5245db444c2a55",
+  "source_dirty": false,
+  "abi": {
+    "major": 1,
+    "minor": 0,
+    "byte_order": "little",
+    "alignment": 8,
+    "feature_mask": 0,
+    "max_descriptor_size": 128
+  },
+  "toolchains": {
+    "rust": {
+      "version": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: aarch64-apple-darwin\nrelease: 1.96.0\nLLVM version: 22.1.2",
+      "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe",
+      "setup_receipt_sha256": "1fbf88153400a389e2d594a47d4d10ba1d896b043195d0627f4c8b27fe39011d",
+      "target_library_tree_sha256": "04087044f06c8af97a6e1ae6e1035e696d7beff59ba0a2ef2e603bf6e7a7d760",
+      "runtime_library_tree_sha256": "4057abce471e8c9bdaad85eda4fc721d4bd316d3892400eade46d01c3cbf8792"
+    },
+    "c": {
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    }
+  },
+  "sources": {
+    "interfaces/abi-v1/compatibility.json": "dcac33a2e00f642af415bda300a88ab9211277422439618d830323beeaf59dc3",
+    "interfaces/abi-v1/contract.json": "d9b437af872513e8867c2837100ce9d483c45794dd1e5cad7d3431013e000ffd",
+    "interfaces/abi-v1/native.h": "2ef059eb637353edb4c1f33bb414f53f868c9e4de0b9641f174e7266c3a0c5a0",
+    "interfaces/abi-v1/native.rs": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+    "interfaces/abi-v1/vectors.json": "07fe4f5923177062e599bc00ec9d6283b7dc27441125e1c4045eebbcdaaf51b0",
+    "tests/test_native_contract.py": "e789001cd663fe1d5af73d8067bbaddc44f16cc10779ec0600b867b41e95201a",
+    "tests/test_native_lifecycle.py": "70cbd33599d31fa927e89ca57cea72910e6d1cf5f486e2b1f0f79fdc2d6adc3d",
+    "tests/test_native_probe.py": "6606c762868edff7568faa4789be480b4773b76cda09379948df1e305fa9302d",
+    "toolchain.lock.json": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "tools/check_native_abi.py": "125dc88770554c96a2a2a2ec3a76a2c4ba1e23ef6ccab590bfd4b893e6249bb7",
+    "tools/g02/__init__.py": "c68ed631b314918004b8fc11108533e7233dec27fef110b9d409e351cb238328",
+    "tools/g02/codec.py": "f87e2d4883a1e9c5bdf6e45904fe1a0bb96321b6828039d0353690d6c68d4d03",
+    "tools/g02/lifecycle.py": "81d2ba20d49af8e47bb1b6f10d64f5f2ff06936950e2ada030f0679104596e49",
+    "tools/g02/model.py": "ae614a044fe7a87d8373040a2a9219e97918482fd3077a6492b212b09d66b265"
+  },
+  "generated_probes": {
+    "probe.c": "3b8c0815f99128432a1d0b3c3763c511a3425d95b631e6b37670d6e098fdd069",
+    "probe.rs": "b2379c085b61a908710daa61379527ac544a0455c032634c914ae7e147e92f0e"
+  },
+  "binary_vectors": [
+    {
+      "name": "negotiation",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "77129375acbbfa3a0791460dcd8881b25be51914d8104c481dfab4494dae8a65"
+    },
+    {
+      "name": "region",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "f457a23c3b23f5b1f5178d367bd12451bb23280fb97b0802e6bc2d2d3aa6738a"
+    },
+    {
+      "name": "submission",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "6110e63ff5f874d40bb868812dda36528dea8193309429e8d221958b3516272c"
+    },
+    {
+      "name": "completion",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "5aef7aef0df267b132c84a4ca307e97d49063f05c73d60014da1734b19150ce0"
+    },
+    {
+      "name": "cancel_submission",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "755b828029f30d16a268e5285b7eb85e7bff65487603f67a9f6cacef0cd11809"
+    },
+    {
+      "name": "fence_submission",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "e355976a3dcc16cc89c2e15b7e91e3dd21ff6b61461a8d93edff2ad2f92f30c4"
+    },
+    {
+      "name": "cancellation_received_only",
+      "expected": "accept",
+      "observed": "accept",
+      "frame_sha256": "37c5a3b071c731abe4cb19e943f355af9be1c967cd29f65422b78729b1fa4aac"
+    },
+    {
+      "name": "unsupported_major",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unsupported version"
+    },
+    {
+      "name": "unsupported_minor",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unsupported version"
+    },
+    {
+      "name": "wrong_kind",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "invalid size or kind"
+    },
+    {
+      "name": "unknown_kind",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "invalid size or kind"
+    },
+    {
+      "name": "wrong_declared_size",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "invalid size or kind"
+    },
+    {
+      "name": "nonzero_flags",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "nonzero reserved field"
+    },
+    {
+      "name": "nonzero_header_reserved",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "nonzero reserved field"
+    },
+    {
+      "name": "nonzero_submission_reserved",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "nonzero reserved field"
+    },
+    {
+      "name": "unknown_operation",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unknown operation"
+    },
+    {
+      "name": "zero_request",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero request_id"
+    },
+    {
+      "name": "zero_task",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero task_id"
+    },
+    {
+      "name": "zero_budget",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero budget_id"
+    },
+    {
+      "name": "missing_completion_authority",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "missing capability"
+    },
+    {
+      "name": "missing_region_authority",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "missing capability"
+    },
+    {
+      "name": "malformed_present_capability",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "incomplete capability"
+    },
+    {
+      "name": "malformed_absent_dependency",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "incomplete capability"
+    },
+    {
+      "name": "offset_length_overflow",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "range overflow"
+    },
+    {
+      "name": "cancel_with_region",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "control request carries a region"
+    },
+    {
+      "name": "zero_region_length",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero length"
+    },
+    {
+      "name": "missing_region_capability",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "missing capability"
+    },
+    {
+      "name": "zero_region_owner",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero owner_task"
+    },
+    {
+      "name": "zero_region_budget",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero budget_id"
+    },
+    {
+      "name": "unknown_status",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unknown status"
+    },
+    {
+      "name": "unknown_milestone",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unknown milestone"
+    },
+    {
+      "name": "missing_milestone",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "missing milestone"
+    },
+    {
+      "name": "nonzero_completion_reserved",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "nonzero reserved field"
+    },
+    {
+      "name": "zero_sequence",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "zero sequence"
+    },
+    {
+      "name": "zero_ownership_generation",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "missing ownership generation"
+    },
+    {
+      "name": "absent_region_has_output",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "absent region has ownership metadata"
+    },
+    {
+      "name": "success_fault_report",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "fault reported as success"
+    },
+    {
+      "name": "negotiation_reversed_range",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unsupported negotiation range"
+    },
+    {
+      "name": "negotiation_unknown_feature",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "unsupported features"
+    },
+    {
+      "name": "negotiation_missing_domain",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "invalid domain"
+    },
+    {
+      "name": "truncated",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "invalid size"
+    },
+    {
+      "name": "trailing_bytes",
+      "expected": "reject",
+      "observed": "reject",
+      "reason": "invalid size"
+    }
+  ],
+  "c_probe_output": "negotiation:010000003000000001000000000000000100000001000000000000000000000000000000000000008877665544332211\nregion:01000000400000000200000000000000070000000900000088776655443322118070605040302010001000000000000017000000000000000500000000000000\nsubmission:0100000080000000030000000000000008070605040302011817161514131211050000000000000002000000000000000700000009000000887766554433221140000000000000000001000000000000030000000400000088776655443322110000000000000000000000000000000017000000000000000000000000000000\ncompletion:010000005000000004000000000000000807060504030201020000000000000005000000000000000000000002000000070000000900000088776655443322110001000000000000d4c3b2a100000000\ncancel_submission:0100000080000000030000000000000008070605040302011817161514131211050000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000030000000400000088776655443322110000000000000000000000000000000017000000000000000000000000000000\nfence_submission:0100000080000000030000000000000008070605040302011817161514131211050000000000000005000000000000000000000000000000000000000000000000000000000000000000000000000000030000000400000088776655443322110000000000000000000000000000000017000000000000000000000000000000\ncancellation_received_only:0100000050000000040000000000000008070605040302010300000000000000050000000000000000000000030000000000000000000000000000000000000000000000000000000000000000000000\n",
+  "compiled_checks": [
+    "c11_host_layout_and_roundtrip",
+    "rust_freestanding_x86_64_layout_and_const_byte_vectors"
+  ],
+  "reference_tests": {
+    "status": "passed",
+    "log": "test_all_descriptor_truncations_and_extra_bytes_reject (test_native_contract.BinaryContractTests.test_all_descriptor_truncations_and_extra_bytes_reject) ... ok\ntest_capability_and_control_request_shape (test_native_contract.BinaryContractTests.test_capability_and_control_request_shape) ... ok\ntest_changed_profile_metadata_cannot_relabel_v1_evidence (test_native_contract.BinaryContractTests.test_changed_profile_metadata_cannot_relabel_v1_evidence) ... ok\ntest_completion_cannot_report_fault_as_success_or_fake_ownership (test_native_contract.BinaryContractTests.test_completion_cannot_report_fault_as_success_or_fake_ownership) ... ok\ntest_encode_rejects_unknown_missing_fields_and_width_coercion (test_native_contract.BinaryContractTests.test_encode_rejects_unknown_missing_fields_and_width_coercion) ... ok\ntest_literal_golden_vectors_in_both_directions (test_native_contract.BinaryContractTests.test_literal_golden_vectors_in_both_directions) ... ok\ntest_malformed_frame_types_have_explicit_errors (test_native_contract.BinaryContractTests.test_malformed_frame_types_have_explicit_errors) ... ok\ntest_negative_golden_frames_are_rejected (test_native_contract.BinaryContractTests.test_negative_golden_frames_are_rejected) ... ok\ntest_negotiation_no_downgrade_or_unknown_features (test_native_contract.BinaryContractTests.test_negotiation_no_downgrade_or_unknown_features) ... ok\ntest_range_overflow_and_unknown_enum_reject (test_native_contract.BinaryContractTests.test_range_overflow_and_unknown_enum_reject) ... ok\ntest_scalar_encoding_is_explicitly_little_endian_and_unaligned (test_native_contract.BinaryContractTests.test_scalar_encoding_is_explicitly_little_endian_and_unaligned) ... ok\ntest_wrong_header_versions_kind_size_reserved_reject (test_native_contract.BinaryContractTests.test_wrong_header_versions_kind_size_reserved_reject) ... ok\ntest_complete_partition_and_memory_ledger (test_native_contract.ModelContractTests.test_complete_partition_and_memory_ledger) ... ok\ntest_extra_missing_fields_and_bool_counters_reject (test_native_contract.ModelContractTests.test_extra_missing_fields_and_bool_counters_reject) ... ok\ntest_json_duplicate_keys_and_nonfinite_values_reject (test_native_contract.ModelContractTests.test_json_duplicate_keys_and_nonfinite_values_reject) ... ok\ntest_memory_total_growth_and_overflow_reject (test_native_contract.ModelContractTests.test_memory_total_growth_and_overflow_reject) ... ok\ntest_partitions_require_exact_coverage_and_count (test_native_contract.ModelContractTests.test_partitions_require_exact_coverage_and_count) ... ok\ntest_state_conversion_stale_epoch_and_generation_reject (test_native_contract.ModelContractTests.test_state_conversion_stale_epoch_and_generation_reject) ... ok\ntest_unknown_or_duplicate_operators_reject (test_native_contract.ModelContractTests.test_unknown_or_duplicate_operators_reject) ... ok\ntest_versions_and_unqualified_models_reject (test_native_contract.ModelContractTests.test_versions_and_unqualified_models_reject) ... ok\ntest_abi_u32_generations_retire_at_wire_limit_while_epochs_remain_u64 (test_native_lifecycle.LifecycleConformanceTests.test_abi_u32_generations_retire_at_wire_limit_while_epochs_remain_u64) ... ok\ntest_cancel_receipt_launch_stop_output_fence_and_reclaim_are_distinct (test_native_lifecycle.LifecycleConformanceTests.test_cancel_receipt_launch_stop_output_fence_and_reclaim_are_distinct) ... ok\ntest_committed_and_reserved_growth_are_both_admitted_before_allocation (test_native_lifecycle.LifecycleConformanceTests.test_committed_and_reserved_growth_are_both_admitted_before_allocation) ... ok\ntest_completion_sequence_ownership_and_request_identity_cannot_replay (test_native_lifecycle.LifecycleConformanceTests.test_completion_sequence_ownership_and_request_identity_cannot_replay) ... ok\ntest_cross_domain_and_forged_generation_never_establish_authority (test_native_lifecycle.LifecycleConformanceTests.test_cross_domain_and_forged_generation_never_establish_authority) ... ok\ntest_delegation_can_reduce_but_cannot_amplify_rights_or_bounds (test_native_lifecycle.LifecycleConformanceTests.test_delegation_can_reduce_but_cannot_amplify_rights_or_bounds) ... ok\ntest_generations_retire_exhausted_slots_instead_of_aliasing_old_handles (test_native_lifecycle.LifecycleConformanceTests.test_generations_retire_exhausted_slots_instead_of_aliasing_old_handles) ... ok\ntest_invalid_configuration_cannot_replace_or_partially_install_authority (test_native_lifecycle.LifecycleConformanceTests.test_invalid_configuration_cannot_replace_or_partially_install_authority) ... ok\ntest_launch_stop_can_still_deliver_pending_output_and_requires_a_fence (test_native_lifecycle.LifecycleConformanceTests.test_launch_stop_can_still_deliver_pending_output_and_requires_a_fence) ... ok\ntest_malformed_access_modes_reject_atomically (test_native_lifecycle.LifecycleConformanceTests.test_malformed_access_modes_reject_atomically) ... ok\ntest_overlapping_reads_and_disjoint_writes_preserve_independent_ownership (test_native_lifecycle.LifecycleConformanceTests.test_overlapping_reads_and_disjoint_writes_preserve_independent_ownership) ... ok\ntest_overlapping_write_views_require_quiescence_in_every_domain (test_native_lifecycle.LifecycleConformanceTests.test_overlapping_write_views_require_quiescence_in_every_domain) ... ok\ntest_ranges_use_committed_view_and_reject_unsigned_overflow (test_native_lifecycle.LifecycleConformanceTests.test_ranges_use_committed_view_and_reject_unsigned_overflow) ... ok\ntest_region_ownership_epoch_and_completion_counters_stop_without_wrapping (test_native_lifecycle.LifecycleConformanceTests.test_region_ownership_epoch_and_completion_counters_stop_without_wrapping) ... ok\ntest_revocation_blocks_descendants_but_outstanding_work_still_owns_memory (test_native_lifecycle.LifecycleConformanceTests.test_revocation_blocks_descendants_but_outstanding_work_still_owns_memory) ... ok\ntest_shared_view_retains_backing_charge_until_every_owner_is_released (test_native_lifecycle.LifecycleConformanceTests.test_shared_view_retains_backing_charge_until_every_owner_is_released) ... ok\ntest_stale_epoch_fences_output_without_releasing_device_ownership (test_native_lifecycle.LifecycleConformanceTests.test_stale_epoch_fences_output_without_releasing_device_ownership) ... ok\ntest_missing_compiler_cli_replaces_stale_success_with_failed_receipt (test_native_probe.NativeProbeBoundaryTests.test_missing_compiler_cli_replaces_stale_success_with_failed_receipt) ... ok\ntest_rust_checks_are_freestanding_const_checks_for_every_layout_and_enum (test_native_probe.NativeProbeBoundaryTests.test_rust_checks_are_freestanding_const_checks_for_every_layout_and_enum) ... ok\ntest_actual_c_compiler_accepts_layout_and_emits_every_literal_frame (test_native_probe.NativeProbeCompilerTests.test_actual_c_compiler_accepts_layout_and_emits_every_literal_frame) ... ok\ntest_json_assertions_reject_layout_even_when_native_assertions_match_it (test_native_probe.NativeProbeCompilerTests.test_json_assertions_reject_layout_even_when_native_assertions_match_it) ... ok\ntest_json_assertions_reject_wrong_exported_constants_in_every_group (test_native_probe.NativeProbeCompilerTests.test_json_assertions_reject_wrong_exported_constants_in_every_group) ... ok\ntest_json_types_reject_signed_scalar_with_identical_size_and_offsets (test_native_probe.NativeProbeCompilerTests.test_json_types_reject_signed_scalar_with_identical_size_and_offsets) ... ok\n\n----------------------------------------------------------------------\nRan 43 tests in 0.825s\n\nOK\n"
+  },
+  "unavailable": [
+    "native_service_execution",
+    "memory_isolation",
+    "queue_ordering",
+    "DMA",
+    "GPU",
+    "Homa"
+  ]
+}
