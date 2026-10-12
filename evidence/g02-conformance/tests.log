@@ -186,6 +186,6 @@ test_symlink_retained_log_is_rejected (test_verification.RetainedFixtureVerifica
 test_wrong_input_or_evaluator_bindings_are_rejected (test_verification.RetainedFixtureVerificationTests.test_wrong_input_or_evaluator_bindings_are_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 185 tests in 4.198s
+Ran 185 tests in 4.243s
 
 OK

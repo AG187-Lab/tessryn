@@ -7,7 +7,7 @@ its G01 physical qualification dependency and native runtime gates.
 
 ## Verified implementation
 
-Source revision: `dc5ce88a12ea36e283be2efd519af3538c1a0727`.
+Source revision: `7dfb5620241efb167aa1ba3a6ef0bf4e661e772c`.
 The checker observed a clean source tree. The later evidence-only commit adds
 these receipts without changing their hashed implementation inputs.
 
