@@ -104,7 +104,8 @@ def probe_source(definitions: dict, vectors: list[dict], language: str) -> str:
                 lines += [f"assert!(encoded[{i}] == expected[{offset + i}]);" for i in range(width)]
         if c:
             lines += [f'printf("{name}:");', f'for (size_t i=0;i<{size};++i) {{',
-                      f'if (encoded[i] != expected[i]) return {index + 1}; printf("%02x",encoded[i]);',
+                      f'if (encoded[i] != expected[i]) {{ return {index + 1}; }}',
+                      'printf("%02x",encoded[i]);',
                       '}', 'puts("");', '}']
         else:
             lines += ['};']
