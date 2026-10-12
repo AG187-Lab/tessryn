@@ -40,6 +40,8 @@ CPU ownership. Earlier retry maps cannot authorize an allocator. The numeric
 planner performs no firmware access, establishes no successful exit, and cannot
 authenticate a map. Its implementation and test boundaries are recorded in
 [ADR 0014](../design/decisions/0014-boot-inventory-and-native-protocol.md).
+[Preparation evidence](../evidence/k02-native-preparation/README.md) binds the
+host policy and offline protocol results separately from native qualification.
 
 Allocation charges committed plus reserved pages against the original owner's
 budget before admission. Both occupy physical backing; only committed bytes are
