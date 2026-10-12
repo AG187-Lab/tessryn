@@ -83,3 +83,7 @@ Fault handlers can isolate a domain or reset a device where supported. They must
 
 ABI changes require versioned examples, negative authority/bounds tests, lifetime and queue-ordering tests, and supported-backend conformance traces. Memory and DMA isolation are tested independently of inference correctness. Implementation evidence is pending.
 
+## G02 host conformance profile
+
+[Native contract v1](native-contract-v1.md) and [ADR 0009](decisions/0009-native-contract-profile.md) define a provisional little-endian byte layout, symbolic model/state records, explicit compatibility targets and host conformance checks. This bounded profile does not freeze the whole native ABI or establish native dispatch, isolation, queue ordering, device execution or model support. G01 target qualification and later runtime evidence remain prerequisites for full G02 acceptance.
+

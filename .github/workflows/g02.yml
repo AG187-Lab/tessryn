@@ -1,0 +1,32 @@
+name: G02 native interface conformance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  native-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.13'
+      - name: Check portable descriptors and ownership sequences
+        run: python3 -m unittest discover -s tests -p 'test_native*.py' -v
+      - name: Install existing checksum-pinned Rust profile
+        run: python3 tools/setup_toolchain.py --rust-only
+      - name: Execute C host probes and compile Rust freestanding assertions
+        run: python3 tools/check_native_abi.py --output build/g02-result.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: g02-host-conformance
+          path: build/g02-result.json
+          if-no-files-found: error
+          retention-days: 14
