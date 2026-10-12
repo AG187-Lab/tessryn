@@ -11,6 +11,33 @@ from tools.g03.process import ProcessResult
 
 
 class K02EvidenceTests(unittest.TestCase):
+    def test_retained_artifact_alias_is_replaced_without_changing_its_target(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            work = Path(temporary)
+            result = work / "result.json"
+            result.write_text('{"status":"incomplete"}')
+            artifact = work / "libtessryn_memory.rlib"
+            artifact.symlink_to(result.name)
+            compiled = work / "compiler-output.rlib"
+            compiled.write_bytes(b"compiled-library")
+            checker.retain_artifact(compiled, artifact)
+            checker.write_result(result, {"status": "passed"})
+            self.assertFalse(artifact.is_symlink())
+            self.assertEqual(artifact.read_bytes(), b"compiled-library")
+            self.assertEqual(json.loads(result.read_text())["status"], "passed")
+
+    def test_result_staging_alias_cannot_overwrite_the_library(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            work = Path(temporary)
+            result = work / "result.json"
+            artifact = work / "libtessryn_memory.rlib"
+            artifact.write_bytes(b"compiled-library")
+            (work / "result.json.tmp").symlink_to(artifact.name)
+            checker.write_result(result, {"status": "incomplete"})
+            self.assertEqual(artifact.read_bytes(), b"compiled-library")
+            self.assertEqual(json.loads(result.read_text())["status"], "incomplete")
+            self.assertFalse(result.is_symlink())
+
     def test_result_path_cannot_replace_the_retained_library(self):
         with tempfile.TemporaryDirectory() as temporary:
             artifact = Path(temporary) / "libtessryn_memory.rlib"

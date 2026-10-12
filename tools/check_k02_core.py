@@ -8,7 +8,6 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -96,7 +95,7 @@ def verify(output: Path) -> dict:
                 revision != execute(["/usr/bin/git", "rev-parse", "HEAD"]).strip()):
             raise ValueError("source or toolchain changed during verification")
         retained = output.parent / "libtessryn_memory.rlib"
-        shutil.copyfile(work / "libtessryn_memory.rlib", retained)
+        retain_artifact(work / "libtessryn_memory.rlib", retained)
         result = {
             "schema_version": 1, "kind": KIND, "status": "passed",
             "scope": "host_execution_of_original_no_std_policy_and_freestanding_compilation",
@@ -111,10 +110,22 @@ def verify(output: Path) -> dict:
     return result
 
 
+def retain_artifact(source: Path, destination: Path) -> None:
+    # Source is a regular compiler output in our private work directory on the
+    # same filesystem. Replacement removes an old destination symlink itself.
+    source.replace(destination)
+
+
 def write_result(output: Path, value: dict) -> None:
-    staged = output.with_suffix(output.suffix + ".tmp")
-    staged.write_text(json.dumps(value, indent=2) + "\n")
-    staged.replace(output)
+    # A fixed .tmp name can already alias the artifact or an unrelated file.
+    with tempfile.NamedTemporaryFile(mode="w", prefix=".k02-result-", suffix=".tmp",
+                                     dir=output.parent, delete=False) as stream:
+        staged = Path(stream.name)
+        stream.write(json.dumps(value, indent=2) + "\n")
+    try:
+        staged.replace(output)
+    finally:
+        staged.unlink(missing_ok=True)
 
 
 def main(argv: list[str] | None = None) -> int:

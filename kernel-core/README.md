@@ -74,6 +74,10 @@ python3 tools/validate_design.py
 The supplementary profile pins official host test libraries for the existing
 G03 compiler revision. It changes only this checkout's ignored installation and
 adds a separate receipt; G03 source and lock files remain unchanged. Verification
+rejects copied installer manifests that point into another checkout; create a
+fresh local setup rather than moving an installed toolchain between checkouts.
+Result paths cannot overwrite the retained library, and artifact/result
+publication replaces aliases atomically. Verification
 checks both receipts against compiler and library hashes, executes all Rust
 tests without filters or ignored cases, and compiles the freestanding library
 twice for identical output. The portable receipt and freestanding artifact are

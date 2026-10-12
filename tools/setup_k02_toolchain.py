@@ -9,6 +9,7 @@ from datetime import date
 import json
 from pathlib import Path
 import re
+import stat
 import subprocess
 import sys
 import tarfile
@@ -41,6 +42,73 @@ def read_object(path: Path) -> dict:
     if not isinstance(value, dict):
         raise ValueError("setup JSON must be an object")
     return value
+
+
+def installer_uninstall_preflight() -> None:
+    """Rust's uninstall manifests retain absolute paths when a setup is copied.
+
+    The upstream installer trusts these paths even when passed a new prefix.
+    Validate the complete installed metadata before it can remove anything.
+    Only the version-3 format produced by this pinned setup is supported.
+    """
+    def regular_text(path: Path) -> str:
+        regular_path(path)
+        if not stat.S_ISREG(path.stat().st_mode):
+            raise ValueError("Rust installer metadata must be regular files")
+        text = path.read_bytes().decode("utf-8")
+        if any((ord(character) < 32 and character != "\n") or ord(character) == 127
+               for character in text):
+            raise ValueError("Rust installer metadata contains malformed control characters")
+        return text
+
+    def destination(kind: str, raw: str) -> None:
+        path = Path(raw)
+        if (kind not in {"file", "dir"} or not raw or not path.is_absolute()
+                or raw != str(path) or ".." in path.parts or "\\" in raw
+                or any(ord(character) < 32 or ord(character) == 127 for character in raw)
+                or raw != raw.strip() or path == PREFIX or not path.is_relative_to(PREFIX)):
+            raise ValueError("Rust installer uninstall destination is malformed or outside this setup")
+        regular_path(path)
+        if not path.resolve().is_relative_to(PREFIX.resolve()):
+            raise ValueError("Rust installer uninstall destination escapes this setup")
+        if path.exists():
+            mode = path.stat().st_mode
+            if not (stat.S_ISREG(mode) if kind == "file" else stat.S_ISDIR(mode)):
+                raise ValueError("Rust installer uninstall destination has an unexpected kind")
+
+    directory = PREFIX / "lib" / "rustlib"
+    for legacy_directory in (directory, PREFIX / "lib" / "cargo"):
+        regular_path(legacy_directory)
+        legacy = legacy_directory / "manifest"
+        if legacy.exists() or legacy.is_symlink():
+            raise ValueError("legacy Rust installer manifests are unsupported; rebuild this setup")
+    regular_path(directory)
+    manifests = sorted(directory.glob("manifest-*"))
+    for manifest in manifests:
+        if re.fullmatch(r"manifest-[A-Za-z0-9][A-Za-z0-9_-]*", manifest.name) is None:
+            raise ValueError("Rust installer component manifest name is malformed")
+        text = regular_text(manifest)
+        if not text or not text.endswith("\n"):
+            raise ValueError("Rust installer component manifest is malformed")
+        for entry in text[:-1].split("\n"):
+            kind, separator, raw = entry.partition(":")
+            if not separator:
+                raise ValueError("Rust installer component manifest is malformed")
+            destination(kind, raw)
+    components = directory / "components"
+    version = directory / "rust-installer-version"
+    regular_path(components)
+    regular_path(version)
+    if not components.exists() and not version.exists() and not manifests:
+        return
+    if regular_text(version) != "3\n":
+        raise ValueError("Rust installer metadata version is unsupported")
+    names = regular_text(components).splitlines()
+    if (not names or len(set(names)) != len(names)
+            or any(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", name) is None for name in names)):
+        raise ValueError("Rust installer component list is malformed")
+    if {"manifest-" + name for name in names} != {path.name for path in manifests}:
+        raise ValueError("Rust installer component list does not match its manifests")
 
 
 def digest(value: object) -> bool:
@@ -169,11 +237,13 @@ def setup() -> dict:
         archive_name = spec["url"].rsplit("/", 1)[1]
         regular_path(PREFIX / "downloads" / archive_name)
         regular_path(PREFIX / "downloads" / (archive_name + ".partial"))
+    installer_uninstall_preflight()
     if not (PREFIX / "installed.json").exists():
         g03.setup(rust_only=True, jobs=1)
     base = verify_base_installation(lock)
     spec = profile["rust"]["hosts"][base["host"]]
     source = g03.extract(g03.fetch(spec))
+    installer_uninstall_preflight()
     (PREFIX / "installed.json").unlink()
     try:
         directory = PREFIX / "lib" / "rustlib" / base["host"] / "lib"

@@ -3,6 +3,7 @@
 from copy import deepcopy
 import io
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -45,6 +46,11 @@ class K02SetupTests(unittest.TestCase):
                        patch.object(g03.urllib.request, "urlopen", side_effect=AssertionError("network forbidden"))):
             mocked.start()
             self.addCleanup(mocked.stop)
+        self.manifest_dir = self.prefix / "lib" / "rustlib"
+        self.write_component("rustc", [self.compiler, self.linker,
+                                      self.prefix / "lib" / "librustc_driver.dylib"])
+        self.write_component("rust-std-" + self.lock["rust"]["target"],
+                             [self.target / "libcore-original.rlib"])
         self.base = g03.installation_identity(
             {"schema_version": 1, "host": self.host, "rustc": self.version}, self.lock)
         self.base_path = self.prefix / "installed.json"
@@ -67,6 +73,16 @@ class K02SetupTests(unittest.TestCase):
     def write_profile(self):
         self.profile_path.write_text(json.dumps(self.profile))
 
+    def write_component(self, name, files):
+        (self.manifest_dir / ("manifest-" + name)).write_text(
+            "".join("file:" + str(path) + "\n" for path in files))
+        components = self.manifest_dir / "components"
+        names = components.read_text().splitlines() if components.exists() else []
+        if name not in names:
+            names.append(name)
+        components.write_text("\n".join(names) + "\n")
+        (self.manifest_dir / "rust-installer-version").write_text("3\n")
+
     def make_archive(self, name="install.sh", contents=b"fixture installer\n"):
         spec = self.profile["rust"]["hosts"][self.host]
         archive = self.prefix / "downloads" / spec["url"].rsplit("/", 1)[1]
@@ -86,7 +102,8 @@ class K02SetupTests(unittest.TestCase):
         self.assertEqual(command[2:], [f"--prefix={self.prefix}", "--disable-ldconfig"])
         for name in ("core", "std", "test"):
             (self.std / f"lib{name}-host.rlib").write_bytes((source / "payload").read_bytes())
-        (self.prefix / "lib" / "rustlib" / "manifest-rust-std").write_text("fixture component receipt")
+        self.write_component("rust-std-" + self.host,
+                             [self.std / f"lib{name}-host.rlib" for name in ("core", "std", "test")])
 
     def setup(self):
         with patch.object(g03, "run", side_effect=self.install):
@@ -227,6 +244,115 @@ class K02SetupTests(unittest.TestCase):
         with patch.object(g03, "setup", side_effect=initial_setup) as initialize:
             self.setup()
         initialize.assert_called_once()
+
+    def test_copied_setup_cannot_uninstall_original_checkout_libraries(self):
+        self.setup()
+        original_library = self.std / "libstd-host.rlib"
+        original_bytes = original_library.read_bytes()
+        copied_root = self.root / "copied-checkout"
+        copied_prefix = copied_root / "build" / "toolchain"
+        copied_profile = copied_root / "planning" / "k02-toolchain.lock.json"
+        copied_profile.parent.mkdir(parents=True)
+        shutil.copyfile(self.root / "toolchain.lock.json", copied_root / "toolchain.lock.json")
+        shutil.copyfile(self.profile_path, copied_profile)
+        shutil.copytree(self.prefix, copied_prefix)
+
+        def copied_compiler_output(command, **kwargs):
+            self.assertEqual(command[0], str(copied_prefix / "bin" / "rustc"))
+            if command[1:] == ["--print", "sysroot"]:
+                return str(copied_prefix) + "\n"
+            if command[1:] == ["--version", "--verbose"]:
+                return (self.version + "\nrelease: 1.96.0\ncommit-hash: "
+                        + self.lock["rust"]["revision"] + "\nhost: " + self.host + "\n")
+            self.assertEqual(command[1:], ["--version"])
+            return self.version + "\n"
+
+        with (patch.object(k02, "ROOT", copied_root), patch.object(g03, "ROOT", copied_root),
+              patch.object(k02, "PREFIX", copied_prefix), patch.object(g03, "PREFIX", copied_prefix),
+              patch.object(k02, "PROFILE", copied_profile),
+              patch.object(subprocess, "check_output", side_effect=copied_compiler_output),
+              patch.object(g03, "run") as install, patch.object(g03, "fetch") as fetch):
+            # The byte-identical receipt and relocatable compiler alone accept
+            # this copied setup; its uninstall destinations still name A.
+            k02.verify_base_installation(self.lock)
+            with self.assertRaisesRegex(ValueError, "outside this setup"):
+                k02.setup()
+            install.assert_not_called()
+            fetch.assert_not_called()
+        self.assertEqual(original_library.read_bytes(), original_bytes)
+
+    def test_malformed_uninstall_directives_fail_before_any_installer(self):
+        manifest = self.manifest_dir / "manifest-rustc"
+        original = manifest.read_text()
+        external = self.root / "unrelated-library"
+        external.write_bytes(b"preserved")
+        invalid = (
+            f"file:{external}\n", "file:relative-library\n", f"file:{self.prefix}/../unrelated-library\n",
+            f"file:{self.prefix}/./bin/rustc\n", f"unexpected:{self.compiler}\n",
+            "file:\n", "malformed\n", f"file:{self.compiler}",
+            f"dir:{self.compiler}\n", f"file:{self.prefix / 'lib'}\n", f"dir:{self.prefix}\n",
+            f"file:{self.prefix}/bad\\path\n", f"file:{self.compiler}\r\n",
+        )
+        for entry in invalid:
+            with self.subTest(entry=entry):
+                manifest.write_text(entry)
+                with (patch.object(g03, "run") as install, patch.object(g03, "setup") as initialize,
+                      patch.object(g03, "fetch") as fetch, self.assertRaises(ValueError)):
+                    k02.setup()
+                install.assert_not_called()
+                initialize.assert_not_called()
+                fetch.assert_not_called()
+                self.assertEqual(external.read_bytes(), b"preserved")
+        manifest.write_text(original)
+
+    def test_component_traversal_and_legacy_uninstall_metadata_are_rejected(self):
+        components = self.manifest_dir / "components"
+        original = components.read_text()
+        for names in ("../other\n", "rustc\n../other\n", "rustc\nrustc\n", "rustc other\n", "missing\n"):
+            with self.subTest(names=names):
+                components.write_text(names)
+                with patch.object(g03, "run") as install, self.assertRaises(ValueError):
+                    k02.setup()
+                install.assert_not_called()
+        components.write_text(original)
+        for directory in (self.manifest_dir, self.prefix / "lib" / "cargo"):
+            with self.subTest(directory=directory):
+                directory.mkdir(exist_ok=True)
+                legacy = directory / "manifest"
+                legacy.write_text(str(self.root / "unrelated-library") + "\n")
+                # Missing receipts must not send these residual manifests to
+                # G03's installers either (its normal reset clears lib first).
+                self.base_path.unlink(missing_ok=True)
+                with (patch.object(g03, "run") as install, patch.object(g03, "setup") as initialize,
+                      self.assertRaisesRegex(ValueError, "legacy Rust installer")):
+                    k02.setup()
+                install.assert_not_called()
+                initialize.assert_not_called()
+                legacy.unlink()
+
+    def test_uninstall_metadata_cannot_follow_symlinks_or_special_files(self):
+        external = self.root / "unrelated-library"
+        external.write_bytes(b"preserved")
+        alias = self.prefix / "aliased-library"
+        alias.symlink_to(external)
+        manifest = self.manifest_dir / "manifest-rustc"
+        original = manifest.read_text()
+        manifest.write_text(f"file:{alias}\n")
+        with patch.object(g03, "run") as install, self.assertRaisesRegex(ValueError, "symbolic links"):
+            k02.setup()
+        install.assert_not_called()
+        self.assertEqual(external.read_bytes(), b"preserved")
+        alias.unlink()
+        manifest.unlink()
+        manifest.symlink_to(external)
+        with self.assertRaisesRegex(ValueError, "symbolic links"):
+            k02.installer_uninstall_preflight()
+        manifest.unlink()
+        os.mkfifo(manifest)
+        with self.assertRaisesRegex(ValueError, "regular files"):
+            k02.installer_uninstall_preflight()
+        manifest.unlink()
+        manifest.write_text(original)
 
 
 if __name__ == "__main__":
