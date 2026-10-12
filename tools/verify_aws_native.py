@@ -506,7 +506,13 @@ def boot(captures: CaptureSet, spec: dict, role: str, ami_id: str, snapshot_id: 
     else:
         serial = parse_native_serial(raw)
     termination = captures.take(spec["terminate"], "TerminateInstances")
-    require(termination.request.get("InstanceIds") == [instance_id] and serial_capture.completed <= termination.started,
+    ordinary_termination = {"InstanceIds": [instance_id]}
+    native_forced_termination = (role in {"native_a", "native_b"}
+        and set(termination.request) == {"InstanceIds", "Force", "SkipOsShutdown"}
+        and termination.request["InstanceIds"] == [instance_id]
+        and termination.request["Force"] is True and termination.request["SkipOsShutdown"] is True)
+    require((termination.request == ordinary_termination or native_forced_termination)
+            and serial_capture.completed <= termination.started,
             "termination identity or order differs")
     transition = one(termination.response.get("TerminatingInstances"), "termination count differs")
     require(transition.get("InstanceId") == instance_id and transition.get("CurrentState", {}).get("Name")

@@ -181,6 +181,13 @@ The verifier never executes it. Recovery uses the separately approved known-good
 AMI/root snapshot. The original native kernel does not process cloud-init;
 native deadline enforcement must stay outside the guest.
 
+A native A/B `TerminateInstances` request contains exactly `InstanceIds` with
+the bound single instance, or that same array plus both `Force=true` and
+`SkipOsShutdown=true` as Boolean values. Recovery retains the `InstanceIds`-only
+request. Retain the original request and response; accepting these native
+control flags does not establish guest shutdown or completed cleanup.
+[Termination controls](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TerminateInstances.html).
+
 A termination acknowledgement may still mean `shutting-down`. The next phase
 cannot launch until actual `terminated` state and root/interface absence are
 captured, including root volume Recycle Bin absence. Absence queries use only the exact recorded ID filter, with complete
