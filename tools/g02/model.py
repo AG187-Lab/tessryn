@@ -69,7 +69,13 @@ def validate_model(value: dict) -> dict:
 
 def load_model(text: str) -> dict:
     """Parse and validate a bounded JSON record without ambiguous duplicate keys."""
-    if type(text) is not str or len(text.encode()) > 1_048_576:
+    if type(text) is not str:
+        raise DescriptorError("model record must be bounded JSON text")
+    try:
+        size = len(text.encode())
+    except UnicodeEncodeError as error:
+        raise DescriptorError("model record is not valid UTF-8 text") from error
+    if size > 1_048_576:
         raise DescriptorError("model record must be bounded JSON text")
 
     def unique(pairs):

@@ -58,6 +58,7 @@ class _Region:
 
 @dataclass
 class _Operation:
+    authority: Handle
     region: int
     epoch: int
     ownership: int
@@ -229,7 +230,7 @@ class LifecycleModel:
         if region.ownership_generation >= min(self.counter_limit, U32_MAX):
             raise ContractError("ownership generation exhausted without wrap")
         ownership = region.ownership_generation + 1
-        self.operations[key] = _Operation(cap.region, epoch, ownership, absolute_offset, length, right)
+        self.operations[key] = _Operation(handle, cap.region, epoch, ownership, absolute_offset, length, right)
         region.ownership_generation = ownership
         region.owners.add(key)
         return ownership
@@ -238,6 +239,9 @@ class LifecycleModel:
                  ownership: int, sequence: int) -> None:
         op = self._operation(domain, operation_id)
         state = self._domain(domain)
+        # Revocation fences output immediately; it does not pretend that a
+        # device has stopped accessing the retained backing region.
+        self._capability(domain, op.authority)
         _integer(epoch, "epoch", 1, self.counter_limit)
         _integer(ownership, "ownership", 1, min(self.counter_limit, U32_MAX))
         _integer(sequence, "sequence", 1, self.counter_limit)

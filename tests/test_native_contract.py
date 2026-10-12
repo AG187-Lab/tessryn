@@ -203,7 +203,7 @@ class ModelContractTests(unittest.TestCase):
         self.assertEqual(load_model(text), model_fixture())
         duplicate = text.replace('"schema_version": 1', '"schema_version": 2, "schema_version": 1')
         for malformed in (duplicate, text.replace('"total": 128', '"total": NaN'), "[", None,
-                          "[" * 2000 + "]" * 2000, "x" * 1_048_577):
+                          "[" * 2000 + "]" * 2000, "x" * 1_048_577, chr(0xD800)):
             with self.subTest(kind=type(malformed).__name__), self.assertRaises(DescriptorError):
                 load_model(malformed)
 
