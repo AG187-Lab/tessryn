@@ -122,6 +122,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, default=ROOT / "build/k02/result.json")
     args = parser.parse_args(argv)
     output = args.output.resolve()
+    # This adjacent filename belongs to the retained library. A result receipt
+    # must never replace the binary whose digest it reports.
+    if output.name == "libtessryn_memory.rlib":
+        print("K02 result path uses the reserved library filename", file=sys.stderr)
+        return 1
     output.parent.mkdir(parents=True, exist_ok=True)
     write_result(output, {"schema_version": 1, "kind": KIND, "status": "incomplete"})
     try:

@@ -11,6 +11,18 @@ from tools.g03.process import ProcessResult
 
 
 class K02EvidenceTests(unittest.TestCase):
+    def test_result_path_cannot_replace_the_retained_library(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            artifact = Path(temporary) / "libtessryn_memory.rlib"
+            artifact.write_bytes(b"existing-library")
+            alias = Path(temporary) / "receipt.json"
+            alias.symlink_to(artifact.name)
+            with patch.object(checker, "verify") as verify:
+                for output in (artifact, alias):
+                    self.assertEqual(checker.main(["--output", str(output)]), 1)
+                    self.assertEqual(artifact.read_bytes(), b"existing-library")
+                verify.assert_not_called()
+
     def test_empty_ignored_filtered_failed_and_ambiguous_suites_are_rejected(self):
         valid = "test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out;"
         self.assertEqual(checker.test_count(valid), 23)
