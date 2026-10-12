@@ -86,8 +86,17 @@ stderr, HTTP 400, a bounded request ID and a printable message naming only the
 exact owned snapshot. The original request, response hashes, region and capture
 times remain required. This error stays outside the ordinary success cache and
 reports `provider_snapshot_not_found`; a successful empty response reports
-`successful_empty_list`. CLI snapshot errors and all other operations remain
-success-only. This exception does not apply to EBS snapshot block reads.
+`successful_empty_list`.
+
+The single-image `ListImagesInRecycleBin` check accepts only the corresponding
+original SDK `InvalidAMIID.NotFound` receipt, with the same exit status, empty
+stderr, HTTP status and request-ID requirements. Its request contains only the
+one owned image ID, and the bounded printable message must name that exact ID
+once. RetryAttempts must be the integer zero, and the original
+`x-amzn-requestid` header must match `ResponseMetadata.RequestId`.
+It reports `provider_image_not_found`, preserving the original error
+outside the success cache. CLI image/snapshot errors and all other operations
+remain success-only. These exceptions do not apply to EBS snapshot block reads.
 
 `GetConsoleOutput` requests must bind `InstanceId` and `Latest=true`. Its response
 binds `InstanceId`, `Timestamp` and `Output`. CLI JSON output is already decoded;
@@ -188,7 +197,7 @@ Deregister after final instance cleanup, confirm ordinary and Recycle Bin image
 absence before deleting the snapshot, then confirm snapshot absence. Each deleted volume and the native
 AMI/snapshot also requires an exact-ID `ListVolumesInRecycleBin`,
 `ListImagesInRecycleBin` or `ListSnapshotsInRecycleBin` query, an empty collection
-and no continuation token, or the corresponding narrowly bound volume or
+and no continuation token, or the corresponding narrowly bound volume, image or
 snapshot not-found receipt described above. Its request contains only the corresponding
 `VolumeIds`, `ImageIds` or `SnapshotIds` array. Use a client model that supports
 these current operations; older user-guide response examples do not replace
@@ -208,8 +217,8 @@ Temporary access revocation, actual capture origin, approval, deadlines and
 the cost ledger remain separate owner review gates.
 
 Each phase reports whether its root retention observation was a successful
-empty list or a provider volume-not-found error. `snapshot_retention` reports
-the snapshot absence basis and capture completion time. These remain observations
+empty list or a provider volume-not-found error. `image_retention` and
+`snapshot_retention` report their absence basis and capture completion time. These remain observations
 at capture time. They do not establish permanent deletion, historical charges or
 global account absence. EC2 is eventually consistent, so retain the earlier
 root binding, confirmed termination and ordinary volume-absence observation.
