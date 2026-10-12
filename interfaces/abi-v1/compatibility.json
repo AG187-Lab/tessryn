@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "profile": "tessryn-host-contract-v1",
+  "status": "provisional-host-contract",
+  "reviewed_on": "2026-10-11",
+  "evidence_scope": "Host descriptor layout, encoding and rejection fixtures only. No native runtime, hardware, model execution, transport interoperability or CUDA support is qualified.",
+  "binary_profile": {
+    "contract": "interfaces/abi-v1/contract.json",
+    "major": 1,
+    "minor": 0,
+    "byte_order": "little",
+    "layout_alignment": 8,
+    "descriptor_sizes": {"Header": 16, "CapabilityRef": 16, "Negotiation": 48, "Region": 64, "Submission": 128, "Completion": 80},
+    "feature_mask": 0,
+    "extension_policy": "reject_unknown_versions_kinds_flags_reserved_fields_and_sizes"
+  },
+  "model_profile": {
+    "schema_version": 1,
+    "status": "symbolic-conformance-fixture-only",
+    "architectures": ["conformance_fixture"],
+    "precisions": ["f32", "f16"],
+    "operators": ["copy", "add", "matmul"],
+    "state_kinds": ["kv", "recurrent"],
+    "state_layouts": ["contiguous_le_v1"],
+    "conversion_policy": "exact_match_only",
+    "quantization": "unsupported",
+    "native_backend_targets": [],
+    "requirements": [
+      "Model and tokenizer identities are lowercase SHA-256 hex strings; they are identity fields, not artifact signature or file-content verification.",
+      "The shard list contains 1-1024 records ordered by index and covering 0 through count-1; half-open layer ranges are contiguous and cover the declared positive u32 layer_count exactly.",
+      "State precision equals model precision. All state records share a nonzero u64 placement epoch and have positive u32 ownership generations distinct from capability-handle generations.",
+      "Memory fields are nonnegative u64 byte counts; total is the overflow-checked exact sum of weights, state, workspace, transfer and reserved_growth.",
+      "Unknown fields, duplicate JSON keys, unknown operators, architecture, precision, layout, quantization and implicit conversions are rejected."
+    ]
+  },
+  "transport_profile": {
+    "protocol": "Homa",
+    "wire_version": 1,
+    "status": "proposed-native-target-unimplemented",
+    "repository": "https://github.com/johnousterhout/homa-rfc",
+    "revision": "df4bc0d7a1d5c30292e47f474a85c3669dce8612",
+    "path": "draft-ousterhout-tsvwg-homa-00.md",
+    "source_url": "https://github.com/johnousterhout/homa-rfc/blob/df4bc0d7a1d5c30292e47f474a85c3669dce8612/draft-ousterhout-tsvwg-homa-00.md",
+    "raw_sha256": "105df694d12a198fabd178e68000ed242db2ca34f7e1700099e645ea4fd5f0db",
+    "scheduled_message_start": {"name": "START_MSG", "packet_type": 25},
+    "qualification_pending": ["exact NIC and fabric", "independent native implementation", "wire interoperability", "authentication and encryption", "credits and tenant accounting", "loss, retransmission and recovery", "permitted cloud adapter"],
+    "non_goals": ["2018 and pinned draft wire-format mixing", "implicit adoption of later UDP framing", "WAN qualification", "arithmetic collectives", "GPU/NIC peer DMA"]
+  },
+  "cuda_profile": {
+    "name": "proposed-source-compiled-driver-subset-v1",
+    "status": "proposed-unimplemented",
+    "reference_release": "13.0.0",
+    "reference_url": "https://docs.nvidia.com/cuda/archive/13.0.0/cuda-driver-api/index.html",
+    "nvcc_reference_url": "https://docs.nvidia.com/cuda/archive/13.0.0/cuda-compiler-driver-nvcc/index.html",
+    "reference_policy": "Archived API reference pin; this does not select or qualify a deployed driver, nvcc binary, device ISA, firmware or source/export-symbol ABI.",
+    "required_source_calls": {
+      "initialization_and_errors": ["cuInit", "cuDriverGetVersion", "cuGetErrorName", "cuGetErrorString"],
+      "device_discovery": ["cuDeviceGetCount", "cuDeviceGet", "cuDeviceGetName", "cuDeviceGetAttribute", "cuDeviceTotalMem"],
+      "contexts": ["cuCtxCreate", "cuCtxDestroy", "cuCtxGetCurrent", "cuCtxSetCurrent", "cuCtxSynchronize"],
+      "allocation_and_copies": ["cuMemAlloc", "cuMemFree", "cuMemcpyHtoD", "cuMemcpyDtoH", "cuMemcpyDtoD", "cuMemcpyHtoDAsync", "cuMemcpyDtoHAsync", "cuMemcpyDtoDAsync"],
+      "modules_and_functions": ["cuModuleLoadData", "cuModuleGetFunction", "cuModuleUnload"],
+      "launch": ["cuLaunchKernel"],
+      "streams": ["cuStreamCreate", "cuStreamDestroy", "cuStreamQuery", "cuStreamSynchronize", "cuStreamWaitEvent"],
+      "events": ["cuEventCreate", "cuEventDestroy", "cuEventRecord", "cuEventQuery", "cuEventSynchronize"]
+    },
+    "restrictions": [
+      "Source spellings identify planned behavior only. Exact declarations, header macro mappings, export suffixes and allowed flags require the later source-compiled native facade and its conformance tests.",
+      "ModuleLoadData is intended for one validated exact-target device-only cubin; PTX, fatbins, JIT and runtime linking are rejected.",
+      "Allocation and asynchronous host transfers require native region ownership, registration, accounting and lifetime fences; caller pointers never cross the descriptor boundary.",
+      "The first profile uses explicitly created non-default streams; legacy/default-stream and cross-thread scheduling compatibility is unqualified.",
+      "Unknown flags, attributes, parameter layouts, module targets and unsupported operations fail explicitly before work. No permissive success stub is allowed."
+    ],
+    "unsupported_calls": ["cuModuleLoadDataEx", "cuModuleLoadFatBinary", "cuLinkCreate", "cuLinkAddData", "cuLinkComplete", "cuMemHostRegister", "cuMemHostUnregister", "cuMemAllocManaged", "cuMemAllocAsync", "cuMemPoolCreate", "cuDevicePrimaryCtxRetain", "cuDevicePrimaryCtxRelease", "cuStreamBeginCapture", "cuStreamEndCapture", "cuGraphCreate", "cuGraphInstantiate", "cuGraphLaunch", "cuLaunchCooperativeKernel", "cuCtxEnablePeerAccess", "cuImportExternalMemory", "cuImportExternalSemaphore"],
+    "unsupported_families": ["all unlisted Driver API calls", "CUDA Runtime API and fatbin registration", "PTX JIT and runtime linking", "full CUDA Graph API", "managed/unified memory", "primary contexts", "peer DMA", "graphics/external-resource interoperability", "stock CUDA libraries", "unmodified host applications"],
+    "unsupported_behavior": "A later native facade must return an explicit unsupported or invalid-input error without a side effect. The host fixture does not implement CUDA calls or error-code translation.",
+    "qualification_pending": ["G01 exact GPU/platform target", "firmware provenance and permitted acquisition", "nvcc/device artifact compiler identity", "native PCI/DMA/GPU execution", "source facade signatures and symbol versions", "numerical and recovery evidence"]
+  },
+  "toolchain_profile": {
+    "fixture_languages": ["C11", "Rust"],
+    "language_layout_policy": "C11 host probes execute byte roundtrips; pinned no_std Rust freestanding probes compile layout and constant byte assertions without host/native service execution. Descriptors use explicit-width little-endian scalars.",
+    "native_core_language_decision": "Proposed; ADR 0002 remains unchanged",
+    "native_service_calling_convention": "unavailable",
+    "native_gpu_compiler_target": "unavailable",
+    "whole_G02_gate": "open; remaining G01 qualification and interface/runtime-contract/toolchain decisions require acceptance evidence"
+  },
+  "compatibility_matrix": [
+    {"capability": "ABI 1.0 host byte layout and rejection", "status": "host-fixture", "qualification": "check_native_abi result and tests"},
+    {"capability": "C/Rust native service dispatch", "status": "unavailable", "qualification": "K02-K05 native runtime evidence"},
+    {"capability": "model and state descriptors", "status": "symbolic-fixture", "qualification": "strict manifest validation only"},
+    {"capability": "model operators and inference", "status": "unavailable", "qualification": "INF01/INF02 numerical and execution evidence"},
+    {"capability": "Homa pinned wire target", "status": "proposed-unimplemented", "qualification": "NET01 exact-profile interoperability"},
+    {"capability": "CUDA required source subset", "status": "proposed-unimplemented", "qualification": "GPU01-GPU03 exact-profile execution and failures"},
+    {"capability": "alternate CUDA, AMD or Apple backends", "status": "unsupported", "qualification": "separate issue and exact-profile evidence"}
+  ]
+}

@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "status": "provisional-host-contract",
+  "abi": {
+    "major": 1,
+    "minor": 0,
+    "byte_order": "little",
+    "alignment": 8,
+    "feature_mask": 0,
+    "max_descriptor_size": 128
+  },
+  "evidence_scope": "Host layout, serialization and rejection tests only; no native isolation, queue execution, DMA, firmware, GPU, transport or service compatibility is established.",
+  "layouts": {
+    "Header": {
+      "kind": null,
+      "size": 16,
+      "alignment": 4,
+      "fields": [
+        {
+          "name": "major",
+          "offset": 0,
+          "type": "u16"
+        },
+        {
+          "name": "minor",
+          "offset": 2,
+          "type": "u16"
+        },
+        {
+          "name": "size",
+          "offset": 4,
+          "type": "u32"
+        },
+        {
+          "name": "kind",
+          "offset": 8,
+          "type": "u16"
+        },
+        {
+          "name": "flags",
+          "offset": 10,
+          "type": "u16"
+        },
+        {
+          "name": "reserved",
+          "offset": 12,
+          "type": "u32"
+        }
+      ],
+      "c_type": "tessryn_abi_header",
+      "rust_type": "Header"
+    },
+    "CapabilityRef": {
+      "kind": null,
+      "size": 16,
+      "alignment": 8,
+      "fields": [
+        {
+          "name": "slot",
+          "offset": 0,
+          "type": "u32"
+        },
+        {
+          "name": "generation",
+          "offset": 4,
+          "type": "u32"
+        },
+        {
+          "name": "domain",
+          "offset": 8,
+          "type": "u64"
+        }
+      ],
+      "c_type": "tessryn_abi_capability_ref",
+      "rust_type": "CapabilityRef"
+    },
+    "Negotiation": {
+      "kind": 1,
+      "size": 48,
+      "alignment": 8,
+      "fields": [
+        {
+          "name": "header",
+          "offset": 0,
+          "type": "Header"
+        },
+        {
+          "name": "min_major",
+          "offset": 16,
+          "type": "u16"
+        },
+        {
+          "name": "min_minor",
+          "offset": 18,
+          "type": "u16"
+        },
+        {
+          "name": "max_major",
+          "offset": 20,
+          "type": "u16"
+        },
+        {
+          "name": "max_minor",
+          "offset": 22,
+          "type": "u16"
+        },
+        {
+          "name": "required_features",
+          "offset": 24,
+          "type": "u64"
+        },
+        {
+          "name": "supported_features",
+          "offset": 32,
+          "type": "u64"
+        },
+        {
+          "name": "domain",
+          "offset": 40,
+          "type": "u64"
+        }
+      ],
+      "c_type": "tessryn_abi_negotiation",
+      "rust_type": "Negotiation"
+    },
+    "Region": {
+      "kind": 2,
+      "size": 64,
+      "alignment": 8,
+      "fields": [
+        {
+          "name": "header",
+          "offset": 0,
+          "type": "Header"
+        },
+        {
+          "name": "capability",
+          "offset": 16,
+          "type": "CapabilityRef"
+        },
+        {
+          "name": "owner_task",
+          "offset": 32,
+          "type": "u64"
+        },
+        {
+          "name": "length",
+          "offset": 40,
+          "type": "u64"
+        },
+        {
+          "name": "budget_id",
+          "offset": 48,
+          "type": "u64"
+        },
+        {
+          "name": "placement_epoch",
+          "offset": 56,
+          "type": "u64"
+        }
+      ],
+      "c_type": "tessryn_abi_region",
+      "rust_type": "Region"
+    },
+    "Submission": {
+      "kind": 3,
+      "size": 128,
+      "alignment": 8,
+      "fields": [
+        {
+          "name": "header",
+          "offset": 0,
+          "type": "Header"
+        },
+        {
+          "name": "request_id",
+          "offset": 16,
+          "type": "u64"
+        },
+        {
+          "name": "task_id",
+          "offset": 24,
+          "type": "u64"
+        },
+        {
+          "name": "placement_epoch",
+          "offset": 32,
+          "type": "u64"
+        },
+        {
+          "name": "operation",
+          "offset": 40,
+          "type": "u32"
+        },
+        {
+          "name": "reserved",
+          "offset": 44,
+          "type": "u32"
+        },
+        {
+          "name": "region",
+          "offset": 48,
+          "type": "CapabilityRef"
+        },
+        {
+          "name": "offset",
+          "offset": 64,
+          "type": "u64"
+        },
+        {
+          "name": "length",
+          "offset": 72,
+          "type": "u64"
+        },
+        {
+          "name": "completion",
+          "offset": 80,
+          "type": "CapabilityRef"
+        },
+        {
+          "name": "dependency",
+          "offset": 96,
+          "type": "CapabilityRef"
+        },
+        {
+          "name": "budget_id",
+          "offset": 112,
+          "type": "u64"
+        },
+        {
+          "name": "deadline_ns",
+          "offset": 120,
+          "type": "u64"
+        }
+      ],
+      "c_type": "tessryn_abi_submission",
+      "rust_type": "Submission"
+    },
+    "Completion": {
+      "kind": 4,
+      "size": 80,
+      "alignment": 8,
+      "fields": [
+        {
+          "name": "header",
+          "offset": 0,
+          "type": "Header"
+        },
+        {
+          "name": "request_id",
+          "offset": 16,
+          "type": "u64"
+        },
+        {
+          "name": "sequence",
+          "offset": 24,
+          "type": "u64"
+        },
+        {
+          "name": "placement_epoch",
+          "offset": 32,
+          "type": "u64"
+        },
+        {
+          "name": "status",
+          "offset": 40,
+          "type": "u32"
+        },
+        {
+          "name": "milestone",
+          "offset": 44,
+          "type": "u32"
+        },
+        {
+          "name": "region",
+          "offset": 48,
+          "type": "CapabilityRef"
+        },
+        {
+          "name": "produced_length",
+          "offset": 64,
+          "type": "u64"
+        },
+        {
+          "name": "ownership_generation",
+          "offset": 72,
+          "type": "u32"
+        },
+        {
+          "name": "reserved",
+          "offset": 76,
+          "type": "u32"
+        }
+      ],
+      "c_type": "tessryn_abi_completion",
+      "rust_type": "Completion"
+    }
+  },
+  "kinds": {
+    "negotiation": 1,
+    "region": 2,
+    "submission": 3,
+    "completion": 4
+  },
+  "operations": {
+    "copy": 1,
+    "execute": 2,
+    "transfer": 3,
+    "cancel": 4,
+    "fence": 5,
+    "release": 6
+  },
+  "statuses": {
+    "ok": 0,
+    "invalid_descriptor": 1,
+    "unsupported_version": 2,
+    "invalid_authority": 3,
+    "stale_handle": 4,
+    "out_of_bounds": 5,
+    "insufficient_capacity": 6,
+    "admission_rejected": 7,
+    "deadline_expired": 8,
+    "device_fault": 9,
+    "cancelled": 10,
+    "stale_epoch": 11,
+    "incompatible_format": 12,
+    "partial_stream": 13,
+    "backpressure": 14,
+    "peer_fault": 15
+  },
+  "milestones": {
+    "none": 0,
+    "submission_accepted": 1,
+    "execution_completed": 2,
+    "cancellation_received": 3,
+    "launches_stopped": 4,
+    "output_fenced": 5,
+    "memory_reclaimed": 6,
+    "fault_reported": 7
+  },
+  "encoding_rules": [
+    "Encode and decode each explicit-width unsigned scalar in little-endian order; serialized descriptors contain no host pointers, implicit padding or language object layouts.",
+    "Native C/Rust structs describe layout, not a portable serialization procedure. Copying their memory is not a conforming encoder on big-endian hosts. Never dereference an untrusted byte buffer as a typed struct.",
+    "A decoder receives one exact frame and checks major=1, minor=0, known kind, exact declared size and actual size, all flags/reserved fields zero, known enums, and all width/bounds rules before any authority lookup or execution.",
+    "Top-level cross-domain descriptors have 8-byte layout alignment; embedded Header has natural alignment 4. A byte decoder accepts arbitrary input alignment and copies scalar bytes. Native mapping alignment is checked independently.",
+    "CapabilityRef all zeros denotes absent authority; a present reference requires nonzero generation and domain. Slot zero is valid. A serialized reference is untrusted until resolved in the authenticated receiving namespace.",
+    "No descriptor alone grants authority: capability rights, namespace, current generation, task/budget ownership, placement epoch, expiry and region capacity are checked against trusted service state.",
+    "Offset plus length must not overflow u64; bounds are checked with subtraction against the resolved region length. A buffer remains owned until outstanding references and device/transfer work are drained or reset.",
+    "Zero placement_epoch denotes local work without distributed placement authority; distributed services require their currently committed nonzero epoch.",
+    "No unknown operation/status/milestone is interpreted as success. An unsupported operation returns invalid_descriptor or a documented unsupported service outcome without performing work."
+  ],
+  "validation_rules": {
+    "Negotiation": [
+      "min_version <= max_version lexicographically",
+      "domain != 0",
+      "required_features and supported_features contain no unknown bits",
+      "required_features is a subset of supported_features",
+      "choose the highest common supported version or return unsupported_version; do not reinterpret a future descriptor"
+    ],
+    "Region": [
+      "capability is present",
+      "owner_task != 0",
+      "length != 0",
+      "budget_id != 0"
+    ],
+    "Submission": [
+      "request_id != 0",
+      "task_id != 0",
+      "budget_id != 0",
+      "completion is present",
+      "copy/execute/transfer/release require a present region",
+      "cancel/fence require absent region, zero offset and zero length",
+      "offset + length <= u64::MAX",
+      "deadline_ns=0 means no deadline; other values use the owning node monotonic clock and are never compared across hosts"
+    ],
+    "Completion": [
+      "request_id != 0",
+      "sequence != 0",
+      "milestone != none",
+      "present region requires nonzero ownership_generation; its match to trusted outstanding work is a contextual check independent of capability-handle generation",
+      "absent region requires produced_length=0 and ownership_generation=0",
+      "produced_length must fit the resolved region",
+      "status=ok cannot certify fault_reported; fault_reported requires a non-ok status",
+      "status=ok with a cancellation milestone reports that milestone only, never whole-task completion"
+    ]
+  },
+  "operation_semantics": {
+    "copy": "Authorized service copy described by service-specific validated metadata in the referenced region. This generic descriptor does not invent a source/destination address or grant raw DMA.",
+    "execute": "Submit a qualified prepared operation/graph whose service-specific metadata is in the referenced region; unsupported formats are rejected.",
+    "transfer": "Submit a bounded transfer with authenticated peer metadata in the referenced region. Protocol and backend selection are outside ABI v1.",
+    "cancel": "Request cancellation of task_id at placement_epoch; request_id identifies this control request. Acknowledgment cannot imply launch interruption, output fencing or memory reclamation.",
+    "fence": "Request fencing of task_id at placement_epoch. Acceptance requires existing authority; the command cannot assign a new committed epoch.",
+    "release": "Request release of the referenced region. It may complete only after lifetime checks and required drain/reset; the request never revokes another namespace without authority."
+  },
+  "queue_boundary": "These layouts do not yet choose K04 ring atomics, wraparound, sequence allocation, queue capacity, backpressure ordering, crash recovery, or DMA fences. Queue implementations require separate conformance evidence.",
+  "portable_records": {
+    "encoding": "Versioned UTF-8 JSON schema records, not packed kernel descriptors; no host pointers or implicit language layouts.",
+    "profile": "compatibility.json model_profile and the host manifest validator define the bounded fixture vocabulary and exact-match rejection rules.",
+    "records": [
+      "model identity and checkpoint/tokenizer digests",
+      "shard index/count and half-open layer ownership",
+      "operator identifiers and supported operation vocabulary",
+      "precision and conversion policy",
+      "state representation, ownership generation and placement epoch"
+    ],
+    "scope": "Only an artificial conformance fixture is admitted; no production model architecture, executable backend or state conversion is qualified."
+  },
+  "non_goals": [
+    "freeze complete G02",
+    "native syscall dispatch",
+    "Homa wire compatibility",
+    "CUDA backend support",
+    "hardware DMA or isolation proof",
+    "performance results"
+  ]
+}
