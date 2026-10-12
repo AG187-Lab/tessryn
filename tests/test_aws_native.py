@@ -135,6 +135,21 @@ class SyntheticCaptureBundle:
         self.update(alias)
         row["stderr"] = self.ref(alias + ".stderr", stderr)
 
+    def legacy_recovery(self):
+        """Full SYNTHETIC AMI metadata plus original launch suppressions."""
+        image = self.responses["recovery_image"]["Images"][0]
+        image.update(Name="SYNTHETIC_CANONICAL_RECOVERY_IMAGE", BootMode="uefi",
+                     Description="PRIVATE_SYNTHETIC_AMI_DESCRIPTION")
+        root = image["BlockDeviceMappings"][0]
+        root["Ebs"].update(VolumeSize=8, VolumeType="gp3", Encrypted=False, DeleteOnTermination=True)
+        image["BlockDeviceMappings"] = [root, {"DeviceName": "/dev/sdb", "VirtualName": "ephemeral0"},
+                                              {"DeviceName": "/dev/sdc", "VirtualName": "ephemeral1"}]
+        self.responses["type"]["InstanceTypes"][0]["InstanceStorageSupported"] = False
+        self.index["captures"]["r_launch"]["request"]["BlockDeviceMappings"] = [
+            {"DeviceName": "/dev/sdb", "NoDevice": ""}, {"DeviceName": "/dev/sdc", "NoDevice": ""}]
+        self.update("recovery_image")
+        self.update("type")
+
     def phase(self, label, number, image, serial, recovery=False):
         instance, volume, eni = (f"{prefix}-{number:017x}" for prefix in ("i", "vol", "eni"))
         client = f"synthetic-{label}-launch-unique-token"
@@ -253,6 +268,164 @@ class SyntheticNativeIntakeTests(unittest.TestCase):
         self.bundle.responses["r_root"]["Volumes"][0]["SnapshotId"] = SNAPSHOT
         self.bundle.update("r_root")
         self.reject()
+
+    def test_full_recovery_ami_legacy_mappings_are_preserved_and_explicitly_suppressed(self):
+        self.bundle.legacy_recovery()
+        image = self.bundle.responses["recovery_image"]["Images"][0]
+        image["BlockDeviceMappings"] = list(reversed(image["BlockDeviceMappings"]))
+        self.bundle.update("recovery_image")
+        raw_path = self.bundle.root / self.bundle.index["captures"]["recovery_image"]["response"]["path"]
+        original_bytes = raw_path.read_bytes()
+        original_image = copy.deepcopy(image)
+        result = self.bundle.verify()
+        self.assertEqual(result["status"], "needs_owner_review")
+        self.assertEqual(result["capture_origin"], "unverified_offline")
+        self.assertEqual(result["capture_kind"], "synthetic_fixture")
+        self.assertEqual(raw_path.read_bytes(), original_bytes)
+        self.assertEqual(image, original_image)
+        self.assertNotIn("PRIVATE_SYNTHETIC_AMI_DESCRIPTION", json.dumps(result))
+
+    def test_recovery_legacy_suppression_allows_one_matching_or_inherited_root_policy_override(self):
+        self.bundle.legacy_recovery()
+        request = self.bundle.index["captures"]["r_launch"]["request"]
+        request["BlockDeviceMappings"].insert(1, {"DeviceName": "/dev/sda1", "Ebs": {
+            "VolumeSize": 8, "VolumeType": "gp3", "Encrypted": True, "DeleteOnTermination": True}})
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+        request["BlockDeviceMappings"][1]["Ebs"]["SnapshotId"] = RECOVERY_SNAPSHOT
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_recovery_legacy_ami_rejects_extra_ebs_and_mixed_or_malformed_virtual_mappings(self):
+        self.bundle.legacy_recovery()
+        image = self.bundle.responses["recovery_image"]["Images"][0]
+        original = copy.deepcopy(image["BlockDeviceMappings"])
+        variants = [{"DeviceName": "/dev/sdb", "Ebs": {"SnapshotId": RECOVERY_SNAPSHOT}},
+                    {"DeviceName": "/dev/sdb", "VirtualName": "ephemeral0", "Ebs": {}},
+                    {"DeviceName": "/dev/sdb", "VirtualName": "ephemeral0", "NoDevice": ""},
+                    {"DeviceName": "/dev/sdb", "VirtualName": "ephemeral0", "Unknown": True},
+                    {"DeviceName": "/dev/sdb"}]
+        variants += [{"DeviceName": device, "VirtualName": "ephemeral0"} for device in
+                     (None, "dev/sdb", "/dev/../sdb", "/dev/sdb!")]
+        variants += [{"DeviceName": "/dev/sdb", "VirtualName": name} for name in
+                     (None, "ephemeral", "ephemeral-1", "ephemeral01", "ephemeral100", "swap")]
+        for mapping in variants:
+            with self.subTest(mapping=mapping):
+                image["BlockDeviceMappings"] = copy.deepcopy(original)
+                image["BlockDeviceMappings"][1] = mapping
+                self.bundle.update("recovery_image")
+                self.reject()
+        image["BlockDeviceMappings"] = original
+        self.bundle.update("recovery_image")
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_recovery_legacy_ami_requires_a_unique_root_with_the_approved_snapshot(self):
+        self.bundle.legacy_recovery()
+        image = self.bundle.responses["recovery_image"]["Images"][0]
+        original = copy.deepcopy(image["BlockDeviceMappings"])
+        for field, value in (("DeviceName", "/dev/sdz"), ("NoDevice", ""), ("VirtualName", "ephemeral2")):
+            with self.subTest(root_field=field):
+                image["BlockDeviceMappings"] = copy.deepcopy(original)
+                image["BlockDeviceMappings"][0][field] = value
+                self.bundle.update("recovery_image")
+                self.reject()
+        for snapshot in (None, SNAPSHOT, "invalid-snapshot"):
+            with self.subTest(snapshot=snapshot):
+                image["BlockDeviceMappings"] = copy.deepcopy(original)
+                image["BlockDeviceMappings"][0]["Ebs"]["SnapshotId"] = snapshot
+                self.bundle.update("recovery_image")
+                self.reject()
+        image["BlockDeviceMappings"] = [copy.deepcopy(original[0]), copy.deepcopy(original[0]),
+                                      copy.deepcopy(original[2])]
+        self.bundle.update("recovery_image")
+        self.reject()
+
+    def test_recovery_legacy_ami_devices_virtual_names_and_mapping_count_are_bounded(self):
+        self.bundle.legacy_recovery()
+        image = self.bundle.responses["recovery_image"]["Images"][0]
+        original = copy.deepcopy(image["BlockDeviceMappings"])
+        image["BlockDeviceMappings"][2]["DeviceName"] = "/dev/sdb"
+        self.bundle.update("recovery_image")
+        self.reject()
+        image["BlockDeviceMappings"] = copy.deepcopy(original)
+        image["BlockDeviceMappings"][2]["VirtualName"] = "ephemeral0"
+        self.bundle.update("recovery_image")
+        self.reject()
+        image["BlockDeviceMappings"] = original + [{"DeviceName": "/dev/sdd", "VirtualName": "ephemeral2"}]
+        self.bundle.update("recovery_image")
+        self.bundle.index["captures"]["r_launch"]["request"]["BlockDeviceMappings"].append(
+            {"DeviceName": "/dev/sdd", "NoDevice": ""})
+        self.reject()
+
+    def test_recovery_legacy_mappings_require_observed_ebs_only_type_boolean(self):
+        self.bundle.legacy_recovery()
+        instance_type = self.bundle.responses["type"]["InstanceTypes"][0]
+        for value in (True, "false", 0, None):
+            with self.subTest(instance_storage=value):
+                instance_type["InstanceStorageSupported"] = value
+                self.bundle.update("type")
+                self.reject()
+        del instance_type["InstanceStorageSupported"]
+        self.bundle.update("type")
+        self.reject()
+        instance_type["InstanceStorageSupported"] = False
+        self.bundle.update("type")
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_recovery_launch_requires_every_exact_suppression_and_no_unknown_or_duplicate(self):
+        self.bundle.legacy_recovery()
+        request = self.bundle.index["captures"]["r_launch"]["request"]
+        original = copy.deepcopy(request["BlockDeviceMappings"])
+        variants = [[], original[:1], [original[0], original[0]],
+                    [original[0], {"DeviceName": "/dev/sdz", "NoDevice": ""}],
+                    [original[0], {"DeviceName": "/dev/sda1", "NoDevice": ""}]]
+        variants += [[original[0], {"DeviceName": "/dev/sdc", "NoDevice": value}] for value in (None, True, "true")]
+        variants += [[original[0], {**original[1], key: value}] for key, value in
+                     (("VirtualName", "ephemeral1"), ("Ebs", {}), ("Unknown", True))]
+        for mappings in variants:
+            with self.subTest(mappings=mappings):
+                request["BlockDeviceMappings"] = copy.deepcopy(mappings)
+                self.reject()
+        del request["BlockDeviceMappings"]
+        self.reject()
+        request["BlockDeviceMappings"] = original
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
+
+    def test_recovery_legacy_suppression_cannot_change_or_duplicate_root_or_actual_volume(self):
+        self.bundle.legacy_recovery()
+        request = self.bundle.index["captures"]["r_launch"]["request"]
+        original = copy.deepcopy(request["BlockDeviceMappings"])
+        request["BlockDeviceMappings"].append({"DeviceName": "/dev/sda1", "Ebs": {"SnapshotId": SNAPSHOT}})
+        self.reject()
+        request["BlockDeviceMappings"] = original + [
+            {"DeviceName": "/dev/sda1", "Ebs": {"SnapshotId": RECOVERY_SNAPSHOT}},
+            {"DeviceName": "/dev/sda1", "Ebs": {"SnapshotId": RECOVERY_SNAPSHOT}}]
+        self.reject()
+        request["BlockDeviceMappings"] = original
+        self.bundle.responses["r_root"]["Volumes"][0]["SnapshotId"] = SNAPSHOT
+        self.bundle.update("r_root")
+        self.reject()
+        self.bundle.responses["r_root"]["Volumes"][0]["SnapshotId"] = RECOVERY_SNAPSHOT
+        self.bundle.update("r_root")
+        item = self.bundle.responses["r_running"]["Reservations"][0]["Instances"][0]
+        item["BlockDeviceMappings"].append({"DeviceName": "/dev/sdb", "Ebs": {
+            "VolumeId": "vol-00000000000000099", "DeleteOnTermination": True}})
+        self.bundle.update("r_running")
+        self.reject()
+
+    def test_native_boots_cannot_use_recovery_virtual_mapping_or_suppression_bypass(self):
+        self.bundle.legacy_recovery()
+        native_image = self.bundle.responses["image"]["Images"][0]
+        native_image["BlockDeviceMappings"].append({"DeviceName": "/dev/sdb", "VirtualName": "ephemeral0"})
+        self.bundle.update("image")
+        self.reject()
+        native_image["BlockDeviceMappings"].pop()
+        self.bundle.update("image")
+        for label in ("a", "b"):
+            with self.subTest(native=label):
+                request = self.bundle.index["captures"][label + "_launch"]["request"]
+                request["BlockDeviceMappings"] = [{"DeviceName": "/dev/sdb", "NoDevice": ""}]
+                self.reject()
+                del request["BlockDeviceMappings"]
+        self.assertEqual(self.bundle.verify()["status"], "needs_owner_review")
 
     def test_replayed_launch_tokens_and_instance_id_are_rejected(self):
         old = self.bundle.index["captures"]["b_launch"]["request"]["ClientToken"]

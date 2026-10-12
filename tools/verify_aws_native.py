@@ -29,6 +29,7 @@ MAX_BUNDLE_BYTES = 32 * 1024 * 1024
 HASH = re.compile(r"[0-9a-f]{64}")
 FORMATS = {"aws_cli_v2_json", "boto3_json"}
 EMPTY_RESPONSES = {"DeleteSnapshot", "DeleteVolume", "DeleteNetworkInterface", "DeregisterImage"}
+MAX_RECOVERY_EPHEMERAL_MAPPINGS = 2
 
 
 def require(value: bool, reason: str) -> None:
@@ -314,7 +315,7 @@ def recycle_absent(captures: CaptureSet, alias: str, operation: str, collection:
 
 
 def boot(captures: CaptureSet, spec: dict, role: str, ami_id: str, snapshot_id: str,
-         encrypted: bool, root_device: str = "/dev/sda1") -> dict:
+         encrypted: bool, root_device: str = "/dev/sda1", legacy_devices: tuple[str, ...] = ()) -> dict:
     from tools.aws_native_serial import parse_native_serial
     keys = {"launch", "running", "root", "console", "terminate", "terminated", "volume_absent", "eni_absent",
             "volume_recycle_absent"}
@@ -327,13 +328,26 @@ def boot(captures: CaptureSet, spec: dict, role: str, ami_id: str, snapshot_id: 
             and type(request.get("MinCount")) is int and request["MinCount"] == 1
             and type(request.get("MaxCount")) is int and request["MaxCount"] == 1
             and not request.get("IamInstanceProfile"), "launch image or count differs")
-    if request.get("BlockDeviceMappings"):
-        override = one(request["BlockDeviceMappings"], "launch must not add another disk")
-        override_ebs = override.get("Ebs")
-        require(override.get("DeviceName") == root_device and "NoDevice" not in override
-                and "VirtualName" not in override and isinstance(override_ebs, dict)
-                and override_ebs.get("SnapshotId", snapshot_id) == snapshot_id,
-                "launch overrides the approved root snapshot")
+    require(not legacy_devices or role == "recovery", "native launch cannot suppress legacy devices")
+    overrides = request.get("BlockDeviceMappings", [])
+    require(isinstance(overrides, list) and len(overrides) <= 1 + len(legacy_devices),
+            "launch must not add another disk")
+    suppressed, root_override = set(), False
+    for override in overrides:
+        require(isinstance(override, dict), "invalid launch mapping")
+        device = override.get("DeviceName")
+        if device == root_device:
+            override_ebs = override.get("Ebs")
+            require(not root_override and set(override) == {"DeviceName", "Ebs"}
+                    and isinstance(override_ebs, dict) and override_ebs.get("SnapshotId", snapshot_id) == snapshot_id,
+                    "launch overrides the approved root snapshot")
+            root_override = True
+        else:
+            require(role == "recovery" and set(override) == {"DeviceName", "NoDevice"}
+                    and isinstance(device, str) and device in legacy_devices and device not in suppressed
+                    and override["NoDevice"] == "", "launch legacy-device suppression differs")
+            suppressed.add(device)
+    require(suppressed == set(legacy_devices), "recovery launch must suppress every legacy device")
     client_token = token(request.get("ClientToken"))
     launched = one(launch.response.get("Instances"), "launch returned multiple instances")
     instance_id = identifier(launched.get("InstanceId"), "i")
@@ -469,15 +483,36 @@ def verify(index_path: Path, manifest_path: Path) -> dict:
             and good_image.get("State") == "available" and good_image.get("Architecture") == "x86_64"
             and good_image.get("VirtualizationType") == "hvm" and good_image.get("RootDeviceType") == "ebs",
             "approved known-good recovery image metadata differs")
-    recovery_mapping = one(good_image.get("BlockDeviceMappings"), "recovery image root mapping differs")
     recovery_device = good_image.get("RootDeviceName")
-    require(isinstance(recovery_device, str) and re.fullmatch(r"/dev/[a-z0-9]{1,16}", recovery_device)
-            and recovery_mapping.get("DeviceName") == recovery_device and isinstance(recovery_mapping.get("Ebs"), dict),
+    require(isinstance(recovery_device, str) and re.fullmatch(r"/dev/[a-z0-9]{1,16}", recovery_device),
             "recovery image root device differs")
+    mappings = good_image.get("BlockDeviceMappings")
+    require(isinstance(mappings, list) and 1 <= len(mappings) <= 1 + MAX_RECOVERY_EPHEMERAL_MAPPINGS,
+            "recovery image mapping count differs")
+    recovery_mapping, legacy_devices, virtual_names, seen_devices = None, set(), set(), set()
+    for mapping in mappings:
+        require(isinstance(mapping, dict), "invalid recovery image mapping")
+        device = mapping.get("DeviceName")
+        require(isinstance(device, str) and re.fullmatch(r"/dev/[a-z0-9]{1,16}", device)
+                and device not in seen_devices, "recovery image devices are invalid or duplicated")
+        seen_devices.add(device)
+        if device == recovery_device:
+            require(set(mapping) == {"DeviceName", "Ebs"} and isinstance(mapping["Ebs"], dict),
+                    "recovery image root mapping differs")
+            recovery_mapping = mapping
+        else:
+            virtual = mapping.get("VirtualName")
+            require(set(mapping) == {"DeviceName", "VirtualName"} and isinstance(virtual, str)
+                    and re.fullmatch(r"ephemeral(?:0|[1-9][0-9]?)", virtual) and virtual not in virtual_names,
+                    "recovery image legacy mapping differs")
+            legacy_devices.add(device)
+            virtual_names.add(virtual)
+    require(recovery_mapping is not None and (not legacy_devices or declared.get("InstanceStorageSupported") is False),
+            "recovery legacy mappings require an EBS-only instance type")
     recovery_snapshot = identifier(recovery_mapping["Ebs"].get("SnapshotId"), "snap")
     a = boot(captures, index["native_a"], "native_a", ami_id, snapshot["snapshot_id"], index["encrypted"])
     recovery = boot(captures, index["recovery"], "recovery", recovery_id, recovery_snapshot,
-                    index["encrypted"], recovery_device)
+                    index["encrypted"], recovery_device, tuple(sorted(legacy_devices)))
     b = boot(captures, index["native_b"], "native_b", ami_id, snapshot["snapshot_id"], index["encrypted"])
     phases = [a, recovery, b]
     for key in ("instance_id", "client_token", "volume_id", "eni_id"):

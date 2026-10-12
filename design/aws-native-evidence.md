@@ -87,6 +87,12 @@ update, not a per-line execution time. Empty, stale, incomplete or contradictory
 captures are inconclusive/rejected, never a native pass. The owner polls with a
 bounded deadline. [Console fields](https://docs.aws.amazon.com/cli/latest/reference/ec2/get-console-output.html).
 
+The `boto3_json` capture format preserves the service-encoded `Output`. An SDK
+that automatically decodes console output must retain that original value
+before its decoding handler; the tested capture producer removes that handler
+from its dedicated EC2 client. Do not relabel decoded SDK text as encoded
+service output or apply another Base64 transformation to repair a receipt.
+
 ## Snapshot and image chain
 
 `snapshot` contains exactly `start`, `uploads`, `complete`, `ready`, `list_pages`,
@@ -125,11 +131,21 @@ is bound to the launch response, launch token and fresh primary interface
 attachment time; `LaunchTime` alone is insufficient because it also changes on
 a later start. Native A/B use the same approved AMI and actually boot UEFI.
 Each actual root volume joins the approved image snapshot and its instance
-attachment. A root-only launch override can inherit the snapshot or name that
+attachment. An EBS root override can inherit the snapshot or name that
 same snapshot; it cannot replace it or add another disk. Native roots remain
 1 GiB. Policy overrides for encryption/type/size on the Linux recovery root
 remain subject to the separately approved proposal. [Instance semantics](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html),
 [launch mappings](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html).
+
+Keep the original recovery AMI mapping response intact. Its unique EBS root
+must match `RootDeviceName` and the approved snapshot. Up to two legacy
+`VirtualName=ephemeralN` declarations may accompany that root only when the
+captured exact type reports `InstanceStorageSupported=false`; they are not
+extra EBS roots. The original recovery launch must suppress every such device
+with exactly `DeviceName` and `NoDevice=""`, without unknown or duplicate
+suppressions or root removal. Native A/B remain restricted to one 1 GiB root.
+The actual recovery instance and attached volume must still contain only the
+single approved EBS root. [Block-device suppression](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_BlockDeviceMapping.html).
 
 Normal serial parsing checks one complete original-kernel entry, every bounded
 firmware admission/retry, live ranges, paging capacity/guard/physical width,
