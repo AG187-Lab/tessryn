@@ -31,7 +31,23 @@ accessible. A trusted scrub callback must erase the entire backing allocation,
 including reservations, before authority is installed. A scrub failure leaves
 all policy tables, charges and generations unchanged. The callback's success is
 a trusted assertion, tested with mock backing bytes; actual native erasure is
-still an integration obligation. Activating reserved growth is not implemented.
+still an integration obligation.
+
+`activate_reserved` converts already charged reserved pages into committed pages
+without changing the backing allocation, budget or total charge. Only the active
+original root and its charge owner may request this trusted administrative
+operation. Any retained alias or operation/mapping owner blocks activation,
+including revoked aliases and completed/fenced owners awaiting quiescence.
+Every bounds, generation and accounting check precedes scrubbing of the exact
+newly exposed tail. A scrub failure leaves policy state unchanged.
+
+Successful activation preserves rights and replaces the root in its existing
+slot with the next generation; callers must use the returned handle. Old handles
+cannot authorize, activate or release the replacement. Generation exhaustion
+rejects activation without wrapping. Delegated views never widen automatically.
+[ADR 0013](../design/decisions/0013-reserved-memory-activation.md) records this
+conservative lifecycle, and [activation evidence](../evidence/k02-reserved/README.md)
+separates its host policy checks from native enforcement.
 
 Capabilities reuse the [G02 `CapabilityRef`](../interfaces/abi-v1/native.rs) type:
 slot zero is valid, while generation and domain must be nonzero. Delegation may

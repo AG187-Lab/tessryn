@@ -370,6 +370,117 @@ impl<const D: usize, const R: usize, const C: usize, const O: usize, const F: us
         Ok(handle)
     }
 
+    /// Activates already charged reservation pages on an exclusive original
+    /// root. This is a trusted administrative operation: caller identity and
+    /// scrubbing must come from protected kernel code, not descriptor fields.
+    /// All aliases and operation/mapping owners must be released first. The
+    /// newly exposed tail is scrubbed before replacing the root generation;
+    /// physical backing, total charge, budget and rights remain unchanged.
+    pub fn activate_reserved<S>(
+        &mut self,
+        caller: u64,
+        root: CapabilityRef,
+        pages: u64,
+        mut scrub: S,
+    ) -> Result<CapabilityRef, Error>
+    where
+        S: FnMut(FrameRange) -> Result<(), ()>,
+    {
+        let (domain, slot, capability) = self.capability(caller, root, true)?;
+        let region = self.regions[capability.region].expect("capability retains its region");
+        let committed_bytes = region
+            .committed_pages
+            .checked_mul(PAGE_SIZE)
+            .ok_or(Error::Overflow)?;
+        if region.owner != domain
+            || capability.parent.is_some()
+            || capability.offset != 0
+            || capability.length != committed_bytes
+        {
+            return Err(Error::InvalidAuthority);
+        }
+        if pages == 0 {
+            return Err(Error::Empty);
+        }
+        if pages > region.reserved_pages {
+            return Err(Error::Bounds);
+        }
+        if self
+            .owners
+            .iter()
+            .filter_map(|entry| entry.value)
+            .any(|owner| owner.region == capability.region)
+            || self
+                .capabilities
+                .iter()
+                .enumerate()
+                .any(|(other_domain, entries)| {
+                    entries.iter().enumerate().any(|(other_slot, entry)| {
+                        (other_domain != domain || other_slot != slot)
+                            && entry
+                                .value
+                                .is_some_and(|value| value.region == capability.region)
+                    })
+                })
+        {
+            return Err(Error::Busy);
+        }
+        let generation = root.generation.checked_add(1).ok_or(Error::Capacity)?;
+        let length = pages
+            .checked_mul(PAGE_SIZE)
+            .and_then(|bytes| capability.length.checked_add(bytes))
+            .ok_or(Error::Overflow)?;
+        let committed_pages = region
+            .committed_pages
+            .checked_add(pages)
+            .ok_or(Error::Overflow)?;
+        let reserved_pages = region
+            .reserved_pages
+            .checked_sub(pages)
+            .ok_or(Error::Overflow)?;
+        let accounting = self.domains[domain]
+            .expect("domain index validated")
+            .accounting;
+        let updated_accounting = Accounting {
+            committed_pages: accounting
+                .committed_pages
+                .checked_add(pages)
+                .ok_or(Error::Overflow)?,
+            reserved_pages: accounting
+                .reserved_pages
+                .checked_sub(pages)
+                .ok_or(Error::Overflow)?,
+            ..accounting
+        };
+        let tail_start = region
+            .backing
+            .start()
+            .checked_add(committed_bytes)
+            .ok_or(Error::Overflow)?;
+        let tail = FrameRange::new(tail_start, pages)?;
+        let replacement = CapabilityRef {
+            generation,
+            ..root
+        };
+        let updated_region = Region {
+            committed_pages,
+            reserved_pages,
+            ..region
+        };
+        let updated_capability = Capability {
+            length,
+            ..capability
+        };
+        scrub(tail).map_err(|()| Error::ScrubFailed)?;
+        self.regions[capability.region] = Some(updated_region);
+        self.domains[domain]
+            .as_mut()
+            .expect("domain index validated")
+            .accounting = updated_accounting;
+        self.install_capability(domain, replacement, updated_capability);
+        Ok(replacement)
+    }
+
     fn bounded_slice(capability: Capability, offset: u64, length: u64) -> Result<u64, Error> {
         if length == 0 {
             return Err(Error::Empty);
