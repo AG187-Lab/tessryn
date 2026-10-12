@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "k02_owned_memory_core",
+  "status": "passed",
+  "scope": "host_execution_of_original_no_std_policy_and_freestanding_compilation",
+  "source_revision": "cd6ae218851f04b3eda033e2a1c3954686c190f7",
+  "source_dirty": false,
+  "sources": {
+    ".github/workflows/k02-core.yml": "1a51865f5f5d4082d160c21353f0fd9e9365d2bda35e8f0ed840b2a0f720ff66",
+    "interfaces/abi-v1/native.rs": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+    "kernel-core/capabilities.rs": "d223f5c0a6c074bd6010a6d332a29b4f85161804f3dc5598b68897c1c22f38d8",
+    "kernel-core/frames.rs": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+    "kernel-core/lib.rs": "3c2107288f6fddda506093e1cec1d8fa6f9f47cc6f93ccbe62f4b713c94eadfc",
+    "kernel-core/tests.rs": "cf44fd88a27aaaecb6d449f1a5b84adefe661db5baabd85cac0271f23fd4c4ee",
+    "planning/k02-toolchain.lock.json": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "tests/test_k02_setup.py": "5f5c296cec9a1fff5cd2e0dc58d4d15b032792b7dcd015ffa773c875419d9149",
+    "tests/test_k02_tooling.py": "8bfefa70d24d551d0280dcf4129f590dfbb794dd255446e03ebe1e121fbbcbe6",
+    "toolchain.lock.json": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "tools/check_k02_core.py": "8838bc50e5d84f360822b46be23639cb9c595442f7005d6a86b51e3d14226203",
+    "tools/g03/process.py": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+    "tools/setup_k02_toolchain.py": "57e8191915c03b1750a3d6e8435570a667fd1b30667edfb0984975330bcf5f96",
+    "tools/setup_toolchain.py": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0"
+  },
+  "toolchain": {
+    "schema_version": 1,
+    "kind": "k02_host_test_toolchain",
+    "host": "aarch64-apple-darwin",
+    "profile_sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "g03_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "g03_record_sha256": "3360b2346d7e5acc03db246898fda65c410e04ec334bb415f22c6613e93b32b1",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "rust_revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "host_library": {
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-aarch64-apple-darwin.tar.xz",
+      "sha256": "439c4f71060b913e00db3a2e01340b2da0aa49978b843e36871f3250267c63f8"
+    },
+    "rust_host_library_tree_sha256": "d0f8b9308cb4d641851bab30dab235490d55ac22f2787b02268e961aae811c9c",
+    "verified_tools": {
+      "rustc": {
+        "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+      },
+      "rust_lld": {
+        "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+      }
+    },
+    "rust_target_library_tree_sha256": "04087044f06c8af97a6e1ae6e1035e696d7beff59ba0a2ef2e603bf6e7a7d760",
+    "rust_library_tree_sha256": "e03ce2478a888c90046f9179177b8d226be763f6a4815db0f433855fc52efbd9"
+  },
+  "compiled_checks": [
+    "same_Rust_core_host_tests",
+    "freestanding_x86_64_no_std",
+    "identical_repeated_freestanding_artifact"
+  ],
+  "host_tests": {
+    "status": "passed",
+    "passed": 30,
+    "log": "\nrunning 30 tests\ntest capabilities::tests::adjacent_freed_extents_coalesce_for_a_larger_reallocation ... ok\ntest capabilities::tests::allocator_metadata_capacity_is_preflighted_before_splitting_or_scrubbing ... ok\ntest capabilities::tests::byte_views_cannot_expose_their_containing_page_through_mapping_rounding ... ok\ntest capabilities::tests::caller_namespace_cannot_be_established_by_a_presented_domain_number ... ok\ntest capabilities::tests::capability_generation_exhaustion_retires_the_slot_without_aba ... ok\ntest capabilities::tests::committed_and_reserved_pages_are_admitted_before_installation ... ok\ntest capabilities::tests::completion_is_not_quiescence_and_cannot_free_a_shared_region ... ok\ntest capabilities::tests::cpu_mapping_intents_and_service_owners_share_one_conflict_ledger ... ok\ntest capabilities::tests::cross_domain_aliases_conflict_by_backing_interval_until_quiescence ... ok\ntest capabilities::tests::delegation_reduces_rights_and_translates_nested_byte_bounds ... ok\ntest capabilities::tests::frame_pool_rejects_forged_partial_release_and_coalesces_external_free_extents ... ok\ntest capabilities::tests::mapping_requires_map_authority_and_submission_requires_submit_authority ... ok\ntest capabilities::tests::namespace_and_owner_capacity_failures_leave_every_counter_unchanged ... ok\ntest capabilities::tests::nested_views_conflict_at_their_absolute_backing_offsets ... ok\ntest capabilities::tests::ownership_generation_exhaustion_retires_the_owner_slot_without_aba ... ok\ntest capabilities::tests::partially_failed_scrub_changes_no_trusted_allocation_or_authority_state ... ok\ntest capabilities::tests::physical_allocation_failure_does_not_charge_or_install_a_capability ... ok\ntest capabilities::tests::physical_inventory_rejects_quarantine_overlap_and_address_width ... ok\ntest capabilities::tests::recycled_frames_are_scrubbed_before_a_different_domain_receives_authority ... ok\ntest capabilities::tests::region_capacity_failure_cannot_leave_an_orphaned_charge ... ok\ntest capabilities::tests::reverse_domain_descendant_chain_is_revoked_across_repeated_propagation_passes ... ok\ntest capabilities::tests::revoke_denies_descendant_access_and_completion_but_retains_owners ... ok\ntest capabilities::tests::revoked_mapping_intent_retains_backing_until_teardown_and_final_release ... ok\ntest capabilities::tests::rights_decoder_rejects_unknown_bits_instead_of_amplifying_authority ... ok\ntest capabilities::tests::scrub_failure_never_installs_authority_or_spends_a_generation ... ok\ntest capabilities::tests::sharing_preserves_original_charge_until_the_last_descendant_is_released ... ok\ntest capabilities::tests::slot_zero_is_present_with_nonzero_domain_and_generation ... ok\ntest capabilities::tests::stale_lease_cannot_complete_fence_or_quiesce_a_replacement_owner ... ok\ntest capabilities::tests::unsigned_ranges_and_empty_authority_are_rejected_without_mutation ... ok\ntest capabilities::tests::write_only_operations_cannot_be_promoted_to_readable_writable_mappings ... ok\n\ntest result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+  },
+  "artifacts": {
+    "libtessryn_memory.rlib": {
+      "sha256": "2a52d4fdf307b580ec5cc6b991faa5f545cb3836f382dd7ac79ef8f58bb0513d",
+      "target": "x86_64-unknown-none"
+    }
+  },
+  "unavailable": [
+    "native_authenticated_dispatch",
+    "CPU_address_space_isolation",
+    "page_table_installation_and_TLB_teardown",
+    "hardware_fault_traces",
+    "SMP_synchronization",
+    "DMA_and_device_quiescence",
+    "native_runtime_integration"
+  ]
+}
