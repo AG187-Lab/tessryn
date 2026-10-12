@@ -7,7 +7,7 @@ its G01 physical qualification dependency and native runtime gates.
 
 ## Verified implementation
 
-Source revision: `ae041f61a926571326f8f3415d5245db444c2a55`.
+Source revision: `dc5ce88a12ea36e283be2efd519af3538c1a0727`.
 The checker observed a clean source tree. The later evidence-only commit adds
 these receipts without changing their hashed implementation inputs.
 
@@ -19,7 +19,7 @@ these receipts without changing their hashed implementation inputs.
 - Rust 1.96.0: checksum-verified G03 installation; `no_std` compilation for
   `x86_64-unknown-none` verified matching layouts/types/constants and byte-vector
   assertions at compile time. No Rust service or executable was run.
-- Design validation: **44 documents**, 10 milestones, 49 acyclic work items.
+- Design validation: **45 documents**, 10 milestones, 49 acyclic work items.
 
 [result.json](result.json) retains source, evaluator, vector, probe and compiler
 hashes, compiler/library identities, C probe output, rejection reasons and the
