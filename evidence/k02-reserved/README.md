@@ -17,3 +17,8 @@ Rust implementation compiled freestanding. Reproduce using the commands in the
 This is host policy execution and compilation. Protected dispatch, actual
 native erasure, page-table/TLB enforcement, CPU fault traces, SMP and device
 quiescence remain unavailable. K02 stays open and dependent on K01.
+
+The [clean-source result](result.json) measures `dd89ed6a4b8c9091b93229caeda513c5e37c291a`: **40 Rust
+tests** (30 existing plus ten activation traces), [207 repository tests](python-tests.log),
+and [design validation](design.log). The repeated freestanding library hash is
+`794a79540ee7c104c0cec7dbae27d8def7c495ecad9aa7ef058d53e28f7f2918`. CI retains its own Linux result and matching library.
