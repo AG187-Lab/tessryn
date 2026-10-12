@@ -115,7 +115,9 @@ The verifier requires a new no-parent 1 GiB snapshot, a recorded attempt token,
 512 KiB blocks and exact upload/checksum coverage from the locally verified
 normal disk. It exhausts pagination even after all five blocks appear, binds
 readback tokens and checksums, and streams all logical zero holes to reconstruct
-the complete disk SHA-256. AWS supplies per-block checksums; it does not return
+the complete disk SHA-256. Block and page tokens are opaque strings: preserve them
+exactly, including URL-safe `-` and `_`, within the bounded 1–256 character token
+contract. Do not decode them or alter padding. AWS supplies per-block checksums; it does not return
 the EFI/source/whole-disk digest. Token expiry, when present, must permit the
 read's start; a download may finish later. [Snapshot write/read contract](https://docs.aws.amazon.com/ebs/latest/userguide/writesnapshots.html),
 [listing pagination](https://docs.aws.amazon.com/ebs/latest/APIReference/API_ListSnapshotBlocks.html).

@@ -28,7 +28,7 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _ALIAS = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}")
 _CLIENT_TOKEN = re.compile(r"[A-Za-z0-9_.:-]{16,64}")
 _SNAPSHOT_ID = re.compile(r"snap-[0-9a-f]{1,59}")
-_API_TOKEN = re.compile(r"[A-Za-z0-9+/=]{1,256}")
+_API_TOKEN = re.compile(r"[A-Za-z0-9+/=_-]{1,256}")
 
 
 def _require(condition: bool, reason: str) -> None:
