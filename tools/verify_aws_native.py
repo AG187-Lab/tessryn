@@ -245,6 +245,46 @@ class CaptureSet:
         return Capture(row["request"], response, start, end, row["format"], "provider_volume_not_found")
 
 
+    def take_snapshot_recycle_absence(self, alias: str, snapshot_id: str) -> Capture:
+        """Classify one known-owned snapshot's original Recycle Bin observation.
+
+        The caller binds ownership through the original snapshot/identity evidence.
+        Only the specific SDK NotFound receipt is exceptional; it remains an error
+        and never enters the success cache. This does not authenticate AWS origin.
+        """
+        identifier(snapshot_id, "snap")
+        operation = "ListSnapshotsInRecycleBin"
+        row, raw, stderr, start, end = self._raw_capture(alias, operation)
+        require(self.index["region"] == "us-east-1"
+                and isinstance(self.index["account_id"], str)
+                and re.fullmatch(r"[0-9]{12}", self.index["account_id"]) is not None,
+                "snapshot Recycle Bin context differs")
+        require(row["request"] == {"SnapshotIds": [snapshot_id]}, "snapshot Recycle Bin query differs")
+        if row["exit_status"] == 0:
+            result = self.take(alias, operation)
+            require(result.response.get("Snapshots") == [] and result.response.get("NextToken") is None,
+                    "snapshot Recycle Bin absence is unconfirmed")
+            return Capture(result.request, result.response, result.started, result.completed, result.format,
+                           "successful_empty_list")
+        require(row["format"] == "boto3_json" and row["exit_status"] == 1 and stderr == b"" and raw,
+                "snapshot SDK absence capture failed or differs")
+        response = capture_json(raw)
+        require(set(response) == {"Error", "ResponseMetadata"}, "snapshot SDK error structure differs")
+        error, metadata = response["Error"], response["ResponseMetadata"]
+        require(isinstance(error, dict) and set(error) == {"Code", "Message"}
+                and error["Code"] == "InvalidSnapshot.NotFound" and isinstance(metadata, dict)
+                and type(metadata.get("HTTPStatusCode")) is int and metadata["HTTPStatusCode"] == 400,
+                "snapshot SDK service error differs")
+        request_id, message = metadata.get("RequestId"), error["Message"]
+        require(isinstance(request_id, str)
+                and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/+=-]{0,255}", request_id) is not None
+                and isinstance(message, str) and re.fullmatch(r"[\x20-\x7e]{1,4096}", message) is not None
+                and re.findall(r"\bsnap-[A-Za-z0-9_-]+", message) == [snapshot_id],
+                "snapshot SDK error target or request identity differs")
+        self.used.add(alias)
+        return Capture(row["request"], response, start, end, row["format"], "provider_snapshot_not_found")
+
+
 def single_instance(response: dict) -> dict:
     reservation = one(response.get("Reservations"), "instance reservation count differs")
     return one(reservation.get("Instances"), "instance count differs")
@@ -307,6 +347,9 @@ def recycle_absent(captures: CaptureSet, alias: str, operation: str, collection:
     if operation == "ListVolumesInRecycleBin":
         require(collection == "Volumes" and parameter == "VolumeIds", "invalid volume absence contract")
         return captures.take_volume_recycle_absence(alias, resource_id)
+    if operation == "ListSnapshotsInRecycleBin":
+        require(collection == "Snapshots" and parameter == "SnapshotIds", "invalid snapshot absence contract")
+        return captures.take_snapshot_recycle_absence(alias, resource_id)
     capture = captures.take(alias, operation)
     require(capture.request == {parameter: [resource_id]} and capture.response.get(collection) == []
             and capture.response.get("NextToken") is None,
@@ -564,6 +607,8 @@ def verify(index_path: Path, manifest_path: Path) -> dict:
             "phases": [{"role": row["role"], "observations": row["observations"],
                         "root_retention": row["root_retention"]} for row in phases],
             "cleanup": "time_bound_resource_and_recycle_bin_absence_with_no_current_retention_rules_in_supplied_captures",
+            "snapshot_retention": {"basis": snapshot_recycled.absence_basis,
+                                   "capture_completed_at": snapshot_recycled.completed.isoformat()},
             "private_capture_files": len(captures.raw_hashes)}
 
 
