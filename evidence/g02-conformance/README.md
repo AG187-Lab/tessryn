@@ -3,7 +3,9 @@
 This is host conformance evidence for a provisional interface profile. It is
 not native service, kernel isolation, DMA, Homa, CUDA or model-execution evidence.
 Full [G02](https://github.com/AG187-Lab/tessryn/issues/3) remains open, including
-its G01 physical qualification dependency and native runtime gates.
+its G01 physical qualification dependency and remaining native-runtime
+contract/toolchain decisions. Later implementation and execution qualifications
+follow those G02 decisions under their own issue gates.
 
 ## Verified implementation
 

@@ -81,7 +81,7 @@
     "native_core_language_decision": "Proposed; ADR 0002 remains unchanged",
     "native_service_calling_convention": "unavailable",
     "native_gpu_compiler_target": "unavailable",
-    "whole_G02_gate": "open; remaining G01 dependency and native runtime evidence required"
+    "whole_G02_gate": "open; remaining G01 qualification and interface/runtime-contract/toolchain decisions require acceptance evidence"
   },
   "compatibility_matrix": [
     {"capability": "ABI 1.0 host byte layout and rejection", "status": "host-fixture", "qualification": "check_native_abi result and tests"},

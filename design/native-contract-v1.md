@@ -114,4 +114,6 @@ The checker must bind its result to the contract inputs, positive/negative vecto
 | CUDA source subset | Proposed, unimplemented | G01 targets; GPU01–GPU03 firmware, execution and recovery |
 | Whole-kernel/runtime/toolchain decision | Proposed | Native runtime, calling convention, debugger and target evidence |
 
-G03's reproducible compiler fixture remains useful input; it does not settle the runtime or device compiler choice. G01 target access/qualification, native implementations and the versioned source facade remain necessary before the broader G02 acceptance can be claimed.
+G03's reproducible compiler fixture supplies evidence for compiler and layout decisions. Remaining G02 gates are G01 target/access qualification; complete kernel/service and inference-state contracts; exact transport/CUDA compatibility boundaries; and an accepted language, toolchain and native-runtime/calling-convention decision with reproducible prototype evidence.
+
+The backlog places native implementations after G02's interface decisions. K01–K05, NET01, GPU01–GPU03 and INF01/INF02 implement and qualify those contracts under their own gates. The table's native execution, isolation, interoperability and numerical requirements belong to those downstream qualification gates. G02 can accept its complete contracts and toolchain decisions before that implementation work finishes; native support claims require the corresponding implementation evidence.
