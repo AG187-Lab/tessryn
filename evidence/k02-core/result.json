@@ -3,7 +3,7 @@
   "kind": "k02_owned_memory_core",
   "status": "passed",
   "scope": "host_execution_of_original_no_std_policy_and_freestanding_compilation",
-  "source_revision": "cd6ae218851f04b3eda033e2a1c3954686c190f7",
+  "source_revision": "0588c64f19c1e12634a99637ef0fe29f9378d645",
   "source_dirty": false,
   "sources": {
     ".github/workflows/k02-core.yml": "1a51865f5f5d4082d160c21353f0fd9e9365d2bda35e8f0ed840b2a0f720ff66",
@@ -13,12 +13,12 @@
     "kernel-core/lib.rs": "3c2107288f6fddda506093e1cec1d8fa6f9f47cc6f93ccbe62f4b713c94eadfc",
     "kernel-core/tests.rs": "cf44fd88a27aaaecb6d449f1a5b84adefe661db5baabd85cac0271f23fd4c4ee",
     "planning/k02-toolchain.lock.json": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
-    "tests/test_k02_setup.py": "5f5c296cec9a1fff5cd2e0dc58d4d15b032792b7dcd015ffa773c875419d9149",
-    "tests/test_k02_tooling.py": "8bfefa70d24d551d0280dcf4129f590dfbb794dd255446e03ebe1e121fbbcbe6",
+    "tests/test_k02_setup.py": "e296b8b89ab68bb33cd359590f6609cd4f1bafeed37120e6634b6940489a1ded",
+    "tests/test_k02_tooling.py": "0835ecef3c652c3e8258ab0e5103ccbd002a5ff1a796710ce96c8736a5aad319",
     "toolchain.lock.json": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
-    "tools/check_k02_core.py": "8838bc50e5d84f360822b46be23639cb9c595442f7005d6a86b51e3d14226203",
+    "tools/check_k02_core.py": "e532f1e11914a287992bf9a0e90e1c242265420fb4ad50bdff74ab9453aa4e9c",
     "tools/g03/process.py": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
-    "tools/setup_k02_toolchain.py": "57e8191915c03b1750a3d6e8435570a667fd1b30667edfb0984975330bcf5f96",
+    "tools/setup_k02_toolchain.py": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
     "tools/setup_toolchain.py": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0"
   },
   "toolchain": {
@@ -27,7 +27,7 @@
     "host": "aarch64-apple-darwin",
     "profile_sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
     "g03_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
-    "g03_record_sha256": "3360b2346d7e5acc03db246898fda65c410e04ec334bb415f22c6613e93b32b1",
+    "g03_record_sha256": "a0c59f3a14f6593938abb609fb3b42a7ea308828579e8c7816fbd118f89789e0",
     "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
     "rust_revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
     "host_library": {
@@ -44,7 +44,7 @@
       }
     },
     "rust_target_library_tree_sha256": "04087044f06c8af97a6e1ae6e1035e696d7beff59ba0a2ef2e603bf6e7a7d760",
-    "rust_library_tree_sha256": "e03ce2478a888c90046f9179177b8d226be763f6a4815db0f433855fc52efbd9"
+    "rust_library_tree_sha256": "edbb4d5bb5a5dd66cd94001ecd871a02ea97e5823b98aa895e165709d09a7ca4"
   },
   "compiled_checks": [
     "same_Rust_core_host_tests",

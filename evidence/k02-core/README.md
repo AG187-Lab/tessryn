@@ -16,8 +16,8 @@ commands in the core README. The evidence-only commit is subsequent to that
 revision so adding this receipt does not dirty its measured source inputs.
 
 The [macOS ARM64 result](result.json) measures clean implementation commit
-`cd6ae218851f04b3eda033e2a1c3954686c190f7`: **30 Rust adversarial tests**, plus
-[200 passing repository tests](python-tests.log) and
+`0588c64f19c1e12634a99637ef0fe29f9378d645`: **30 Rust adversarial tests**, plus
+[207 passing repository tests](python-tests.log) and
 [design validation](design.log). The repeated `x86_64-unknown-none` library hash
 is `2a52d4fdf307b580ec5cc6b991faa5f545cb3836f382dd7ac79ef8f58bb0513d`.
 The local library is retained in the ignored build output; CI publishes its own
