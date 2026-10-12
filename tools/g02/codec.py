@@ -29,7 +29,9 @@ def contract() -> dict:
 
 
 def _profile(definitions: dict) -> None:
-    if definitions.get("abi") != ABI_V1:
+    profile = definitions.get("abi") if type(definitions) is dict else None
+    if (type(profile) is not dict or profile != ABI_V1 or
+            any(type(profile.get(name)) is not type(value) for name, value in ABI_V1.items())):
         raise DescriptorError("unsupported contract profile; implement a versioned codec")
 
 
