@@ -59,6 +59,7 @@ def sources() -> dict[str, str]:
                        ROOT / "interfaces/abi-v1/native.rs", ROOT / "toolchain.lock.json",
                        ROOT / "planning/k02-toolchain.lock.json", ROOT / "tools/setup_toolchain.py",
                        ROOT / "tools/setup_k02_toolchain.py", ROOT / "tools/g03/process.py",
+                       ROOT / "tools/k02_native_protocol.py", ROOT / "planning/k02-native-cases.json",
                        ROOT / "tools/check_k02_core.py", ROOT / ".github/workflows/k02-core.yml"])
     return {p.relative_to(ROOT).as_posix(): digest(p) for p in paths}
 
