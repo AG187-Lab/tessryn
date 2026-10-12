@@ -92,6 +92,9 @@ The host fixture and evaluator run under a trusted developer/operator's process 
 
 ## Reproduction and remaining gates
 
+The initial clean-source results and exact compiler/input identities are retained
+in [G02 conformance evidence](../evidence/g02-conformance/README.md).
+
 Run from the repository root:
 
 ```sh
