@@ -137,6 +137,17 @@ class BinaryContractTests(unittest.TestCase):
         sample.update(min_major=0, min_minor=0)
         self.assertEqual(decode("Negotiation", encode("Negotiation", sample)), sample)
 
+    def test_changed_profile_metadata_cannot_relabel_v1_evidence(self):
+        vector = self.vectors["positive"][0]
+        for field, value in (("major", 2), ("minor", 1), ("feature_mask", 1), ("byte_order", "big"),
+                             ("alignment", 4), ("max_descriptor_size", 256)):
+            altered = copy.deepcopy(self.spec)
+            altered["abi"][field] = value
+            with self.subTest(field=field), self.assertRaisesRegex(DescriptorError, "profile"):
+                decode(vector["layout"], bytes.fromhex(vector["hex"]), altered)
+            with self.assertRaisesRegex(DescriptorError, "profile"):
+                encode(vector["layout"], vector["values"], altered)
+
 
 class ModelContractTests(unittest.TestCase):
     def reject(self, mutate):

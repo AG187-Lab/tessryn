@@ -66,7 +66,8 @@ def probe_source(definitions: dict, vectors: list[dict], language: str) -> str:
                               "abi::" + definitions["layouts"][field["type"]]["rust_type"])
                 lines += [f'let _: {field_type} = value.{field["name"]};']
             lines += ['}']
-    constants = {"ABI_MAJOR": 1, "ABI_MINOR": 0, "ABI_FEATURE_MASK": 0}
+    constants = {"ABI_MAJOR": definitions["abi"]["major"], "ABI_MINOR": definitions["abi"]["minor"],
+                 "ABI_FEATURE_MASK": definitions["abi"]["feature_mask"]}
     for group, prefix in (("kinds", "KIND_"), ("operations", "OP_"), ("statuses", "STATUS_"), ("milestones", "MILESTONE_")):
         constants.update({prefix + name.upper(): value for name, value in definitions[group].items()})
     for name, value in constants.items():

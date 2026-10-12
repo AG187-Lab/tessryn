@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[2]
 PROFILE = ROOT / "interfaces" / "abi-v1"
 U64_MAX = (1 << 64) - 1
 SCALARS = {"u16": ("H", 2), "u32": ("I", 4), "u64": ("Q", 8)}
+ABI_V1 = {"major": 1, "minor": 0, "byte_order": "little", "alignment": 8,
+          "feature_mask": 0, "max_descriptor_size": 128}
 
 
 class DescriptorError(ValueError):
@@ -24,6 +26,11 @@ def integer(value: object, bits: int, name: str, *, positive: bool = False) -> i
 
 def contract() -> dict:
     return json.loads((PROFILE / "contract.json").read_text())
+
+
+def _profile(definitions: dict) -> None:
+    if definitions.get("abi") != ABI_V1:
+        raise DescriptorError("unsupported contract profile; implement a versioned codec")
 
 
 def _shape(value: object, names: set[str], label: str) -> dict:
@@ -136,6 +143,7 @@ def _validate(layout: str, value: dict, definitions: dict) -> None:
 
 def decode(layout: str, data: bytes, definitions: dict | None = None) -> dict:
     definitions = contract() if definitions is None else definitions
+    _profile(definitions)
     if type(layout) is not str or layout not in definitions["layouts"]:
         raise DescriptorError("unknown layout")
     if not isinstance(data, (bytes, bytearray, memoryview)):
@@ -148,6 +156,7 @@ def decode(layout: str, data: bytes, definitions: dict | None = None) -> dict:
 
 def encode(layout: str, value: dict, definitions: dict | None = None) -> bytes:
     definitions = contract() if definitions is None else definitions
+    _profile(definitions)
     if type(layout) is not str or layout not in definitions["layouts"]:
         raise DescriptorError("unknown layout")
     data = _walk_encode(layout, value, definitions)
