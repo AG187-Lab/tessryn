@@ -9,7 +9,7 @@ follow those G02 decisions under their own issue gates.
 
 ## Verified implementation
 
-Source revision: `7dfb5620241efb167aa1ba3a6ef0bf4e661e772c`.
+Source revision: `d1ba76684eb9501c21108b9cbf20fe6a204904b7`.
 The checker observed a clean source tree. The later evidence-only commit adds
 these receipts without changing their hashed implementation inputs.
 
