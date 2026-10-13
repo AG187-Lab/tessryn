@@ -1,7 +1,7 @@
 # K02 boot inventory and native protocol preparation evidence
 
 The [clean-source receipt](result.json) binds implementation revision
-`7a6899bf55648a4af6213d19f2e4515cae1ce1c3`, 19 source inputs, pinned compiler and
+`a7e71263a9fa6efc59df526b216da072f26e02d2`, 19 source inputs, pinned compiler and
 library identities, all **57 Rust tests**, and identical repeated freestanding
 artifacts. The retained library digest is
 `64860d27491e438296115291058c5ea66699702e609de0605574833b1cd7a72f`.
@@ -14,8 +14,8 @@ live handoff reservations, normalization/capacity boundaries, and scrub/reuse
 traces proving excluded mock bytes remain untouched. They exercise the same
 allocation-free Rust implementation compiled for `x86_64-unknown-none`.
 
-The [repository log](python-tests.log) records **224 passing Python tests**,
-including 17 native-protocol fixture tests. The separate
+The [repository log](python-tests.log) records **231 passing Python tests**,
+including 24 native-protocol fixture tests. The separate
 [synthetic protocol result](protocol-fixture-result.json) validates all ten case
 contexts and binds the offline checker and contract hashes. Its verdict is
 always protocol validation, with native qualification not established and
@@ -27,7 +27,10 @@ identity and privilege mismatches, missing descendant teardown, exact reused
 frame binding, premature reclamation, changed victim bytes, source mutation,
 and nonregular/oversized input files. Byte-only capabilities, writable mappings
 without READ authority and forged quiescence of a retained fenced mapping each
-have explicit rejection obligations.
+have explicit rejection obligations. Pre-landing review regressions also cover
+loaded-checker source drift, contract replacement between hash and parse,
+wrong rejection reasons, trusted stale/current lease controls, and the owner
+mapping/read control for unauthorized access.
 
 The [design validation log](design.log) covers the final document set. Reproduce using the commands in the
 [core README](../../kernel-core/README.md). The implementation and remaining

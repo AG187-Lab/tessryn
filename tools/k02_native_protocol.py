@@ -23,10 +23,10 @@ SOURCE_PATHS = ("planning/k02-native-cases.json", "tools/k02_native_protocol.py"
 MAX_BYTES = 1_048_576
 DOMAINS = ("A", "B", "C", "D")
 HANDLES = ("A", "B", "B_byte", "B_writeonly", "D", "old_B", "replacement_B", "C")
-LEASES = ("B", "D", "old_B", "replacement_B")
+LEASES = ("A", "B", "D", "old_B", "replacement_B")
 PAGES = ("unauthorized", "readonly", "guard", "kernel", "policy", "page_table",
          "data_nx", "revoked_B", "revoked_D", "reuse_B", "reuse_C")
-SENTINELS = ("readonly", "kernel", "policy", "page_table", "C")
+SENTINELS = ("unauthorized", "readonly", "kernel", "policy", "page_table", "C")
 BINDING_HASHES = ("kernel_image_sha256", "toolchain_sha256", "evaluator_sha256",
                   "raw_capture_sha256")
 COMMITS = ("kernel_source_commit", "core_source_commit", "adapter_source_commit")
@@ -105,18 +105,32 @@ def strict_json(raw):
     return value
 
 
-def read_json(path):
+def read_bytes(path):
+    """Retain one bounded regular-file read for hashing or strict decoding."""
     require(hasattr(os, "O_NOFOLLOW") and hasattr(os, "O_NONBLOCK"), "bounded file reads unavailable")
     descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     with os.fdopen(descriptor, "rb") as stream:
         info = os.fstat(stream.fileno())
         require(stat.S_ISREG(info.st_mode), "input must be a regular file")
         require(info.st_size <= MAX_BYTES, "input byte limit exceeded")
-        return strict_json(stream.read(MAX_BYTES + 1))
+        contents = stream.read(MAX_BYTES + 1)
+    require(len(contents) <= MAX_BYTES, "input byte limit exceeded")
+    return contents
+
+
+def read_json(path):
+    return strict_json(read_bytes(path))
+
+
+try:
+    PROTOCOL_SHA256 = hashlib.sha256(read_bytes(Path(__file__).resolve(strict=True))).hexdigest()
+except (OSError, RuntimeError, ValueError):
+    # Defer an unavailable initialization binding to the public CLI failure.
+    PROTOCOL_SHA256 = None
 
 
 def source_hashes():
-    return {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+    return {name: hashlib.sha256(read_bytes(ROOT / name)).hexdigest()
             for name in SOURCE_PATHS}
 
 
@@ -298,7 +312,9 @@ def expected_cases(value, contract):
                          phase="fenced", pte_installed=True, charge_retained=True),
                    event("owner_retained", capability=handles["A"], charge_retained=True)]
     case("trusted_operation_forgery", privileged)
-    case("unauthorized_read", [owned("A"), fault("unauthorized_read")])
+    case("unauthorized_read", [owned("A"), mapping("A", "unauthorized", "A", writable=False),
+                               event("read_observed", domain=domains["A"], page=pages["unauthorized"],
+                                     sha256=sentinels["unauthorized"]), fault("unauthorized_read")])
     case("read_only_sharing", [owned("A"), event("delegated", parent=handles["A"], child=handles["B"],
                                    offset=0, length=4096, rights=5),
                                mapping("B", "readonly", "B", writable=False),
@@ -309,12 +325,16 @@ def expected_cases(value, contract):
                           event("delegated", parent=handles["A"], child=handles["B_byte"],
                                 offset=1, length=4094, rights=5),
                           denied("map_byte_slice", "B_byte", capability_offset=1, capability_length=4094,
-                                 offset=0, length=4094),
+                                 offset=0, length=4094, denial_reason="Alignment"),
                           denied("map_byte_slice", "B_byte", capability_offset=1, capability_length=4094,
-                                 offset=0, length=4096),
+                                 offset=0, length=4096, denial_reason="Bounds"),
+                          *teardown("B", "readonly", "B"),
+                          event("lease_released", lease=leases["B"],
+                                physical_frame=value["reuse_frame"], charge_retained=True),
                           event("delegated", parent=handles["A"], child=handles["B_writeonly"],
                                 offset=0, length=4096, rights=6),
-                          denied("map_without_read", "B_writeonly", rights=6)])
+                          denied("map_without_read", "B_writeonly", rights=6,
+                                 denial_reason="InsufficientRights")])
     case("kernel_isolation", [record for name in ("kernel", "policy", "page_table")
          for record in (fault(name + "_read"), fault(name + "_write"), sentinel(name))])
     case("data_nx", [owned("A"), delegated_read, mapping("B", "data_nx", "B", writable=False),
@@ -360,14 +380,24 @@ def expected_cases(value, contract):
               event("victim_initialized", capability=handles["C"], domain=domains["C"], root=roots["C"],
                     physical_frame=value["reuse_frame"], page=pages["reuse_C"], length=4096,
                     initial_sha256=sentinels["C"]),
-                              event("delegated", parent=handles["C"], child=handles["replacement_B"],
-                                    offset=0, length=4096, rights=5),
-                              mapping("B", "reuse_B", "replacement_B", writable=False),
-                              denied("release_stale_capability", "old_B", replacement=handles["replacement_B"]),
-                              denied("complete_stale_lease", "replacement_B", submitted_lease=leases["old_B"],
-                                     replacement_lease=leases["replacement_B"]),
-                              event("replacement_retained", capability=handles["replacement_B"],
-                                    lease=leases["replacement_B"], charge_retained=True), sentinel("C")]
+              event("delegated", parent=handles["C"], child=handles["replacement_B"],
+                    offset=0, length=4096, rights=5),
+              mapping("B", "reuse_B", "replacement_B", writable=False),
+              denied("release_stale_capability", "old_B", replacement=handles["replacement_B"],
+                     denial_reason="StaleHandle"),
+              event("backend_stale_lease_denied", operation="fence", origin="trusted_backend", trusted=True,
+                    submitted_lease=leases["old_B"], replacement_lease=leases["replacement_B"],
+                    denial_reason="StaleLease", replacement_phase="active", pte_installed=True,
+                    charge_released=False),
+              event("replacement_retained", capability=handles["replacement_B"],
+                    domain=domains["B"], root=roots["B"], page=pages["reuse_B"],
+                    physical_frame=value["reuse_frame"], lease=leases["replacement_B"],
+                    phase="active", pte_installed=True, charge_retained=True),
+              event("replacement_read_authorized", caller=domains["B"], capability=handles["replacement_B"],
+                    offset=0, length=4096, physical_frame=value["reuse_frame"]),
+              event("fence", domain=domains["B"], root=roots["B"], page=pages["reuse_B"],
+                    physical_frame=value["reuse_frame"], lease=leases["replacement_B"],
+                    trusted=True, phase="fenced", pte_installed=True, charge_retained=True), sentinel("C")]
     case("stale_identities", stale)
     exact([item["case"] for item in cases], contract["cases"])
     return cases
@@ -375,7 +405,12 @@ def expected_cases(value, contract):
 
 def validate(transcript, expectations):
     hashes = source_hashes()
-    contract = read_json(CONTRACT_PATH)
+    require(PROTOCOL_SHA256 is not None and hashes["tools/k02_native_protocol.py"] == PROTOCOL_SHA256,
+            "protocol source changed since initialization")
+    contract_bytes = read_bytes(CONTRACT_PATH)
+    require(hashlib.sha256(contract_bytes).hexdigest() == hashes["planning/k02-native-cases.json"],
+            "contract source changed during validation")
+    contract = strict_json(contract_bytes)
     exact(source_hashes(), hashes)
     validate_expectations(expectations, contract, hashes)
     keys(transcript, ("schema", "evidence_kind", "binding", "profile", "cases"), "transcript")
