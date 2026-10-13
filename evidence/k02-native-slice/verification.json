@@ -1,0 +1,501 @@
+{
+  "cases": {
+    "foreign_read": {
+      "inventory": {
+        "available_pages": "53323",
+        "descriptors": "118",
+        "protected_state": "0xe04b008",
+        "source": "final_successful_handoff"
+      },
+      "mappings": [
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x3000",
+          "role": "own",
+          "virtual": "0x100001000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x4000",
+          "role": "stack",
+          "virtual": "0x100002000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x1000",
+          "role": "readonly",
+          "virtual": "0x100004000",
+          "writable": "0"
+        },
+        {
+          "domain": "1",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x2000",
+          "role": "foreign",
+          "virtual": "0x100003000",
+          "writable": "0"
+        }
+      ],
+      "pass": {
+        "case": "foreign_read",
+        "cpl3_observed": "1",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_protection_slice"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "sentinels": {
+        "foreign": "0x2000",
+        "foreign_unchanged": "1",
+        "own": "0x3000",
+        "own_verified": "1",
+        "pages_scrubbed": "4",
+        "victim": "0x1000",
+        "victim_unchanged": "1"
+      },
+      "teardown": [
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x3000",
+          "virtual": "0x100001000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x4000",
+          "virtual": "0x100002000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x1000",
+          "virtual": "0x100004000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x2000",
+          "virtual": "0x100003000"
+        }
+      ],
+      "trap": {
+        "case": "foreign_read",
+        "cr2": "0x100003000",
+        "cs": "0x33",
+        "domain": "2",
+        "error": "0x4",
+        "frame": "0xe0dd060",
+        "kind": "expected_page_fault",
+        "rflags": "0x10002",
+        "rip": "0x10000000b",
+        "rsp": "0x100002ff0",
+        "ss": "0x2b",
+        "vector": "14"
+      },
+      "user_enter": {
+        "case": "foreign_read",
+        "code": "0x100000000",
+        "code_physical": "0xdff7000",
+        "domain": "2",
+        "instruction": "0x10000000b",
+        "probe_rip": "0x10000000b",
+        "root": "0xe01a000",
+        "stack_end": "0x100003000",
+        "stack_start": "0x100002000",
+        "target": "0x100003000",
+        "trap_end": "0xe0dd110",
+        "trap_start": "0xe0d5110"
+      }
+    },
+    "kernel_read": {
+      "inventory": {
+        "available_pages": "53323",
+        "descriptors": "118",
+        "protected_state": "0xe04b008",
+        "source": "final_successful_handoff"
+      },
+      "mappings": [
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x3000",
+          "role": "own",
+          "virtual": "0x100001000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x4000",
+          "role": "stack",
+          "virtual": "0x100002000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x1000",
+          "role": "readonly",
+          "virtual": "0x100004000",
+          "writable": "0"
+        },
+        {
+          "domain": "1",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x2000",
+          "role": "foreign",
+          "virtual": "0x100003000",
+          "writable": "0"
+        }
+      ],
+      "pass": {
+        "case": "kernel_read",
+        "cpl3_observed": "1",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_protection_slice"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "sentinels": {
+        "foreign": "0x2000",
+        "foreign_unchanged": "1",
+        "own": "0x3000",
+        "own_verified": "1",
+        "pages_scrubbed": "4",
+        "victim": "0x1000",
+        "victim_unchanged": "1"
+      },
+      "teardown": [
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x3000",
+          "virtual": "0x100001000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x4000",
+          "virtual": "0x100002000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x1000",
+          "virtual": "0x100004000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x2000",
+          "virtual": "0x100003000"
+        }
+      ],
+      "trap": {
+        "case": "kernel_read",
+        "cr2": "0xe04b008",
+        "cs": "0x33",
+        "domain": "2",
+        "error": "0x5",
+        "frame": "0xe0dd060",
+        "kind": "expected_page_fault",
+        "rflags": "0x10002",
+        "rip": "0x100000012",
+        "rsp": "0x100002ff0",
+        "ss": "0x2b",
+        "vector": "14"
+      },
+      "user_enter": {
+        "case": "kernel_read",
+        "code": "0x100000000",
+        "code_physical": "0xdff7000",
+        "domain": "2",
+        "instruction": "0x100000012",
+        "probe_rip": "0x100000012",
+        "root": "0xe01a000",
+        "stack_end": "0x100003000",
+        "stack_start": "0x100002000",
+        "target": "0xe04b008",
+        "trap_end": "0xe0dd110",
+        "trap_start": "0xe0d5110"
+      }
+    },
+    "own_page": {
+      "inventory": {
+        "available_pages": "53323",
+        "descriptors": "118",
+        "protected_state": "0xe04b008",
+        "source": "final_successful_handoff"
+      },
+      "mappings": [
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x3000",
+          "role": "own",
+          "virtual": "0x100001000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x4000",
+          "role": "stack",
+          "virtual": "0x100002000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x1000",
+          "role": "readonly",
+          "virtual": "0x100004000",
+          "writable": "0"
+        },
+        {
+          "domain": "1",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x2000",
+          "role": "foreign",
+          "virtual": "0x100003000",
+          "writable": "0"
+        }
+      ],
+      "pass": {
+        "case": "own_page",
+        "cpl3_observed": "1",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_protection_slice"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "sentinels": {
+        "foreign": "0x2000",
+        "foreign_unchanged": "1",
+        "own": "0x3000",
+        "own_verified": "1",
+        "pages_scrubbed": "4",
+        "victim": "0x1000",
+        "victim_unchanged": "1"
+      },
+      "teardown": [
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x3000",
+          "virtual": "0x100001000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x4000",
+          "virtual": "0x100002000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x1000",
+          "virtual": "0x100004000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x2000",
+          "virtual": "0x100003000"
+        }
+      ],
+      "trap": {
+        "case": "own_page",
+        "cr2": "0x0",
+        "cs": "0x33",
+        "domain": "2",
+        "error": "0x0",
+        "frame": "0xe0dd060",
+        "kind": "controlled_return",
+        "rflags": "0x2",
+        "rip": "0x100000009",
+        "rsp": "0x100002ff0",
+        "ss": "0x2b",
+        "vector": "128"
+      },
+      "user_enter": {
+        "case": "own_page",
+        "code": "0x100000000",
+        "code_physical": "0xdff7000",
+        "domain": "2",
+        "instruction": "0x100000000",
+        "probe_rip": "0x100000009",
+        "root": "0xe01a000",
+        "stack_end": "0x100003000",
+        "stack_start": "0x100002000",
+        "target": "0x100001000",
+        "trap_end": "0xe0dd110",
+        "trap_start": "0xe0d5110"
+      }
+    },
+    "readonly_write": {
+      "inventory": {
+        "available_pages": "53323",
+        "descriptors": "118",
+        "protected_state": "0xe04b008",
+        "source": "final_successful_handoff"
+      },
+      "mappings": [
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x3000",
+          "role": "own",
+          "virtual": "0x100001000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x4000",
+          "role": "stack",
+          "virtual": "0x100002000",
+          "writable": "1"
+        },
+        {
+          "domain": "2",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x1000",
+          "role": "readonly",
+          "virtual": "0x100004000",
+          "writable": "0"
+        },
+        {
+          "domain": "1",
+          "nx": "1",
+          "page_bytes": "4096",
+          "physical": "0x2000",
+          "role": "foreign",
+          "virtual": "0x100003000",
+          "writable": "0"
+        }
+      ],
+      "pass": {
+        "case": "readonly_write",
+        "cpl3_observed": "1",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_protection_slice"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "sentinels": {
+        "foreign": "0x2000",
+        "foreign_unchanged": "1",
+        "own": "0x3000",
+        "own_verified": "1",
+        "pages_scrubbed": "4",
+        "victim": "0x1000",
+        "victim_unchanged": "1"
+      },
+      "teardown": [
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x3000",
+          "virtual": "0x100001000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x4000",
+          "virtual": "0x100002000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x1000",
+          "virtual": "0x100004000"
+        },
+        {
+          "order": "fence_pte_remove_cr3_reload_quiesce",
+          "physical": "0x2000",
+          "virtual": "0x100003000"
+        }
+      ],
+      "trap": {
+        "case": "readonly_write",
+        "cr2": "0x100004000",
+        "cs": "0x33",
+        "domain": "2",
+        "error": "0x7",
+        "frame": "0xe0dd060",
+        "kind": "expected_page_fault",
+        "rflags": "0x10002",
+        "rip": "0x100000019",
+        "rsp": "0x100002ff0",
+        "ss": "0x2b",
+        "vector": "14"
+      },
+      "user_enter": {
+        "case": "readonly_write",
+        "code": "0x100000000",
+        "code_physical": "0xdff7000",
+        "domain": "2",
+        "instruction": "0x100000019",
+        "probe_rip": "0x100000019",
+        "root": "0xe01a000",
+        "stack_end": "0x100003000",
+        "stack_start": "0x100002000",
+        "target": "0x100004000",
+        "trap_end": "0xe0dd110",
+        "trap_start": "0xe0d5110"
+      }
+    }
+  },
+  "evaluator_sha256": "36447b35c2fe0ce0c88fe6c48cf5f620229267fdc274e6a5cab2f222553c2001",
+  "format": "tessryn-k02-native-verification/v1",
+  "manifest_sha256": "4d6e423e7a9371112446a0980f6afa72fbac84e967a05198868f54776a73815d",
+  "scope": "four original-kernel single-CPU QEMU enforcement cases; full K02 protocol, physical hardware, SMP and DMA unqualified",
+  "status": "pass"
+}

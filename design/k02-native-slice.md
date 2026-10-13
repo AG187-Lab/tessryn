@@ -1,7 +1,9 @@
 # K02 single-CPU enforcement experiment
 
-Status: tooling and kernel bring-up in progress. Execution evidence is required
-before any implemented enforcement claim. This four-case experiment does not
+Status: four actual original-kernel emulator cases passed, 2026-10-12. The
+[retained evidence](../evidence/k02-native-slice/README.md) binds clean source
+`1caebb8b1693e1bc5c73c3cb8fd42da8a861bac5`, two matching builds and fresh boots.
+This four-case experiment does not
 complete the ten-case K02 protocol, physical qualification, SMP or DMA isolation.
 
 The build compiles the existing `kernel-core/lib.rs` ownership policy as a fresh
@@ -16,7 +18,7 @@ are disabled. The kernel must report the admitted CPU and actual control state.
 Firmware variables and boot media are disposable, with no host networking or
 device passthrough.
 
-| Case | Required observable result |
+| Case | Observed result in the retained fresh boot |
 | --- | --- |
 | `own_page` | CPL3 writes/reads its owned page and returns through the declared INT80 instruction |
 | `foreign_read` | CPL3 faults at the declared unmapped foreign-page read, #PF error 4 |
@@ -71,6 +73,13 @@ The focused Python fixtures are explicitly synthetic format and rejection
 tests. They exercise malformed artifacts, incorrect faults and contradictory
 traces; they cannot establish CPU execution. Only separately retained actual
 emulator runs can supply this experiment's execution evidence.
+
+Validation includes 57 ownership-core, 14 mapper and 6 adapter Rust host tests,
+464 Python tests, two byte-identical 13-artifact native builds and the four fresh
+boots above. Three fresh K01 regressions also pass: normal boot, INT3 recovery
+and page fault. The dedicated CI executes this slice and retains an explicit
+artifact allowlist. Host test success and future CI captures do not replace the
+source-bound execution records linked above.
 
 This is a dependent integration branch based on reviewed K01 PR 53 and the K02
 preparation merged from PR 57 at `dc984e34e29b561eba89ff7186bbb82276a225e8`.

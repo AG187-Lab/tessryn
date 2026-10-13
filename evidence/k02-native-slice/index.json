@@ -1,0 +1,203 @@
+{
+  "artifact_retention": "Manifests and raw logs committed; actual EFI, boot media, compiler objects and library retained locally; the dedicated CI retains full rebuild artifacts.",
+  "checks": {
+    "k01_regressions": [
+      "normal",
+      "int3",
+      "page_fault"
+    ],
+    "native_boot_cases": [
+      "own_page",
+      "foreign_read",
+      "kernel_read",
+      "readonly_write"
+    ],
+    "python_tests": 464,
+    "rust_adapter_tests": 6,
+    "rust_core_tests": 57,
+    "rust_mapper_tests": 14,
+    "twin_native_artifacts": 13
+  },
+  "files": [
+    {
+      "path": "a/manifest.json",
+      "sha256": "4d6e423e7a9371112446a0980f6afa72fbac84e967a05198868f54776a73815d",
+      "size_bytes": 23886
+    },
+    {
+      "path": "b/manifest.json",
+      "sha256": "4d6e423e7a9371112446a0980f6afa72fbac84e967a05198868f54776a73815d",
+      "size_bytes": 23886
+    },
+    {
+      "path": "verification.json",
+      "sha256": "86f15c26851a86c416a6c61aa4a8b389d13308846cd555b6962c1924ce361c19",
+      "size_bytes": 13392
+    },
+    {
+      "path": "host/result.json",
+      "sha256": "81b6678b466206faeb7e4fdb7738ff339393567ca5170a9177a90efa2fc6780f",
+      "size_bytes": 7477
+    },
+    {
+      "path": "python-tests.log",
+      "sha256": "1a1611035dcea4ff001ef60d78314a5654c7791f6838ca2b2471d12d9b09d25f",
+      "size_bytes": 77497
+    },
+    {
+      "path": "k01/manifest.json",
+      "sha256": "e50ac78f2fb3bbda0701fc1cc7a9586faa19c5e4628e51baf0ec5bd232fc44cc",
+      "size_bytes": 18839
+    },
+    {
+      "path": "own_page/result.json",
+      "sha256": "0fb25a866ae65840be88d567a376503d0aca16a58b218253d5478bd2fa95d92d",
+      "size_bytes": 7027
+    },
+    {
+      "path": "own_page/stdout.log",
+      "sha256": "ed66e4f0d88bbce14e3bebd238e76621cdea418bf820a46f8380915684a8697d",
+      "size_bytes": 2670
+    },
+    {
+      "path": "own_page/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "foreign_read/result.json",
+      "sha256": "7a8e42999600a98e3f6d4eed09ac007b9c1e1be561ec94c965e69381d7169f4b",
+      "size_bytes": 7056
+    },
+    {
+      "path": "foreign_read/stdout.log",
+      "sha256": "a21a90b5fd37982e58e7c30966ada6074ab714cf76fb0a8744faa8c3a03dc010",
+      "size_bytes": 2706
+    },
+    {
+      "path": "foreign_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "kernel_read/result.json",
+      "sha256": "62619f32573c5b6bb6b6c68205d24708f3ffb88a7863cadfdeb08110107848b7",
+      "size_bytes": 7049
+    },
+    {
+      "path": "kernel_read/stdout.log",
+      "sha256": "209f79692acda72e7686d067801b5800ab2d49b36046edf20134f02b359802a6",
+      "size_bytes": 2697
+    },
+    {
+      "path": "kernel_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "readonly_write/result.json",
+      "sha256": "74cd8fc3c183357b43dd8aaa3ea675e50fec47ce2a891be8cb9f17e99bd5c399",
+      "size_bytes": 7065
+    },
+    {
+      "path": "readonly_write/stdout.log",
+      "sha256": "02b9089ae8a8a5408198c800c2ca8deb303dec9500f918306e1b9fb32db77bd7",
+      "size_bytes": 2712
+    },
+    {
+      "path": "readonly_write/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/adapter-build.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "host/adapter-tests.log",
+      "sha256": "2b0b292d0492f792b8d4dd8bf4c291bcf4c639407d50e2a489c1030ab1551180",
+      "size_bytes": 660
+    },
+    {
+      "path": "host/core-build.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "host/core-tests.log",
+      "sha256": "2b959cd7c6062f07ef028e5cbe0b4b03b2dfbdd90593a9f25b31bddb2b1386cc",
+      "size_bytes": 5988
+    },
+    {
+      "path": "host/library-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/paging-build.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "host/paging-tests.log",
+      "sha256": "e90f32054d82e12cd1de964074499c0051a6756a9d8c6d27ad1f4e5cf231d636",
+      "size_bytes": 1396
+    },
+    {
+      "path": "k01/normal/result.json",
+      "sha256": "361814b5f84cc76cf6e42c4171bca7d70771a53a84c55844c39132ca2550b538",
+      "size_bytes": 2704
+    },
+    {
+      "path": "k01/normal/stdout.log",
+      "sha256": "eb99d5ecdf3e65401af1a4e55259e77d69404bf86de88858d78f69f7feb5557e",
+      "size_bytes": 923
+    },
+    {
+      "path": "k01/normal/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "k01/int3/result.json",
+      "sha256": "807a4fa5ec2e8b79ae14242be7b6fd4e9b18b0e5c634020db55fdf115e4ce088",
+      "size_bytes": 2704
+    },
+    {
+      "path": "k01/int3/stdout.log",
+      "sha256": "c069a92885b099305b5a94d117e3fe83a81780947520febebf99bfd428326662",
+      "size_bytes": 1064
+    },
+    {
+      "path": "k01/int3/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "k01/page_fault/result.json",
+      "sha256": "2a68cc8b85694b43d00bb4b6a735bfef84ba1ecebee54d11ece1cdf2926763d6",
+      "size_bytes": 2710
+    },
+    {
+      "path": "k01/page_fault/stdout.log",
+      "sha256": "3588c9d48b9204817895a04ea39c824a053ad26d326c31ade0057b3c51b378f1",
+      "size_bytes": 1044
+    },
+    {
+      "path": "k01/page_fault/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "format": "tessryn-k02-native-slice-evidence/v1",
+  "manifest_sha256": "4d6e423e7a9371112446a0980f6afa72fbac84e967a05198868f54776a73815d",
+  "scope": "four original-kernel single-CPU QEMU enforcement cases; full K02 protocol, physical hardware, SMP and DMA unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "1caebb8b1693e1bc5c73c3cb8fd42da8a861bac5",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "0d69f8f21df286b703f20b66d7d505bf175ebb1d19bb7a016d6742f64f52a667"
+  },
+  "status": "four_case_emulator_slice_pass"
+}
