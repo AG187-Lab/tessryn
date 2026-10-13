@@ -35,6 +35,19 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def sanitize_log(data: bytes, redactions: dict[str, str]) -> bytes:
+    """Redact text without expanding the captured byte budget or splitting UTF-8."""
+    text = data.decode("utf-8", errors="replace")
+    for private, replacement in sorted(redactions.items(), key=lambda item: -len(item[0])):
+        text = text.replace(private, replacement)
+    # Compiler failures can include host tool-library paths not otherwise known.
+    text = re.sub(r"(?:/Users/|/home/|/private/|/tmp/|/opt/)[^\s\"']+", "<host-path>", text)
+    encoded = text.encode("utf-8")
+    if len(encoded) > len(data):
+        encoded = encoded[:len(data)].decode("utf-8", errors="ignore").encode("utf-8")
+    return encoded
+
+
 def directory_fd(path: Path, *, create: bool = False) -> int:
     """Walk directory components without accepting a symlink ancestor."""
     path = path.absolute()
@@ -162,12 +175,7 @@ def run_benchmarks(root: Path, out: Path, profile: Path, *, rustc: str | None = 
         return {"file": relative, "sha256": sha256(data), "size": len(data)}
 
     def sanitize(data: bytes) -> bytes:
-        text = data.decode("utf-8", errors="replace")
-        for private, replacement in sorted(redactions.items(), key=lambda item: -len(item[0])):
-            text = text.replace(private, replacement)
-        # Compiler failures can include host tool-library paths not otherwise known.
-        text = re.sub(r"(?:/Users/|/home/|/private/|/tmp/|/opt/)[^\s\"']+", "<host-path>", text)
-        return text.encode()
+        return sanitize_log(data, redactions)
 
     def process(command: list[str], label: str, *, measured: bool = False,
                 optional_query: bool = False) -> tuple[dict, bytes]:

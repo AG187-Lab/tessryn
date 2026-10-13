@@ -167,6 +167,41 @@ class KernelBenchmarkRunnerTests(unittest.TestCase):
         self.assertLessEqual((self.out / "logs/rustc-sysroot.stdout").stat().st_size, 8)
         self.verifier.verify_run.assert_not_called()
 
+    def test_linux_style_redaction_never_expands_the_captured_byte_budget(self) -> None:
+        for data in (b"/tmp/tmp", b"/tmp/x", b"/home/x", b"/opt/x", b""):
+            with self.subTest(data=data):
+                sanitized = runner.sanitize_log(data, {})
+                self.assertLessEqual(len(sanitized), len(data))
+                sanitized.decode("utf-8", errors="strict")
+                self.assertNotIn(b"/tmp/", sanitized)
+                self.assertNotIn(b"/home/", sanitized)
+                self.assertNotIn(b"/opt/", sanitized)
+
+    def test_unicode_and_invalid_utf8_redaction_preserve_safe_byte_boundaries(self) -> None:
+        fixtures = [("λ/tmp/xλ".encode(), {}), (b"/x", {"/x": "éé"}),
+                    (b"x", {"x": "🌱"}), (b"abc\xffdef", {}), (b"\xe2\x82", {})]
+        for data, redactions in fixtures:
+            with self.subTest(data=data):
+                sanitized = runner.sanitize_log(data, redactions)
+                self.assertLessEqual(len(sanitized), len(data))
+                sanitized.decode("utf-8", errors="strict")
+                self.assertNotIn(b"/tmp/", sanitized)
+        unchanged = "é🌱 text".encode()
+        self.assertEqual(runner.sanitize_log(unchanged, {}), unchanged)
+
+    def test_measured_stdout_remains_exact_despite_path_and_unicode_content(self) -> None:
+        raw = "fixture /tmp/tmp λ".encode()
+        def replace_measurement(command, *args):
+            captured = run_bounded(command, *args)
+            if command[0].endswith("/kernel-benchmark"):
+                return ProcessResult(captured.status, captured.reason, captured.returncode,
+                                     captured.elapsed_seconds, raw, captured.stderr)
+            return captured
+        self.process_override = replace_measurement
+        self.assertTrue(self.run_fixture()["valid"])
+        self.assertEqual((self.out / "raw.json").read_bytes(), raw)
+        self.assertEqual((self.out / "logs/measurement.stdout").read_bytes(), raw)
+
     def test_live_source_change_after_measurement_invalidates_raw_result(self) -> None:
         def change_after_measurement(command, *args):
             captured = run_bounded(command, *args)
