@@ -216,6 +216,7 @@ exception_unexpected:
     push 255
     jmp exception_common
 
+.global exception_common
 exception_common:
     cld
     push rax

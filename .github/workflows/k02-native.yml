@@ -1,0 +1,123 @@
+name: K02 single-CPU native enforcement slice
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  native-slice:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Install host QEMU build prerequisites
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+      - name: Install fresh checksum-pinned compiler, host tests and UEFI tools
+        run: |
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Check native tooling and design
+        run: |
+          python3 -m unittest discover -s tests -p 'test_k02_native_tooling.py' -v
+          python3 tools/validate_design.py
+      - name: Execute the original core, mapper and adapter host tests
+        run: python3 tools/check_k02_native_host.py --out build/k02-native-host
+      - name: Build the original UEFI experiment independently twice
+        run: |
+          python3 tools/build_k02_native.py --out build/k02-native-a
+          python3 tools/build_k02_native.py --out build/k02-native-b
+      - name: Exercise four fresh single-CPU user-mode cases
+        run: |
+          for case in own_page foreign_read kernel_read readonly_write; do
+            python3 tools/run_k02_native.py --manifest build/k02-native-a/manifest.json --case "$case" --out "build/k02-native-$case"
+          done
+      - name: Verify twin artifacts, original instruction bindings and raw results
+        run: |
+          python3 tools/verify_k02_native.py --first build/k02-native-a/manifest.json --second build/k02-native-b/manifest.json \
+            --result build/k02-native-own_page/result.json --result build/k02-native-foreign_read/result.json \
+            --result build/k02-native-kernel_read/result.json --result build/k02-native-readonly_write/result.json \
+            --out build/k02-native-verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: k02-single-cpu-enforcement-evidence
+          path: |
+            build/k02-native-host/result.json
+            build/k02-native-host/library-build.log
+            build/k02-native-host/core-build.log
+            build/k02-native-host/core-tests.log
+            build/k02-native-host/paging-build.log
+            build/k02-native-host/paging-tests.log
+            build/k02-native-host/adapter-build.log
+            build/k02-native-host/adapter-tests.log
+            build/k02-native-a/manifest.json
+            build/k02-native-a/libtessryn_owned_memory.rlib
+            build/k02-native-a/core-build.log
+            build/k02-native-a/own_page/BOOTX64.EFI
+            build/k02-native-a/own_page/boot.img
+            build/k02-native-a/own_page/kernel.obj
+            build/k02-native-a/own_page/own_page-build.log
+            build/k02-native-a/foreign_read/BOOTX64.EFI
+            build/k02-native-a/foreign_read/boot.img
+            build/k02-native-a/foreign_read/kernel.obj
+            build/k02-native-a/foreign_read/foreign_read-build.log
+            build/k02-native-a/kernel_read/BOOTX64.EFI
+            build/k02-native-a/kernel_read/boot.img
+            build/k02-native-a/kernel_read/kernel.obj
+            build/k02-native-a/kernel_read/kernel_read-build.log
+            build/k02-native-a/readonly_write/BOOTX64.EFI
+            build/k02-native-a/readonly_write/boot.img
+            build/k02-native-a/readonly_write/kernel.obj
+            build/k02-native-a/readonly_write/readonly_write-build.log
+            build/k02-native-a/notices/tessryn-LICENSE
+            build/k02-native-a/notices/tessryn-NOTICE
+            build/k02-native-a/notices/rust-LICENSE-APACHE
+            build/k02-native-a/notices/rust-LICENSE-MIT
+            build/k02-native-a/notices/rust-COPYRIGHT
+            build/k02-native-b/manifest.json
+            build/k02-native-b/libtessryn_owned_memory.rlib
+            build/k02-native-b/core-build.log
+            build/k02-native-b/own_page/BOOTX64.EFI
+            build/k02-native-b/own_page/boot.img
+            build/k02-native-b/own_page/kernel.obj
+            build/k02-native-b/own_page/own_page-build.log
+            build/k02-native-b/foreign_read/BOOTX64.EFI
+            build/k02-native-b/foreign_read/boot.img
+            build/k02-native-b/foreign_read/kernel.obj
+            build/k02-native-b/foreign_read/foreign_read-build.log
+            build/k02-native-b/kernel_read/BOOTX64.EFI
+            build/k02-native-b/kernel_read/boot.img
+            build/k02-native-b/kernel_read/kernel.obj
+            build/k02-native-b/kernel_read/kernel_read-build.log
+            build/k02-native-b/readonly_write/BOOTX64.EFI
+            build/k02-native-b/readonly_write/boot.img
+            build/k02-native-b/readonly_write/kernel.obj
+            build/k02-native-b/readonly_write/readonly_write-build.log
+            build/k02-native-b/notices/tessryn-LICENSE
+            build/k02-native-b/notices/tessryn-NOTICE
+            build/k02-native-b/notices/rust-LICENSE-APACHE
+            build/k02-native-b/notices/rust-LICENSE-MIT
+            build/k02-native-b/notices/rust-COPYRIGHT
+            build/k02-native-own_page/result.json
+            build/k02-native-own_page/stdout.log
+            build/k02-native-own_page/stderr.log
+            build/k02-native-foreign_read/result.json
+            build/k02-native-foreign_read/stdout.log
+            build/k02-native-foreign_read/stderr.log
+            build/k02-native-kernel_read/result.json
+            build/k02-native-kernel_read/stdout.log
+            build/k02-native-kernel_read/stderr.log
+            build/k02-native-readonly_write/result.json
+            build/k02-native-readonly_write/stdout.log
+            build/k02-native-readonly_write/stderr.log
+            build/k02-native-verification.json
+          if-no-files-found: warn
+          retention-days: 14
