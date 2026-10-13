@@ -1,6 +1,6 @@
 # Design
 
-These documents capture research, architectural decisions, implementation gates and recorded evidence. Planned behavior and implemented capability are identified separately. Update them when evidence or implementation changes a conclusion.
+These documents record research, architectural decisions, implementation gates and observed progress. Intended contracts, fixture validation, original-kernel execution and qualified hardware behavior have separate evidence requirements. Update them when evidence or implementation changes a conclusion.
 
 | Document | Purpose |
 | --- | --- |
@@ -14,6 +14,7 @@ These documents capture research, architectural decisions, implementation gates 
 | [Platforms](platforms.md) | Hardware qualification and cloud/Apple support boundaries |
 | [Initial platform qualification](platform-qualification.md) | G01 candidate records, rental gates and read-only reference inventory |
 | [Benchmarks](benchmarks.md) | Workloads, baselines, numerical quality and evidence |
+| [Inference performance plan](inference-performance.md) | Proposed research-backed experiments, numerical quality gates and measured goodput |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [First kernel](first-kernel.md) | Original UEFI kernel, boot/fault tests and GPU Mart virtual-CD workflow |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
@@ -35,11 +36,14 @@ These documents capture research, architectural decisions, implementation gates 
 - **Decision:** the current project choice, with rationale and reconsideration conditions.
 - **Open question:** requires research or an experiment before a claim is made.
 
-The first original kernel has emulator boot and fault-path evidence under the
-[K01 profile](first-kernel.md), including actual high image/handoff regressions.
-The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification) has two
-owner-accepted native `t3a.small` boots and independent recovery on a separate
-Ubuntu instance, with cleanup complete. Physical native boot, native device
-drivers, GPU execution, Thunderbolt support and distributed performance remain
-unqualified. Planned capabilities must remain labeled until their acceptance
-evidence exists.
+The [K01 implementation and evidence](first-kernel.md), recorded in
+[PR #53](https://github.com/AG187-Lab/tessryn/pull/53), cover original-kernel
+QEMU boot, exception, panic and reset paths, including actual high image/handoff
+regressions. The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification)
+records two owner-accepted native `t3a.small` boots and independent recovery on a
+separate Ubuntu instance, with cleanup complete. [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58)
+builds on K01 and records four single-CPU CPL3 protection probes under QEMU.
+Physical hardware, full native isolation, native device drivers, GPU execution,
+Thunderbolt, inference and distributed performance remain unqualified. See the
+[roadmap](roadmap.md) for observed progress and remaining gates; historical
+evidence retains its original date and scope.

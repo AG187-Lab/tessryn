@@ -1,6 +1,6 @@
 # Tessryn implementation roadmap
 
-Tessryn is an original kernel and operating system for agent execution and distributed inference. The [first K01 kernel](first-kernel.md) now boots and exercises fault paths in the declared QEMU/OVMF profile. The remaining roadmap describes planned work; physical native boot, accelerator execution and performance remain unqualified.
+Tessryn is an original kernel and operating system for agent execution and distributed inference. The [K01 implementation and evidence](first-kernel.md), recorded in [PR #53](https://github.com/AG187-Lab/tessryn/pull/53), cover original-kernel CPU bring-up with emulator and bounded native AWS execution evidence. The remaining gates include complete native isolation and services, physical hardware, device drivers, accelerator execution, inference and measured performance.
 
 The implementation backlog is [planning/backlog.json](../planning/backlog.json). Logical issue keys become GitHub issue links when published. Milestones have no due dates until hardware qualification and the first accelerator bring-up establish a credible critical path.
 
@@ -19,11 +19,26 @@ The implementation backlog is [planning/backlog.json](../planning/backlog.json).
 | M8 | AArch64 and native Apple M5 | Original core and platform bring-up, independent Apple GPU execution and qualified inference/transport |
 | M9 | Additional backend and compatibility programs | Individually qualified direct peer DMA, broader CUDA compatibility and an optional AMD GPU backend |
 
+## Current progress
+
+Snapshot: October 12, 2026. PR merge state and check results can change; follow the linked live work before starting dependent implementation.
+
+| Work | Observed progress | Remaining gate |
+| --- | --- | --- |
+| G03 | [Build and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/pull/51) merged; [issue 2](https://github.com/AG187-Lab/tessryn/issues/2) closed | Fixture results establish tooling behavior, with zero performance samples |
+| G01 | [Inventory and qualification tooling](https://github.com/AG187-Lab/tessryn/pull/52) merged | Exact physical stable-node/notebook records, access/artifact prerequisites and initial engineering-target decision; [issue 1](https://github.com/AG187-Lab/tessryn/issues/1) remains open |
+| G02 | [Portable native interfaces and host conformance](https://github.com/AG187-Lab/tessryn/pull/54) merged | Wider contracts, compatibility/runtime decisions and G01 inputs; [issue 3](https://github.com/AG187-Lab/tessryn/issues/3) remains open |
+| K01 | [Original UEFI kernel implementation and evidence](https://github.com/AG187-Lab/tessryn/pull/53) cover the [K01 profile](first-kernel.md), including reproducible QEMU boot, exception, panic, reset and actual high image/handoff evidence; [observed AWS CPU qualification](https://github.com/AG187-Lab/tessryn/blob/c5d82c49cefd6dbc32f122562c6bb0c1608b4816/design/aws-boot-and-recovery.md#observed-cpu-qualification) records two owner-accepted native `t3a.small` CPU boots bracketing independent fresh Ubuntu recovery, with cleanup complete | This narrow CPU profile establishes no physical hardware, native drivers, GPU, inference or performance support; high firmware runtime/framebuffer execution remains unqualified |
+| K02 | [Owned-memory core](https://github.com/AG187-Lab/tessryn/pull/55), [reserved-memory activation](https://github.com/AG187-Lab/tessryn/pull/56) and [boot inventory/protocol preparation](https://github.com/AG187-Lab/tessryn/pull/57) merged; [PR 58](https://github.com/AG187-Lab/tessryn/pull/58) builds on K01 and records [four original-kernel CPL3 probe results](https://github.com/AG187-Lab/tessryn/blob/7b1b07259be350db76657d0d1183078e6f8c610f/evidence/k02-native-slice/README.md) on one emulated CPU | Full ten-case native protocol, authenticated dispatch, revocation/reuse execution, SMP and DMA; [issue 5](https://github.com/AG187-Lab/tessryn/issues/5) remains open |
+| K03 | [Owner-scoped scheduling and budget host-policy preparation](https://github.com/AG187-Lab/tessryn/issues/6#issuecomment-6139885186) is active; no public implementation PR or acceptance result is attached yet | Native SMP scheduling, clocks and budget enforcement remain unqualified; [issue 6](https://github.com/AG187-Lab/tessryn/issues/6) remains open and dependent on K02 |
+
+The next kernel milestone is completing K02's native acceptance matrix on the K01 foundation so scheduling and services can integrate against proven ownership boundaries. Physical qualification can progress independently. The [inference performance plan](inference-performance.md) proposes downstream experiments; published external results are research inputs, with no measured Tessryn performance claim.
+
 ## First work and critical path
 
-G01 establishes exact physical inventories, access/artifact prerequisites and initial engineering profiles before native implementation. Its tooling foundation landed in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52), while the qualification issue remains open. G03's [reproducible build and evaluation tooling](build-and-evaluation.md) is complete for its fixture profile. G02 records the wider native interfaces and exact compatibility scope once G01's inputs are available. The bounded [K01 CPU bring-up profile](first-kernel.md) has emulator evidence under [ADR 0010](decisions/0010-first-uefi-kernel.md), while G02 and physical qualification remain open. Current readiness follows live issue state, dependencies and acceptance evidence.
+G01 establishes exact physical inventories, access/artifact prerequisites and initial engineering profiles. Its tooling foundation landed in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52), while the qualification issue remains open. G03's [reproducible build and evaluation tooling](build-and-evaluation.md) is complete for its fixture profile. G02's provisional host conformance foundation has landed; wider target/interface decisions still depend on G01. The bounded [K01 CPU bring-up profile](first-kernel.md), recorded under [ADR 0010](decisions/0010-first-uefi-kernel.md), and independent K02/K03 policy preparation do not close those platform or contract gates. Current readiness follows live issue state, dependencies and acceptance evidence.
 
-The [G01 qualification packet](platform-qualification.md) records conditional cloud laboratory candidates, a bounded rental plan and reference inventory tooling. It does not complete hardware qualification or remove G02's platform dependency. No physical notebook or native-supported profile is available yet. G01 can select evidence-backed engineering targets while native boot, device execution and sustained-performance qualification remain later gates; it must not depend on those downstream implementations to complete.
+The [G01 qualification packet](platform-qualification.md) records conditional laboratory candidates, a bounded rental plan and reference inventory tooling. The later K01 AWS result qualifies only its observed CPU boot/recovery sequence; physical stable nodes and the notebook remain unqualified, and G02's platform dependency stays open. G01 can select evidence-backed engineering targets while native device execution and sustained-performance qualification remain later gates; it must not depend on those downstream implementations to complete.
 
 The first product path is original kernel, native physical devices, native NVIDIA execution, native model serving, measured transport, authenticated cluster control and four-participant sharding. Work on kernel interfaces, native networking and accelerator bring-up can proceed in parallel once their dependencies are satisfied.
 
@@ -70,6 +85,7 @@ There is no universal one-prefill-chunk bound for end-to-end p99 latency. Admiss
 
 - [Native ABI](native-abi.md)
 - [Distributed inference](distributed-inference.md)
+- [Inference performance plan](inference-performance.md)
 - [Original kernel decision](decisions/0001-original-kernel.md)
 - [Language and toolchain proposal](decisions/0002-language-and-toolchain.md)
 - [Worker eligibility decision](decisions/0006-worker-eligibility-and-first-demo.md)
