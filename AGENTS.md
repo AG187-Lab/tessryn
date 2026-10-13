@@ -6,6 +6,7 @@
 - Delegate independent research/review when it improves quality; avoid overlapping file edits.
 - Keep architecture, evidence, reported external results and measured project results distinct.
 - Do not claim a supported platform, performance gain or compatibility level without its qualification evidence.
+- Follow design/inference-performance.md for performance-sensitive kernel/service work: preserve a simple correctness reference, account full inference-path costs, and link a preregistered native comparison or explicitly record the pending measurement gate.
 - Preserve memory ownership, cancellation, authentication, tenant isolation and placement epochs.
 - Use capability-scoped device/DMA authority; ordinary storage and installation authority are separate from candidate experiment privileges.
 - Public artifacts contain no credentials, private prompts, unrelated project content or local workspace paths.
