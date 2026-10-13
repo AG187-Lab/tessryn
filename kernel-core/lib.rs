@@ -12,11 +12,16 @@
 pub mod abi;
 
 mod capabilities;
+mod boot_inventory;
 mod frames;
 
 pub use abi::CapabilityRef;
 pub use capabilities::{Access, Accounting, LeaseId, MemoryPolicy, RegionInfo, RegionView, Rights};
+pub use boot_inventory::{BootDescriptor, BootInventory, BootRange, BootReservations};
 pub use frames::{FramePool, FrameRange};
+
+#[cfg(test)]
+mod boot_inventory_tests;
 
 pub const PAGE_SIZE: u64 = 4096;
 

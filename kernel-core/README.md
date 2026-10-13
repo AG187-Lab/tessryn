@@ -25,6 +25,24 @@ a supplied extent is real RAM. Extent metadata capacity is checked before
 splitting; each live allocation retains capacity for eventual release. Adjacent
 free extents coalesce.
 
+`BootInventory<F>::plan` prepares this inventory from copied `BootDescriptor`
+scalars and explicit `BootReservations`. It validates all descriptor classes,
+admits only non-runtime conventional RAM below 4 GiB, and subtracts live kernel
+and handoff allocations before coalescing complete 4 KiB extents. Required image,
+stack, retained-map and scratch ranges are disjoint; optional and additional
+exclusions normalize conservatively. Byte-sized exclusions round outward;
+eligible memory never expands. Fixed-capacity rejection publishes no partial
+policy. `into_policy` constructs a fresh `MemoryPolicy` only from a complete
+plan. Empty eligible inventories are valid and cannot allocate backing.
+
+The privileged adapter must supply the final successful firmware-exit map after
+CPU ownership. Earlier retry maps cannot authorize an allocator. The numeric
+planner performs no firmware access, establishes no successful exit, and cannot
+authenticate a map. Its implementation and test boundaries are recorded in
+[ADR 0014](../design/decisions/0014-boot-inventory-and-native-protocol.md).
+[Preparation evidence](../evidence/k02-native-preparation/README.md) binds the
+host policy and offline protocol results separately from native qualification.
+
 Allocation charges committed plus reserved pages against the original owner's
 budget before admission. Both occupy physical backing; only committed bytes are
 accessible. A trusted scrub callback must erase the entire backing allocation,
@@ -86,6 +104,13 @@ python3 -m unittest discover -s tests -p 'test_k02*.py' -v
 python3 tools/check_k02_core.py
 python3 tools/validate_design.py
 ```
+
+The separate [native test protocol](../design/k02-native-preparation.md) has a
+[case contract](../planning/k02-native-cases.json) and offline checker at
+`tools/k02_native_protocol.py`. It requires independently supplied expectations
+and checks exact ordered evidence records. Its output is always protocol
+validation; neither synthetic nor externally captured JSON proves authenticated
+hardware execution. Native CPU fault and isolation qualification remain pending.
 
 The supplementary profile pins official host test libraries for the existing
 G03 compiler revision. It changes only this checkout's ignored installation and
