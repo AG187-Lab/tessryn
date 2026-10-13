@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "kind": "kernel_benchmark_profile",
+  "scope": "host_microbenchmark",
+  "limits": {
+    "samples": 10000,
+    "warmup": 10000,
+    "iterations": 1000000,
+    "max_total_operations": 200000000,
+    "max_total_bytes": 30000000000
+  },
+  "scheduler_source_sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+  "cases": [
+    {
+      "case": "timer_pair",
+      "implementation": "host_clock_probe",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "empty_harness",
+      "implementation": "host_loop_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "scheduler_reference_dispatch_cycle",
+      "implementation": "bounded_round_robin_fixture",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 2,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_roundtrip_batch_1",
+      "implementation": "bounded_ring",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 2,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_roundtrip_batch_8",
+      "implementation": "bounded_ring",
+      "sample_unit": "timed_batch",
+      "batch_size": 8,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 16,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_roundtrip_batch_64",
+      "implementation": "bounded_ring",
+      "sample_unit": "timed_batch",
+      "batch_size": 64,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 128,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_roundtrip_batch_1",
+      "implementation": "vec_deque_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 2,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_roundtrip_batch_8",
+      "implementation": "vec_deque_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 8,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 16,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_roundtrip_batch_64",
+      "implementation": "vec_deque_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 64,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 128,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_full_rejection",
+      "implementation": "bounded_ring",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_empty_rejection",
+      "implementation": "bounded_ring",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_full_rejection",
+      "implementation": "vec_deque_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "queue_empty_rejection",
+      "implementation": "vec_deque_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "memory_allocate_revoke_release",
+      "implementation": "tessryn_memory_policy_metadata",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 3,
+      "scheduler_required": false
+    },
+    {
+      "case": "memory_access_check",
+      "implementation": "tessryn_memory_policy_metadata",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "host_zero_4096",
+      "implementation": "host_byte_buffer",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 4096,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "host_zero_65536",
+      "implementation": "host_byte_buffer",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 65536,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "host_copy_4096",
+      "implementation": "host_byte_buffer",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 4096,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "host_copy_65536",
+      "implementation": "host_byte_buffer",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 65536,
+      "operations_per_iteration": 1,
+      "scheduler_required": false
+    },
+    {
+      "case": "scheduler_policy_dispatch_stop_cycle",
+      "implementation": "tessryn_scheduler_policy",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 2,
+      "scheduler_required": true
+    },
+    {
+      "case": "scheduler_policy_dispatch_latency",
+      "implementation": "tessryn_scheduler_policy",
+      "sample_unit": "single_operation",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1,
+      "scheduler_required": true
+    }
+  ],
+  "logical_replay": {
+    "clock": "synthetic_logical_ns",
+    "quantum_ns": 2,
+    "tie_rule": "stop_before_arrival",
+    "untimed": true,
+    "tasks": [
+      {
+        "task": "short",
+        "domain": 1,
+        "arrival_ns": 0,
+        "work_ns": 3,
+        "deadline_ns": 0
+      },
+      {
+        "task": "long",
+        "domain": 2,
+        "arrival_ns": 0,
+        "work_ns": 8,
+        "deadline_ns": 0
+      },
+      {
+        "task": "burst",
+        "domain": 1,
+        "arrival_ns": 3,
+        "work_ns": 2,
+        "deadline_ns": 0
+      },
+      {
+        "task": "expires",
+        "domain": 2,
+        "arrival_ns": 7,
+        "work_ns": 5,
+        "deadline_ns": 8
+      }
+    ]
+  }
+}
