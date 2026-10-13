@@ -3,6 +3,7 @@
 import contextlib
 import copy
 import hashlib
+import importlib.util
 import io
 import json
 import os
@@ -42,7 +43,8 @@ def expectations():
             "profile": copy.deepcopy(contract["profile"]), "domains": domains,
             "roots": {name: 0x2000 + index * 4096 for index, name in enumerate(protocol.DOMAINS)},
             "handles": handles,
-            "leases": {"B": {"slot": 0, "generation": 1}, "D": {"slot": 1, "generation": 1},
+            "leases": {"A": {"slot": 0, "generation": 1}, "B": {"slot": 0, "generation": 1},
+                       "D": {"slot": 1, "generation": 1},
                        "old_B": {"slot": 2, "generation": 1}, "replacement_B": {"slot": 2, "generation": 2}},
             "reuse_frame": 0x200000, "pages": pages, "code": {"start": 0x400000, "end": 0x401000},
             "probe_rips": rips, "user_cs": 0x1B,
@@ -92,6 +94,58 @@ class NativeProtocolTests(unittest.TestCase):
             with self.subTest(hashes=returned), patch.object(protocol, "source_hashes", side_effect=returned), self.assertRaises(ValueError):
                 self.validate()
 
+    def test_loaded_protocol_cannot_claim_changed_on_disk_code(self):
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            source = work / "tools/k02_native_protocol.py"
+            contract = work / "planning/k02-native-cases.json"
+            source.parent.mkdir()
+            contract.parent.mkdir()
+            original = protocol.read_bytes(protocol.ROOT / "tools/k02_native_protocol.py")
+            source.write_bytes(original)
+            contract.write_bytes(protocol.read_bytes(protocol.CONTRACT_PATH))
+            spec = importlib.util.spec_from_file_location("temporary_native_protocol", source)
+            loaded = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(loaded)
+            # Change executable logic after import, then bind both inputs to the
+            # new file hash. The old loaded validator must not claim that hash.
+            changed = original.replace(b'"status": "passed", "evidence_kind":',
+                                       b'"status": "changed", "evidence_kind":', 1)
+            self.assertNotEqual(original, changed)
+            source.write_bytes(changed)
+            expected = copy.deepcopy(self.expected)
+            expected["binding"]["protocol_sources_sha256"] = loaded.source_hashes()
+            self.assertNotEqual(loaded.PROTOCOL_SHA256,
+                                expected["binding"]["protocol_sources_sha256"]["tools/k02_native_protocol.py"])
+            with self.assertRaisesRegex(ValueError, "source changed since initialization"):
+                loaded.validate(transcript(expected), expected)
+
+    def test_unavailable_initialization_source_binding_rejects(self):
+        with patch.object(protocol, "PROTOCOL_SHA256", None), self.assertRaises(ValueError):
+            self.validate()
+
+    def test_contract_parse_cannot_use_altered_bytes_between_unchanged_hash_reads(self):
+        changed = protocol.read_json(protocol.CONTRACT_PATH)
+        changed["faults"]["unauthorized_read"]["error_code"] = 5
+        raw = json.dumps(changed).encode()
+        trace = copy.deepcopy(self.trace)
+        self.event("unauthorized_read", "page_fault", trace)["error_code"] = 5
+        retained_reader = protocol.read_bytes
+        contract_reads = 0
+
+        def alternating_read(path):
+            nonlocal contract_reads
+            if path == protocol.CONTRACT_PATH:
+                contract_reads += 1
+                if contract_reads == 2:
+                    return raw
+            return retained_reader(path)
+
+        with patch.object(protocol, "read_bytes", side_effect=alternating_read), self.assertRaisesRegex(
+                ValueError, "contract source changed during validation"):
+            self.validate(trace)
+        self.assertEqual(contract_reads, 2)
+
     def test_external_emulator_and_hardware_labels_still_cannot_qualify(self):
         for environment in ("original_kernel_emulator", "physical_hardware"):
             with self.subTest(environment=environment):
@@ -129,6 +183,9 @@ class NativeProtocolTests(unittest.TestCase):
             for path in (fifo, work, alias, oversized):
                 with self.subTest(path=path.name), self.assertRaises((ValueError, OSError)):
                     protocol.read_json(path)
+                with self.subTest(source=path.name), patch.object(protocol, "ROOT", path.parent), patch.object(
+                        protocol, "SOURCE_PATHS", (path.name,)), self.assertRaises((ValueError, OSError)):
+                    protocol.source_hashes()
 
     def test_missing_duplicate_reordered_and_unknown_cases_reject(self):
         for change in ("missing", "duplicate", "reordered", "unknown"):
@@ -210,6 +267,36 @@ class NativeProtocolTests(unittest.TestCase):
                 with self.subTest(probe=fault["probe"], key=key), self.assertRaises(ValueError):
                     self.validate(trace)
 
+    def test_unauthorized_read_requires_a_readable_initialized_owner_mapping(self):
+        events = self.case("unauthorized_read")["events"]
+        self.assertEqual([item["event"] for item in events],
+                         ["fresh_boot", "backing_owned", "mapping_installed", "read_observed", "page_fault"])
+        mapping = self.event("unauthorized_read", "mapping_installed")
+        self.assertEqual(mapping["domain"], self.expected["domains"]["A"])
+        self.assertEqual(mapping["root"], self.expected["roots"]["A"])
+        self.assertEqual(mapping["page"], self.expected["pages"]["unauthorized"])
+        self.assertEqual(mapping["lease"], self.expected["leases"]["A"])
+        self.assertEqual(mapping["physical_frame"], self.expected["reuse_frame"])
+        self.assertTrue(mapping["readable"])
+        observed = self.event("unauthorized_read", "read_observed")
+        self.assertEqual(observed["domain"], self.expected["domains"]["A"])
+        self.assertEqual(observed["page"], mapping["page"])
+        self.assertEqual(observed["sha256"], self.expected["sentinels"]["unauthorized"])
+        for name in ("mapping_installed", "read_observed"):
+            trace = copy.deepcopy(self.trace)
+            self.case("unauthorized_read", trace)["events"].remove(self.event("unauthorized_read", name, trace))
+            with self.subTest(missing=name), self.assertRaises(ValueError):
+                self.validate(trace)
+        for name, field, wrong in (("mapping_installed", "root", self.expected["roots"]["B"]),
+                                   ("mapping_installed", "physical_frame", self.expected["reuse_frame"] + 4096),
+                                   ("mapping_installed", "readable", False),
+                                   ("read_observed", "domain", self.expected["domains"]["B"]),
+                                   ("read_observed", "sha256", sha("uninitialized owner"))):
+            trace = copy.deepcopy(self.trace)
+            self.event("unauthorized_read", name, trace)[field] = wrong
+            with self.subTest(event=name, field=field), self.assertRaises(ValueError):
+                self.validate(trace)
+
     def test_recursive_shared_mapping_contract_obeys_core_readonly_owner_rule(self):
         events = self.case("recursive_revocation")["events"]
         self.assertEqual([item["rights"] for item in events if item["event"] == "delegated"], [21, 5])
@@ -253,15 +340,39 @@ class NativeProtocolTests(unittest.TestCase):
         self.assertEqual(writeonly["child"], self.expected["handles"]["B_writeonly"])
         self.assertEqual(denial["capability"], writeonly["child"])
         self.assertNotEqual(writeonly["child"], self.expected["handles"]["B"])
+        self.assertEqual(denial["denial_reason"], "InsufficientRights")
         self.assertFalse(denial["pte_published"])
         byte_cap = next(item for item in events if item["event"] == "delegated" and item["offset"] == 1)
         self.assertEqual(byte_cap["child"], self.expected["handles"]["B_byte"])
         self.assertEqual((byte_cap["offset"], byte_cap["length"], byte_cap["rights"]), (1, 4094, 5))
         byte_denials = [item for item in events if item.get("operation") == "map_byte_slice"]
         self.assertEqual([item["length"] for item in byte_denials], [4094, 4096])
+        self.assertEqual([item["denial_reason"] for item in byte_denials], ["Alignment", "Bounds"])
         self.assertTrue(all(item["capability"] == byte_cap["child"] and item["offset"] == 0 and
                             item["capability_offset"] == 1 and item["capability_length"] == 4094 and
                             not item["pte_published"] for item in byte_denials))
+
+    def test_writeonly_mapping_denial_follows_completed_readonly_lease_teardown(self):
+        events = self.case("exact_bounds")["events"]
+        names = [item["event"] for item in events]
+        fence = names.index("fence")
+        self.assertEqual(names[fence:fence + 5], ["fence", "clear_pte", "invalidate", "quiesce", "lease_released"])
+        denial = next(index for index, item in enumerate(events) if item.get("operation") == "map_without_read")
+        self.assertLess(fence + 4, denial)
+        for item in events[fence:fence + 5]:
+            self.assertEqual(item["lease"], self.expected["leases"]["B"])
+            self.assertEqual(item["physical_frame"], self.expected["reuse_frame"])
+            self.assertTrue(item["charge_retained"])
+        for name in names[fence:fence + 5]:
+            trace = copy.deepcopy(self.trace)
+            self.case("exact_bounds", trace)["events"].remove(self.event("exact_bounds", name, trace))
+            with self.subTest(missing=name), self.assertRaises(ValueError):
+                self.validate(trace)
+        trace = copy.deepcopy(self.trace)
+        changed = self.case("exact_bounds", trace)["events"]
+        changed[fence + 3], changed[fence + 4] = changed[fence + 4], changed[fence + 3]
+        with self.assertRaises(ValueError):
+            self.validate(trace)
 
     def test_privileged_denials_exercise_owned_lease_and_fenced_phase(self):
         events = self.case("trusted_operation_forgery")["events"]
@@ -311,6 +422,81 @@ class NativeProtocolTests(unittest.TestCase):
         self.assertEqual(initialized["physical_frame"], self.expected["reuse_frame"])
         self.assertEqual(initialized["page"], self.expected["pages"]["reuse_C"])
         self.assertEqual(initialized["initial_sha256"], self.expected["sentinels"]["C"])
+
+    def test_generation_and_rights_denials_cannot_be_masked_by_other_errors(self):
+        for case, event, operation, reasons in (
+                ("exact_bounds", "dispatch_denied", "map_without_read", ("Busy", "Bounds", "untrusted_origin")),
+                ("exact_bounds", "dispatch_denied", "map_byte_slice", ("Busy", "InsufficientRights")),
+                ("stale_identities", "dispatch_denied", "release_stale_capability", ("Busy", "InsufficientRights")),
+                ("stale_identities", "backend_stale_lease_denied", "fence", ("WrongLeaseKind", "Busy", "untrusted_origin"))):
+            for reason in reasons:
+                trace = copy.deepcopy(self.trace)
+                denials = [item for item in self.case(case, trace)["events"]
+                           if item["event"] == event and item.get("operation") == operation]
+                for denial in denials:
+                    denial["denial_reason"] = reason
+                with self.subTest(case=case, operation=operation, reason=reason), self.assertRaises(ValueError):
+                    self.validate(trace)
+
+    def test_stale_lease_denial_exercises_trusted_lookup_with_current_generation_positive_controls(self):
+        events = self.case("stale_identities")["events"]
+        denial = self.event("stale_identities", "backend_stale_lease_denied")
+        self.assertEqual(denial["operation"], "fence")
+        self.assertEqual(denial["origin"], "trusted_backend")
+        self.assertTrue(denial["trusted"])
+        self.assertEqual(denial["submitted_lease"], self.expected["leases"]["old_B"])
+        self.assertEqual(denial["replacement_lease"], self.expected["leases"]["replacement_B"])
+        self.assertEqual(denial["denial_reason"], "StaleLease")
+        self.assertEqual(denial["replacement_phase"], "active")
+        self.assertTrue(denial["pte_installed"])
+        self.assertFalse(denial["charge_released"])
+        retained = self.event("stale_identities", "replacement_retained")
+        self.assertEqual(retained["phase"], "active")
+        self.assertTrue(retained["pte_installed"])
+        authorized = self.event("stale_identities", "replacement_read_authorized")
+        self.assertEqual(authorized["capability"], self.expected["handles"]["replacement_B"])
+        self.assertEqual(authorized["physical_frame"], self.expected["reuse_frame"])
+        current_fence = next(item for item in events if item["event"] == "fence" and
+                             item["lease"] == self.expected["leases"]["replacement_B"])
+        self.assertTrue(current_fence["trusted"])
+        self.assertEqual(current_fence["phase"], "fenced")
+        self.assertTrue(current_fence["pte_installed"])
+        self.assertTrue(current_fence["charge_retained"])
+        self.assertLess(events.index(denial), events.index(retained))
+        self.assertLess(events.index(retained), events.index(authorized))
+        self.assertLess(events.index(authorized), events.index(current_fence))
+        for name in ("backend_stale_lease_denied", "replacement_retained", "replacement_read_authorized"):
+            trace = copy.deepcopy(self.trace)
+            self.case("stale_identities", trace)["events"].remove(self.event("stale_identities", name, trace))
+            with self.subTest(missing=name), self.assertRaises(ValueError):
+                self.validate(trace)
+        trace = copy.deepcopy(self.trace)
+        self.case("stale_identities", trace)["events"].remove(next(
+            item for item in self.case("stale_identities", trace)["events"] if item["event"] == "fence" and
+            item["lease"] == self.expected["leases"]["replacement_B"]))
+        with self.assertRaises(ValueError):
+            self.validate(trace)
+        for field, wrong in (("lease", self.expected["leases"]["old_B"]), ("trusted", False),
+                             ("phase", "active"), ("pte_installed", False), ("charge_retained", False)):
+            trace = copy.deepcopy(self.trace)
+            current = next(item for item in self.case("stale_identities", trace)["events"]
+                           if item["event"] == "fence" and item["lease"] == self.expected["leases"]["replacement_B"])
+            current[field] = wrong
+            with self.subTest(current_fence_field=field), self.assertRaises(ValueError):
+                self.validate(trace)
+        for name, field, wrong in (("backend_stale_lease_denied", "origin", "CPL3"),
+                                   ("backend_stale_lease_denied", "trusted", False),
+                                   ("backend_stale_lease_denied", "operation", "complete_lease"),
+                                   ("replacement_retained", "phase", "fenced"),
+                                   ("replacement_retained", "pte_installed", False),
+                                   ("replacement_retained", "charge_retained", False),
+                                   ("replacement_retained", "physical_frame", self.expected["reuse_frame"] + 4096),
+                                   ("replacement_retained", "root", self.expected["roots"]["D"]),
+                                   ("replacement_read_authorized", "capability", self.expected["handles"]["old_B"])):
+            trace = copy.deepcopy(self.trace)
+            self.event("stale_identities", name, trace)[field] = wrong
+            with self.subTest(event=name, field=field), self.assertRaises(ValueError):
+                self.validate(trace)
 
     def test_forgery_sentinels_generations_keys_and_integer_types_reject(self):
         changes = [lambda trace: self.event("caller_forgery", "dispatch_denied", trace).update(caller=1),

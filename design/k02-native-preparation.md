@@ -150,6 +150,14 @@ release/reuse. Synthetic fixtures receive only a protocol-validation result.
 Original-kernel CPU execution in an emulator and physical hardware execution
 receive distinct evidence labels; neither implies DMA or SMP qualification.
 
+Negative records bind observed policy errors, including `StaleHandle`,
+`StaleLease` and `InsufficientRights`; a generic denial caused by `Busy`, a
+wrong lease kind or a blanket privilege rejection cannot substitute. The
+unauthorized-read case first maps and reads the same address in its owner
+domain. The missing-READ case tears down conflicting mappings before its
+request. Stale-lease lookup runs through a trusted backend, with a valid current
+generation control, so untrusted completion denial cannot mask generation bugs.
+
 The implemented offline checker is `tools/k02_native_protocol.py`, using
 [the case contract](../planning/k02-native-cases.json). Run it with
 `--input <transcript.json> --expectations <independent-expectations.json>`.
@@ -157,6 +165,8 @@ The transcript cannot supply its own expected hashes, probe addresses or fault
 fields. Input files must be bounded regular files; the checker prints a result
 to standard output and never publishes a native qualification. Its fixture
 suite supplies synthetic expectations and adversarial record mutations.
+The checker anchors its own source identity at initialization, rejects later
+source drift, and hashes the same retained contract bytes that it parses.
 
 ## Integration gate
 

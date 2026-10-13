@@ -41,6 +41,13 @@ unavailable. An internally consistent transcript cannot authenticate hardware.
 Reuse the existing capability and lease identities; this evidence schema is
 not a new native service ABI.
 
+The pre-landing adversarial review tightened this protocol on 2026-10-12.
+Anchor the loaded checker identity before validation and hash/parse the same
+retained contract bytes. Bind observed generation/rights errors and valid
+owner/current-generation controls; unrelated denial guards cannot establish
+the intended isolation property. These corrections change the offline evidence
+contract and leave native enforcement pending.
+
 ## Alternatives and consequences
 
 Seeding from K01's free-page count loses physical ranges and live exclusions.
