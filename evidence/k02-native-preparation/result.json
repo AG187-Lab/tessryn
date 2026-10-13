@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "k02_owned_memory_core",
+  "status": "passed",
+  "scope": "host_execution_of_original_no_std_policy_and_freestanding_compilation",
+  "source_revision": "a7e71263a9fa6efc59df526b216da072f26e02d2",
+  "source_dirty": false,
+  "sources": {
+    ".github/workflows/k02-core.yml": "1a51865f5f5d4082d160c21353f0fd9e9365d2bda35e8f0ed840b2a0f720ff66",
+    "interfaces/abi-v1/native.rs": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+    "kernel-core/boot_inventory.rs": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+    "kernel-core/boot_inventory_tests.rs": "d38b23c2558cf0bdc98e320a8c4cd52ed89e2f8bdeb2e4d689700fb701996f57",
+    "kernel-core/capabilities.rs": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+    "kernel-core/frames.rs": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+    "kernel-core/lib.rs": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+    "kernel-core/tests.rs": "400ef2358cdb7f5ca7269ced153a519c4435910c855252dd27089deb619a4187",
+    "planning/k02-native-cases.json": "186e17fc7c100419c9a070b3044505b95ab1033da05b1671fb42b6edd10576bf",
+    "planning/k02-toolchain.lock.json": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "tests/test_k02_native_protocol.py": "b6db7090f59fad28c3cbe88f551d7eae6f3e73f9644ac3b50b796c65da2a8589",
+    "tests/test_k02_setup.py": "e296b8b89ab68bb33cd359590f6609cd4f1bafeed37120e6634b6940489a1ded",
+    "tests/test_k02_tooling.py": "0835ecef3c652c3e8258ab0e5103ccbd002a5ff1a796710ce96c8736a5aad319",
+    "toolchain.lock.json": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "tools/check_k02_core.py": "ad6f36043a27e8300d722844c70f77acf45c7f086eaabedb36795a5e5739a6cb",
+    "tools/g03/process.py": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+    "tools/k02_native_protocol.py": "8f38771e0de59b1df9ffe69aec0c2c8d7c2418be517aedfbb1a42e77397b2200",
+    "tools/setup_k02_toolchain.py": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+    "tools/setup_toolchain.py": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0"
+  },
+  "toolchain": {
+    "schema_version": 1,
+    "kind": "k02_host_test_toolchain",
+    "host": "aarch64-apple-darwin",
+    "profile_sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "g03_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "g03_record_sha256": "a0c59f3a14f6593938abb609fb3b42a7ea308828579e8c7816fbd118f89789e0",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "rust_revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "host_library": {
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-aarch64-apple-darwin.tar.xz",
+      "sha256": "439c4f71060b913e00db3a2e01340b2da0aa49978b843e36871f3250267c63f8"
+    },
+    "rust_host_library_tree_sha256": "d0f8b9308cb4d641851bab30dab235490d55ac22f2787b02268e961aae811c9c",
+    "verified_tools": {
+      "rustc": {
+        "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+      },
+      "rust_lld": {
+        "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+      }
+    },
+    "rust_target_library_tree_sha256": "04087044f06c8af97a6e1ae6e1035e696d7beff59ba0a2ef2e603bf6e7a7d760",
+    "rust_library_tree_sha256": "edbb4d5bb5a5dd66cd94001ecd871a02ea97e5823b98aa895e165709d09a7ca4"
+  },
+  "compiled_checks": [
+    "same_Rust_core_host_tests",
+    "freestanding_x86_64_no_std",
+    "identical_repeated_freestanding_artifact"
+  ],
+  "host_tests": {
+    "status": "passed",
+    "passed": 57,
+    "log": "\nrunning 57 tests\ntest boot_inventory_tests::boot_inventory_admits_only_nonruntime_conventional_memory ... ok\ntest boot_inventory_tests::boot_inventory_bounded_inputs_reject_excess_without_publishing_a_plan ... ok\ntest boot_inventory_tests::boot_inventory_clips_low_aperture_without_admitting_high_handoff_memory ... ok\ntest boot_inventory_tests::boot_inventory_empty_or_wholly_quarantined_maps_have_no_allocator_authority ... ok\ntest boot_inventory_tests::boot_inventory_exclusion_can_span_distinct_extents_and_quarantined_gaps ... ok\ntest boot_inventory_tests::boot_inventory_exclusions_normalize_nested_overlapping_adjacent_and_bridging_inputs ... ok\ntest boot_inventory_tests::boot_inventory_matches_independent_page_oracle_under_bounded_input_permutations ... ok\ntest boot_inventory_tests::boot_inventory_optional_high_scratch_may_duplicate_the_baseline_scratch ... ok\ntest boot_inventory_tests::boot_inventory_output_capacity_applies_to_final_normalized_tables ... ok\ntest boot_inventory_tests::boot_inventory_physical_width_endpoints_are_checked_before_high_quarantine ... ok\ntest boot_inventory_tests::boot_inventory_policy_scrubs_and_reuses_only_admitted_pages ... ok\ntest boot_inventory_tests::boot_inventory_rejects_descriptor_overlap_even_when_both_ranges_are_quarantined ... ok\ntest boot_inventory_tests::boot_inventory_rejects_zero_overflowing_or_malformed_live_reservations ... ok\ntest boot_inventory_tests::boot_inventory_required_allocations_cannot_share_a_rounded_page ... ok\ntest boot_inventory_tests::boot_inventory_reserves_every_live_handoff_allocation_including_conventional_scratch ... ok\ntest boot_inventory_tests::boot_inventory_unsorted_adjacent_descriptors_coalesce_before_capacity_check ... ok\ntest boot_inventory_tests::boot_inventory_validates_malformed_descriptors_in_every_memory_class ... ok\ntest capabilities::tests::adjacent_freed_extents_coalesce_for_a_larger_reallocation ... ok\ntest capabilities::tests::allocator_metadata_capacity_is_preflighted_before_splitting_or_scrubbing ... ok\ntest capabilities::tests::byte_views_cannot_expose_their_containing_page_through_mapping_rounding ... ok\ntest capabilities::tests::caller_namespace_cannot_be_established_by_a_presented_domain_number ... ok\ntest capabilities::tests::capability_generation_exhaustion_retires_the_slot_without_aba ... ok\ntest capabilities::tests::committed_and_reserved_pages_are_admitted_before_installation ... ok\ntest capabilities::tests::completion_is_not_quiescence_and_cannot_free_a_shared_region ... ok\ntest capabilities::tests::cpu_mapping_intents_and_service_owners_share_one_conflict_ledger ... ok\ntest capabilities::tests::cross_domain_aliases_conflict_by_backing_interval_until_quiescence ... ok\ntest capabilities::tests::delegation_reduces_rights_and_translates_nested_byte_bounds ... ok\ntest capabilities::tests::frame_pool_rejects_forged_partial_release_and_coalesces_external_free_extents ... ok\ntest capabilities::tests::mapping_requires_map_authority_and_submission_requires_submit_authority ... ok\ntest capabilities::tests::namespace_and_owner_capacity_failures_leave_every_counter_unchanged ... ok\ntest capabilities::tests::nested_views_conflict_at_their_absolute_backing_offsets ... ok\ntest capabilities::tests::ownership_generation_exhaustion_retires_the_owner_slot_without_aba ... ok\ntest capabilities::tests::partially_failed_activation_scrub_publishes_nothing_and_retry_reuses_the_same_tail ... ok\ntest capabilities::tests::partially_failed_scrub_changes_no_trusted_allocation_or_authority_state ... ok\ntest capabilities::tests::physical_allocation_failure_does_not_charge_or_install_a_capability ... ok\ntest capabilities::tests::physical_inventory_rejects_quarantine_overlap_and_address_width ... ok\ntest capabilities::tests::recycled_frames_are_scrubbed_before_a_different_domain_receives_authority ... ok\ntest capabilities::tests::region_capacity_failure_cannot_leave_an_orphaned_charge ... ok\ntest capabilities::tests::reserved_activation_generation_exhaustion_cannot_revalidate_old_authority ... ok\ntest capabilities::tests::reserved_activation_preflights_zero_reservation_bounds_and_overflow_sized_input ... ok\ntest capabilities::tests::reserved_activation_preserves_rights_and_can_delegate_new_bounds_explicitly ... ok\ntest capabilities::tests::reserved_activation_rejects_foreign_forged_delegated_and_revoked_authority ... ok\ntest capabilities::tests::reserved_activation_requires_every_alias_to_be_released_even_after_revocation ... ok\ntest capabilities::tests::reserved_activation_scrubs_only_the_new_tail_and_preserves_existing_bytes ... ok\ntest capabilities::tests::reserved_activation_transfers_accounting_without_allocating_or_recharging ... ok\ntest capabilities::tests::reserved_activation_waits_for_active_and_fenced_mapping_teardown ... ok\ntest capabilities::tests::reserved_activation_waits_for_operations_in_every_phase_to_quiesce ... ok\ntest capabilities::tests::reverse_domain_descendant_chain_is_revoked_across_repeated_propagation_passes ... ok\ntest capabilities::tests::revoke_denies_descendant_access_and_completion_but_retains_owners ... ok\ntest capabilities::tests::revoked_mapping_intent_retains_backing_until_teardown_and_final_release ... ok\ntest capabilities::tests::rights_decoder_rejects_unknown_bits_instead_of_amplifying_authority ... ok\ntest capabilities::tests::scrub_failure_never_installs_authority_or_spends_a_generation ... ok\ntest capabilities::tests::sharing_preserves_original_charge_until_the_last_descendant_is_released ... ok\ntest capabilities::tests::slot_zero_is_present_with_nonzero_domain_and_generation ... ok\ntest capabilities::tests::stale_lease_cannot_complete_fence_or_quiesce_a_replacement_owner ... ok\ntest capabilities::tests::unsigned_ranges_and_empty_authority_are_rejected_without_mutation ... ok\ntest capabilities::tests::write_only_operations_cannot_be_promoted_to_readable_writable_mappings ... ok\n\ntest result: ok. 57 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s\n\n"
+  },
+  "artifacts": {
+    "libtessryn_memory.rlib": {
+      "sha256": "64860d27491e438296115291058c5ea66699702e609de0605574833b1cd7a72f",
+      "target": "x86_64-unknown-none"
+    }
+  },
+  "unavailable": [
+    "native_authenticated_dispatch",
+    "CPU_address_space_isolation",
+    "page_table_installation_and_TLB_teardown",
+    "hardware_fault_traces",
+    "SMP_synchronization",
+    "DMA_and_device_quiescence",
+    "native_runtime_integration"
+  ]
+}

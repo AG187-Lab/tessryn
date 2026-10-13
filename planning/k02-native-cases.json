@@ -1,0 +1,50 @@
+{
+  "schema": "tessryn-k02-native-cases/v1",
+  "scope": "Offline protocol preparation; neither synthetic nor captured JSON qualifies native isolation",
+  "case_state": "fresh_original_kernel_boot",
+  "profile": {
+    "architecture": "x86_64",
+    "cpu_count": 1,
+    "paging_levels": 4,
+    "page_size": 4096,
+    "physical_bits": 48,
+    "nx_supported": true,
+    "nx_enabled": true,
+    "pcid_enabled": false,
+    "global_translations": false,
+    "protection_keys": false,
+    "shadow_stack": false,
+    "enclave": false,
+    "invalidation": "cr3_reload"
+  },
+  "cases": [
+    "caller_forgery",
+    "trusted_operation_forgery",
+    "unauthorized_read",
+    "read_only_sharing",
+    "exact_bounds",
+    "kernel_isolation",
+    "data_nx",
+    "recursive_revocation",
+    "writable_reuse",
+    "stale_identities"
+  ],
+  "faults": {
+    "unauthorized_read": {"page": "unauthorized", "domain": "B", "error_code": 4},
+    "readonly_write": {"page": "readonly", "domain": "B", "error_code": 7},
+    "guard_read": {"page": "guard", "domain": "B", "error_code": 4},
+    "kernel_read": {"page": "kernel", "domain": "B", "error_code": 5},
+    "kernel_write": {"page": "kernel", "domain": "B", "error_code": 7},
+    "policy_read": {"page": "policy", "domain": "B", "error_code": 5},
+    "policy_write": {"page": "policy", "domain": "B", "error_code": 7},
+    "page_table_read": {"page": "page_table", "domain": "B", "error_code": 5},
+    "page_table_write": {"page": "page_table", "domain": "B", "error_code": 7},
+    "nx_fetch": {"page": "data_nx", "domain": "B", "error_code": 21},
+    "recursive_B_read": {"page": "revoked_B", "domain": "B", "error_code": 4},
+    "recursive_B_write": {"page": "revoked_B", "domain": "B", "error_code": 6},
+    "recursive_D_read": {"page": "revoked_D", "domain": "D", "error_code": 4},
+    "recursive_D_write": {"page": "revoked_D", "domain": "D", "error_code": 6},
+    "reuse_B_read": {"page": "reuse_B", "domain": "B", "error_code": 4},
+    "reuse_B_write": {"page": "reuse_B", "domain": "B", "error_code": 6}
+  }
+}
