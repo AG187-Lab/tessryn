@@ -1,6 +1,6 @@
 # Platform qualification
 
-Status: physical target profiles remain unqualified. The [K01 emulator profile](first-kernel.md) has original-kernel CPU boot and fault evidence. Qualify physical CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
+Status: physical target profiles remain unqualified. The [K01 emulator profile](first-kernel.md) has original-kernel CPU boot and fault evidence, and the bounded [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification) has owner-accepted native `t3a.small` boot and separate Ubuntu recovery evidence. Qualify physical CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
 
 The [initial G01 qualification record](platform-qualification.md) prepares a short bare-metal inventory session without selecting supported hardware. Its candidate descriptions and costs are vendor facts and analytical examples; actual device/firmware/topology, notebook access and native execution remain unavailable.
 
@@ -17,11 +17,12 @@ Start with modern x86-64 UEFI hardware on Intel or AMD CPUs, a fixed wired NIC, 
 
 A notebook can be a native model shard. Admission measures sustained execution under mains power, thermal behavior, usable memory, link latency/jitter, and availability. Initially use a headless profile with sleep disabled. GPU power restoration and multi-function PCI behavior need explicit qualification; [NVIDIA's notebook power documentation](https://download.nvidia.com/XFree86/Linux-x86_64/580.95.05/README/dynamicpowermanagement.html) describes relevant platform dependencies, not a Tessryn driver.
 
-The user-selected next cloud goal is a minimal original-kernel CPU boot and
-independent recovery experiment on one UEFI-capable x86-64 Nitro guest. The
+The bounded cloud CPU experiment established two fresh original-kernel boots on
+UEFI x86-64 `t3a.small` Nitro guests, separated by independent recovery on a fresh
+Ubuntu instance, with cleanup complete. The
 [AWS workflow](aws-boot-and-recovery.md) builds fixed GPT/FAT32 media, headless
-COM1 diagnostics and local firmware-NVMe tests. Native EC2 boot/recovery remain
-unqualified. No ENA or native NVMe driver is present, and an EC2 guest boot does
+COM1 diagnostics and local firmware-NVMe tests. No ENA or native NVMe driver is
+present, and an EC2 guest boot does
 not qualify bare-metal CPU access, a GPU, networking or inference. The wider
 cloud target still needs ACPI/interrupt, ENA and NVMe implementation evidence.
 
@@ -36,8 +37,9 @@ and [direct EBS snapshot writes](https://docs.aws.amazon.com/ebs/latest/userguid
 This is an experimental custom-OS route, not official support for Tessryn.
 [VM Import's OS allowlist](https://docs.aws.amazon.com/vm-import/latest/userguide/prerequisites.html)
 applies to that import service. The separate authorized `t3a.small` Linux-hosted
-QEMU trial, capped at USD 15, supplies emulator evidence; a native Tessryn AMI
-trial needs its own resource approval and independently verified recovery.
+QEMU trial, capped at USD 15, supplied emulator evidence. The later native trial
+received separate approval and trusted owner acceptance for its bounded CPU
+profile. Its completion authorizes no additional resources or broader support.
 Historical G01 candidate and price records retain their original research scope.
 Google also documents [building custom OS images](https://docs.cloud.google.com/compute/docs/images/building-custom-os);
 its device contracts are distinct targets.

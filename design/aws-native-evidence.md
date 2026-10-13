@@ -1,9 +1,11 @@
 # Native AWS evidence intake
 
-Status: implemented offline validation. There are no native EC2 observations or
-new cloud permissions in this implementation. [The experiment contract](aws-boot-and-recovery.md)
-still requires separate native approval, execution, independent recovery and
-cleanup by the AWS operations owner.
+Status: implemented offline validation, with a separately owner-accepted
+[observed CPU qualification](aws-boot-and-recovery.md#observed-cpu-qualification)
+dated October 12, 2026. The parser's synthetic fixtures and consistency reports
+remain distinct from the private native observations and trusted acceptance.
+The native trial and cleanup are complete; this implementation grants no cloud
+permissions or authorization for another trial.
 
 `tools/verify_aws_native.py` consumes a private capture index and the clean
 `build_aws_boot.py` manifest. It calls no AWS API, starts no subprocess and reads
@@ -26,6 +28,11 @@ command establishes consistency of supplied bytes and relations. Hashes do not
 authenticate fabricated AWS JSON. Actual qualification requires trusted owner
 capture, authorization/lifecycle review and a separate observed qualification
 record; a fixture, parser success or this report alone cannot complete the goal.
+The accepted trial retained the original controller's failed offline assembly
+receipt, the separate corrected packet and its `needs_owner_review` result, and
+the owner's independent terminal acceptance. The public summary reports that
+disposition without publishing the private packet or converting offline parser
+status into an authenticated observation.
 
 ## Private capture index
 

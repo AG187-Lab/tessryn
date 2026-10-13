@@ -5,13 +5,16 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tools.run_kernel import COMMON, CASE_MARKERS, check_transcript, qemu_command
+from tools.run_kernel import COMMON, CASE_MARKERS, FAULT_ADDRESS, check_transcript, qemu_command
 from tools.build_kernel import inspect_pe
 
 
 class KernelEvidenceTests(unittest.TestCase):
     def transcript(self, case="normal"):
         markers = [*COMMON, CASE_MARKERS[case]]
+        if case in ("int3", "invalid_opcode", "page_fault"):
+            cr2 = FAULT_ADDRESS if case == "page_fault" else 0
+            markers[-1] += f" error=0x0 rip=0x1000 cs=0x8 rflags=0x2 rsp=0x2000 cr2={cr2:#x}"
         if case == "int3":
             markers.extend(("TESSRYN_K01_INT3_RECOVERED fp_state=preserved", "TESSRYN_K01_PASS"))
         elif case in ("invalid_opcode", "page_fault"):
@@ -42,6 +45,39 @@ class KernelEvidenceTests(unittest.TestCase):
         self.assertFalse(check_transcript("int3", data.replace(b"vector=3", b"vector=30"), 33))
         self.assertFalse(check_transcript("int3", data.replace(b"TESSRYN_K01_INT3_RECOVERED", b"missing"), 33))
         self.assertFalse(check_transcript("page_fault", self.transcript("page_fault").replace(b"TESSRYN_K01_EXPECTED_FAULT", b"missing"), 33))
+
+    def test_exact_normalized_exception_frame_is_required(self):
+        for case in ("int3", "invalid_opcode", "page_fault"):
+            data = self.transcript(case)
+            self.assertTrue(check_transcript(case, data, 33))
+            for modified in (data.replace(b"error=0x0", b"error=0x1"),
+                             data.replace(b" rsp=0x2000", b""),
+                             data.replace(b" rip=0x1000", b" rip=unknown"),
+                             data.replace(b" cr2=", b" extra=0x0 cr2=")):
+                with self.subTest(case=case, data=modified):
+                    self.assertFalse(check_transcript(case, modified, 33))
+
+    def test_page_fault_must_reach_the_canonical_guard(self):
+        data = self.transcript("page_fault")
+        self.assertFalse(check_transcript("page_fault", data.replace(
+            f"cr2={FAULT_ADDRESS:#x}".encode(), b"cr2=0x1234"), 33))
+
+    def test_extra_or_unexpected_exception_frames_are_rejected(self):
+        unexpected = b"TESSRYN_K01_EXCEPTION vector=13 error=0x0 rip=0x1000 cs=0x8 rflags=0x2 rsp=0x2000 cr2=0x0\n"
+        for case in ("normal", "panic", "reboot"):
+            data = self.transcript(case)
+            code, stderr = (0, b"CPU Reset (CPU 0)") if case == "reboot" else (33, b"")
+            self.assertTrue(check_transcript(case, data, code, stderr))
+            for modified in (unexpected + data, data + unexpected):
+                with self.subTest(case=case):
+                    self.assertFalse(check_transcript(case, modified, code, stderr))
+        for case in ("int3", "invalid_opcode", "page_fault"):
+            data = self.transcript(case)
+            frame = next(line for line in data.splitlines() if line.startswith(b"TESSRYN_K01_EXCEPTION")) + b"\n"
+            for extra in (frame, unexpected):
+                for modified in (extra + data, data + extra):
+                    with self.subTest(case=case, extra=extra):
+                        self.assertFalse(check_transcript(case, modified, 33))
 
     def test_media_and_firmware_are_guest_only_and_no_host_disks(self):
         command = qemu_command("normal", "iso")

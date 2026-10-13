@@ -1,23 +1,73 @@
 # AWS original-kernel CPU boot and recovery
 
-Status: local boot inputs and evaluation tooling. Native Tessryn EC2 boot and
-recovery remain unqualified until exact-instance execution and independent
-recovery evidence are captured. The user selected AWS CPU boot/recovery as the
-next goal; [ADR 0011](decisions/0011-aws-cpu-boot-experiment.md) records its scope.
+Status: the bounded `t3a.small` original-kernel CPU boot and independent recovery
+profile was accepted by the operations owner on October 12, 2026. Two fresh
+native EC2 boots were separated by a fresh known-good Ubuntu recovery instance;
+cleanup is complete. [The observed qualification](#observed-cpu-qualification)
+records the precise scope; [ADR 0011](decisions/0011-aws-cpu-boot-experiment.md)
+records its architecture and evidence contract.
 
 The separate AWS operations session owns all account access, provisioning,
-spending controls and cleanup. Its currently authorized experiment is one
-`t3a.small` Linux-hosted QEMU trial under USD 15, with cleanup after testing.
-That experiment proves emulator behavior on a Linux development host. A native
-Tessryn AMI boot is a separate reviewable resource proposal whose approval is
-pending. This workflow does not expand IAM permissions or launch AWS resources.
+spending controls and cleanup. Its initial Linux-hosted QEMU trial and later
+approved native trial remain distinct observations under the existing bounded
+authorization. The native trial is closed; this workflow does not grant approval
+for another trial, expand IAM permissions or launch AWS resources.
+
+## Observed CPU qualification
+
+On October 12, 2026 the trusted operations owner accepted the original-kernel
+CPU profile on a virtualized UEFI `t3a.small` guest. Native boot A reached
+the ordered firmware handoff, owned CPU tables, memory readback and terminal
+PASS. Independent EC2 control then terminated that instance and provisioned a
+separate known-good Ubuntu recovery instance, whose fresh launch-bound nonce
+proved a usable recovery environment. After its termination, fresh native boot
+B reached the same original-kernel terminal sequence. The two native instances
+and the recovery instance were separately attributable; recovery was not a
+rescue on the same physical machine.
+
+The deployed normal image retained the original clean preparation identity:
+
+| Input | Recorded identity |
+| --- | --- |
+| Source revision | `5ea06b998fcc854851e794aea6235b15fa34be65` |
+| Source snapshot | `7c53829d4ef7d52c14ef5633b8e3d8e8c838e51b4578a12333f25eddf23399d6` |
+| AWS preparation manifest SHA-256 | `5cc73ac570ea11f70c52d7497a150633030fe75f706c8b14f36f1659e4859e36` |
+| Normal EFI SHA-256 | `a272b3186db19670ae320e85b60cced9f94acf84bcda894c8c033401076daba3` |
+| Normal 1 GiB logical disk SHA-256 | `78478aebdf6ee303cd100bd811b5dd60fda5e282f03fca0ededda23a16127653` |
+
+The [October 11 preparation packet](../evidence/k01-aws-preparation/README.md)
+retains its original local results and unqualified-at-capture statuses. It is
+historical input evidence, not the native observation packet. The owner reviewed
+the private native capture chain, authorization, recovery and terminal cleanup:
+all three instances and their root volumes were removed, the native AMI and
+snapshot and isolated network were removed. Approved permanent encrypted,
+versioned state storage and lasting development access were retained. These are
+observations at closeout, not a permanent account-wide absence or final billing
+claim. No private responses, identifiers, addresses, nonce, state files or local
+capture paths are published here.
+
+The original paid controller receipt retains exit status 1: its offline packet
+assembly failed because an 8 MiB capture allowance conflicted with a 64 KiB
+assembler limit. A separate corrected assembly and unchanged original verifier
+CLI subsequently validated the supplied packet. That offline result remained
+`needs_owner_review`; the owner's separate observed acceptance established this
+bounded profile. The correction does not rewrite the original failure receipt.
+See [the intake trust boundary](aws-native-evidence.md).
+
+Acceptance covers normal original-kernel CPU boot and independent
+termination/reprovisioning recovery for the recorded profile. Exception, panic,
+runtime-reset and high-address execution remain QEMU observations. This does not
+qualify bare metal, same-machine rescue, native NVMe/ENA/GPU drivers, networking,
+inference, distributed operation or performance. Another type, image or trial
+requires its own authorization and qualification.
 
 ## Kernel and disk contract
 
 The `k01_aws` image uses bounded COM1 output, with the explicit assumption of an
 x86 16550-compatible UART at I/O base `0x3f8`, 115200n8. AWS documents port 0 as
-`ttyS0`/COM1 and serial configuration at 115200, but the exact low-level UART
-assumption needs execution evidence on the delivered profile. GOP is optional;
+`ttyS0`/COM1 and serial configuration at 115200; the accepted normal boots
+provide execution evidence for the recorded profile. Other profiles require
+their own UART evidence. GOP is optional;
 normal, expected fault and panic cases report terminal status and halt. QEMU
 debug ports `0xe9`/`0xf4` are disabled, including when an emulator cfg is also
 supplied. [Serial prerequisites](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-serial-console-prerequisites.html),

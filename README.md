@@ -4,7 +4,7 @@ An original operating system for AI agents and distributed inference.
 
 Tessryn is designed to let servers and qualified laptops form a cluster, execute models through native accelerator drivers, and serve models larger than any individual worker can hold. Its kernel, execution interfaces and distributed services are being designed together around memory ownership, asynchronous work and measured resource budgets.
 
-**Status:** the first original x86-64 UEFI kernel boots in QEMU/OVMF, exits firmware boot services, owns its CPU tables and memory handoff, and exercises exceptions, panic and reset. High-address boot tests and a separate headless fixed-disk image prepare the AWS CPU experiment. Physical hardware, native AWS boot/recovery, GPU execution and Tessryn performance remain unqualified. [First kernel workflow](design/first-kernel.md) and [AWS boot experiment](design/aws-boot-and-recovery.md).
+**Status:** the first original x86-64 UEFI kernel boots in QEMU/OVMF, exits firmware boot services, owns its CPU tables and memory handoff, and exercises exceptions, panic and reset. The bounded AWS `t3a.small` CPU profile has two owner-accepted native EC2 boots, separated by recovery on a fresh Ubuntu instance, with cleanup complete. Physical hardware, native device drivers, GPU execution and Tessryn performance remain unqualified. [First kernel workflow](design/first-kernel.md) and [observed AWS CPU qualification](design/aws-boot-and-recovery.md#observed-cpu-qualification).
 
 ## The first product milestone
 
