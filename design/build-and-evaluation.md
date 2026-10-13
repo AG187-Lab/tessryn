@@ -1,9 +1,11 @@
 # G03 build and evaluation foundation
 
-Status: host tooling with original test fixtures. Tessryn kernel boot, native
+Status: host tooling with original test fixtures. Within this G03 fixture profile, Tessryn kernel boot, native
 services, GPU execution and inference remain **unavailable**. A fixture pass
 establishes only that this harness observed its marker and expected emulator
 exit. The freestanding Rust ELF probe is inspected, never executed.
+
+Separate K01 execution evidence now establishes bounded original-kernel CPU boot and recovery. See the [roadmap](roadmap.md) for current implementation progress and the limits of that evidence. The G03 fixture records retain their original source, date and unavailable-capability labels.
 
 ## Selected development profile
 

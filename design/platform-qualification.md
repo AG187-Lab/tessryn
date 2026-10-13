@@ -1,10 +1,12 @@
 # Initial platform qualification record (G01)
 
-Status: research and inventory tooling, dated 2026-10-11. No supported native
-profile has been selected. No machine has been rented, no firmware or compiler
-binary has been acquired for G01, and no Tessryn boot, GPU or inference experiment has
-run. The intended first product still requires three stable nodes and an exact
+G01 record status, dated 2026-10-11: research and inventory tooling. No supported physical
+profile had been selected. No machine had been rented, no firmware or compiler
+binary had been acquired for G01, and no Tessryn boot, GPU or inference experiment had
+run in this packet. The intended first product still requires three stable nodes and an exact
 wired, mains-powered notebook; a cloud rental cannot replace the notebook gate.
+
+Later progress, 2026-10-12: [K01's observed AWS CPU qualification](https://github.com/AG187-Lab/tessryn/blob/c5d82c49cefd6dbc32f122562c6bb0c1608b4816/design/aws-boot-and-recovery.md#observed-cpu-qualification) records two owner-accepted native `t3a.small` boots separated by independent fresh Ubuntu recovery, with trial cleanup complete. That separate CPU sequence does not qualify the physical candidates below, complete G01, or establish native device, GPU, inference or performance support. The dated G01 research and evidence retain their original scope. See the [roadmap](roadmap.md) for current implementation progress.
 
 This record prepares a short bare-metal laboratory session when no physical
 machine is available. Its [candidate data](../planning/platform-candidates.json)

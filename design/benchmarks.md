@@ -2,7 +2,19 @@
 
 Status: measurement plan. There are no Tessryn performance results. Before testing, register the model/checkpoint, quantization, hardware/firmware, topology, admission budgets, offered arrival process, prompt/output distributions, duration, sample counts, and latency SLOs.
 
-G03 implements [evidence formats and preregistration validation](evaluation-evidence.md) and a [bounded emulator fixture workflow](build-and-evaluation.md). Fixture results are implementation evidence for the tooling with zero performance samples. Numerical references, genuine held-out workloads, native execution and thermal measurements remain unavailable. Use the schemas and independent evaluator authority before publishing future measurements.
+G03 implements [evidence formats and preregistration validation](evaluation-evidence.md) and a [bounded emulator fixture workflow](build-and-evaluation.md). Fixture results are implementation evidence for the tooling with zero performance samples. Numerical references, genuine held-out workloads, native inference execution and thermal measurements remain unavailable. Separate K01 CPU boot evidence establishes no inference or performance result. Use the schemas and independent evaluator authority before publishing future measurements.
+
+## Native kernel and inference-path experiments
+
+[Inference-oriented kernel performance](inference-performance.md) assigns staged experiments to K02 memory, K03 scheduling, K04 queues, native devices, serving and transport. [ADR 0017](decisions/0017-inference-performance.md) records this engineering direction. A performance-sensitive PR must link a registered comparison or remain explicitly preparation-only until its native measurement gate is satisfied.
+
+Measure wakeup-to-running delay, budget overshoot, authority/map/revoke costs, TLB work, descriptor round trips, interrupt/polling CPU use, queue depth, copy volume, memory locality and accelerator idle gaps. Preserve a simple correctness-equivalent reference and compare under bursty mixed short/long work, multiple tenants, overload and cancellation. Record denied, failed and starved work alongside successful work. Host-policy operation counts and QEMU timing are not physical/native service performance results.
+
+Before candidate measurement, register the exact hardware/firmware, source/toolchain, clock/calibration, workload and baseline, absolute SLOs, resource limits, acceptable regression margins, run/sample counts and uncertainty method. Use scheduled arrivals to expose queueing under overload; include instrumentation overhead and preserve raw timestamp distributions. Cross-node timings require bounded clock synchronization error. No numeric production latency target is inferred from the AWS boot proof.
+
+The existing v1 performance record is for real end-to-end inference. CPU, memory and queue microbenchmarks need their own reviewed, preregistered measurement format and retained source-bound observations; they cannot pass v1 by inventing inference/model fields. Keep this scope separate without weakening existing validation. Register nonoverlapping CPU accounting intervals and publish only synthetic or permissioned anonymized workload metadata; sensitive prompts, state payloads and tenant identifiers remain private.
+
+Qualify an optimization only after all applicable isolation, cancellation, recovery and numerical gates pass and its registered objective improves within the stated uncertainty and regression limits. Inference qualification always requires the full numerical and held-out quality gates. Report CPU/memory/energy tradeoffs; confirm microbenchmark wins against end-to-end inference goodput on qualified hardware.
 
 ## Serving evidence
 

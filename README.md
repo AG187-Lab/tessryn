@@ -4,7 +4,9 @@ An original operating system for AI agents and distributed inference.
 
 Tessryn is designed to let servers and qualified laptops form a cluster, execute models through native accelerator drivers, and serve models larger than any individual worker can hold. Its kernel, execution interfaces and distributed services are being designed together around memory ownership, asynchronous work and measured resource budgets.
 
-**Status:** design and implementation planning, with reproducible build/evaluation tooling validated using original test fixtures. There is no bootable Tessryn kernel, supported hardware profile or measured Tessryn performance result yet.
+**Status, October 12, 2026:** original-kernel bring-up is underway. The first x86-64 UEFI kernel boots in QEMU/OVMF, exits firmware boot services, owns its CPU tables and memory handoff, and exercises traps, faults, panic and reset. Two owner-accepted native AWS `t3a.small` CPU boots completed, separated by independent recovery on a fresh Ubuntu instance, with trial cleanup complete. The [observed CPU qualification](https://github.com/AG187-Lab/tessryn/blob/c5d82c49cefd6dbc32f122562c6bb0c1608b4816/design/aws-boot-and-recovery.md#observed-cpu-qualification) is recorded in [K01 PR #53](https://github.com/AG187-Lab/tessryn/pull/53), which is awaiting merge.
+
+Reproducible build/evaluation tooling, portable interface conformance, owned-memory policy and boot-inventory preparation have landed. [Draft K02 work](https://github.com/AG187-Lab/tessryn/pull/58) has [execution evidence](https://github.com/AG187-Lab/tessryn/blob/7b1b07259be350db76657d0d1183078e6f8c610f/evidence/k02-native-slice/README.md) for four single-CPU CPL3 protection probes in the original kernel under QEMU. Full native isolation, physical stable-node/notebook qualification, native device drivers, GPU execution, model inference and measured Tessryn performance remain open. [Current progress and gates](design/roadmap.md).
 
 ## The first product milestone
 
@@ -19,6 +21,7 @@ The first accelerator qualification targets x86-64 and one exact NVIDIA hardware
 - [Native CUDA](design/native-cuda.md), [distributed inference](design/distributed-inference.md) and [memory and serving](design/memory-and-serving.md)
 - [Research](design/research.md), [review findings](design/review.md) and [decisions](design/decisions/)
 - [Roadmap](design/roadmap.md), [hardware qualification](design/platforms.md) and [benchmark contract](design/benchmarks.md)
+- [Inference performance plan](design/inference-performance.md): proposed experiments grounded in current research, with numerical quality and measured goodput gates
 - [Development board](https://github.com/orgs/AG187-Lab/projects/1), [open implementation work](https://github.com/AG187-Lab/tessryn/issues), [milestones](https://github.com/AG187-Lab/tessryn/milestones) and [development coordination](design/development.md)
 - [Build and emulator fixture workflow](design/build-and-evaluation.md) and [evaluation evidence formats](design/evaluation-evidence.md)
 
@@ -37,6 +40,6 @@ The machine-readable [backlog](planning/backlog.json) records scope and dependen
 
 ## Name and license
 
-Tessryn is pronounced **TESS-rin**. The name suggests independent devices tessellating into a coherent inference system. `tessryn.si` appeared unregistered and unreserved when checked on October 11, 2026; it has not been purchased or reserved. [Naming evidence](design/name.md).
+Tessryn is pronounced **TESS-rin**. The name suggests independent devices tessellating into a coherent inference system. The project landing page is live at [tessryn.si](https://tessryn.si/). [Naming and dated domain evidence](design/name.md).
 
 New project code and documentation are licensed under [Apache-2.0](LICENSE). Third-party components, firmware, model weights and proprietary libraries retain their own terms; see [provenance policy](design/provenance.md).
