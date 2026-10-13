@@ -1,6 +1,6 @@
 # Design
 
-These documents capture the initial research, architectural decisions and implementation gates. They describe intended behavior rather than implemented capability. Update them when evidence or implementation changes a conclusion.
+These documents record research, architectural decisions, implementation gates and observed progress. Intended contracts, fixture validation, original-kernel execution and qualified hardware behavior have separate evidence requirements. Update them when evidence or implementation changes a conclusion.
 
 | Document | Purpose |
 | --- | --- |
@@ -14,6 +14,7 @@ These documents capture the initial research, architectural decisions and implem
 | [Platforms](platforms.md) | Hardware qualification and cloud/Apple support boundaries |
 | [Initial platform qualification](platform-qualification.md) | G01 candidate records, rental gates and read-only reference inventory |
 | [Benchmarks](benchmarks.md) | Workloads, baselines, numerical quality and evidence |
+| [Inference performance plan](inference-performance.md) | Proposed research-backed experiments, numerical quality gates and measured goodput |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
 | [Research](research.md) | Dated primary sources, applicability and open questions |
@@ -32,4 +33,4 @@ These documents capture the initial research, architectural decisions and implem
 - **Decision:** the current project choice, with rationale and reconsideration conditions.
 - **Open question:** requires research or an experiment before a claim is made.
 
-The repository has not demonstrated native boot, GPU execution, Thunderbolt support or distributed performance. Planned capabilities must remain labeled until their acceptance evidence exists.
+As of October 12, 2026, [K01](https://github.com/AG187-Lab/tessryn/pull/53) has original-kernel QEMU boot/exception/reset evidence and owner-accepted native AWS CPU boot/recovery evidence for the bounded `t3a.small` profile. [Draft K02](https://github.com/AG187-Lab/tessryn/pull/58) adds four single-CPU CPL3 protection probes under QEMU. Physical hardware, full native isolation, device drivers, GPU execution, Thunderbolt, inference and distributed performance remain unqualified. See the [roadmap](roadmap.md) for current merge state and remaining gates; historical evidence retains its original date and scope.
