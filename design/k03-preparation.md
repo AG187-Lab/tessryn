@@ -129,3 +129,11 @@ native synchronization, scheduler timelines/cross-core raw traces and measured
 accounting under contention. Scheduler expiry/failure does not establish memory
 reclamation, output fencing or stopped DMA. CPU budgets imply no universal GPU
 preemption or memory-bandwidth isolation.
+
+This core is the simple correctness reference for later scheduling comparisons.
+A preregistered native comparison under
+[the inference-performance contract](inference-performance.md) remains pending
+until K02, qualified clocks and SMP execution are ready. It must partition task,
+kernel and attributable enforcement time without double charging intervals,
+retain raw contention/wakeup/migration traces and measure instrumentation cost.
+No throughput, tail-latency or inference speedup is claimed by this PR.
