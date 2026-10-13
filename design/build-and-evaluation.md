@@ -1,7 +1,9 @@
 # G03 build and evaluation foundation
 
-Status: host tooling with original test fixtures. Tessryn kernel boot, native
-services, GPU execution and inference remain **unavailable**. A fixture pass
+Status: G03 host tooling with original test fixtures. This fixture workflow
+establishes no kernel boot, native services, GPU execution or inference. The
+separate [K01 workflow](first-kernel.md) builds and boots the original kernel.
+A fixture pass
 establishes only that this harness observed its marker and expected emulator
 exit. The freestanding Rust ELF probe is inspected, never executed.
 
@@ -188,6 +190,11 @@ implementation results, preregistration and future measured-performance records.
 numerical, held-out and performance evidence unavailable. The
 [performance template](../evidence/performance-template.json) is an unfilled
 assumption, not a preregistration or measurement.
+
+The historical [G03 implementation evidence](../evidence/g03-verification/README.md)
+and [review-fix reproduction](../evidence/g03-review/README.md) retain their exact
+recorded commits and scope. The separate [K01 evidence](../evidence/k01-verification/README.md)
+records original-kernel execution.
 
 [G03 CI](../.github/workflows/g03.yml) runs unit failure/cancellation tests,
 design validation, checksum-pinned setup, two independent builds, a QEMU fixture

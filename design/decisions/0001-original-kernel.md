@@ -1,6 +1,8 @@
 # ADR 0001: Build an original kernel and operating system
 
-Status: Accepted design commitment. Implementation evidence: pending.
+Status: Accepted design commitment. Initial CPU kernel boot/fault evidence exists
+for [K01's emulator profile](../first-kernel.md); physical platforms, native
+services and device drivers remain pending.
 
 ## Decision
 

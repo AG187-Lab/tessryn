@@ -1,0 +1,134 @@
+{
+  "boot_verification": "requires_visual_inspection",
+  "case": "deployment",
+  "display_profile": {
+    "address": 2147483648,
+    "height": 800,
+    "layout_source": "https://github.com/qemu/qemu/blob/4fc49f46dc95d4a27de2509e7fceb2931e91faeb/include/hw/display/bochs-vbe.h",
+    "mode_source": "QMP query-pci and live standard VGA Bochs VBE MMIO registers",
+    "pixel_format": "bgrx",
+    "pixel_format_source": "QEMU little-endian standard VGA; bundled EDK2 QemuVideoDxe 32-bit BGRx",
+    "register_bar_address": 2164264960,
+    "size_bytes": 4096000,
+    "stride": 1280,
+    "width": 1280
+  },
+  "emulator_sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51",
+  "evaluator_sha256": "ec007a39daed7d0d50eee1e9004171e6fdbe86d106251c343b14633dbf60c308",
+  "execution": {
+    "capture_after_seconds": 10,
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg",
+      "-cpu",
+      "qemu64",
+      "-m",
+      "256M",
+      "-smp",
+      "1",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "none",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-drive",
+      "if=ide,format=raw,readonly=on,media=cdrom,file=boot.iso",
+      "-boot",
+      "order=d",
+      "-qmp",
+      "unix:qmp.sock,server=on,wait=off"
+    ],
+    "elapsed_seconds": 10.065913875005208,
+    "max_log_bytes": 262144,
+    "returncode": 0,
+    "timeout_seconds": 30
+  },
+  "firmware": {
+    "code": {
+      "path": "firmware/edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    "descriptor": {
+      "path": "firmware/60-edk2-x86_64.json",
+      "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+      "size_bytes": 702
+    },
+    "notice": {
+      "path": "firmware/edk2-licenses.txt",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    "vars": {
+      "path": "firmware/edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  },
+  "format": "tessryn-k01-display-result",
+  "iso_sha256": "f5b64c06a7ee87e44e358bc75eca4f983ccff899935dd7079d44f365b31702da",
+  "kernel_sha256": "cc52a73176d92cd6527d3b66ad76a421c12b452ab74fa249a89c92b09da0d132",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "qmp.jsonl",
+      "sha256": "f3458c313eab1cf18d6b3be5b6e095ceaa52db0b076c8c108b4e72f34c6924bd",
+      "size_bytes": 2523
+    },
+    {
+      "path": "vbe-registers.bin",
+      "sha256": "17c963b9266f2dda4cb8c060701a84a04c97ff7201b1db863c00dbeca1f1b067",
+      "size_bytes": 22
+    },
+    {
+      "path": "framebuffer-byteorder.bin",
+      "sha256": "a9960022d10fba7af2c77d2065c13b5cc414a9a8baee03f4fddc2e6fc48b1c95",
+      "size_bytes": 4
+    },
+    {
+      "path": "framebuffer.raw",
+      "sha256": "1fed3515d00c8d3014e6c6534b129a58d197ca3710c31878bf6497882c109583",
+      "size_bytes": 4096000
+    }
+  ],
+  "manifest_sha256": "2d936e3659245780841919b6a17e876c06df4124aadda08ee7b53412ff4acce1",
+  "media": "iso",
+  "physical_hardware": "unavailable",
+  "reason": "framebuffer captured; visual boot verification remains required",
+  "schema_version": 1,
+  "scope": "QEMU q35/TCG framebuffer capture; requires separate visual inspection",
+  "screenshot": {
+    "channels": 3,
+    "format": "PPM_P6",
+    "height": 800,
+    "path": "screenshot.ppm",
+    "sha256": "cf101f238220707b9ec4272eb348ae4fc9d17debe2233a52516a1724d61a5c6a",
+    "size_bytes": 3072016,
+    "width": 1280
+  },
+  "status": "captured"
+}

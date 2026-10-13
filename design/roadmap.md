@@ -1,6 +1,6 @@
 # Tessryn implementation roadmap
 
-Tessryn is an original kernel and operating system for agent execution and distributed inference. This roadmap describes implementation work, not an implemented system. No native boot, accelerator execution or performance result has been produced by the design review.
+Tessryn is an original kernel and operating system for agent execution and distributed inference. The [first K01 kernel](first-kernel.md) now boots and exercises fault paths in the declared QEMU/OVMF profile. The remaining roadmap describes planned work; physical native boot, accelerator execution and performance remain unqualified.
 
 The implementation backlog is [planning/backlog.json](../planning/backlog.json). Logical issue keys become GitHub issue links when published. Milestones have no due dates until hardware qualification and the first accelerator bring-up establish a credible critical path.
 
@@ -21,12 +21,7 @@ The implementation backlog is [planning/backlog.json](../planning/backlog.json).
 
 ## First work and critical path
 
-G01 establishes exact physical inventories, access/artifact prerequisites and
-initial engineering profiles before native implementation. It remains the
-open ready work item. G03's reproducible build and evaluation tooling is
-complete with fixture evidence; it establishes no native capability. G02
-records the native interfaces and exact compatibility scope once G01's inputs
-are available, and K01 follows G02.
+G01 establishes exact physical inventories, access/artifact prerequisites and initial engineering profiles before native implementation. Its tooling foundation landed in [PR #52](https://github.com/AG187-Lab/tessryn/pull/52), while the qualification issue remains open. G03's [reproducible build and evaluation tooling](build-and-evaluation.md) is complete for its fixture profile. G02 records the wider native interfaces and exact compatibility scope once G01's inputs are available. The bounded [K01 CPU bring-up profile](first-kernel.md) has emulator evidence under [ADR 0010](decisions/0010-first-uefi-kernel.md), while G02 and physical qualification remain open. Current readiness follows live issue state, dependencies and acceptance evidence.
 
 The [G01 qualification packet](platform-qualification.md) records conditional cloud laboratory candidates, a bounded rental plan and reference inventory tooling. It does not complete hardware qualification or remove G02's platform dependency. No physical notebook or native-supported profile is available yet. G01 can select evidence-backed engineering targets while native boot, device execution and sustained-performance qualification remain later gates; it must not depend on those downstream implementations to complete.
 

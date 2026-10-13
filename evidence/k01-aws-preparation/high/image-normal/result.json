@@ -1,0 +1,111 @@
+{
+  "case": "normal",
+  "emulator_sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51",
+  "evaluator_sha256": "76626e6d3e7788958e0bffd6d0d64fc64c73fc1902d93f67509e8ebbb5f72741",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg",
+      "-cpu",
+      "qemu64",
+      "-m",
+      "8G",
+      "-smp",
+      "1",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,media=disk,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 1.6413529159908649,
+    "max_log_bytes": 262144,
+    "memory_bytes": 8589934592,
+    "returncode": 33,
+    "timeout_seconds": 30
+  },
+  "firmware": {
+    "code": {
+      "path": "firmware/edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    "descriptor": {
+      "path": "firmware/60-edk2-x86_64.json",
+      "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+      "size_bytes": 702
+    },
+    "notice": {
+      "path": "firmware/edk2-licenses.txt",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    "vars": {
+      "path": "firmware/edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  },
+  "format": "tessryn-k01-high-result",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "c61d7ac518f49e742a585c23a86e97335e30bed00d7664cd8718c5ecb6d3d4d5",
+      "size_bytes": 941
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "18d92d677b31a63647da4ab620e658aa1a0bd9f4aedac1a4bc84d36a8c59f89f",
+  "observed_live_addresses": {
+    "exit_attempts": 1,
+    "gop_end": 2151579648,
+    "gop_start": 2147483648,
+    "guard": 140737486258176,
+    "image_end": 5369303040,
+    "image_start": 5368709120,
+    "map_end": 2112036864,
+    "map_start": 2111971328,
+    "paging_leaves": 2049,
+    "paging_tables": 7,
+    "physical_bits": 40,
+    "reset_pointer": 2137863458,
+    "runtime_high": 0,
+    "scratch": 1048576,
+    "stack_end": 2112167936,
+    "stack_start": 2112036864
+  },
+  "reason": "ordered handoff, actual address admission, owned memory and expected case exit matched",
+  "schema_version": 1,
+  "scope": "QEMU q35/TCG OVMF actual live image/handoff; physical hardware unqualified",
+  "status": "pass",
+  "variant": "image-normal"
+}

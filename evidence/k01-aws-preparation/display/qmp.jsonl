@@ -1,0 +1,14 @@
+{"QMP": {"capabilities": ["oob"], "version": {"package": "", "qemu": {"major": 11, "micro": 2, "minor": 1}}}}
+{"id": 1, "return": {}}
+{"id": 2, "return": {"running": true, "status": "running"}}
+{"data": {"offset": -1, "qom-path": "/machine/unattached/device[1]/rtc"}, "event": "RTC_CHANGE", "timestamp": {"microseconds": 89697, "seconds": 1791758136}}
+{"data": {"offset": 0, "qom-path": "/machine/unattached/device[1]/rtc"}, "event": "RTC_CHANGE", "timestamp": {"microseconds": 223080, "seconds": 1791758136}}
+{"id": 3, "return": {"running": true, "status": "running"}}
+{"event": "STOP", "timestamp": {"microseconds": 146594, "seconds": 1791758145}}
+{"id": 4, "return": {}}
+{"id": 5, "return": [{"bus": 0, "devices": [{"bus": 0, "class_info": {"class": 1536, "desc": "Host bridge"}, "function": 0, "id": {"device": 10688, "subsystem": 4352, "subsystem-vendor": 6900, "vendor": 32902}, "irq_pin": 0, "qdev_id": "", "regions": [], "slot": 0}, {"bus": 0, "class_info": {"class": 768, "desc": "VGA controller"}, "function": 0, "id": {"device": 4369, "subsystem": 4352, "subsystem-vendor": 6900, "vendor": 4660}, "irq_pin": 0, "qdev_id": "", "regions": [{"address": 2147483648, "bar": 0, "mem_type_64": false, "prefetch": true, "size": 16777216, "type": "memory"}, {"address": 2164264960, "bar": 2, "mem_type_64": false, "prefetch": false, "size": 4096, "type": "memory"}], "slot": 1}, {"bus": 0, "class_info": {"class": 1537, "desc": "ISA bridge"}, "function": 0, "id": {"device": 10520, "subsystem": 4352, "subsystem-vendor": 6900, "vendor": 32902}, "irq_pin": 0, "qdev_id": "", "regions": [], "slot": 31}, {"bus": 0, "class_info": {"class": 262, "desc": "SATA controller"}, "function": 2, "id": {"device": 10530, "subsystem": 4352, "subsystem-vendor": 6900, "vendor": 32902}, "irq": 10, "irq_pin": 1, "qdev_id": "", "regions": [{"address": 24640, "bar": 4, "size": 32, "type": "io"}, {"address": 2164260864, "bar": 5, "mem_type_64": false, "prefetch": false, "size": 4096, "type": "memory"}], "slot": 31}, {"bus": 0, "class_info": {"class": 3077, "desc": "SMBus"}, "function": 3, "id": {"device": 10544, "subsystem": 4352, "subsystem-vendor": 6900, "vendor": 32902}, "irq": 10, "irq_pin": 1, "qdev_id": "", "regions": [{"address": 24576, "bar": 4, "size": 64, "type": "io"}], "slot": 31}]}]}
+{"id": 6, "return": {}}
+{"id": 7, "return": {}}
+{"id": 8, "return": {}}
+{"data": {"guest": false, "reason": "host-qmp-quit"}, "event": "SHUTDOWN", "timestamp": {"microseconds": 158762, "seconds": 1791758145}}
+{"id": 9, "return": {}}

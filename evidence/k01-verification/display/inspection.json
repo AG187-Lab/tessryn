@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-11",
+  "format": "tessryn-k01-manual-display-inspection",
+  "method": "Primary agent inspected the full-resolution PNG converted losslessly from retained PPM using Pillow; no pixel edits",
+  "original_ppm_sha256": "274518a980cba1be517b6034b91fe75c14b5d57ba267d1588e6b0291e906a342",
+  "png_sha256": "4ba844bfe307b704e4887b7c5ecc861c094284b501a78a346497e9cb6948db66",
+  "raw_capture_location": "Original screenshot.ppm and framebuffer.raw retained in ignored build/release-display; CI captures its own complete raw bundle",
+  "scope": "QEMU q35/TCG physical deployment ISO; physical hardware unqualified",
+  "status": "visually_verified",
+  "visible_markers": [
+    "TESSRYN ORIGINAL KERNEL",
+    "TESSRYN_K01_FRAMEBUFFER STATUS=READY",
+    "TESSRYN_K01_MEMORY_MAP_VALID",
+    "TESSRYN_K01_EXIT_BOOT_SERVICES_OK",
+    "TESSRYN_K01_CPU_OWNED",
+    "TESSRYN_K01_MEMORY_OWNERSHIP_OK",
+    "TESSRYN_K01_PASS"
+  ]
+}

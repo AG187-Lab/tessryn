@@ -1,0 +1,15 @@
+{
+  "cases": [
+    "int3",
+    "invalid_opcode",
+    "normal",
+    "page_fault",
+    "panic",
+    "reboot"
+  ],
+  "evaluator_sha256": "2614caa24dbb1374723f5d13a94175f370ccf2f4761213333c0535f3081346a1",
+  "format": "tessryn-aws-local-verification",
+  "manifest_sha256": "5cc73ac570ea11f70c52d7497a150633030fe75f706c8b14f36f1659e4859e36",
+  "scope": "deterministic AWS input media and QEMU headless serial/reset only; native AWS boot/recovery unqualified",
+  "status": "pass"
+}
