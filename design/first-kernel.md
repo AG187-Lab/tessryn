@@ -5,8 +5,9 @@ application. Firmware loads `EFI/BOOT/BOOTX64.EFI`; the image validates its memo
 handoff and calls `ExitBootServices` before entering its own CPU and memory state.
 The firmware is a boot dependency, not a deployment kernel. K01 has no storage,
 NIC, GPU, service or inference implementation. The separate
-[AWS boot and recovery workflow](aws-boot-and-recovery.md) prepares a headless
-CPU experiment; native EC2 execution and recovery remain unqualified.
+[AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification) has two
+owner-accepted native `t3a.small` boots and independent recovery on a separate
+Ubuntu instance, with cleanup complete. Native device drivers remain unavailable.
 
 ## Build and reproduce
 
@@ -100,7 +101,8 @@ framebuffer; ambiguous graphics selection is refused before handoff. This avoids
 drawing status on a discrete GPU while an IPMI console displays another adapter.
 The explicit AWS profile instead uses bounded COM1 at an assumed `0x3f8`,
 115200n8, with optional GOP and terminal halt. It never writes QEMU ports `0xe9`
-or `0xf4`; the UART assumption needs exact EC2 execution evidence.
+or `0xf4`; its normal boot UART path has execution evidence for the recorded
+`t3a.small` profile. Other profiles require separate qualification.
 
 | Case | Expected observation |
 | --- | --- |

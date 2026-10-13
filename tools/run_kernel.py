@@ -28,6 +28,7 @@ CASE_MARKERS = {"normal": "TESSRYN_K01_PASS", "int3": "TESSRYN_K01_EXCEPTION vec
                 "invalid_opcode": "TESSRYN_K01_EXCEPTION vector=6",
                 "page_fault": "TESSRYN_K01_EXCEPTION vector=14",
                 "panic": "TESSRYN_K01_PANIC", "reboot": "TESSRYN_K01_REBOOT_REQUEST"}
+FAULT_ADDRESS = 0x7FFFFFE00000
 
 
 def evaluator_hash() -> str:
@@ -52,6 +53,22 @@ def check_transcript(case: str, data: bytes, returncode: int | None, stderr: byt
         if match is None:
             return False
         at += match.end()
+    frames = [line for line in data.splitlines() if b"TESSRYN_K01_EXCEPTION" in line]
+    if case in ("int3", "invalid_opcode", "page_fault"):
+        if len(frames) != 1:
+            return False
+        frame = re.fullmatch(
+            rb"TESSRYN_K01_EXCEPTION vector=([0-9]{1,2}) error=(0x[0-9a-f]{1,16}) rip=(0x[0-9a-f]{1,16}) "
+            rb"cs=(0x[0-9a-f]{1,16}) rflags=(0x[0-9a-f]{1,16}) rsp=(0x[0-9a-f]{1,16}) cr2=(0x[0-9a-f]{1,16})",
+            frames[0],
+        )
+        vector = {"int3": 3, "invalid_opcode": 6, "page_fault": 14}[case]
+        if frame is None or int(frame[1]) != vector or int(frame[2], 16) != 0:
+            return False
+        if case == "page_fault" and int(frame[7], 16) != FAULT_ADDRESS:
+            return False
+    elif frames:
+        return False
     if returncode != (0 if case == "reboot" else 33):
         return False
     if case == "reboot" and (b"CPU Reset" not in stderr or b"Triple fault" in stderr):

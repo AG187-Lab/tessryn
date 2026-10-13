@@ -37,7 +37,9 @@ These documents capture research, architectural decisions, implementation gates 
 
 The first original kernel has emulator boot and fault-path evidence under the
 [K01 profile](first-kernel.md), including actual high image/handoff regressions.
-The [AWS profile](aws-boot-and-recovery.md) prepares local boot inputs; native EC2
-boot and recovery remain unqualified. Physical native boot, GPU execution, Thunderbolt
-support and distributed performance remain unqualified. Planned capabilities
-must remain labeled until their acceptance evidence exists.
+The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification) has two
+owner-accepted native `t3a.small` boots and independent recovery on a separate
+Ubuntu instance, with cleanup complete. Physical native boot, native device
+drivers, GPU execution, Thunderbolt support and distributed performance remain
+unqualified. Planned capabilities must remain labeled until their acceptance
+evidence exists.
