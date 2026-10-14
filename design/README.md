@@ -15,6 +15,7 @@ These documents record research, architectural decisions, implementation gates a
 | [Initial platform qualification](platform-qualification.md) | G01 candidate records, rental gates and read-only reference inventory |
 | [Benchmarks](benchmarks.md) | Workloads, baselines, numerical quality and evidence |
 | [Inference performance plan](inference-performance.md) | Proposed research-backed experiments, numerical quality gates and measured goodput |
+| [Runnable kernel benchmarks](kernel-benchmarks.md) | Host policy latency, memory/queue overhead, retained packets and measurement scope |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [First kernel](first-kernel.md) | Original UEFI kernel, boot/fault tests and GPU Mart virtual-CD workflow |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
