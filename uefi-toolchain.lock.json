@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "rust": {
+    "version": "1.96.0",
+    "revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "target": "x86_64-unknown-uefi",
+    "license": "MIT OR Apache-2.0",
+    "notices": {
+      "LICENSE-APACHE": {
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "LICENSE-MIT": {
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "COPYRIGHT": {
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      }
+    },
+    "target_library": {
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-uefi.tar.xz",
+      "sha256": "dd8d565f061389cef66f64aa65bbfabe01954e360ada0b39f1e0d637d588e4f6",
+      "hash_source": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+      "hash_source_sha256": "9af50610e1d82699f78a40b985c9277ae1a2c5a0bec86ae430cfe58832038285",
+      "manifest_key": "pkg.rust-std.target.x86_64-unknown-uefi.xz_hash"
+    }
+  },
+  "firmware": {
+    "architecture": "x86_64",
+    "secure_boot": false,
+    "source": "https://github.com/qemu/qemu/tree/4fc49f46dc95d4a27de2509e7fceb2931e91faeb/pc-bios",
+    "archive": {
+      "version": "11.1.2",
+      "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+      "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+      "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+      "hash_source": "toolchain.lock.json:qemu.sha256"
+    },
+    "hash_derivation": "SHA256 of selected members and their decompressed bytes in the verified upstream QEMU archive; no firmware rebuild.",
+    "members": {
+      "code": {
+        "member": "qemu-11.1.2/pc-bios/edk2-x86_64-code.fd.bz2",
+        "archive_member_sha256": "f4d7c29fccb5e1d4d851eaddc41a5c4feec7de96ca7ad9bbf96f4d09838ef973",
+        "archive_member_size_bytes": 1907255,
+        "compression": "bz2",
+        "filename": "edk2-x86_64-code.fd",
+        "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "size_bytes": 3653632
+      },
+      "vars": {
+        "member": "qemu-11.1.2/pc-bios/edk2-i386-vars.fd.bz2",
+        "archive_member_sha256": "83470f393b9a200838b2292a65ca5708a109005d65a6422f3fa23cb21c8179b9",
+        "archive_member_size_bytes": 190,
+        "compression": "bz2",
+        "filename": "edk2-i386-vars.fd",
+        "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "size_bytes": 540672
+      },
+      "notice": {
+        "member": "qemu-11.1.2/pc-bios/edk2-licenses.txt",
+        "archive_member_sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+        "archive_member_size_bytes": 42903,
+        "compression": "none",
+        "filename": "edk2-licenses.txt",
+        "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+        "size_bytes": 42903
+      },
+      "descriptor": {
+        "member": "qemu-11.1.2/pc-bios/descriptors/60-edk2-x86_64.json",
+        "archive_member_sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+        "archive_member_size_bytes": 702,
+        "compression": "none",
+        "filename": "60-edk2-x86_64.json",
+        "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+        "size_bytes": 702
+      }
+    },
+    "license_notice": "edk2-licenses.txt",
+    "distribution_requirements": "Preserve the bundled edk2-licenses.txt for firmware redistribution."
+  }
+}

@@ -1,0 +1,9 @@
+TESSRYN_K01_ENTRY
+TESSRYN ORIGINAL KERNEL
+TESSRYN_K01_FRAMEBUFFER status=ready width=1280 height=800 stride=1280 base=0x80000000 format=bgrx selection=firmware-console
+TESSRYN_K01_MEMORY_MAP_VALID descriptors=101 stride=48 free_pages=52831 attempt=1
+TESSRYN_K01_EXIT_BOOT_SERVICES_OK
+TESSRYN_K01_CPU_OWNED cr3=0xde46000 rsp=0xde34f70 gdt=owned idt=owned tss=owned
+TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch=0x100000 free_pages=52831 loader=reserved runtime=reserved firmware=quarantined
+TESSRYN_K01_PANIC panicked at kernel/main.rs:66:9:
+intentional K01 panic

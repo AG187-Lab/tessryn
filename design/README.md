@@ -17,6 +17,9 @@ These documents record research, architectural decisions, implementation gates a
 | [Inference performance plan](inference-performance.md) | Proposed research-backed experiments, numerical quality gates and measured goodput |
 | [Runnable kernel benchmarks](kernel-benchmarks.md) | Host policy latency, memory/queue overhead, retained packets and measurement scope |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
+| [First kernel](first-kernel.md) | Original UEFI kernel, boot/fault tests and GPU Mart virtual-CD workflow |
+| [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
+| [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
 | [Research](research.md) | Dated primary sources, applicability and open questions |
 | [Review findings](review.md) | Adversarial findings and their resolutions |
@@ -34,4 +37,14 @@ These documents record research, architectural decisions, implementation gates a
 - **Decision:** the current project choice, with rationale and reconsideration conditions.
 - **Open question:** requires research or an experiment before a claim is made.
 
-As of October 12, 2026, [K01](https://github.com/AG187-Lab/tessryn/pull/53) has original-kernel QEMU boot/exception/reset evidence and owner-accepted native AWS CPU boot/recovery evidence for the bounded `t3a.small` profile. [Draft K02](https://github.com/AG187-Lab/tessryn/pull/58) adds four single-CPU CPL3 protection probes under QEMU. Physical hardware, full native isolation, device drivers, GPU execution, Thunderbolt, inference and distributed performance remain unqualified. See the [roadmap](roadmap.md) for current merge state and remaining gates; historical evidence retains its original date and scope.
+The [K01 implementation and evidence](first-kernel.md), recorded in
+[PR #53](https://github.com/AG187-Lab/tessryn/pull/53), cover original-kernel
+QEMU boot, exception, panic and reset paths, including actual high image/handoff
+regressions. The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification)
+records two owner-accepted native `t3a.small` boots and independent recovery on a
+separate Ubuntu instance, with cleanup complete. [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58)
+builds on K01 and records four single-CPU CPL3 protection probes under QEMU.
+Physical hardware, full native isolation, native device drivers, GPU execution,
+Thunderbolt, inference and distributed performance remain unqualified. See the
+[roadmap](roadmap.md) for observed progress and remaining gates; historical
+evidence retains its original date and scope.

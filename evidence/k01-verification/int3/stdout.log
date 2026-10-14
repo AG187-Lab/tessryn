@@ -1,0 +1,10 @@
+TESSRYN_K01_ENTRY
+TESSRYN ORIGINAL KERNEL
+TESSRYN_K01_FRAMEBUFFER status=ready width=1280 height=800 stride=1280 base=0x80000000 format=bgrx selection=firmware-console
+TESSRYN_K01_MEMORY_MAP_VALID descriptors=101 stride=48 free_pages=52831 attempt=1
+TESSRYN_K01_EXIT_BOOT_SERVICES_OK
+TESSRYN_K01_CPU_OWNED cr3=0xde46000 rsp=0xde34f70 gdt=owned idt=owned tss=owned
+TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch=0x100000 free_pages=52831 loader=reserved runtime=reserved firmware=quarantined
+TESSRYN_K01_EXCEPTION vector=3 error=0x0 rip=0xde36063 cs=0x8 rflags=0x6 rsp=0xde34f68 cr2=0x0
+TESSRYN_K01_INT3_RECOVERED fp_state=preserved
+TESSRYN_K01_PASS

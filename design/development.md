@@ -2,24 +2,46 @@
 
 The public [Tessryn development Project](https://github.com/orgs/AG187-Lab/projects/1) coordinates work across [GitHub Issues](https://github.com/AG187-Lab/tessryn/issues). The [milestones](https://github.com/AG187-Lab/tessryn/milestones) group work into evidence gates; the [roadmap](roadmap.md) explains their exit criteria. The machine-readable [backlog](../planning/backlog.json) records logical work IDs and the initial dependency graph; the [GitHub map](../planning/github-map.json) resolves them to live resource URLs.
 
-## Current work and ready lanes
+## Current work and acceptance evidence
 
-G01 is the remaining open P0 task with no prerequisites, labeled `phase:Now`:
+The initial backlog designated G01 and G03 as prerequisite-free P0 tasks with the `phase:Now` label. That planning graph does not establish their current execution state:
 
-- [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1). Establish exact hardware, firmware, native-access constraints and the recoverable laboratory profile.
+- [G01: Qualify the first stable-node and native notebook platforms](https://github.com/AG187-Lab/tessryn/issues/1) remains open. [PR #52](https://github.com/AG187-Lab/tessryn/pull/52) landed its inventory tooling and [qualification packet](platform-qualification.md); exact physical records, access/artifact constraints and the initial engineering-target decision remain qualification work. Fixtures and virtual reference inventory do not replace those gates.
+- [G03: Establish reproducible builds and independent evaluation tooling](https://github.com/AG187-Lab/tessryn/issues/2) is complete through [PR #51](https://github.com/AG187-Lab/tessryn/pull/51). Its [tooling foundation](build-and-evaluation.md) provides pinned builds, provenance, bounded evaluation and evidence formats; numerical/model and performance observations remain unavailable.
 
-[PR #52](https://github.com/AG187-Lab/tessryn/pull/52) merged G01's inventory tooling and qualification packet. Its fixtures and virtual reference inventory do not replace the missing physical stable-node/notebook records or initial engineering-target decision. This independent physical inventory/access lane remains available; claim an exact authorized target in the issue before collecting evidence. G01 remains open.
+Select an open task using its live state, prerequisites and acceptance evidence.
+G01's independent physical inventory/access lane remains available; claim an
+exact authorized target in the issue before collecting evidence. [G02's portable
+host conformance foundation](https://github.com/AG187-Lab/tessryn/pull/54) is
+merged; its wider interfaces, compatibility/runtime choices and target decisions
+remain open with G01's platform dependency.
 
-[G03](https://github.com/AG187-Lab/tessryn/issues/2) is complete through [PR #51](https://github.com/AG187-Lab/tessryn/pull/51) for its fixture profile. [G02's portable host conformance foundation](https://github.com/AG187-Lab/tessryn/pull/54) is merged; the wider contract and target decisions remain open with G01's dependency.
+The [K01 implementation and evidence](first-kernel.md), recorded in
+[PR #53](https://github.com/AG187-Lab/tessryn/pull/53) under
+[ADR 0010](decisions/0010-first-uefi-kernel.md), cover a bounded original UEFI CPU
+bring-up profile with reproducible QEMU boot/exception/panic/reset and actual high
+image/handoff evidence. The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification)
+records two owner-accepted native `t3a.small` CPU boots separated by independent
+Ubuntu recovery, with cleanup complete. K01 does not complete G02 or native-device
+contracts. [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58) builds on K01
+and records four single-CPU CPL3 protection probes; the full native isolation
+matrix remains open. As of October 12, 2026, K03 scheduling/budget host-policy
+preparation is active under [issue #6](https://github.com/AG187-Lab/tessryn/issues/6),
+with an [owner scope notice](https://github.com/AG187-Lab/tessryn/issues/6#issuecomment-6139885186)
+but no public implementation PR or acceptance result; native SMP, clocks and
+enforcement remain gated by K02.
 
-As of October 12, 2026, [K01 PR #53](https://github.com/AG187-Lab/tessryn/pull/53) has reproducible original-kernel QEMU boot/exception/reset evidence and two owner-accepted native AWS `t3a.small` CPU boots separated by independent Ubuntu recovery, with cleanup complete. Its landing remains pending. [K02 draft PR #58](https://github.com/AG187-Lab/tessryn/pull/58) adds four single-CPU CPL3 protection probes and depends on K01 landing. The full native isolation matrix remains open. K03 scheduling/budget host-policy preparation is active under [issue #6](https://github.com/AG187-Lab/tessryn/issues/6), with an [owner scope notice](https://github.com/AG187-Lab/tessryn/issues/6#issuecomment-6139885186) but no public implementation PR or acceptance result yet; native SMP, clocks and enforcement remain gated by K02.
+Coordinate with the existing owner before overlapping kernel or evidence paths.
+Independent preparation does not complete native implementation dependencies.
+The [roadmap](roadmap.md) distinguishes landed foundations, observed execution and
+remaining gates. The [inference performance plan](inference-performance.md)
+records proposed downstream research and experiments; optimization claims require
+the [benchmark contract](benchmarks.md).
 
-Coordinate with the existing owner before overlapping kernel or evidence paths. Independent preparation does not complete native implementation dependencies. The [roadmap](roadmap.md) distinguishes landed foundations, observed execution and remaining gates. The [inference performance plan](inference-performance.md) records proposed downstream research and experiments; optimization claims require the [benchmark contract](benchmarks.md).
-
-Take ownership in the issue and agree on its acceptance evidence. G01's scope
-is exact inventories, access/artifact constraints and engineering-target
-selection. Native initialization and measured inference belong to subsequent
-implementation issues; advertised support requires their execution evidence.
+Take ownership in the issue and agree on its acceptance evidence. G01's scope is
+exact inventories, access/artifact constraints and engineering-target selection.
+Native initialization, supported physical platforms and measured inference
+require subsequent implementation evidence.
 
 ## Track execution
 
@@ -30,7 +52,7 @@ Use **Todo**, **In Progress** and **Done** for execution state; **P0**, **P1** a
 | View | Purpose |
 | --- | --- |
 | Development board | Track execution by status across all planned work |
-| Ready to start | Open `phase:Now` tasks; check native dependencies and maintain this label as work becomes ready |
+| Ready to start | Open items labeled `phase:Now`; inspect live issue state and native dependencies, and maintain the label as work becomes ready |
 | First product | Initial-product work, excluding `phase:Later` programs |
 | Roadmap | Unscheduled planning view; dates follow credible qualification evidence |
 

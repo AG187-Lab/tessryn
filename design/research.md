@@ -1,6 +1,6 @@
 # Research and evidence
 
-Status: research and implementation guidance; refreshed 2026-10-12. Tessryn has original-kernel boot evidence and a first scoped memory-protection slice in the public implementation work. Accelerator execution and measured Tessryn inference/kernel performance remain unavailable. Published experiments and vendor reports motivate tests; they do not establish Tessryn's performance.
+Status: research and implementation guidance; refreshed 2026-10-12. The [K01 profile](first-kernel.md) has original-kernel CPU boot and fault-path evidence in QEMU/OVMF, with separate [bounded AWS CPU boot/recovery qualification](aws-boot-and-recovery.md#observed-cpu-qualification). Public implementation work also has a first scoped memory-protection slice; the [roadmap](roadmap.md) records its source-bound evidence and remaining gates. Physical platforms remain unqualified; native accelerator execution and measured Tessryn inference/kernel performance remain unavailable. Published experiments and vendor reports motivate tests; they do not establish Tessryn's performance.
 
 ## Kernel research and inference priorities
 
