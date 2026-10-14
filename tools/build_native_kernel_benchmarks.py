@@ -15,6 +15,7 @@ from pathlib import Path, PurePosixPath
 import re
 import shlex
 import stat
+import subprocess
 import sys
 import time
 import types
@@ -303,7 +304,7 @@ def build(out: Path, scheduler_source: Path | None = None, *, timeout: float = 1
             unchanged(bindings)
             unchanged(retained)
             manifest["status"], manifest["reason"] = "built", "captured sources compiled with checked K01 profile"
-    except (OSError, ValueError, KeyError, TypeError, ImportError) as error:
+    except (OSError, ValueError, KeyError, TypeError, ImportError, subprocess.SubprocessError) as error:
         reason = "build rejected: " + type(error).__name__ + (": " + str(error) if isinstance(error, ValueError) else "")
         manifest["reason"] = public_log(reason.encode()).decode()[:1024]
     write_json(out / "manifest.json", manifest)

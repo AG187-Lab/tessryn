@@ -1,6 +1,6 @@
 # In-kernel benchmark experiment
 
-Status: experimental, single-CPU QEMU guest instrumentation. The first raw capture is pending. Hardware latency, native scheduler enforcement and inference performance are unqualified.
+Status: executed inside the original kernel under single-CPU QEMU. Two independent local image builds produced identical EFI, boot-media and policy-library bytes; both fresh boots emitted all 208 samples across 13 cases and passed offline verification. Hardware latency, native scheduler enforcement and inference performance are unqualified.
 
 This experiment executes original Rust code inside Tessryn after firmware exit and CPU ownership. It adds a separate opt-in build mode to the committed native kernel baseline; it does not execute the host benchmark binary in the guest. The [host harness merged in PR62](https://github.com/AG187-Lab/tessryn/pull/62) retains its separate format and scope.
 
@@ -23,7 +23,7 @@ gh api 'repos/AG187-Lab/tessryn/contents/scheduler-core/lib.rs?ref=c8b46a94ec826
 
 The required SHA-256 is `db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d`. The builder compiles it as an external `x86_64-unknown-uefi` library. A retained library for another target cannot be substituted, and the policy source is not copied into a competing scheduler implementation.
 
-The intended command sequence is:
+Run the experiment with:
 
 ```sh
 python3 tools/build_native_kernel_benchmarks.py --out build/native-benchmarks/image

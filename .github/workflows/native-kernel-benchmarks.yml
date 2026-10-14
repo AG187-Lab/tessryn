@@ -43,6 +43,20 @@ jobs:
       - name: Independently verify original transcript and retained bindings
         run: python3 tools/verify_native_kernel_benchmarks.py build/native-benchmarks/run-1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: native-benchmark-build-failure-diagnostics
+          path: |
+            build/native-benchmarks/image/manifest.json
+            build/native-benchmarks/image/memory-stdout.log
+            build/native-benchmarks/image/memory-stderr.log
+            build/native-benchmarks/image/scheduler-stdout.log
+            build/native-benchmarks/image/scheduler-stderr.log
+            build/native-benchmarks/image/kernel-stdout.log
+            build/native-benchmarks/image/kernel-stderr.log
+          if-no-files-found: warn
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: native-kernel-execution-not-hardware-performance

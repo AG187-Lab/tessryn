@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import stat
+import subprocess
 import sys
 import tempfile
 import time
@@ -177,7 +178,7 @@ def run(manifest_path: Path, out: Path, *, allow_qemu: bool = False,
                                               expected_registration_sha256=result["registration_sha256"])
             result.update(status="observed", valid=True, summary=summary,
                           reason="captured original kernel completed fixed raw-counter protocol in pinned single-CPU QEMU")
-    except (OSError, ValueError, KeyError, TypeError, ImportError) as error:
+    except (OSError, ValueError, KeyError, TypeError, ImportError, subprocess.SubprocessError) as error:
         reason = "capture rejected: " + (str(error) if isinstance(error, ValueError) else type(error).__name__)
         result["reason"] = build_tools.public_log(reason.encode()).decode()[:1024]
     if execution_receipt is None:

@@ -4,6 +4,7 @@ from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import time
@@ -226,6 +227,99 @@ class NativeRunnerTests(unittest.TestCase):
         self.assertFalse(result["valid"])
         self.assertIn("differ", result["reason"])
         self.assertEqual(calls, [])
+
+    def test_compiler_probe_subprocess_failures_publish_failed_manifest(self):
+        source = self.root / "tools/build_native_kernel_benchmarks.py"
+        builder.write_bytes(source, builder.LOADED_SOURCE)
+        builder.write_bytes(self.root / builder.PROFILE_FILE, b"{}")
+        scheduler = self.root / "build/native-inputs/scheduler-core.rs"
+        builder.write_bytes(scheduler, b"scheduler fixture")
+        errors = (subprocess.TimeoutExpired(["rustc", "--version"], 30),
+                  subprocess.CalledProcessError(1, ["rustc", "--version"]))
+        for index, error in enumerate(errors):
+            @contextmanager
+            def runtime(_):
+                def probe():
+                    raise error
+                yield {"verifier": SimpleNamespace(validate_profile=lambda _: None),
+                       "kernel": SimpleNamespace(compiler_profile=probe)}
+            out = self.output("failed-build-" + str(index))
+            with patch.object(builder, "SOURCE_FILES", ("tools/build_native_kernel_benchmarks.py", builder.PROFILE_FILE)), \
+                    patch.object(builder, "SCHEDULER_SHA256", builder.digest(scheduler.read_bytes())), \
+                    patch.object(builder, "captured_runtime", runtime):
+                manifest = builder.build(out, scheduler)
+            self.assertEqual(manifest["status"], "failed")
+            self.assertEqual(manifest["compile"], [])
+            self.assertEqual(manifest["artifacts"], [])
+            self.assertIn(type(error).__name__, manifest["reason"])
+            self.assertEqual(json.loads((out / "manifest.json").read_text()), manifest)
+
+    def test_setup_probe_subprocess_failures_publish_failed_run_receipts(self):
+        path, manifest, setup = self.fake_build()
+        errors = (subprocess.TimeoutExpired(["rustc", "--version"], 30),
+                  subprocess.CalledProcessError(1, ["rustc", "--version"]))
+        for index, error in enumerate(errors):
+            launched = []
+            verified = []
+            @contextmanager
+            def runtime(_):
+                def probe():
+                    raise error
+                yield {"verifier": SimpleNamespace(validate_build=lambda _: manifest,
+                                                    verify_packet=lambda *a, **k: verified.append(a)),
+                       "kernel": SimpleNamespace(verify_installation=probe),
+                       "process": SimpleNamespace(run_bounded=lambda *a: launched.append(a))}
+            out = self.output("failed-probe-" + str(index))
+            with patch.object(runner, "_preflight_build", return_value=manifest), \
+                    patch.object(builder, "captured_runtime", runtime):
+                result = runner.run(path, out, allow_qemu=True)
+            self.assertEqual(result["status"], "failed")
+            self.assertIs(result["valid"], False)
+            self.assertIsNone(result["summary"])
+            self.assertIsNone(result["registration_sha256"])
+            self.assertEqual(launched, [])
+            self.assertEqual(verified, [])
+            self.assertIn(type(error).__name__, result["reason"])
+            receipt = json.loads((out / "run_receipts.json").read_text())["execution"]
+            self.assertEqual(receipt["status"], "unavailable")
+            self.assertIsNone(receipt["returncode"])
+            self.assertEqual(receipt["stdout"]["size"] + receipt["stderr"]["size"], 0)
+            self.assertEqual(json.loads((out / "result.json").read_text()), result)
+
+    def test_postcapture_probe_failure_keeps_raw_receipt_and_invalidates_run(self):
+        path, manifest, setup = self.fake_build()
+        errors = (subprocess.TimeoutExpired(["rustc", "--version"], 30),
+                  subprocess.CalledProcessError(1, ["rustc", "--version"]))
+        for index, error in enumerate(errors):
+            probe_calls = []
+            verified = []
+            @contextmanager
+            def runtime(_):
+                def probe():
+                    probe_calls.append(True)
+                    if len(probe_calls) == 2:
+                        raise error
+                    return setup
+                yield {"verifier": SimpleNamespace(validate_build=lambda _: manifest,
+                                                    verify_packet=lambda *a, **k: verified.append(a)),
+                       "kernel": SimpleNamespace(verify_installation=probe, make_disk=lambda _: b"disk"),
+                       "process": SimpleNamespace(run_bounded=self.completed)}
+            out = self.output("failed-postprobe-" + str(index))
+            with patch.object(runner, "_preflight_build", return_value=manifest), \
+                    patch.object(builder, "captured_runtime", runtime):
+                result = runner.run(path, out, allow_qemu=True)
+            self.assertEqual(len(probe_calls), 2)
+            self.assertEqual(result["status"], "failed")
+            self.assertIs(result["valid"], False)
+            self.assertIsNone(result["summary"])
+            self.assertIsNotNone(result["registration_sha256"])
+            self.assertEqual(verified, [])
+            self.assertIn(type(error).__name__, result["reason"])
+            receipt = json.loads((out / "run_receipts.json").read_text())["execution"]
+            self.assertEqual(receipt["status"], "completed")
+            self.assertEqual(receipt["returncode"], 33)
+            self.assertEqual((out / "qemu-stdout.log").read_bytes(), b"exact guest bytes\n")
+            self.assertEqual(json.loads((out / "result.json").read_text()), result)
 
 
 if __name__ == "__main__":
