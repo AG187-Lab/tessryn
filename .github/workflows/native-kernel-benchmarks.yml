@@ -1,0 +1,106 @@
+name: In-kernel benchmark execution
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guest-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.13'
+      - name: Check native packet and execution boundaries
+        run: python3 -m unittest discover -s tests -p 'test_native_kernel_benchmark*.py' -v
+      - name: Install QEMU build prerequisites
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+      - name: Install existing checksum-pinned compiler and emulator
+        run: |
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Fetch exact reviewed scheduler policy input
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/native-inputs
+          gh api 'repos/AG187-Lab/tessryn/contents/scheduler-core/lib.rs?ref=c8b46a94ec8269c630b491e038d953cda7c66b87' --header 'Accept: application/vnd.github.raw' > build/native-inputs/scheduler-core.rs
+      - name: Check counter facts and regression handling
+        run: |
+          build/toolchain/bin/rustc kernel/benchmark_clock.rs --test --edition=2024 -Dwarnings -o build/native-clock-tests
+          build/native-clock-tests
+      - name: Build the original opt-in guest image
+        run: python3 tools/build_native_kernel_benchmarks.py --out build/native-benchmarks/image
+      - name: Execute fixed in-kernel work under pinned single-CPU QEMU
+        run: python3 tools/run_native_kernel_benchmarks.py --manifest build/native-benchmarks/image/manifest.json --out build/native-benchmarks/run-1 --allow-qemu
+      - name: Independently verify original transcript and retained bindings
+        run: python3 tools/verify_native_kernel_benchmarks.py build/native-benchmarks/run-1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: native-kernel-execution-not-hardware-performance
+          path: |
+            build/native-benchmarks/run-1/registration.json
+            build/native-benchmarks/run-1/result.json
+            build/native-benchmarks/run-1/run_receipts.json
+            build/native-benchmarks/run-1/qemu-stdout.log
+            build/native-benchmarks/run-1/qemu-stderr.log
+            build/native-benchmarks/run-1/firmware/code.fd
+            build/native-benchmarks/run-1/firmware/vars.fd
+            build/native-benchmarks/run-1/build/manifest.json
+            build/native-benchmarks/run-1/build/profile.json
+            build/native-benchmarks/run-1/build/BOOTX64.EFI
+            build/native-benchmarks/run-1/build/boot.img
+            build/native-benchmarks/run-1/build/libtessryn_owned_memory.rlib
+            build/native-benchmarks/run-1/build/libtessryn_scheduler.rlib
+            build/native-benchmarks/run-1/build/memory-stdout.log
+            build/native-benchmarks/run-1/build/memory-stderr.log
+            build/native-benchmarks/run-1/build/scheduler-stdout.log
+            build/native-benchmarks/run-1/build/scheduler-stderr.log
+            build/native-benchmarks/run-1/build/kernel-stdout.log
+            build/native-benchmarks/run-1/build/kernel-stderr.log
+            build/native-benchmarks/run-1/build/notices/tessryn-LICENSE
+            build/native-benchmarks/run-1/build/notices/tessryn-NOTICE
+            build/native-benchmarks/run-1/build/notices/rust-LICENSE-APACHE
+            build/native-benchmarks/run-1/build/notices/rust-LICENSE-MIT
+            build/native-benchmarks/run-1/build/notices/rust-COPYRIGHT
+            build/native-benchmarks/run-1/build/notices/firmware-NOTICE
+            build/native-benchmarks/run-1/build/sources/kernel/main.rs
+            build/native-benchmarks/run-1/build/sources/kernel/benchmark_clock.rs
+            build/native-benchmarks/run-1/build/sources/kernel/native_benchmarks.rs
+            build/native-benchmarks/run-1/build/sources/kernel/cpu.rs
+            build/native-benchmarks/run-1/build/sources/kernel/entry.S
+            build/native-benchmarks/run-1/build/sources/kernel/uefi.rs
+            build/native-benchmarks/run-1/build/sources/kernel/paging.rs
+            build/native-benchmarks/run-1/build/sources/kernel/diagnostics.rs
+            build/native-benchmarks/run-1/build/sources/kernel/framebuffer.rs
+            build/native-benchmarks/run-1/build/sources/kernel-core/lib.rs
+            build/native-benchmarks/run-1/build/sources/kernel-core/capabilities.rs
+            build/native-benchmarks/run-1/build/sources/kernel-core/frames.rs
+            build/native-benchmarks/run-1/build/sources/kernel-core/boot_inventory.rs
+            build/native-benchmarks/run-1/build/sources/interfaces/abi-v1/native.rs
+            build/native-benchmarks/run-1/build/sources/tools/build_native_kernel_benchmarks.py
+            build/native-benchmarks/run-1/build/sources/tools/run_native_kernel_benchmarks.py
+            build/native-benchmarks/run-1/build/sources/tools/verify_native_kernel_benchmarks.py
+            build/native-benchmarks/run-1/build/sources/tools/build_kernel.py
+            build/native-benchmarks/run-1/build/sources/tools/build_fixture.py
+            build/native-benchmarks/run-1/build/sources/tools/setup_uefi.py
+            build/native-benchmarks/run-1/build/sources/tools/setup_toolchain.py
+            build/native-benchmarks/run-1/build/sources/tools/k01_media.py
+            build/native-benchmarks/run-1/build/sources/tools/g03/process.py
+            build/native-benchmarks/run-1/build/sources/fixtures/rom.py
+            build/native-benchmarks/run-1/build/sources/toolchain.lock.json
+            build/native-benchmarks/run-1/build/sources/uefi-toolchain.lock.json
+            build/native-benchmarks/run-1/build/sources/LICENSE
+            build/native-benchmarks/run-1/build/sources/NOTICE
+            build/native-benchmarks/run-1/build/sources/planning/native-kernel-benchmark-profile.json
+            build/native-benchmarks/run-1/build/sources/scheduler-core/lib.rs
+          if-no-files-found: warn
+          retention-days: 14

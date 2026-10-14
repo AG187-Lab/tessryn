@@ -1,0 +1,232 @@
+"""Exercise capture ownership and failure publication without expensive emulation."""
+
+from contextlib import contextmanager
+import json
+import os
+from pathlib import Path
+import sys
+import tempfile
+import time
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+from tools import build_native_kernel_benchmarks as builder
+from tools import run_native_kernel_benchmarks as runner
+from tools.g03.process import run_bounded
+
+
+class NativeRunnerTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary.name).resolve()
+        (self.root / "build").mkdir()
+        self.stack = []
+        for module in (builder, runner):
+            item = patch.object(module, "ROOT", self.root)
+            item.start()
+            self.stack.append(item)
+
+    def tearDown(self):
+        for item in reversed(self.stack):
+            item.stop()
+        self.temporary.cleanup()
+
+    def output(self, name="attempt"):
+        return self.root / "build" / name
+
+    def fake_build(self):
+        directory = self.output("built")
+        directory.mkdir()
+        refs = []
+        for name, data in (("sources/tools/run_native_kernel_benchmarks.py", runner.LOADED_SOURCE),
+                           ("sources/tools/build_native_kernel_benchmarks.py", builder.LOADED_SOURCE),
+                           ("sources/kernel/main.rs", b"captured original source")):
+            builder.write_bytes(directory / name, data)
+            refs.append(builder.reference(directory / name, directory))
+        builder.write_bytes(directory / "profile.json", b"{}")
+        artifacts = []
+        for name, role in builder.ARTIFACT_ROLES.items():
+            builder.write_bytes(directory / name, b"disk" if name == "boot.img" else b"MZfixture")
+            artifacts.append({**builder.reference(directory / name, directory), "role": role})
+        qemu = self.root / "build/toolchain/bin/qemu-system-x86_64"
+        builder.write_bytes(qemu, b"fixture executable")
+        firmware = {}
+        for name in ("code", "vars"):
+            target = self.root / "build/uefi/firmware" / (name + ".fd")
+            builder.write_bytes(target, name.encode())
+            ref = builder.reference(target, self.root / "build/uefi")
+            firmware[name] = {"path": ref["file"], "sha256": ref["sha256"], "size_bytes": ref["size"]}
+        setup = {"firmware": firmware, "verified_tools": {"qemu": {"sha256": builder.digest(qemu.read_bytes())}}}
+        manifest = {"status": "built", "profile": builder.reference(directory / "profile.json", directory),
+                    "sources": refs, "artifacts": artifacts, "notices": [], "compile": [], "toolchain": {"setup": setup}}
+        builder.write_json(directory / "manifest.json", manifest)
+        return directory / "manifest.json", manifest, setup
+
+    @contextmanager
+    def fake_runtime(self, manifest, setup, action, verification=None):
+        calls = []
+        summary = {"evidence_scope": builder.SCOPE, "native_qualification": False, "clock": "tsc_ticks"}
+        def verify(directory, **kwargs):
+            calls.append((directory, kwargs))
+            return summary if verification is None else verification(directory)
+        modules = {"kernel": SimpleNamespace(verify_installation=lambda: setup, make_disk=lambda _: b"disk"),
+                   "process": SimpleNamespace(run_bounded=action),
+                   "verifier": SimpleNamespace(validate_build=lambda _: manifest, verify_packet=verify)}
+        @contextmanager
+        def runtime(_):
+            yield modules
+        with patch.object(runner, "_preflight_build", return_value=manifest), patch.object(builder, "captured_runtime", runtime):
+            yield calls
+
+    def completed(self, *args):
+        return SimpleNamespace(status="completed", reason="exited", returncode=33,
+                               elapsed_seconds=.01, stdout=b"exact guest bytes\n", stderr=b"")
+
+    def test_budgets_reject_bool_nonfinite_and_overflow(self):
+        for timeout, log in ((True, 1), (float("nan"), 1), (0, 1), (121, 1), (1, True), (1, 0), (1, (1 << 20) + 1)):
+            with self.subTest(timeout=timeout, log=log), self.assertRaises(ValueError):
+                builder.budgets(timeout, log)
+
+    def test_optin_and_sixty_second_capture_bound_precede_output(self):
+        with self.assertRaises(ValueError):
+            runner.run(Path("missing"), self.output())
+        with self.assertRaises(ValueError):
+            runner.run(Path("missing"), self.output(), allow_qemu=True, timeout=61)
+        self.assertFalse(self.output().exists())
+
+    def test_output_is_exclusive(self):
+        out = builder.exclusive_directory(self.output())
+        builder.write_bytes(out / "sentinel", b"keep")
+        with self.assertRaises(FileExistsError):
+            builder.exclusive_directory(out)
+        self.assertEqual((out / "sentinel").read_bytes(), b"keep")
+
+    def test_symlink_leaf_and_ancestor_refused(self):
+        target = self.root / "data"
+        target.write_bytes(b"source")
+        (self.root / "leaf").symlink_to(target)
+        (self.root / "ancestor").symlink_to(self.root, target_is_directory=True)
+        for path in (self.root / "leaf", self.root / "ancestor/data"):
+            with self.subTest(path=path), self.assertRaises(OSError):
+                builder.regular_bytes(path)
+
+    def test_fifo_rejected_without_blocking_open(self):
+        path = self.root / "pipe"
+        os.mkfifo(path)
+        started = time.monotonic()
+        with self.assertRaises(ValueError):
+            builder.regular_bytes(path)
+        self.assertLess(time.monotonic() - started, .5)
+
+    def test_log_redaction_keeps_byte_bound_and_utf8(self):
+        for data in (b"/tmp/a", b"/tmp/a\n" * 20, b"/private/work/source.rs:10 error", "é/tmp/a".encode()):
+            result = builder.public_log(data)
+            self.assertLessEqual(len(result), len(data))
+            result.decode("utf-8")
+            self.assertNotIn(b"/private/work", result)
+
+    def test_dependency_escape_and_symlink_rejected(self):
+        snapshot = self.root / "sources"
+        snapshot.mkdir()
+        outside = self.root / "outside.rs"
+        outside.write_bytes(b"source")
+        (snapshot / "link.rs").symlink_to(outside)
+        with self.assertRaises(ValueError):
+            builder.dependency_paths("artifact: " + str(outside), snapshot, set())
+        with self.assertRaises(OSError):
+            builder.dependency_paths("artifact: link.rs", snapshot, set())
+
+    def test_malformed_build_is_rejected_before_retention(self):
+        source = self.output("malformed")
+        source.mkdir()
+        (source / "manifest.json").write_bytes(b'{"status":"built","status":"failed"}')
+        verifier_path = Path(runner.__file__).parent / "verify_native_kernel_benchmarks.py"
+        builder.write_bytes(self.root / "tools/verify_native_kernel_benchmarks.py", verifier_path.read_bytes())
+        out = builder.exclusive_directory(self.output())
+        with self.assertRaises(ValueError):
+            runner._copy_build(source / "manifest.json", out)
+        self.assertEqual(list(out.iterdir()), [])
+
+    def test_changed_imported_runner_fails_without_launch(self):
+        with patch.object(runner, "LOADED_SOURCE", b"different imported source"):
+            result = runner.run(Path("missing"), self.output(), allow_qemu=True)
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["status"], "failed")
+        self.assertIsNone(result["registration_sha256"])
+        self.assertEqual(json.loads((self.output() / "run_receipts.json").read_text())["execution"]["status"], "unavailable")
+
+    def test_registration_precedes_child_and_raw_bytes_are_exact(self):
+        path, manifest, setup = self.fake_build()
+        def child(*args):
+            registration = json.loads((self.output() / "registration.json").read_text())
+            self.assertEqual(registration["config"], builder.CONFIG)
+            self.assertEqual(registration["evidence_scope"], "qemu_guest_microbenchmark")
+            self.assertIs(registration["native_qualification"], False)
+            command = registration["command"]
+            self.assertEqual(command[command.index("-smp") + 1], "1")
+            return self.completed()
+        with self.fake_runtime(manifest, setup, child) as calls:
+            result = runner.run(path, self.output(), allow_qemu=True)
+        self.assertTrue(result["valid"])
+        self.assertEqual(len(calls), 1)
+        self.assertEqual((self.output() / "qemu-stdout.log").read_bytes(), b"exact guest bytes\n")
+        self.assertEqual(result["registration_sha256"], builder.digest((self.output() / "registration.json").read_bytes()))
+
+    def test_timeout_and_log_limit_never_publish_success(self):
+        for index, program in enumerate(("import time;time.sleep(2)", "print('x'*100000)")):
+            path, manifest, setup = self.fake_build()
+            out = self.output("failed-" + str(index))
+            def child(command, cwd, timeout, limit):
+                return run_bounded([sys.executable, "-c", program], cwd, .05, 64)
+            with self.fake_runtime(manifest, setup, child) as calls:
+                result = runner.run(path, out, allow_qemu=True)
+            self.assertFalse(result["valid"])
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(calls, [])
+            receipt = json.loads((out / "run_receipts.json").read_text())["execution"]
+            self.assertIn(receipt["status"], ("timeout", "log_limit"))
+            self.assertLessEqual(receipt["stdout"]["size"] + receipt["stderr"]["size"], 64)
+            # Each attempt gets a fresh build and output; existing evidence is kept.
+            if index == 0:
+                for file in sorted(path.parent.rglob("*"), reverse=True):
+                    if file.is_file():
+                        file.unlink()
+                    elif file.is_dir():
+                        file.rmdir()
+                path.parent.rmdir()
+                for file in (self.root / "build/toolchain", self.root / "build/uefi"):
+                    import shutil
+                    shutil.rmtree(file)
+
+    def test_retained_source_mutation_invalidates_completed_capture(self):
+        path, manifest, setup = self.fake_build()
+        def child(*args):
+            source = self.output() / "build/sources/kernel/main.rs"
+            source.chmod(0o644)
+            source.write_bytes(b"changed")
+            return self.completed()
+        with self.fake_runtime(manifest, setup, child) as calls:
+            result = runner.run(path, self.output(), allow_qemu=True)
+        self.assertFalse(result["valid"])
+        self.assertEqual(calls, [])
+        self.assertIn("changed", result["reason"])
+
+    def test_current_runner_must_equal_build_source(self):
+        path, manifest, setup = self.fake_build()
+        source = path.parent / "sources/tools/run_native_kernel_benchmarks.py"
+        source.write_bytes(b"older runner")
+        for ref in manifest["sources"]:
+            if ref["file"] == "sources/tools/run_native_kernel_benchmarks.py":
+                ref.update(builder.reference(source, path.parent))
+        path.unlink()
+        builder.write_json(path, manifest)
+        with self.fake_runtime(manifest, setup, self.completed) as calls:
+            result = runner.run(path, self.output(), allow_qemu=True)
+        self.assertFalse(result["valid"])
+        self.assertIn("differ", result["reason"])
+        self.assertEqual(calls, [])
+
+
+if __name__ == "__main__":
+    unittest.main()

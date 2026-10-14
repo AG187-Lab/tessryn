@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "kind": "native_kernel_benchmark_profile",
+  "scope": "qemu_guest_microbenchmark",
+  "config": {
+    "samples": 16,
+    "warmup": 4,
+    "iterations": 128,
+    "seed": 1
+  },
+  "scheduler_source_sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+  "limits": {
+    "max_total_operations": 500000,
+    "max_total_bytes": 25165824,
+    "max_log_bytes": 1048576,
+    "timeout_seconds": 60
+  },
+  "counter": {
+    "name": "tsc",
+    "unit": "tsc_ticks",
+    "serialization": "cpuid_rdtsc_cpuid",
+    "frequency_hz": null,
+    "frequency_qualified": false,
+    "raw_timestamps": "start_ticks_end_ticks"
+  },
+  "warmup_policy": "per_case_discard_before_measurement",
+  "cases": [
+    {
+      "case": "counter_pair",
+      "implementation": "native_serialized_tsc_probe",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "empty_loop",
+      "implementation": "native_loop_reference",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "queue_roundtrip_batch_1",
+      "implementation": "bounded_ring_fixture",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 2
+    },
+    {
+      "case": "queue_roundtrip_batch_8",
+      "implementation": "bounded_ring_fixture",
+      "sample_unit": "timed_batch",
+      "batch_size": 8,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 16
+    },
+    {
+      "case": "queue_roundtrip_batch_64",
+      "implementation": "bounded_ring_fixture",
+      "sample_unit": "timed_batch",
+      "batch_size": 64,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 128
+    },
+    {
+      "case": "queue_full_rejection",
+      "implementation": "bounded_ring_fixture",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "queue_empty_rejection",
+      "implementation": "bounded_ring_fixture",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "memory_allocate_revoke_release",
+      "implementation": "tessryn_memory_policy_metadata",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 3
+    },
+    {
+      "case": "memory_access_check",
+      "implementation": "tessryn_memory_policy_metadata",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "native_zero_4096",
+      "implementation": "native_owned_volatile_page",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 4096,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "native_copy_4096",
+      "implementation": "native_owned_volatile_page",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 4096,
+      "operations_per_iteration": 1
+    },
+    {
+      "case": "scheduler_policy_dispatch_stop_cycle",
+      "implementation": "tessryn_scheduler_policy",
+      "sample_unit": "timed_batch",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 2
+    },
+    {
+      "case": "scheduler_policy_dispatch_latency",
+      "implementation": "tessryn_scheduler_policy",
+      "sample_unit": "single_operation",
+      "batch_size": 1,
+      "bytes_per_operation": 0,
+      "operations_per_iteration": 1
+    }
+  ],
+  "checks": [
+    "ring_full_empty_wrap_fifo",
+    "memory_rejects_foreign_bounds_revoked",
+    "memory_lifecycle_drained",
+    "native_volatile_zero_and_copy_exact",
+    "benchmark_operations_exact",
+    "scheduler_policy_reservations_stops_and_denials",
+    "counter_deltas_no_regression",
+    "owned_pages_from_final_handoff"
+  ],
+  "measurement_semantics": "raw_guest_counter_delta_no_subtraction",
+  "qualification": "not_established"
+}

@@ -17,6 +17,7 @@ These documents capture research, architectural decisions, implementation gates 
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [First kernel](first-kernel.md) | Original UEFI kernel, boot/fault tests and GPU Mart virtual-CD workflow |
 | [Native memory isolation slice](k02-native-slice.md) | Four single-CPU CPL3 memory probes, artifact-bound traps and remaining K02 gates |
+| [In-kernel benchmark experiment](native-kernel-benchmarks.md) | Opt-in raw-counter guest observations, capture boundaries and hardware timing gates |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
