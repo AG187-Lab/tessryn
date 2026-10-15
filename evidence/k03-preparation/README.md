@@ -1,5 +1,30 @@
 # K03 scheduler policy preparation evidence
 
+## October 14 main refresh
+
+After merging current `main` (`d6bf5e82dad6e6347238e1d6c683f5a6cdb1a5f6`),
+the [fresh clean receipt](main-refresh-20261014/result.json) binds merge revision
+`15a2e1f55740c4e224d2876689f9368bfa28395a`. All **42 Rust host tests** pass;
+its **11 input hashes** and repeated freestanding library digest match the
+original preparation below. No scheduler policy or tooling source changed in
+this refresh.
+
+The [fresh repository log](main-refresh-20261014/python-tests.log) records
+**524 tests: 523 passed, one skipped**. All **24 K03 tooling tests** ran and
+passed. The skip is an unrelated synthetic K01 paging test whose separate
+`build/uefi` development compiler is absent; no K03 check was skipped.
+The [fresh design log](main-refresh-20261014/design.log) validates the refreshed
+documentation. These results retain the same host-policy scope and remaining
+native integration gates described below.
+
+Fresh full-diff/tooling review and an independent scheduler-core review found
+no new concrete defects. The independent pass checked shared reservations,
+full interval charging/refunds, overdue peer retention, outcome precedence,
+rejection atomicity and task/CPU generation retirement against the integration
+contract and boundary tests. It did not claim native execution qualification.
+
+## Original preparation
+
 The [clean-source receipt](result.json) binds implementation revision
 `c8b46a94ec8269c630b491e038d953cda7c66b87`, **11 source inputs**, pinned
 compiler/library identities and **42 passing Rust host tests**. Repeated
