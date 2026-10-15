@@ -26,4 +26,4 @@ Prefill/decode separation has an additional feasible-memory gate. Use a smaller 
 
 ## Open implementation choices
 
-The primary language, bootloader/toolchain, first exact hardware profiles, model architecture/precision and numeric service targets are resolved by the initial platform and contract issues. Rust with a small assembly boundary and stable C-compatible interfaces is a candidate, not an approved implementation claim. Protocol and binary targets are pinned before interoperability or support is claimed.
+The first kernel uses pinned Rust with a small assembly boundary and an original UEFI image under [ADR 0010](decisions/0010-first-uefi-kernel.md). The whole-kernel/native-service language and C ABI proposal remains open under [ADR 0002](decisions/0002-language-and-toolchain.md). Exact physical hardware profiles, model architecture/precision and numeric service targets remain initial platform and contract work. Protocol and binary targets are pinned before interoperability or support is claimed.

@@ -4,9 +4,9 @@ An original operating system for AI agents and distributed inference.
 
 Tessryn is designed to let servers and qualified laptops form a cluster, execute models through native accelerator drivers, and serve models larger than any individual worker can hold. Its kernel, execution interfaces and distributed services are being designed together around memory ownership, asynchronous work and measured resource budgets.
 
-**Status, October 12, 2026:** original-kernel bring-up is underway. The first x86-64 UEFI kernel boots in QEMU/OVMF, exits firmware boot services, owns its CPU tables and memory handoff, and exercises traps, faults, panic and reset. Two owner-accepted native AWS `t3a.small` CPU boots completed, separated by independent recovery on a fresh Ubuntu instance, with trial cleanup complete. The [observed CPU qualification](https://github.com/AG187-Lab/tessryn/blob/c5d82c49cefd6dbc32f122562c6bb0c1608b4816/design/aws-boot-and-recovery.md#observed-cpu-qualification) is recorded in [K01 PR #53](https://github.com/AG187-Lab/tessryn/pull/53), which is awaiting merge.
+**Status, October 12, 2026:** original-kernel bring-up is underway. The K01 implementation and evidence in [PR #53](https://github.com/AG187-Lab/tessryn/pull/53) include the first x86-64 UEFI kernel, which boots in QEMU/OVMF, exits firmware boot services, owns its CPU tables and memory handoff, and exercises traps, faults, panic and reset. Two owner-accepted native AWS `t3a.small` CPU boots completed on the recorded original media, separated by independent recovery on a fresh Ubuntu instance, with trial cleanup complete. The [first kernel workflow](design/first-kernel.md) and [observed AWS CPU qualification](design/aws-boot-and-recovery.md#observed-cpu-qualification) record the reproducible instructions, deployed identity and exact claim limits.
 
-Reproducible build/evaluation tooling, portable interface conformance, owned-memory policy and boot-inventory preparation have landed. [Draft K02 work](https://github.com/AG187-Lab/tessryn/pull/58) has [execution evidence](https://github.com/AG187-Lab/tessryn/blob/7b1b07259be350db76657d0d1183078e6f8c610f/evidence/k02-native-slice/README.md) for four single-CPU CPL3 protection probes in the original kernel under QEMU. Full native isolation, physical stable-node/notebook qualification, native device drivers, GPU execution, model inference and measured Tessryn performance remain open. [Current progress and gates](design/roadmap.md).
+Reproducible build/evaluation tooling, portable interface conformance, owned-memory policy and boot-inventory preparation have landed. [K02 work in PR #58](https://github.com/AG187-Lab/tessryn/pull/58) builds on K01 and has [execution evidence](https://github.com/AG187-Lab/tessryn/blob/7b1b07259be350db76657d0d1183078e6f8c610f/evidence/k02-native-slice/README.md) for four single-CPU CPL3 protection probes in the original kernel under QEMU. K03 scheduling and budget host-policy preparation is active. Full native isolation and scheduling, physical stable-node/notebook qualification, native device drivers, GPU execution, model inference and measured Tessryn performance remain open. [Current progress and gates](design/roadmap.md).
 
 ## The first product milestone
 
@@ -24,6 +24,8 @@ The first accelerator qualification targets x86-64 and one exact NVIDIA hardware
 - [Inference performance plan](design/inference-performance.md): proposed experiments grounded in current research, with numerical quality and measured goodput gates
 - [Development board](https://github.com/orgs/AG187-Lab/projects/1), [open implementation work](https://github.com/AG187-Lab/tessryn/issues), [milestones](https://github.com/AG187-Lab/tessryn/milestones) and [development coordination](design/development.md)
 - [Build and emulator fixture workflow](design/build-and-evaluation.md) and [evaluation evidence formats](design/evaluation-evidence.md)
+- [First UEFI kernel, boot media and GPU Mart test path](design/first-kernel.md)
+- [Headless AWS CPU boot and independent recovery](design/aws-boot-and-recovery.md)
 
 ## Contribute
 

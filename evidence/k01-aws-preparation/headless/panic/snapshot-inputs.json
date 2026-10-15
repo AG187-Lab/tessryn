@@ -1,0 +1,56 @@
+{
+  "ami_contract": {
+    "Architecture": "x86_64",
+    "BootMode": "uefi",
+    "DeleteOnTermination": true,
+    "RootDeviceName": "/dev/sda1",
+    "VirtualizationType": "hvm",
+    "note": "The AWS resource owner supplies snapshot, AMI, region and device-enablement metadata after approval.",
+    "root_volume_gib": 1
+  },
+  "case": "panic",
+  "complete_snapshot": {
+    "ChangedBlocksCount": 5
+  },
+  "disk_path": "panic/boot.img",
+  "disk_sha256": "e903c3c99e6bb6b6b0700bbf34efe8c45e6d8f04b4fdf6a0e91d8b459d70129e",
+  "format": "tessryn-aws-snapshot-input-plan",
+  "idempotency": "AWS owner records a fresh attempt-scoped ClientToken; reuse it only for retries of that exact attempt.",
+  "logical_size_bytes": 1073741824,
+  "put_snapshot_blocks": {
+    "ChecksumAlgorithm": "SHA256",
+    "DataLength": 524288,
+    "blocks": [
+      {
+        "BlockIndex": 0,
+        "Checksum": "OsC3qpEBrsEZimbHfjJPmcaDeA/UO6Q3wsP8I7yA7Pw=",
+        "sha256": "3ac0b7aa9101aec1198a66c77e324f99c683780fd43ba437c2c3fc23bc80ecfc"
+      },
+      {
+        "BlockIndex": 2,
+        "Checksum": "rzHwLLVrqMV0hJVOmFAISY3Ls9dIxWiBMDhGZh9jZYY=",
+        "sha256": "af31f02cb56ba8c57484954e985008498dcbb3d748c56881303846661f636586"
+      },
+      {
+        "BlockIndex": 3,
+        "Checksum": "OljHx28S0Qq9XrWGsuRDBwt7VUVXinSThUxSVW2yQmQ=",
+        "sha256": "3a58c7c76f12d10abd5eb586b2e443070b7b5545578a7493854c52556db24264"
+      },
+      {
+        "BlockIndex": 4,
+        "Checksum": "MlBPDTwwQJEzbrtHALyJGs07mxsxRTHb2RZZfyhbXZg=",
+        "sha256": "32504f0d3c304091336ebb4700bc891acd3b9b1b314531dbd916597f285b5d98"
+      },
+      {
+        "BlockIndex": 2047,
+        "Checksum": "P2lv+sBLb1mC8zfLLONW6uoAhDl7X0jrE0l+pvt9nxg=",
+        "sha256": "3f696ffac04b6f5982f337cb2ce356eaea0084397b5f48eb13497ea6fb7d9f18"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "start_snapshot": {
+    "VolumeSize": 1
+  },
+  "status": "local_inputs_only_not_provisioned"
+}

@@ -1,0 +1,122 @@
+{
+  "capabilities": {
+    "aws_native_boot": "unqualified",
+    "aws_recovery": "unqualified",
+    "inference": "unavailable",
+    "native_gpu": "unavailable",
+    "network": "unavailable"
+  },
+  "case": "reboot",
+  "controls": [
+    {
+      "execute": "query-status",
+      "id": 2,
+      "result": {
+        "running": true,
+        "status": "running"
+      },
+      "stderr_offset": 5400,
+      "stdout_offset": 0
+    }
+  ],
+  "disk_sha256": "f3bc856af5e16ff71a410867fef2a6eccc8f2d8cd635bc3661aa4d79a1b15d4d",
+  "emulator_sha256": "3820eb5695938eb60f82dd548e16fec2107364e00e7cec673d9bdc21fb60bc51",
+  "evaluator_sha256": "2614caa24dbb1374723f5d13a94175f370ccf2f4761213333c0535f3081346a1",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg",
+      "-cpu",
+      "qemu64",
+      "-m",
+      "2G",
+      "-smp",
+      "2",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-nic",
+      "none",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-drive",
+      "if=none,id=boot,format=raw,snapshot=on,file=boot.img",
+      "-device",
+      "nvme,drive=boot,serial=TESSRYN_BOOT_TEST",
+      "-boot",
+      "order=c",
+      "-qmp",
+      "unix:qmp.sock,server=on,wait=off",
+      "-d",
+      "cpu_reset",
+      "-no-reboot"
+    ],
+    "elapsed_seconds": 1.7954413749976084,
+    "max_log_bytes": 1048576,
+    "returncode": 0,
+    "timeout_seconds": 60
+  },
+  "firmware": {
+    "code": {
+      "path": "firmware/edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    "descriptor": {
+      "path": "firmware/60-edk2-x86_64.json",
+      "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+      "size_bytes": 702
+    },
+    "notice": {
+      "path": "firmware/edk2-licenses.txt",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    "vars": {
+      "path": "firmware/edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  },
+  "format": "tessryn-aws-headless-result",
+  "kernel_sha256": "7df7e8591d2ef0a4ecdd82b4048255e0c8f8d178768de0d3702520dd389a74ee",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "b321512a336ad4286184cce9d35f5d0b83ba375d2565ae2df7de00c4ffef44b2",
+      "size_bytes": 1213
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "8ff428eb93437b4a19cbd357fbeffc4def7bd2540be8ee14514b215ba30554c8",
+      "size_bytes": 13500
+    },
+    {
+      "path": "qmp.jsonl",
+      "sha256": "a0a496e16f9a7cde6a2260232f926537da6da6e60cf312c4e5be9bb816dcb05f",
+      "size_bytes": 194
+    }
+  ],
+  "manifest_sha256": "5cc73ac570ea11f70c52d7497a150633030fe75f706c8b14f36f1659e4859e36",
+  "phases": [
+    {
+      "index": 0,
+      "stdout_begin": 0,
+      "stdout_end": 1213
+    }
+  ],
+  "reason": "headless serial markers and independent control matched",
+  "schema_version": 1,
+  "scope": "QEMU TCG q35/OVMF only; native AWS unqualified",
+  "status": "pass"
+}

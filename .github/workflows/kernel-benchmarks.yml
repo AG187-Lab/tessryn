@@ -1,0 +1,63 @@
+name: Host kernel benchmark harness
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark-harness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.13'
+      - name: Verify resource, provenance and measurement boundaries
+        run: python3 -m unittest discover -s tests -p 'test_kernel_benchmark*.py' -v
+      - name: Install existing checksum-pinned host compiler
+        run: python3 tools/setup_k02_toolchain.py
+      - name: Compile harness correctness tests
+        run: |
+          mkdir -p build/benchmark-tests
+          build/toolchain/bin/rustc kernel-core/lib.rs --crate-name tessryn_memory --crate-type rlib --edition=2024 -Copt-level=3 -Dwarnings -o build/benchmark-tests/libtessryn_memory.rlib
+          build/toolchain/bin/rustc benchmark-harness/main.rs --test --edition=2024 -Copt-level=3 -Dwarnings --extern tessryn_memory=build/benchmark-tests/libtessryn_memory.rlib -o build/benchmark-tests/tests
+          build/benchmark-tests/tests
+      - name: Execute scoped host smoke measurements
+        run: python3 tools/run_kernel_benchmarks.py --out build/benchmarks/ci-smoke --rustc build/toolchain/bin/rustc --samples 8 --warmup 2 --iterations 20
+      - name: Independently verify retained packet
+        run: python3 tools/verify_kernel_benchmarks.py build/benchmarks/ci-smoke
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: host-benchmark-smoke-not-native-performance
+          path: |
+            build/benchmarks/ci-smoke/profile.json
+            build/benchmarks/ci-smoke/registration.json
+            build/benchmarks/ci-smoke/raw.json
+            build/benchmarks/ci-smoke/result.json
+            build/benchmarks/ci-smoke/run_receipts.json
+            build/benchmarks/ci-smoke/kernel-benchmark
+            build/benchmarks/ci-smoke/logs/compile-memory.stdout
+            build/benchmarks/ci-smoke/logs/compile-memory.stderr
+            build/benchmarks/ci-smoke/logs/compile-harness.stdout
+            build/benchmarks/ci-smoke/logs/compile-harness.stderr
+            build/benchmarks/ci-smoke/logs/measurement.stdout
+            build/benchmarks/ci-smoke/logs/measurement.stderr
+            build/benchmarks/ci-smoke/sources/kernel-core/lib.rs
+            build/benchmarks/ci-smoke/sources/kernel-core/capabilities.rs
+            build/benchmarks/ci-smoke/sources/kernel-core/frames.rs
+            build/benchmarks/ci-smoke/sources/kernel-core/boot_inventory.rs
+            build/benchmarks/ci-smoke/sources/interfaces/abi-v1/native.rs
+            build/benchmarks/ci-smoke/sources/benchmark-harness/main.rs
+            build/benchmarks/ci-smoke/sources/benchmark-harness/ring.rs
+            build/benchmarks/ci-smoke/sources/benchmark-harness/tests.rs
+            build/benchmarks/ci-smoke/sources/tools/run_kernel_benchmarks.py
+            build/benchmarks/ci-smoke/sources/tools/verify_kernel_benchmarks.py
+            build/benchmarks/ci-smoke/sources/tools/g03/process.py
+          if-no-files-found: warn
+          retention-days: 14

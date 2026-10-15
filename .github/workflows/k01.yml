@@ -1,0 +1,254 @@
+name: K01 original UEFI kernel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  kernel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Install host QEMU build prerequisites
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+      - name: Install checksum-pinned tools and UEFI profile
+        run: |
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_uefi.py
+      - name: Check tooling and design
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 tools/validate_design.py
+      - name: Build independently twice
+        run: |
+          python3 tools/build_kernel.py --out build/kernel-a
+          python3 tools/build_kernel.py --out build/kernel-b
+      - name: Exercise boot, exceptions, panic, reset and virtual CD
+        run: |
+          for case in normal int3 invalid_opcode page_fault panic reboot; do
+            python3 tools/run_kernel.py --manifest build/kernel-a/manifest.json --case "$case" --out "build/k01-$case"
+          done
+          python3 tools/run_kernel.py --manifest build/kernel-a/manifest.json --media iso --out build/k01-iso
+      - name: Capture physical image display for visual inspection
+        run: python3 tools/check_kernel_display.py --manifest build/kernel-a/manifest.json --out build/k01-display
+      - name: Verify independent builds and retained results
+        run: |
+          python3 tools/verify_kernel.py --first build/kernel-a/manifest.json --second build/kernel-b/manifest.json \
+            --result build/k01-normal/result.json --result build/k01-int3/result.json \
+            --result build/k01-invalid_opcode/result.json --result build/k01-page_fault/result.json \
+            --result build/k01-panic/result.json --result build/k01-reboot/result.json \
+            --result build/k01-iso/result.json --out build/k01-verification.json
+      - name: Build high-address regressions independently twice
+        run: |
+          python3 tools/build_kernel.py --high --out build/high-kernel-a
+          python3 tools/build_kernel.py --high --out build/high-kernel-b
+      - name: Exercise and verify actual high live addresses
+        run: |
+          results=()
+          for variant in image-normal image-int3 image-page_fault image-reboot handoff-normal handoff-int3 handoff-page_fault handoff-reboot ram-only; do
+            python3 tools/run_kernel_high.py --manifest build/high-kernel-a/manifest.json --variant "$variant" --out "build/k01-high-$variant"
+            results+=(--result "build/k01-high-$variant/result.json")
+          done
+          python3 tools/verify_kernel_high.py --first build/high-kernel-a/manifest.json --second build/high-kernel-b/manifest.json \
+            "${results[@]}" --out build/k01-high-verification.json
+      - name: Build headless AWS inputs independently twice
+        run: |
+          python3 tools/build_aws_boot.py --out build/aws-a
+          python3 tools/build_aws_boot.py --out build/aws-b
+      - name: Exercise headless boot, faults and independent recovery locally
+        run: |
+          results=()
+          for case in normal int3 invalid_opcode page_fault panic reboot; do
+            python3 tools/run_aws_boot.py --manifest build/aws-a/manifest.json --case "$case" --out "build/aws-$case"
+            results+=(--result "build/aws-$case/result.json")
+          done
+          python3 tools/verify_aws_boot.py --first build/aws-a/manifest.json --second build/aws-b/manifest.json \
+            "${results[@]}" --out build/aws-verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: k01-kernel-and-evidence
+          path: |
+            build/kernel-a/manifest.json
+            build/kernel-a/normal/BOOTX64.EFI
+            build/kernel-a/normal/boot.img
+            build/kernel-a/normal/boot.iso
+            build/kernel-a/normal/build.log
+            build/kernel-a/int3/BOOTX64.EFI
+            build/kernel-a/int3/boot.img
+            build/kernel-a/int3/build.log
+            build/kernel-a/invalid_opcode/BOOTX64.EFI
+            build/kernel-a/invalid_opcode/boot.img
+            build/kernel-a/invalid_opcode/build.log
+            build/kernel-a/page_fault/BOOTX64.EFI
+            build/kernel-a/page_fault/boot.img
+            build/kernel-a/page_fault/build.log
+            build/kernel-a/panic/BOOTX64.EFI
+            build/kernel-a/panic/boot.img
+            build/kernel-a/panic/build.log
+            build/kernel-a/reboot/BOOTX64.EFI
+            build/kernel-a/reboot/boot.img
+            build/kernel-a/reboot/build.log
+            build/kernel-a/deployment/BOOTX64.EFI
+            build/kernel-a/deployment/boot.img
+            build/kernel-a/deployment/boot.iso
+            build/kernel-a/deployment/build.log
+            build/kernel-a/notices/tessryn-LICENSE
+            build/kernel-a/notices/tessryn-NOTICE
+            build/kernel-a/notices/rust-LICENSE-APACHE
+            build/kernel-a/notices/rust-LICENSE-MIT
+            build/kernel-a/notices/rust-COPYRIGHT
+            build/kernel-b/manifest.json
+            build/high-kernel-a/manifest.json
+            build/high-kernel-a/image-normal/BOOTX64.EFI
+            build/high-kernel-a/image-normal/boot.img
+            build/high-kernel-a/image-normal/build.log
+            build/high-kernel-a/image-int3/BOOTX64.EFI
+            build/high-kernel-a/image-int3/boot.img
+            build/high-kernel-a/image-int3/build.log
+            build/high-kernel-a/image-page_fault/BOOTX64.EFI
+            build/high-kernel-a/image-page_fault/boot.img
+            build/high-kernel-a/image-page_fault/build.log
+            build/high-kernel-a/image-reboot/BOOTX64.EFI
+            build/high-kernel-a/image-reboot/boot.img
+            build/high-kernel-a/image-reboot/build.log
+            build/high-kernel-a/handoff-normal/BOOTX64.EFI
+            build/high-kernel-a/handoff-normal/boot.img
+            build/high-kernel-a/handoff-normal/build.log
+            build/high-kernel-a/handoff-int3/BOOTX64.EFI
+            build/high-kernel-a/handoff-int3/boot.img
+            build/high-kernel-a/handoff-int3/build.log
+            build/high-kernel-a/handoff-page_fault/BOOTX64.EFI
+            build/high-kernel-a/handoff-page_fault/boot.img
+            build/high-kernel-a/handoff-page_fault/build.log
+            build/high-kernel-a/handoff-reboot/BOOTX64.EFI
+            build/high-kernel-a/handoff-reboot/boot.img
+            build/high-kernel-a/handoff-reboot/build.log
+            build/high-kernel-a/ram-only/BOOTX64.EFI
+            build/high-kernel-a/ram-only/boot.img
+            build/high-kernel-a/ram-only/build.log
+            build/high-kernel-a/notices/tessryn-LICENSE
+            build/high-kernel-a/notices/tessryn-NOTICE
+            build/high-kernel-a/notices/rust-LICENSE-APACHE
+            build/high-kernel-a/notices/rust-LICENSE-MIT
+            build/high-kernel-a/notices/rust-COPYRIGHT
+            build/high-kernel-b/manifest.json
+            build/k01-normal/result.json
+            build/k01-normal/stdout.log
+            build/k01-normal/stderr.log
+            build/k01-int3/result.json
+            build/k01-int3/stdout.log
+            build/k01-int3/stderr.log
+            build/k01-invalid_opcode/result.json
+            build/k01-invalid_opcode/stdout.log
+            build/k01-invalid_opcode/stderr.log
+            build/k01-page_fault/result.json
+            build/k01-page_fault/stdout.log
+            build/k01-page_fault/stderr.log
+            build/k01-panic/result.json
+            build/k01-panic/stdout.log
+            build/k01-panic/stderr.log
+            build/k01-reboot/result.json
+            build/k01-reboot/stdout.log
+            build/k01-reboot/stderr.log
+            build/k01-iso/result.json
+            build/k01-iso/stdout.log
+            build/k01-iso/stderr.log
+            build/k01-high-image-normal/result.json
+            build/k01-high-image-normal/stdout.log
+            build/k01-high-image-normal/stderr.log
+            build/k01-high-image-int3/result.json
+            build/k01-high-image-int3/stdout.log
+            build/k01-high-image-int3/stderr.log
+            build/k01-high-image-page_fault/result.json
+            build/k01-high-image-page_fault/stdout.log
+            build/k01-high-image-page_fault/stderr.log
+            build/k01-high-image-reboot/result.json
+            build/k01-high-image-reboot/stdout.log
+            build/k01-high-image-reboot/stderr.log
+            build/k01-high-handoff-normal/result.json
+            build/k01-high-handoff-normal/stdout.log
+            build/k01-high-handoff-normal/stderr.log
+            build/k01-high-handoff-int3/result.json
+            build/k01-high-handoff-int3/stdout.log
+            build/k01-high-handoff-int3/stderr.log
+            build/k01-high-handoff-page_fault/result.json
+            build/k01-high-handoff-page_fault/stdout.log
+            build/k01-high-handoff-page_fault/stderr.log
+            build/k01-high-handoff-reboot/result.json
+            build/k01-high-handoff-reboot/stdout.log
+            build/k01-high-handoff-reboot/stderr.log
+            build/k01-high-ram-only/result.json
+            build/k01-high-ram-only/stdout.log
+            build/k01-high-ram-only/stderr.log
+            build/k01-display/result.json
+            build/k01-display/stdout.log
+            build/k01-display/stderr.log
+            build/k01-display/qmp.jsonl
+            build/k01-display/vbe-registers.bin
+            build/k01-display/framebuffer-byteorder.bin
+            build/k01-display/framebuffer.raw
+            build/k01-display/screenshot.ppm
+            build/k01-verification.json
+            build/k01-high-verification.json
+            build/aws-a/manifest.json
+            build/aws-a/normal/BOOTX64.EFI
+            build/aws-a/normal/boot.img
+            build/aws-a/normal/snapshot-inputs.json
+            build/aws-a/normal/build.log
+            build/aws-a/int3/BOOTX64.EFI
+            build/aws-a/int3/snapshot-inputs.json
+            build/aws-a/int3/build.log
+            build/aws-a/invalid_opcode/BOOTX64.EFI
+            build/aws-a/invalid_opcode/snapshot-inputs.json
+            build/aws-a/invalid_opcode/build.log
+            build/aws-a/page_fault/BOOTX64.EFI
+            build/aws-a/page_fault/snapshot-inputs.json
+            build/aws-a/page_fault/build.log
+            build/aws-a/panic/BOOTX64.EFI
+            build/aws-a/panic/snapshot-inputs.json
+            build/aws-a/panic/build.log
+            build/aws-a/reboot/BOOTX64.EFI
+            build/aws-a/reboot/snapshot-inputs.json
+            build/aws-a/reboot/build.log
+            build/aws-a/notices/tessryn-LICENSE
+            build/aws-a/notices/tessryn-NOTICE
+            build/aws-a/notices/rust-LICENSE-APACHE
+            build/aws-a/notices/rust-LICENSE-MIT
+            build/aws-a/notices/rust-COPYRIGHT
+            build/aws-b/manifest.json
+            build/aws-normal/result.json
+            build/aws-normal/stdout.log
+            build/aws-normal/stderr.log
+            build/aws-normal/qmp.jsonl
+            build/aws-int3/result.json
+            build/aws-int3/stdout.log
+            build/aws-int3/stderr.log
+            build/aws-int3/qmp.jsonl
+            build/aws-invalid_opcode/result.json
+            build/aws-invalid_opcode/stdout.log
+            build/aws-invalid_opcode/stderr.log
+            build/aws-invalid_opcode/qmp.jsonl
+            build/aws-page_fault/result.json
+            build/aws-page_fault/stdout.log
+            build/aws-page_fault/stderr.log
+            build/aws-page_fault/qmp.jsonl
+            build/aws-panic/result.json
+            build/aws-panic/stdout.log
+            build/aws-panic/stderr.log
+            build/aws-panic/qmp.jsonl
+            build/aws-reboot/result.json
+            build/aws-reboot/stdout.log
+            build/aws-reboot/stderr.log
+            build/aws-reboot/qmp.jsonl
+            build/aws-verification.json
+          if-no-files-found: warn
+          retention-days: 14
