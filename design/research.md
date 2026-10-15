@@ -1,8 +1,33 @@
 # Research and evidence
 
-Status: research inputs checked 2026-10-11. The [K01 profile](first-kernel.md) has original-kernel CPU boot and fault-path evidence in QEMU/OVMF. Physical platforms remain unqualified; native accelerator execution and benchmark results remain unavailable. Published experiments and vendor reports motivate tests; they do not establish Tessryn's performance.
+Status: research and implementation guidance; refreshed 2026-10-12. The [K01 profile](first-kernel.md) has original-kernel CPU boot and fault-path evidence in QEMU/OVMF, with separate [bounded AWS CPU boot/recovery qualification](aws-boot-and-recovery.md#observed-cpu-qualification). Public implementation work also has a first scoped memory-protection slice; the [roadmap](roadmap.md) records its source-bound evidence and remaining gates. Physical platforms remain unqualified; native accelerator execution and measured Tessryn inference/kernel performance remain unavailable. Published experiments and vendor reports motivate tests; they do not establish Tessryn's performance.
+
+## Kernel research and inference priorities
+
+[Inference-oriented kernel performance](inference-performance.md) converts the following sources into staged experiments and benchmark gates. The mechanisms below are reported source facts; their application to Tessryn is an engineering inference. Recent sources supplement established work rather than making old results applicable to new hardware by assumption.
+
+| Primary source | Date | Mechanism and applicability |
+| --- | --- | --- |
+| [Shenango](https://www.usenix.org/conference/nsdi19/presentation/ousterhout), [Caladan](https://www.usenix.org/conference/osdi20/presentation/fried) | 2019–2020 | Rapid core allocation and contention feedback motivate burst/load and interference tests; dedicated scheduler/polling cores have an explicit cost. |
+| [Shinjuku](https://www.usenix.org/conference/nsdi19/presentation/kaffes) | 2019 | CPU preemption addresses head-of-line blocking. Measure quantum/overhead; it provides no GPU preemption bound. |
+| [SBB](https://www.usenix.org/conference/osdi26/presentation/hu-kang) | OSDI 2026 | Decentralized scheduling, flow migration and stealing address scaling; its user-interrupt mechanism needs separately qualified CPU support. |
+| [Asterinas](https://www.usenix.org/conference/atc25/presentation/peng-yuke) | USENIX ATC 2025 | A small unsafe Rust substrate motivates auditable CPU/MMU/DMA boundaries. Types alone do not qualify protection or concurrency. |
+| [EEVDF](https://docs.kernel.org/scheduler/sched-eevdf.html), [sched_ext](https://docs.kernel.org/scheduler/sched-ext.html) | Documentation checked 2026-10-12 | Fair eligibility and virtual deadlines, policy replacement and fallback inform comparisons; Tessryn's budget enforcement stays authoritative. No Linux ABI or BPF port is implied. |
 
 ## Serving and distribution
+
+The 2025–2026 refresh below adds explicit experiment directions to the older serving foundations. Publication dates refer to the named venue or preprint; the ideas remain unimplemented Tessryn candidates.
+
+| Primary source | Date | Tessryn experiment and boundary |
+| --- | --- | --- |
+| [ServeGen](https://www.usenix.org/conference/nsdi26/presentation/xiang-servegen) | NSDI 2026 | Replay per-client burst/length patterns and inaccurate estimates; naive workloads can choose the wrong serving configuration. It supplies no Tessryn timing or model evidence. |
+| [JITServe](https://www.usenix.org/conference/nsdi26/presentation/zhang-wei) | NSDI 2026 | Compare streaming, full-response and dependent-request SLOs under uncertain work lengths. Estimates and batch policy belong in native services; kernel budgets remain enforced. |
+| [vAttention](https://www.microsoft.com/en-us/research/publication/vattention-dynamic-memory-management-for-serving-llms-without-pagedattention/) | ASPLOS 2025 | Compare block layouts with contiguous virtual reservation and advance physical commitment. Its CUDA virtual-memory-management mechanism does not follow from CPU paging; required GPU backing must exist before dispatch. |
+| [Mooncake](https://www.usenix.org/conference/fast25/presentation/qin) | FAST 2025 | Compare KV tiers, locality and asynchronous batched transfer against explicit-copy/colocated references. Charge memory, restore/copy time and in-flight ownership; offload is not free capacity. |
+| [SIRD](https://www.usenix.org/conference/nsdi25/presentation/prasopoulos) | NSDI 2025 | Compare receiver scheduling with sender-pressure feedback under constrained uplinks and incast; this is downstream of native NIC/transport bring-up. |
+| [TENT](https://arxiv.org/abs/2604.00368) | Author preprint, April 2026; revised July 2026 | Backend-neutral transfer intent and late path selection motivate future failure/duplicate-completion tests. The inspected record establishes no peer-reviewed venue or qualified Tessryn path. |
+
+Start with public synthetic or permissioned anonymized traces: [ServeGen's artifact](https://github.com/alibaba/ServeGen) and [Mooncake's FAST 2025 trace release](https://github.com/kvcache-ai/Mooncake/tree/main/FAST25-release). Pin hashes, licenses and transformation rules before use; do not publish private prompts or tenant content. [Vidur](https://github.com/microsoft/vidur) can inform scheduling experiments, but its model predictions are simulation results until calibrated and validated against the exact native hardware.
 
 | Primary source | Date | Evidence and design implication |
 | --- | --- | --- |
