@@ -238,7 +238,21 @@ exception_common:
     mov rbx, rsp
     and rsp, -16
     sub rsp, 512
+    .if {region_service}
+    // Save the interrupted task before any Rust instruction can use XMM/x87.
+    // Initialize FXSAVE holes, then enter Rust with a known kernel FP image.
+    xor r10d, r10d
+.Lregion_trap_zero:
+    mov qword ptr [rsp + r10], 0
+    add r10, 8
+    cmp r10, 512
+    jne .Lregion_trap_zero
+    .endif
     fxsave64 [rsp]
+    mov rsi, rsp
+    .if {region_service}
+    fxrstor64 [rip + k02_reset_fp]
+    .endif
     call exception_handler
     fxrstor64 [rsp]
     mov rsp, rbx

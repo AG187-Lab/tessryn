@@ -4,7 +4,7 @@ use core::mem::{size_of, offset_of};
 use core::ptr;
 use crate::diagnostics::{fail, print, finish};
 
-global_asm!(include_str!("entry.S"));
+global_asm!(include_str!("entry.S"), region_service = const cfg!(k02_region_service) as u8);
 
 unsafe extern "efiapi" {
     pub fn kernel_enter(stack: u64, handoff: *const core::ffi::c_void) -> !;
@@ -185,13 +185,15 @@ pub unsafe fn install_user_test_boundary(stack_top: u64, return_gate: usize) {
 }
 
 #[unsafe(no_mangle)]
-pub extern "sysv64" fn exception_handler(frame: &ExceptionFrame) {
+pub extern "sysv64" fn exception_handler(frame: &ExceptionFrame, _fp: *const u8) {
     let cr2: u64;
     // SAFETY: entry stubs supply a live normalized frame in privileged mode.
     unsafe { asm!("mov {}, cr2", out(reg) cr2, options(nomem, nostack)) };
     print(format_args!("TESSRYN_K01_EXCEPTION vector={} error={:#x} rip={:#x} cs={:#x} rflags={:#x} rsp={:#x} cr2={:#x}\n",
         frame.vector, frame.error, frame.rip, frame.cs, frame.rflags, frame.rsp, cr2));
-    #[cfg(all(k02_native, not(k02_matrix)))]
+    #[cfg(k02_region_service)]
+    crate::region_runtime::capture(frame, _fp, cr2);
+    #[cfg(all(k02_native, not(any(k02_matrix, k02_region_service))))]
     crate::k02::handle_exception(frame, cr2);
     #[cfg(k02_matrix)]
     crate::k02_matrix::handle_exception(frame, cr2);

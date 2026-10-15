@@ -132,7 +132,7 @@ pub fn initialize(handoff: &crate::uefi::Handoff) {
     let mask=u32::from_le_bytes(supported.0[28..32].try_into().unwrap());
     if mask==0 || mask & 0x1f80 != 0x1f80 {fail("k02-fxsave-mxcsr-mask");}
     unsafe{ptr::addr_of_mut!(MXCSR_MASK).write(mask);}
-    #[cfg(k02_matrix)]
+    #[cfg(any(k02_matrix, k02_region_service))]
     {
         // This matrix admits ordinary four-level page permissions only. Do not
         // dismantle a live CET/shadow-stack context or reinterpret PKRU/PKRS.
@@ -189,11 +189,12 @@ pub fn initialize(handoff: &crate::uefi::Handoff) {
         fail("k02-cpu-profile-readback");
     }
     print(format_args!("TESSRYN_K02_PROFILE physical_bits={} cpu_count=1 paging_levels=4 nx_supported=1 nx_enabled=1 pcid_enabled=0 global_translations=0 la57_enabled=0 cr4={actual_cr4:#x} efer_low={low:#x}\n", handoff.physical_bits));
-    #[cfg(k02_matrix)]
+    #[cfg(any(k02_matrix, k02_region_service))]
     {
         if actual_cr4 & ((1u64 << 22) | (1u64 << 23) | (1u64 << 24)) != 0 {
             fail("k02-matrix-protection-readback");
         }
+        #[cfg(k02_matrix)]
         print(format_args!("TESSRYN_K02_MATRIX_CPU cr0={actual_cr0:#x} wp_enabled=1 pke_enabled=0 pks_enabled=0 cet_enabled=0 sgx_supported=0 osxsave_enabled=0 fxsave_mxcsr_mask={mask:#x}\n"));
     }
 }
