@@ -1,5 +1,24 @@
 # K03 scheduler policy preparation evidence
 
+## Successful Git diagnostics correction
+
+The completed external CLI review reproduced a provenance defect: successful
+Git stderr warnings could be appended to the recorded revision and make a clean
+checkout appear dirty. The checker now parses only stdout for Git bindings,
+requires a complete object identity and retains portable warnings on stderr.
+Two regression tests cover successful warnings and invalid successful output.
+No scheduler policy behavior changed.
+
+The [corrected clean receipt](git-diagnostics-20261014/result.json) binds
+`3f7274c57ab58c2d2f75a1303c69c237065a2353` and **11 source inputs**;
+all **42 Rust host tests** pass and the repeated library digest remains
+`3d0d3ce160c0a149da5eced6a3ebf7df6f1710dc3fd94d06afe1207920a03f3b`.
+The [corrected repository log](git-diagnostics-20261014/python-tests.log) records
+**526 tests: 525 passed, one skipped**, including **26 passing K03 tooling
+tests**. The unrelated synthetic K01 paging skip still reflects the absent
+separate UEFI compiler. The [design log](git-diagnostics-20261014/design.log)
+records current documentation validation.
+
 ## October 14 main refresh
 
 After merging current `main` (`d6bf5e82dad6e6347238e1d6c683f5a6cdb1a5f6`),
