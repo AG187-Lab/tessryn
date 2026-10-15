@@ -1,0 +1,312 @@
+warning: unreachable statement
+  --> kernel/main.rs:64:5
+   |
+61 |     k02::run(handoff);
+   |     ----------------- any code following this expression is unreachable
+...
+64 |     let scratch = handoff.scratch as *mut u64;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unreachable statement
+   |
+   = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `mxcsr_mask` is never used
+  --> kernel/k02_cpu.rs:38:8
+   |
+38 | pub fn mxcsr_mask() -> u32 {unsafe{ptr::addr_of!(MXCSR_MASK).read()}}
+   |        ^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: static `k02_probe_own_read` is never used
+  --> kernel/k02_cpu.rs:58:16
+   |
+58 |     pub static k02_probe_own_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_read` is never used
+  --> kernel/k02_cpu.rs:63:16
+   |
+63 |     pub static k02_probe_read: u8;
+   |                ^^^^^^^^^^^^^^
+
+warning: static `k02_probe_read_return` is never used
+  --> kernel/k02_cpu.rs:64:16
+   |
+64 |     pub static k02_probe_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_write` is never used
+  --> kernel/k02_cpu.rs:65:16
+   |
+65 |     pub static k02_probe_write: u8;
+   |                ^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_write_return` is never used
+  --> kernel/k02_cpu.rs:66:16
+   |
+66 |     pub static k02_probe_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_request` is never used
+  --> kernel/k02_cpu.rs:67:16
+   |
+67 |     pub static k02_probe_request: u8;
+   |                ^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_request_trap` is never used
+  --> kernel/k02_cpu.rs:68:16
+   |
+68 |     pub static k02_probe_request_trap: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_kernel_read_return` is never used
+  --> kernel/k02_cpu.rs:69:16
+   |
+69 |     pub static k02_probe_kernel_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_readonly_write_return` is never used
+  --> kernel/k02_cpu.rs:70:16
+   |
+70 |     pub static k02_probe_readonly_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_unauthorized_read` is never used
+  --> kernel/k02_cpu.rs:71:16
+   |
+71 |     pub static k02_probe_unauthorized_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_unauthorized_read_return` is never used
+  --> kernel/k02_cpu.rs:72:16
+   |
+72 |     pub static k02_probe_unauthorized_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_guard_read` is never used
+  --> kernel/k02_cpu.rs:73:16
+   |
+73 |     pub static k02_probe_guard_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_guard_read_return` is never used
+  --> kernel/k02_cpu.rs:74:16
+   |
+74 |     pub static k02_probe_guard_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_kernel_write` is never used
+  --> kernel/k02_cpu.rs:75:16
+   |
+75 |     pub static k02_probe_kernel_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_kernel_write_return` is never used
+  --> kernel/k02_cpu.rs:76:16
+   |
+76 |     pub static k02_probe_kernel_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_policy_read` is never used
+  --> kernel/k02_cpu.rs:77:16
+   |
+77 |     pub static k02_probe_policy_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_policy_read_return` is never used
+  --> kernel/k02_cpu.rs:78:16
+   |
+78 |     pub static k02_probe_policy_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_policy_write` is never used
+  --> kernel/k02_cpu.rs:79:16
+   |
+79 |     pub static k02_probe_policy_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_policy_write_return` is never used
+  --> kernel/k02_cpu.rs:80:16
+   |
+80 |     pub static k02_probe_policy_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_page_table_read` is never used
+  --> kernel/k02_cpu.rs:81:16
+   |
+81 |     pub static k02_probe_page_table_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_page_table_read_return` is never used
+  --> kernel/k02_cpu.rs:82:16
+   |
+82 |     pub static k02_probe_page_table_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_page_table_write` is never used
+  --> kernel/k02_cpu.rs:83:16
+   |
+83 |     pub static k02_probe_page_table_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_page_table_write_return` is never used
+  --> kernel/k02_cpu.rs:84:16
+   |
+84 |     pub static k02_probe_page_table_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_B_read` is never used
+  --> kernel/k02_cpu.rs:85:16
+   |
+85 |     pub static k02_probe_recursive_B_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_B_read_return` is never used
+  --> kernel/k02_cpu.rs:86:16
+   |
+86 |     pub static k02_probe_recursive_B_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_B_write` is never used
+  --> kernel/k02_cpu.rs:87:16
+   |
+87 |     pub static k02_probe_recursive_B_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_B_write_return` is never used
+  --> kernel/k02_cpu.rs:88:16
+   |
+88 |     pub static k02_probe_recursive_B_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_D_read` is never used
+  --> kernel/k02_cpu.rs:89:16
+   |
+89 |     pub static k02_probe_recursive_D_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_D_read_return` is never used
+  --> kernel/k02_cpu.rs:90:16
+   |
+90 |     pub static k02_probe_recursive_D_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_D_write` is never used
+  --> kernel/k02_cpu.rs:91:16
+   |
+91 |     pub static k02_probe_recursive_D_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_D_write_return` is never used
+  --> kernel/k02_cpu.rs:92:16
+   |
+92 |     pub static k02_probe_recursive_D_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_reuse_B_read` is never used
+  --> kernel/k02_cpu.rs:93:16
+   |
+93 |     pub static k02_probe_reuse_B_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_reuse_B_read_return` is never used
+  --> kernel/k02_cpu.rs:94:16
+   |
+94 |     pub static k02_probe_reuse_B_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_reuse_B_write` is never used
+  --> kernel/k02_cpu.rs:95:16
+   |
+95 |     pub static k02_probe_reuse_B_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_reuse_B_write_return` is never used
+  --> kernel/k02_cpu.rs:96:16
+   |
+96 |     pub static k02_probe_reuse_B_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_boundary_snapshot` is never used
+  --> kernel/k02_cpu.rs:97:16
+   |
+97 |     pub static k02_probe_boundary_snapshot: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_boundary_snapshot_return` is never used
+  --> kernel/k02_cpu.rs:98:16
+   |
+98 |     pub static k02_probe_boundary_snapshot_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: struct `RegionLease` is never constructed
+  --> kernel/k02_memory.rs:44:12
+   |
+44 | pub struct RegionLease {
+   |            ^^^^^^^^^^^
+
+warning: function `admitted_view` is never used
+   --> kernel/k02_memory.rs:150:4
+    |
+150 | fn admitted_view(view: RegionView, admitted: &[Option<FrameRange>]) -> bool {
+    |    ^^^^^^^^^^^^^
+
+warning: multiple methods are never used
+   --> kernel/k02_memory.rs:204:12
+    |
+180 | impl NativeMemory {
+    | ----------------- methods in this implementation
+...
+204 |     pub fn allocate_initialized_page(&mut self, caller: u64, seed: u64) -> Result<CapabilityRef, MemoryError> {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+244 |     pub fn authorize(&self, caller: u64, handle: CapabilityRef, rights: Rights,
+    |            ^^^^^^^^^
+...
+249 |     pub fn region_info(&self, caller: u64, handle: CapabilityRef) -> Result<RegionInfo, MemoryError> {
+    |            ^^^^^^^^^^^
+...
+253 |     fn checked_view(&self, caller: u64, handle: CapabilityRef, rights: Rights,
+    |        ^^^^^^^^^^^^
+...
+263 |     pub fn map_intent(&mut self, caller: u64, handle: CapabilityRef, access: Access,
+    |            ^^^^^^^^^^
+...
+286 |     pub fn acquire(&mut self, caller: u64, handle: CapabilityRef, access: Access,
+    |            ^^^^^^^
+...
+335 |     pub fn revoke(&mut self, caller: u64, handle: CapabilityRef) -> Result<(), MemoryError> {
+    |            ^^^^^^
+
+warning: method `label` is never used
+  --> kernel/k02_paging.rs:36:18
+   |
+35 | impl Error {
+   | ---------- method in this implementation
+36 |     pub const fn label(self) -> &'static str {
+   |                  ^^^^^
+
+warning: methods `table_count`, `user_leaf_count`, `supervisor_leaf_count`, `protected_page_physical`, `object_range`, and `user_translation` are never used
+   --> kernel/k02_paging.rs:98:12
+    |
+ 91 | impl<const N: usize> Tables<N> {
+    | ------------------------------ methods in this implementation
+...
+ 98 |     pub fn table_count(&self) -> usize { self.used }
+    |            ^^^^^^^^^^^
+ 99 |     pub fn user_leaf_count(&self) -> usize { self.user_leaves }
+    |            ^^^^^^^^^^^^^^^
+100 |     pub fn supervisor_leaf_count(&self) -> usize { self.supervisor_leaves }
+    |            ^^^^^^^^^^^^^^^^^^^^^
+101 |     /// A supervisor-only target for the CPL3 page-table isolation probe.
+102 |     pub fn protected_page_physical(&self) -> Result<u64, Error> {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^
+...
+106 |     pub fn object_range(&self) -> Result<Range, Error> {
+    |            ^^^^^^^^^^^^
+...
+312 |     pub fn user_translation(&self, address: u64) -> Option<Translation> {
+    |            ^^^^^^^^^^^^^^^^
+
+warning: 44 warnings emitted
+

@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "kind": "tessryn_k02_native_host_tests",
+  "status": "passed",
+  "scope": "host tests of original ownership policy, native adapter, pure page-table mapper and page digest; CPU enforcement unqualified",
+  "source": {
+    "revision": "f27b3e7fa6b76918cc6f5ac8ec88579dd69174f0",
+    "dirty": false,
+    "tree_sha256": "c54e82c5c956dbb8fef4684ac9404e6f65f10d835578545d6d0b6049a2a8d677",
+    "snapshot_algorithm": "git-worktree-v2"
+  },
+  "sources": {
+    "kernel-core/boot_inventory.rs": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+    "kernel-core/boot_inventory_tests.rs": "d38b23c2558cf0bdc98e320a8c4cd52ed89e2f8bdeb2e4d689700fb701996f57",
+    "kernel-core/capabilities.rs": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+    "kernel-core/frames.rs": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+    "kernel-core/lib.rs": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+    "kernel-core/tests.rs": "400ef2358cdb7f5ca7269ced153a519c4435910c855252dd27089deb619a4187",
+    "interfaces/abi-v1/native.rs": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+    "kernel/paging.rs": "f33ceb09a28c5c8ecb3ebed988a38e42ca9ddbdc585f829b221b98abcbea58a4",
+    "kernel/k02_paging.rs": "0f1290a5294b1ef76cd89487f5c29e62943827744dd464cdec123d35c1da334f",
+    "kernel/k02_paging_tests.rs": "b4dc0cf2491039092947e1b2661525ea65fe11858b8190fa7bcf67e30c1ddfb9",
+    "tests/k02_paging_host.rs": "9a470455889f31eecbd3e3832db06b846ae5dedf0f4ca96c413daca8a059129f",
+    "kernel/k02_memory.rs": "c44d39ac5263959b5b65bd98fb8ec244d98520978e1d315fb6d82651c06c7fe1",
+    "kernel/k02_memory_tests.rs": "5e3c977e402bb8090bc562060f14f8862b747f879859e9de40b29bc5a7ac50e2",
+    "kernel/k02_memory_host_tests.rs": "0cc4439c52b4f4d7672ab69d25c178108f4a06435e99f7f545a1dec239a63a32",
+    "kernel/k02_sha256.rs": "dc7a7af2973538c7700eb04eec49de6b61f2ae190c8b2c3e9e6c37f11f345f28",
+    "tests/k02_sha256_host.rs": "952cac4164cc237a2a046738a970dee9801f40b2b21cefb25faebe80c97f1f85",
+    "toolchain.lock.json": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "planning/k02-toolchain.lock.json": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "tools/setup_toolchain.py": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+    "tools/setup_k02_toolchain.py": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+    "tools/check_k02_core.py": "ad6f36043a27e8300d722844c70f77acf45c7f086eaabedb36795a5e5739a6cb",
+    "tools/g03/process.py": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+    "tools/build_fixture.py": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+    "tools/check_k02_native_host.py": "e450448d837fd862254e83b01b6c9864055068936b3cc434472cf28b97a36842",
+    ".github/workflows/k02-native.yml": "55fafb8b227f3449212e3776ebcc0843236b2438c2d2d9059a062fc4fc5abc59"
+  },
+  "toolchain": {
+    "schema_version": 1,
+    "kind": "k02_host_test_toolchain",
+    "host": "aarch64-apple-darwin",
+    "profile_sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "g03_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "g03_record_sha256": "07b95962e8537ee836abde3c27d68399b5348b2f63cd4de410e0a9da4ced192d",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "rust_revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "host_library": {
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-aarch64-apple-darwin.tar.xz",
+      "sha256": "439c4f71060b913e00db3a2e01340b2da0aa49978b843e36871f3250267c63f8"
+    },
+    "rust_host_library_tree_sha256": "d0f8b9308cb4d641851bab30dab235490d55ac22f2787b02268e961aae811c9c",
+    "verified_tools": {
+      "rustc": {
+        "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+      },
+      "rust_lld": {
+        "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+      },
+      "qemu": {
+        "sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80"
+      }
+    },
+    "rust_target_library_tree_sha256": "04087044f06c8af97a6e1ae6e1035e696d7beff59ba0a2ef2e603bf6e7a7d760",
+    "rust_library_tree_sha256": "4845accb64c5ffb452df45c83e015ffa2d9fe908668bae029e1b1d268af1f30f"
+  },
+  "commands": {
+    "library-build": [
+      "rust-toolchain/bin/rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=1",
+      "--remap-path-prefix",
+      "tessryn=tessryn",
+      "--remap-path-prefix",
+      "k02-host=k02-host",
+      "--crate-type=rlib",
+      "--crate-name=tessryn_owned_memory",
+      "kernel-core/lib.rs",
+      "-o",
+      "k02-host/libtessryn_owned_memory.rlib"
+    ],
+    "core-build": [
+      "rust-toolchain/bin/rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=1",
+      "--remap-path-prefix",
+      "tessryn=tessryn",
+      "--remap-path-prefix",
+      "k02-host=k02-host",
+      "--test",
+      "kernel-core/lib.rs",
+      "-o",
+      "k02-host/core-tests"
+    ],
+    "core-tests": [
+      "k02-host/core-tests",
+      "--test-threads=1"
+    ],
+    "paging-build": [
+      "rust-toolchain/bin/rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=1",
+      "--remap-path-prefix",
+      "tessryn=tessryn",
+      "--remap-path-prefix",
+      "k02-host=k02-host",
+      "--test",
+      "tests/k02_paging_host.rs",
+      "-o",
+      "k02-host/paging-tests"
+    ],
+    "paging-tests": [
+      "k02-host/paging-tests",
+      "--test-threads=1"
+    ],
+    "adapter-build": [
+      "rust-toolchain/bin/rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=1",
+      "--remap-path-prefix",
+      "tessryn=tessryn",
+      "--remap-path-prefix",
+      "k02-host=k02-host",
+      "--test",
+      "kernel/k02_memory_host_tests.rs",
+      "-o",
+      "k02-host/adapter-tests",
+      "--extern",
+      "tessryn_owned_memory=k02-host/libtessryn_owned_memory.rlib"
+    ],
+    "adapter-tests": [
+      "k02-host/adapter-tests",
+      "--test-threads=1"
+    ],
+    "sha256-build": [
+      "rust-toolchain/bin/rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=1",
+      "--remap-path-prefix",
+      "tessryn=tessryn",
+      "--remap-path-prefix",
+      "k02-host=k02-host",
+      "--test",
+      "tests/k02_sha256_host.rs",
+      "-o",
+      "k02-host/sha256-tests"
+    ],
+    "sha256-tests": [
+      "k02-host/sha256-tests",
+      "--test-threads=1"
+    ]
+  },
+  "tests": {
+    "core": {
+      "passed": 57,
+      "failed": 0,
+      "ignored": 0,
+      "log": "core-tests.log"
+    },
+    "paging": {
+      "passed": 14,
+      "failed": 0,
+      "ignored": 0,
+      "log": "paging-tests.log"
+    },
+    "adapter": {
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0,
+      "log": "adapter-tests.log"
+    },
+    "sha256": {
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0,
+      "log": "sha256-tests.log"
+    }
+  },
+  "logs": [
+    {
+      "path": "adapter-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "adapter-tests.log",
+      "sha256": "a067d8ca78206d9c7d1410d321f89d4422de9841eb0f6271c96b7eec3fe9d11d",
+      "size_bytes": 1669
+    },
+    {
+      "path": "core-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "core-tests.log",
+      "sha256": "2b959cd7c6062f07ef028e5cbe0b4b03b2dfbdd90593a9f25b31bddb2b1386cc",
+      "size_bytes": 5988
+    },
+    {
+      "path": "library-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "paging-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "paging-tests.log",
+      "sha256": "e90f32054d82e12cd1de964074499c0051a6756a9d8c6d27ad1f4e5cf231d636",
+      "size_bytes": 1396
+    },
+    {
+      "path": "sha256-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "sha256-tests.log",
+      "sha256": "2bfcc4d5de659f8b11ace176473690263b185834104144954f002e283e4eb6de",
+      "size_bytes": 545
+    }
+  ]
+}

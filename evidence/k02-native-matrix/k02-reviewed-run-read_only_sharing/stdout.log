@@ -1,0 +1,43 @@
+TESSRYN_K01_ENTRY
+TESSRYN ORIGINAL KERNEL
+TESSRYN_K01_FRAMEBUFFER status=ready width=1280 height=800 stride=1280 base=0x80000000 format=bgrx selection=firmware-console
+TESSRYN_K01_LIVE_RANGES image_start=0xdfa6000 image_end=0xe0ba000 stack_start=0xe0f6000 stack_end=0xe116000 map_start=0xe0e6000 map_end=0xe0f6000 scratch=0x100000 runtime_high=0 gop_start=0x80000000 gop_end=0x803e8000
+TESSRYN_K01_PAGING_READY cr3=0xe02e000 tables=6 leaves=2048 physical_bits=48 guard=0x7fffffe00000 free_scope=low-conventional
+TESSRYN_K01_RESET_POINTER address=0xfad3522 method=uefi-runtime
+TESSRYN_K01_MEMORY_MAP_VALID descriptors=118 stride=48 free_pages=53284 attempt=1
+TESSRYN_K01_EXIT_BOOT_SERVICES_OK
+TESSRYN_K01_CPU_OWNED cr3=0xe02e000 rsp=0xe115f20 rip=0xdfb2daa gdt=owned idt=owned tss=owned
+TESSRYN_K02_PROFILE physical_bits=48 cpu_count=1 paging_levels=4 nx_supported=1 nx_enabled=1 pcid_enabled=0 global_translations=0 la57_enabled=0 cr4=0x668 efer_low=0xd00
+TESSRYN_K02_MATRIX_CPU cr0=0x80010033 wp_enabled=1 pke_enabled=0 pks_enabled=0 cet_enabled=0 sgx_supported=0 osxsave_enabled=0 fxsave_mxcsr_mask=0xffff
+TESSRYN_K02_MATRIX_ROOT domain=1 root=0xdfbe000 pool_end=0xdfcf000
+TESSRYN_K02_MATRIX_ROOT domain=2 root=0xdfcf000 pool_end=0xdfe0000
+TESSRYN_K02_MATRIX_ROOT domain=3 root=0xdfe0000 pool_end=0xdff1000
+TESSRYN_K02_MATRIX_ROOT domain=4 root=0xdff1000 pool_end=0xe002000
+TESSRYN_K02_MATRIX_INVENTORY case=read_only_sharing descriptors=118 available_pages=53282 protected_state=0xe023000 baseline_pages=12 source=final_successful_handoff
+TESSRYN_K02_MATRIX_USER_ENTER probe=boundary_snapshot domain=2 root=0xdfcf000 instruction=0x10000008d probe_rip=0x100000103 target=0x10000f000 stack_start=0x100002000 stack_end=0x100003000 trap_start=0xe0af0e0 trap_end=0xe0b70e0 code_physical=0xdfa8000
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x100000103 cs=0x33 rflags=0x2 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K02_MATRIX_TRAP probe=boundary_snapshot domain=2 root=0xdfcf000 vector=128 error=0x0 rip=0x100000103 cs=0x33 ss=0x2b rflags=0x2 rsp=0x100002ff0 cr2=0x0 frame=0xe0b7030 rax=0x0
+TESSRYN_K02_MATRIX_EVENT sequence=0 event=boundary_sanitized domain=2 root=0xdfcf000 page=0x10000f000 physical_frame=0x6000 length=640 gpr_words=16 gpr_zeroed=1 fp_bytes=512 fcw=895 mxcsr=8064 mxcsr_mask=0xffff fp_sha256=3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902 osxsave_enabled=0 kernel_fp_restored=1
+TESSRYN_K02_MATRIX_EVENT sequence=1 event=fresh_boot case=read_only_sharing reset=original_kernel_entry untrusted_state_retained=0
+TESSRYN_K02_MATRIX_EVENT sequence=2 event=backing_owned capability_slot=3 capability_generation=1 capability_domain=1 physical_frame=0xd000 length=4096 charge_owner=1 committed_pages=1 reserved_pages=0 charged_pages=1 domain_charged_pages=4 baseline_pages=3
+TESSRYN_K02_MATRIX_EVENT sequence=3 event=delegated parent_slot=3 parent_generation=1 parent_domain=1 child_slot=3 child_generation=1 child_domain=2 offset=0 length=4096 rights=5
+TESSRYN_K02_MATRIX_EVENT sequence=4 event=mapping_installed domain=2 root=0xdfcf000 page=0x100004000 physical_frame=0xd000 length=4096 readable=1 writable=0 executable=0 lease_slot=12 lease_generation=1 charge_retained=1
+TESSRYN_K02_MATRIX_USER_ENTER probe=protection_read domain=2 root=0xdfcf000 instruction=0x100000020 probe_rip=0x100000025 target=0x100004000 stack_start=0x100002000 stack_end=0x100003000 trap_start=0xe0af0e0 trap_end=0xe0b70e0 code_physical=0xdfa8000
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x100000025 cs=0x33 rflags=0x2 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K02_MATRIX_TRAP probe=protection_read domain=2 root=0xdfcf000 vector=128 error=0x0 rip=0x100000025 cs=0x33 ss=0x2b rflags=0x2 rsp=0x100002ff0 cr2=0x0 frame=0xe0b7030 rax=0x5445535356494354
+TESSRYN_K02_MATRIX_EVENT sequence=5 event=read_observed domain=2 page=0x100004000 sha256=faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89
+TESSRYN_K02_MATRIX_USER_ENTER probe=readonly_write domain=2 root=0xdfcf000 instruction=0x100000019 probe_rip=0x100000019 target=0x100004000 stack_start=0x100002000 stack_end=0x100003000 trap_start=0xe0af0e0 trap_end=0xe0b70e0 code_physical=0xdfa8000
+TESSRYN_K01_EXCEPTION vector=14 error=0x7 rip=0x100000019 cs=0x33 rflags=0x10002 rsp=0x100002ff0 cr2=0x100004000
+TESSRYN_K02_MATRIX_TRAP probe=readonly_write domain=2 root=0xdfcf000 vector=14 error=0x7 rip=0x100000019 cs=0x33 ss=0x2b rflags=0x10002 rsp=0x100002ff0 cr2=0x100004000 frame=0xe0b7030 rax=0x0
+TESSRYN_K02_MATRIX_EVENT sequence=6 event=page_fault probe=readonly_write domain=2 root=0xdfcf000 vector=14 cs=0x33 rip=0x100000019 cr2=0x100004000 error_code=7 recovered=1
+TESSRYN_K02_MATRIX_EVENT sequence=7 event=sentinel_unchanged page=0x100004000 before_sha256=faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89 after_sha256=faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89
+TESSRYN_K02_MATRIX_EVENT sequence=8 event=fence domain=2 root=0xdfcf000 page=0x100004000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1
+TESSRYN_K02_MATRIX_EVENT sequence=9 event=clear_pte domain=2 root=0xdfcf000 page=0x100004000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1
+TESSRYN_K02_MATRIX_EVENT sequence=10 event=invalidate domain=2 root=0xdfcf000 page=0x100004000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1 method=cr3_reload
+TESSRYN_K02_MATRIX_EVENT sequence=11 event=quiesce domain=2 root=0xdfcf000 page=0x100004000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1 trusted=1
+TESSRYN_K02_MATRIX_CASE_COMPLETE case=read_only_sharing allocated_pages=12
+TESSRYN_K02_MATRIX_ACCOUNTING domain=1 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_ACCOUNTING domain=2 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_ACCOUNTING domain=3 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_ACCOUNTING domain=4 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_PASS case=read_only_sharing owned_pages_after=0 scope=single_cpu_emulated_matrix_case

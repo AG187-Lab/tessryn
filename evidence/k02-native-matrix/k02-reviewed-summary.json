@@ -1,0 +1,118 @@
+{
+  "design": {
+    "documents": 73,
+    "log": "k02-reviewed-design.log"
+  },
+  "files": {
+    "k02-reviewed-a/manifest.json": {
+      "sha256": "1f075788a4e52ca26e63d759723e9e93b389d814fbea08ec29b4233622504fc9",
+      "size_bytes": 151772
+    },
+    "k02-reviewed-b/manifest.json": {
+      "sha256": "1f075788a4e52ca26e63d759723e9e93b389d814fbea08ec29b4233622504fc9",
+      "size_bytes": 151772
+    },
+    "k02-reviewed-design.log": {
+      "sha256": "b798e47f33efb757f0fe3056c11962bb96786b170e63b6f739cc43c0dc857425",
+      "size_bytes": 74
+    },
+    "k02-reviewed-host/result.json": {
+      "sha256": "21cd57df25b2afcb9a4d8c3de1005bef10f7cf11b49b1142dcd0cd88cc642c63",
+      "size_bytes": 8541
+    },
+    "k02-reviewed-k01-a/manifest.json": {
+      "sha256": "8d0b3d9ee1437a712a4a5e47252813d6b8323d6f56a54d8442e47d99be716dbb",
+      "size_bytes": 18839
+    },
+    "k02-reviewed-k01-b/manifest.json": {
+      "sha256": "8d0b3d9ee1437a712a4a5e47252813d6b8323d6f56a54d8442e47d99be716dbb",
+      "size_bytes": 18839
+    },
+    "k02-reviewed-k01-verification.json": {
+      "sha256": "b1acc723da7f5cdf2223fe7fa3e0e6c3398d704f5cbb3035a454893192579190",
+      "size_bytes": 658
+    },
+    "k02-reviewed-matrix-verification.json": {
+      "sha256": "2bc16aca845d7d4ec9a951a522d7712b8d6aa5eaf63141a08abbac1d950f22b9",
+      "size_bytes": 132432
+    },
+    "k02-reviewed-python.log": {
+      "sha256": "7f155f6fdedb6960b2874bbf9041dc610eb63845b7eabf71a9d6e79e8db5c73c",
+      "size_bytes": 99287
+    },
+    "k02-reviewed-slice-a/manifest.json": {
+      "sha256": "47901c370b7e6cbc7d06d32e30c387167a5bcfaa7a7b7a28e597d71e98d6c183",
+      "size_bytes": 23886
+    },
+    "k02-reviewed-slice-b/manifest.json": {
+      "sha256": "47901c370b7e6cbc7d06d32e30c387167a5bcfaa7a7b7a28e597d71e98d6c183",
+      "size_bytes": 23886
+    },
+    "k02-reviewed-slice-verification.json": {
+      "sha256": "dc29d9ab0bf8877861b5f0b301c5dccd408462cb93899d7ac8bd8efdd1f2878f",
+      "size_bytes": 13392
+    }
+  },
+  "host": {
+    "adapter": {
+      "failed": 0,
+      "ignored": 0,
+      "log": "adapter-tests.log",
+      "passed": 16
+    },
+    "core": {
+      "failed": 0,
+      "ignored": 0,
+      "log": "core-tests.log",
+      "passed": 57
+    },
+    "paging": {
+      "failed": 0,
+      "ignored": 0,
+      "log": "paging-tests.log",
+      "passed": 14
+    },
+    "sha256": {
+      "failed": 0,
+      "ignored": 0,
+      "log": "sha256-tests.log",
+      "passed": 10
+    }
+  },
+  "k01": {
+    "cases": 7,
+    "evaluator_sha256": "e91ac0e048303598bff3ff056f4d4557de2202b4fe639ced89e4add993dc53b9",
+    "status": "pass",
+    "verification": "k02-reviewed-k01-verification.json"
+  },
+  "matrix": {
+    "cases": 10,
+    "evaluator_sha256": "de319d8b8124f3bb4a7c16c60f269b8bbbee5fc2a1215b9b5e7b2ee834e6f9a3",
+    "source_verification": {
+      "compiler_dependencies": 21,
+      "reviewed_runtime_files": 19,
+      "revision": "f27b3e7fa6b76918cc6f5ac8ec88579dd69174f0",
+      "tree_sha256": "c54e82c5c956dbb8fef4684ac9404e6f65f10d835578545d6d0b6049a2a8d677"
+    },
+    "status": "pass",
+    "verification": "k02-reviewed-matrix-verification.json"
+  },
+  "matrix_traps": 52,
+  "python": {
+    "failed": 0,
+    "log": "k02-reviewed-python.log",
+    "passed": 578
+  },
+  "slice": {
+    "cases": 4,
+    "evaluator_sha256": "695edc2aa97f62a498c3663f640b00dee9b75b417fa5cfebf408f38cca4cd43e",
+    "status": "pass",
+    "verification": "k02-reviewed-slice-verification.json"
+  },
+  "source": {
+    "dirty": false,
+    "revision": "f27b3e7fa6b76918cc6f5ac8ec88579dd69174f0",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "c54e82c5c956dbb8fef4684ac9404e6f65f10d835578545d6d0b6049a2a8d677"
+  }
+}

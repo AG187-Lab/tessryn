@@ -1,0 +1,478 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-python.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/validate_design.py"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-design.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/check_k02_native_host.py",
+        "--out",
+        "build/k02-reviewed-host"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-host.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/build_k02_matrix.py",
+        "--out",
+        "build/k02-reviewed-a"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-a.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/build_k02_matrix.py",
+        "--out",
+        "build/k02-reviewed-b"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-b.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/build_k02_native.py",
+        "--out",
+        "build/k02-reviewed-slice-a"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-a.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/build_k02_native.py",
+        "--out",
+        "build/k02-reviewed-slice-b"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-b.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/build_kernel.py",
+        "--out",
+        "build/k02-reviewed-k01-a"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-a.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/build_kernel.py",
+        "--out",
+        "build/k02-reviewed-k01-b"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-b.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-caller_forgery",
+        "--case",
+        "caller_forgery"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-caller_forgery.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-trusted_operation_forgery",
+        "--case",
+        "trusted_operation_forgery"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-trusted_operation_forgery.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-unauthorized_read",
+        "--case",
+        "unauthorized_read"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-unauthorized_read.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-read_only_sharing",
+        "--case",
+        "read_only_sharing"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-read_only_sharing.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-exact_bounds",
+        "--case",
+        "exact_bounds"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-exact_bounds.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-kernel_isolation",
+        "--case",
+        "kernel_isolation"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-kernel_isolation.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-data_nx",
+        "--case",
+        "data_nx"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-data_nx.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-recursive_revocation",
+        "--case",
+        "recursive_revocation"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-recursive_revocation.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-writable_reuse",
+        "--case",
+        "writable_reuse"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-writable_reuse.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k02-reviewed-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-run-stale_identities",
+        "--case",
+        "stale_identities"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-run-stale_identities.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k02-reviewed-slice-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-slice-run-own_page",
+        "--case",
+        "own_page"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-run-own_page.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k02-reviewed-slice-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-slice-run-foreign_read",
+        "--case",
+        "foreign_read"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-run-foreign_read.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k02-reviewed-slice-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-slice-run-kernel_read",
+        "--case",
+        "kernel_read"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-run-kernel_read.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k02-reviewed-slice-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-slice-run-readonly_write",
+        "--case",
+        "readonly_write"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-run-readonly_write.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-normal",
+        "--case",
+        "normal"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-normal.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-int3",
+        "--case",
+        "int3"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-int3.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-invalid_opcode",
+        "--case",
+        "invalid_opcode"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-invalid_opcode.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-page_fault",
+        "--case",
+        "page_fault"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-page_fault.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-panic",
+        "--case",
+        "panic"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-panic.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-reboot",
+        "--case",
+        "reboot"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-reboot.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--out",
+        "build/k02-reviewed-k01-run-iso",
+        "--case",
+        "normal",
+        "--media",
+        "iso"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-run-iso.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/verify_k02_matrix.py",
+        "--first",
+        "build/k02-reviewed-a/manifest.json",
+        "--second",
+        "build/k02-reviewed-b/manifest.json",
+        "--result",
+        "build/k02-reviewed-run-caller_forgery/result.json",
+        "--result",
+        "build/k02-reviewed-run-trusted_operation_forgery/result.json",
+        "--result",
+        "build/k02-reviewed-run-unauthorized_read/result.json",
+        "--result",
+        "build/k02-reviewed-run-read_only_sharing/result.json",
+        "--result",
+        "build/k02-reviewed-run-exact_bounds/result.json",
+        "--result",
+        "build/k02-reviewed-run-kernel_isolation/result.json",
+        "--result",
+        "build/k02-reviewed-run-data_nx/result.json",
+        "--result",
+        "build/k02-reviewed-run-recursive_revocation/result.json",
+        "--result",
+        "build/k02-reviewed-run-writable_reuse/result.json",
+        "--result",
+        "build/k02-reviewed-run-stale_identities/result.json",
+        "--out",
+        "build/k02-reviewed-matrix-verification.json"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-matrix-verification.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/verify_k02_native.py",
+        "--first",
+        "build/k02-reviewed-slice-a/manifest.json",
+        "--second",
+        "build/k02-reviewed-slice-b/manifest.json",
+        "--result",
+        "build/k02-reviewed-slice-run-own_page/result.json",
+        "--result",
+        "build/k02-reviewed-slice-run-foreign_read/result.json",
+        "--result",
+        "build/k02-reviewed-slice-run-kernel_read/result.json",
+        "--result",
+        "build/k02-reviewed-slice-run-readonly_write/result.json",
+        "--out",
+        "build/k02-reviewed-slice-verification.json"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-slice-verification.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/verify_kernel.py",
+        "--first",
+        "build/k02-reviewed-k01-a/manifest.json",
+        "--second",
+        "build/k02-reviewed-k01-b/manifest.json",
+        "--result",
+        "build/k02-reviewed-k01-run-normal/result.json",
+        "--result",
+        "build/k02-reviewed-k01-run-int3/result.json",
+        "--result",
+        "build/k02-reviewed-k01-run-invalid_opcode/result.json",
+        "--result",
+        "build/k02-reviewed-k01-run-page_fault/result.json",
+        "--result",
+        "build/k02-reviewed-k01-run-panic/result.json",
+        "--result",
+        "build/k02-reviewed-k01-run-reboot/result.json",
+        "--result",
+        "build/k02-reviewed-k01-run-iso/result.json",
+        "--out",
+        "build/k02-reviewed-k01-verification.json"
+      ],
+      "exit_code": 0,
+      "log": "k02-reviewed-k01-verification.log"
+    }
+  ],
+  "note": "Derived command index; retained per-command output and source-bound build/run/verifier packets are the evidence.",
+  "schema": "tessryn-derived-verification-command-index/v1",
+  "source_revision": "f27b3e7fa6b76918cc6f5ac8ec88579dd69174f0"
+}

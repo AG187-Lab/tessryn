@@ -43,3 +43,17 @@ environment. It cannot establish the full K02 acceptance matrix, a production
 dispatcher, revocation/reuse safety, SMP or DMA isolation, physical hardware or
 cloud protection support. Keep those gates open and retain K01 qualification
 separately. No provider operations or new rentals are needed for this slice.
+
+## October 14, 2026 implementation extension
+
+The [ten-case matrix](../k02-native-matrix.md) extends the original four-probe
+experiment within the same image-bound single-CPU boundary. Protected request
+context, exact bounds/NX, recursive revocation, actual writable-frame reuse and
+stale generations now have [clean execution evidence](../../evidence/k02-native-matrix/README.md).
+The entry also clears unused general and legacy FP state and verifies the original
+kernel state on return; active OSXSAVE remains excluded. The original four cases
+and K01 boot regressions remain required alongside the extension.
+
+This extension does not introduce a production syscall/service ABI or qualify
+arbitrary service programs, physical hardware, SMP shootdowns, DMA/device
+quiescence, GPU execution or inference performance. Those gates remain open.

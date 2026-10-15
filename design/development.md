@@ -16,20 +16,30 @@ host conformance foundation](https://github.com/AG187-Lab/tessryn/pull/54) is
 merged; its wider interfaces, compatibility/runtime choices and target decisions
 remain open with G01's platform dependency.
 
-The [K01 implementation and evidence](first-kernel.md), recorded in
-[PR #53](https://github.com/AG187-Lab/tessryn/pull/53) under
-[ADR 0010](decisions/0010-first-uefi-kernel.md), cover a bounded original UEFI CPU
-bring-up profile with reproducible QEMU boot/exception/panic/reset and actual high
-image/handoff evidence. The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification)
-records two owner-accepted native `t3a.small` CPU boots separated by independent
-Ubuntu recovery, with cleanup complete. K01 does not complete G02 or native-device
-contracts. [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58) builds on K01
-and records four single-CPU CPL3 protection probes; the full native isolation
-matrix remains open. As of October 12, 2026, K03 scheduling/budget host-policy
-preparation is active under [issue #6](https://github.com/AG187-Lab/tessryn/issues/6),
-with an [owner scope notice](https://github.com/AG187-Lab/tessryn/issues/6#issuecomment-6139885186)
-but no public implementation PR or acceptance result; native SMP, clocks and
-enforcement remain gated by K02.
+The [K01 implementation and evidence](first-kernel.md) landed through
+[PR #53](https://github.com/AG187-Lab/tessryn/pull/53), and its three bounded emulator
+bring-up criteria are complete in [issue #4](https://github.com/AG187-Lab/tessryn/issues/4).
+The AWS CPU proof remains limited to its recorded boot/reprovisioning profile.
+K01 does not complete G02's broader native-device contracts.
+
+[K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58) now implements the
+[ten-case single-CPU matrix](k02-native-matrix.md), with
+[clean execution evidence](../evidence/k02-native-matrix/README.md) and passing
+historical slice/K01 regressions. Its protected requests execute known image-bound
+probes; general service dispatch, arbitrary-program isolation, SMP and device
+quiescence remain open in [issue #5](https://github.com/AG187-Lab/tessryn/issues/5).
+
+[K03 policy preparation](https://github.com/AG187-Lab/tessryn/pull/61) is merged.
+Its host accounting/timeline tests and freestanding library do not complete native
+SMP, clocks or timer enforcement. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
+remains open and dependent on K02. The [host benchmark harness](kernel-benchmarks.md)
+is merged; dependent guest benchmark integration remains tracked in
+[PR #63](https://github.com/AG187-Lab/tessryn/pull/63).
+
+[Physical hardware requirements](hardware-intake.md) are ready through
+[PR #64](https://github.com/AG187-Lab/tessryn/pull/64). No server has been rented or
+qualified by that work; a machine, confirmed boot/console/recovery access and a
+separate spending decision are still required before a physical trial.
 
 Coordinate with the existing owner before overlapping kernel or evidence paths.
 Independent preparation does not complete native implementation dependencies.
