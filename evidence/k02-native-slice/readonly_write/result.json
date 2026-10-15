@@ -1,0 +1,262 @@
+{
+  "case": "readonly_write",
+  "emulator_sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80",
+  "evaluator_sha256": "36447b35c2fe0ce0c88fe6c48cf5f620229267fdc274e6a5cab2f222553c2001",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off",
+      "-m",
+      "256M",
+      "-smp",
+      "1",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 2.0717992919962853,
+    "launcher": {
+      "command": [
+        "/usr/bin/env",
+        "TMPDIR=/private/tmp/tessryn-k02-04hd13sj",
+        "qemu-system-x86_64",
+        "-machine",
+        "q35,accel=tcg",
+        "-cpu",
+        "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off",
+        "-m",
+        "256M",
+        "-smp",
+        "1",
+        "-nodefaults",
+        "-no-user-config",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "null",
+        "-nic",
+        "none",
+        "-no-reboot",
+        "-device",
+        "VGA,romfile=",
+        "-global",
+        "apic.vapic=off",
+        "-drive",
+        "if=pflash,format=raw,readonly=on,file=code.fd",
+        "-drive",
+        "if=pflash,format=raw,file=vars.fd",
+        "-debugcon",
+        "stdio",
+        "-global",
+        "isa-debugcon.iobase=0xe9",
+        "-device",
+        "isa-debug-exit,iobase=0xf4,iosize=0x04",
+        "-drive",
+        "if=ide,format=raw,snapshot=on,file=boot.img",
+        "-boot",
+        "order=c"
+      ],
+      "executable": "/usr/bin/env",
+      "sha256": "6e506aec3c0cff703ac1e66cedc6f1945354ad41339a38db4425c7c88227128f",
+      "temporary_directory": "/private/tmp/tessryn-k02-04hd13sj",
+      "temporary_scope": "fresh private owned directory removed after child reap",
+      "tool_path_record": "absolute hash-checked QEMU executed; command displays its pinned role"
+    },
+    "max_log_bytes": 262144,
+    "returncode": 33,
+    "timeout_seconds": 45.0
+  },
+  "firmware": {
+    "code": {
+      "path": "firmware/edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    "descriptor": {
+      "path": "firmware/60-edk2-x86_64.json",
+      "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+      "size_bytes": 702
+    },
+    "notice": {
+      "path": "firmware/edk2-licenses.txt",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    "vars": {
+      "path": "firmware/edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  },
+  "format": "tessryn-k02-native-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "02b9089ae8a8a5408198c800c2ca8deb303dec9500f918306e1b9fb32db77bd7",
+      "size_bytes": 2712
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "4d6e423e7a9371112446a0980f6afa72fbac84e967a05198868f54776a73815d",
+  "observations": {
+    "inventory": {
+      "available_pages": "53323",
+      "descriptors": "118",
+      "protected_state": "0xe04b008",
+      "source": "final_successful_handoff"
+    },
+    "mappings": [
+      {
+        "domain": "2",
+        "nx": "1",
+        "page_bytes": "4096",
+        "physical": "0x3000",
+        "role": "own",
+        "virtual": "0x100001000",
+        "writable": "1"
+      },
+      {
+        "domain": "2",
+        "nx": "1",
+        "page_bytes": "4096",
+        "physical": "0x4000",
+        "role": "stack",
+        "virtual": "0x100002000",
+        "writable": "1"
+      },
+      {
+        "domain": "2",
+        "nx": "1",
+        "page_bytes": "4096",
+        "physical": "0x1000",
+        "role": "readonly",
+        "virtual": "0x100004000",
+        "writable": "0"
+      },
+      {
+        "domain": "1",
+        "nx": "1",
+        "page_bytes": "4096",
+        "physical": "0x2000",
+        "role": "foreign",
+        "virtual": "0x100003000",
+        "writable": "0"
+      }
+    ],
+    "pass": {
+      "case": "readonly_write",
+      "cpl3_observed": "1",
+      "owned_pages_after": "0",
+      "scope": "single_cpu_emulated_protection_slice"
+    },
+    "profile": {
+      "cpu_count": "1",
+      "cr4": "0x668",
+      "efer_low": "0xd00",
+      "global_translations": "0",
+      "la57_enabled": "0",
+      "nx_enabled": "1",
+      "nx_supported": "1",
+      "paging_levels": "4",
+      "pcid_enabled": "0",
+      "physical_bits": "48"
+    },
+    "sentinels": {
+      "foreign": "0x2000",
+      "foreign_unchanged": "1",
+      "own": "0x3000",
+      "own_verified": "1",
+      "pages_scrubbed": "4",
+      "victim": "0x1000",
+      "victim_unchanged": "1"
+    },
+    "teardown": [
+      {
+        "order": "fence_pte_remove_cr3_reload_quiesce",
+        "physical": "0x3000",
+        "virtual": "0x100001000"
+      },
+      {
+        "order": "fence_pte_remove_cr3_reload_quiesce",
+        "physical": "0x4000",
+        "virtual": "0x100002000"
+      },
+      {
+        "order": "fence_pte_remove_cr3_reload_quiesce",
+        "physical": "0x1000",
+        "virtual": "0x100004000"
+      },
+      {
+        "order": "fence_pte_remove_cr3_reload_quiesce",
+        "physical": "0x2000",
+        "virtual": "0x100003000"
+      }
+    ],
+    "trap": {
+      "case": "readonly_write",
+      "cr2": "0x100004000",
+      "cs": "0x33",
+      "domain": "2",
+      "error": "0x7",
+      "frame": "0xe0dd060",
+      "kind": "expected_page_fault",
+      "rflags": "0x10002",
+      "rip": "0x100000019",
+      "rsp": "0x100002ff0",
+      "ss": "0x2b",
+      "vector": "14"
+    },
+    "user_enter": {
+      "case": "readonly_write",
+      "code": "0x100000000",
+      "code_physical": "0xdff7000",
+      "domain": "2",
+      "instruction": "0x100000019",
+      "probe_rip": "0x100000019",
+      "root": "0xe01a000",
+      "stack_end": "0x100003000",
+      "stack_start": "0x100002000",
+      "target": "0x100004000",
+      "trap_end": "0xe0dd110",
+      "trap_start": "0xe0d5110"
+    }
+  },
+  "reason": "fresh pinned emulator, exact CPL3 probe and owned trap evidence matched",
+  "scope": "four original-kernel single-CPU QEMU enforcement cases; full K02 protocol, physical hardware, SMP and DMA unqualified",
+  "status": "pass"
+}

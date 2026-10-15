@@ -1,0 +1,583 @@
+{
+  "capture_only": false,
+  "case": "kernel_isolation",
+  "emulator_sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80",
+  "evaluator_sha256": "de319d8b8124f3bb4a7c16c60f269b8bbbee5fc2a1215b9b5e7b2ee834e6f9a3",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off",
+      "-m",
+      "256M",
+      "-smp",
+      "1",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 5.516875916044228,
+    "launcher": {
+      "command": [
+        "/usr/bin/env",
+        "TMPDIR=/private/tmp/tessryn-k02m-g9ktvtzw",
+        "qemu-system-x86_64",
+        "-machine",
+        "q35,accel=tcg",
+        "-cpu",
+        "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off",
+        "-m",
+        "256M",
+        "-smp",
+        "1",
+        "-nodefaults",
+        "-no-user-config",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "null",
+        "-nic",
+        "none",
+        "-no-reboot",
+        "-device",
+        "VGA,romfile=",
+        "-global",
+        "apic.vapic=off",
+        "-drive",
+        "if=pflash,format=raw,readonly=on,file=code.fd",
+        "-drive",
+        "if=pflash,format=raw,file=vars.fd",
+        "-debugcon",
+        "stdio",
+        "-global",
+        "isa-debugcon.iobase=0xe9",
+        "-device",
+        "isa-debug-exit,iobase=0xf4,iosize=0x04",
+        "-drive",
+        "if=ide,format=raw,snapshot=on,file=boot.img",
+        "-boot",
+        "order=c"
+      ],
+      "executable": "/usr/bin/env",
+      "sha256": "6e506aec3c0cff703ac1e66cedc6f1945354ad41339a38db4425c7c88227128f",
+      "temporary_directory": "/private/tmp/tessryn-k02m-g9ktvtzw",
+      "temporary_scope": "fresh private owned directory removed after child reap",
+      "tool_path_record": "absolute hash-checked QEMU executed; command displays its pinned role"
+    },
+    "max_log_bytes": 1048576,
+    "returncode": 33,
+    "timeout_seconds": 45
+  },
+  "firmware": {
+    "code": {
+      "path": "firmware/edk2-x86_64-code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    "descriptor": {
+      "path": "firmware/60-edk2-x86_64.json",
+      "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+      "size_bytes": 702
+    },
+    "notice": {
+      "path": "firmware/edk2-licenses.txt",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    "vars": {
+      "path": "firmware/edk2-i386-vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  },
+  "format": "tessryn-k02-native-matrix-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "fa5373ea2ac7bf2845b11a39b6bc46ba35e52321d82bb1c9ebb3a3aa93966d3a",
+      "size_bytes": 8624
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "1f075788a4e52ca26e63d759723e9e93b389d814fbea08ec29b4233622504fc9",
+  "observations": {
+    "accounting": [
+      {
+        "charged_pages": "0",
+        "committed_pages": "0",
+        "domain": "1",
+        "reserved_pages": "0"
+      },
+      {
+        "charged_pages": "0",
+        "committed_pages": "0",
+        "domain": "2",
+        "reserved_pages": "0"
+      },
+      {
+        "charged_pages": "0",
+        "committed_pages": "0",
+        "domain": "3",
+        "reserved_pages": "0"
+      },
+      {
+        "charged_pages": "0",
+        "committed_pages": "0",
+        "domain": "4",
+        "reserved_pages": "0"
+      }
+    ],
+    "case_complete": {
+      "allocated_pages": "12",
+      "case": "kernel_isolation"
+    },
+    "cpu": {
+      "cet_enabled": "0",
+      "cr0": "0x80010033",
+      "fxsave_mxcsr_mask": "0xffff",
+      "osxsave_enabled": "0",
+      "pke_enabled": "0",
+      "pks_enabled": "0",
+      "sgx_supported": "0",
+      "wp_enabled": "1"
+    },
+    "events": [
+      {
+        "domain": "2",
+        "event": "boundary_sanitized",
+        "fcw": "895",
+        "fp_bytes": "512",
+        "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+        "gpr_words": "16",
+        "gpr_zeroed": "1",
+        "kernel_fp_restored": "1",
+        "length": "640",
+        "mxcsr": "8064",
+        "mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "page": "0x10000f000",
+        "physical_frame": "0x6000",
+        "root": "0xdfd1000",
+        "sequence": "0"
+      },
+      {
+        "case": "kernel_isolation",
+        "event": "fresh_boot",
+        "reset": "original_kernel_entry",
+        "sequence": "1",
+        "untrusted_state_retained": "0"
+      },
+      {
+        "cr2": "0xdfaa000",
+        "cs": "0x33",
+        "domain": "2",
+        "error_code": "5",
+        "event": "page_fault",
+        "probe": "kernel_read",
+        "recovered": "1",
+        "rip": "0x100000012",
+        "root": "0xdfd1000",
+        "sequence": "2",
+        "vector": "14"
+      },
+      {
+        "cr2": "0xdfaa000",
+        "cs": "0x33",
+        "domain": "2",
+        "error_code": "7",
+        "event": "page_fault",
+        "probe": "kernel_write",
+        "recovered": "1",
+        "rip": "0x100000040",
+        "root": "0xdfd1000",
+        "sequence": "3",
+        "vector": "14"
+      },
+      {
+        "after_sha256": "dae93b826989dd71d2a55c9405a800df590be1c6590be894c3e003bf3c56eedb",
+        "before_sha256": "dae93b826989dd71d2a55c9405a800df590be1c6590be894c3e003bf3c56eedb",
+        "event": "sentinel_unchanged",
+        "page": "0xdfaa000",
+        "sequence": "4"
+      },
+      {
+        "cr2": "0xe025000",
+        "cs": "0x33",
+        "domain": "2",
+        "error_code": "5",
+        "event": "page_fault",
+        "probe": "policy_read",
+        "recovered": "1",
+        "rip": "0x100000047",
+        "root": "0xdfd1000",
+        "sequence": "5",
+        "vector": "14"
+      },
+      {
+        "cr2": "0xe025000",
+        "cs": "0x33",
+        "domain": "2",
+        "error_code": "7",
+        "event": "page_fault",
+        "probe": "policy_write",
+        "recovered": "1",
+        "rip": "0x10000004e",
+        "root": "0xdfd1000",
+        "sequence": "6",
+        "vector": "14"
+      },
+      {
+        "after_sha256": "4488c98d5cc32504ed99fbdf93bce3a7fa674943052c91d76e50613417382f54",
+        "before_sha256": "4488c98d5cc32504ed99fbdf93bce3a7fa674943052c91d76e50613417382f54",
+        "event": "sentinel_unchanged",
+        "page": "0xe025000",
+        "sequence": "7"
+      },
+      {
+        "cr2": "0xdfd1000",
+        "cs": "0x33",
+        "domain": "2",
+        "error_code": "5",
+        "event": "page_fault",
+        "probe": "page_table_read",
+        "recovered": "1",
+        "rip": "0x100000055",
+        "root": "0xdfd1000",
+        "sequence": "8",
+        "vector": "14"
+      },
+      {
+        "cr2": "0xdfd1000",
+        "cs": "0x33",
+        "domain": "2",
+        "error_code": "7",
+        "event": "page_fault",
+        "probe": "page_table_write",
+        "recovered": "1",
+        "rip": "0x10000005c",
+        "root": "0xdfd1000",
+        "sequence": "9",
+        "vector": "14"
+      },
+      {
+        "after_sha256": "e2c8cc17d0307b32b4717c04a2e5b9ba2f60af0dfd81442c462c2bfff9d88444",
+        "before_sha256": "e2c8cc17d0307b32b4717c04a2e5b9ba2f60af0dfd81442c462c2bfff9d88444",
+        "event": "sentinel_unchanged",
+        "page": "0xdfd1000",
+        "sequence": "10"
+      }
+    ],
+    "inventory": {
+      "available_pages": "53284",
+      "baseline_pages": "12",
+      "case": "kernel_isolation",
+      "descriptors": "118",
+      "protected_state": "0xe025000",
+      "source": "final_successful_handoff"
+    },
+    "pass": {
+      "case": "kernel_isolation",
+      "owned_pages_after": "0",
+      "scope": "single_cpu_emulated_matrix_case"
+    },
+    "profile": {
+      "cpu_count": "1",
+      "cr4": "0x668",
+      "efer_low": "0xd00",
+      "global_translations": "0",
+      "la57_enabled": "0",
+      "nx_enabled": "1",
+      "nx_supported": "1",
+      "paging_levels": "4",
+      "pcid_enabled": "0",
+      "physical_bits": "48"
+    },
+    "roots": {
+      "1": 234618880,
+      "2": 234688512,
+      "3": 234758144,
+      "4": 234827776
+    },
+    "target_frame": null,
+    "user_probes": [
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x10000008d",
+          "probe": "boundary_snapshot",
+          "probe_rip": "0x100000103",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0x10000f000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0x0",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x0",
+          "frame": "0xe0b9030",
+          "probe": "boundary_snapshot",
+          "rax": "0x0",
+          "rflags": "0x2",
+          "rip": "0x100000103",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "128"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x100000020",
+          "probe": "supervisor_prime",
+          "probe_rip": "0x100000025",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0x100001000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0x0",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x0",
+          "frame": "0xe0b9030",
+          "probe": "supervisor_prime",
+          "rax": "0x5445535356494356",
+          "rflags": "0x2",
+          "rip": "0x100000025",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "128"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x100000012",
+          "probe": "kernel_read",
+          "probe_rip": "0x100000012",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0xdfaa000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0xdfaa000",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x5",
+          "frame": "0xe0b9030",
+          "probe": "kernel_read",
+          "rax": "0x0",
+          "rflags": "0x10002",
+          "rip": "0x100000012",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "14"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x100000040",
+          "probe": "kernel_write",
+          "probe_rip": "0x100000040",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0xdfaa000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0xdfaa000",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x7",
+          "frame": "0xe0b9030",
+          "probe": "kernel_write",
+          "rax": "0x0",
+          "rflags": "0x10002",
+          "rip": "0x100000040",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "14"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x100000047",
+          "probe": "policy_read",
+          "probe_rip": "0x100000047",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0xe025000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0xe025000",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x5",
+          "frame": "0xe0b9030",
+          "probe": "policy_read",
+          "rax": "0x0",
+          "rflags": "0x10002",
+          "rip": "0x100000047",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "14"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x10000004e",
+          "probe": "policy_write",
+          "probe_rip": "0x10000004e",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0xe025000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0xe025000",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x7",
+          "frame": "0xe0b9030",
+          "probe": "policy_write",
+          "rax": "0x0",
+          "rflags": "0x10002",
+          "rip": "0x10000004e",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "14"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x100000055",
+          "probe": "page_table_read",
+          "probe_rip": "0x100000055",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0xdfd1000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0xdfd1000",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x5",
+          "frame": "0xe0b9030",
+          "probe": "page_table_read",
+          "rax": "0x0",
+          "rflags": "0x10002",
+          "rip": "0x100000055",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "14"
+        }
+      },
+      {
+        "enter": {
+          "code_physical": "0xdfac000",
+          "domain": "2",
+          "instruction": "0x10000005c",
+          "probe": "page_table_write",
+          "probe_rip": "0x10000005c",
+          "root": "0xdfd1000",
+          "stack_end": "0x100003000",
+          "stack_start": "0x100002000",
+          "target": "0xdfd1000",
+          "trap_end": "0xe0b90e0",
+          "trap_start": "0xe0b10e0"
+        },
+        "trap": {
+          "cr2": "0xdfd1000",
+          "cs": "0x33",
+          "domain": "2",
+          "error": "0x7",
+          "frame": "0xe0b9030",
+          "probe": "page_table_write",
+          "rax": "0x0",
+          "rflags": "0x10002",
+          "rip": "0x10000005c",
+          "root": "0xdfd1000",
+          "rsp": "0x100002ff0",
+          "ss": "0x2b",
+          "vector": "14"
+        }
+      }
+    ]
+  },
+  "qualification": "not_established",
+  "reason": "compiled matrix request, ordered policy and actual CPL3 evidence matched",
+  "scope": "ten-case original-kernel single-CPU emulated matrix; physical hardware, SMP and DMA unqualified",
+  "status": "pass"
+}

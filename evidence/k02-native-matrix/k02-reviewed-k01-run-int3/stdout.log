@@ -1,0 +1,13 @@
+TESSRYN_K01_ENTRY
+TESSRYN ORIGINAL KERNEL
+TESSRYN_K01_FRAMEBUFFER status=ready width=1280 height=800 stride=1280 base=0x80000000 format=bgrx selection=firmware-console
+TESSRYN_K01_LIVE_RANGES image_start=0xddb7000 image_end=0xde48000 stack_start=0xdd97000 stack_end=0xddb7000 map_start=0xdd87000 map_end=0xdd97000 scratch=0x100000 runtime_high=0 gop_start=0x80000000 gop_end=0x803e8000
+TESSRYN_K01_PAGING_READY cr3=0xddc4000 tables=6 leaves=2048 physical_bits=40 guard=0x7fffffe00000 free_scope=low-conventional
+TESSRYN_K01_RESET_POINTER address=0xf6d3522 method=uefi-runtime
+TESSRYN_K01_MEMORY_MAP_VALID descriptors=101 stride=48 free_pages=52707 attempt=1
+TESSRYN_K01_EXIT_BOOT_SERVICES_OK
+TESSRYN_K01_CPU_OWNED cr3=0xddc4000 rsp=0xddb6f60 rip=0xddbb2f5 gdt=owned idt=owned tss=owned
+TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch=0x100000 free_pages=52707 loader=reserved runtime=reserved firmware=quarantined
+TESSRYN_K01_EXCEPTION vector=3 error=0x0 rip=0xddb8063 cs=0x8 rflags=0x6 rsp=0xddb6f58 cr2=0x0
+TESSRYN_K01_INT3_RECOVERED fp_state=preserved
+TESSRYN_K01_PASS

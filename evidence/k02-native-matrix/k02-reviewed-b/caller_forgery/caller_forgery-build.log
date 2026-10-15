@@ -1,0 +1,318 @@
+warning: unreachable statement
+  --> kernel/main.rs:64:5
+   |
+59 |     k02_matrix::run(handoff);
+   |     ------------------------ any code following this expression is unreachable
+...
+64 |     let scratch = handoff.scratch as *mut u64;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unreachable statement
+   |
+   = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `USER_CODE` is never used
+ --> kernel/k02.rs:9:11
+  |
+9 | pub const USER_CODE: u64 = 0x1_0000_0000;
+  |           ^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `USER_OWN` is never used
+  --> kernel/k02.rs:10:11
+   |
+10 | pub const USER_OWN: u64 = USER_CODE + 0x1000;
+   |           ^^^^^^^^
+
+warning: constant `USER_STACK` is never used
+  --> kernel/k02.rs:11:11
+   |
+11 | pub const USER_STACK: u64 = USER_CODE + 0x2000;
+   |           ^^^^^^^^^^
+
+warning: constant `USER_FOREIGN` is never used
+  --> kernel/k02.rs:12:11
+   |
+12 | pub const USER_FOREIGN: u64 = USER_CODE + 0x3000;
+   |           ^^^^^^^^^^^^
+
+warning: constant `USER_READONLY` is never used
+  --> kernel/k02.rs:13:11
+   |
+13 | pub const USER_READONLY: u64 = USER_CODE + 0x4000;
+   |           ^^^^^^^^^^^^^
+
+warning: constant `OWN_SEED` is never used
+  --> kernel/k02.rs:14:7
+   |
+14 | const OWN_SEED: u64 = 0x5445_5353_4f57_4e42;
+   |       ^^^^^^^^
+
+warning: constant `VICTIM_SEED` is never used
+  --> kernel/k02.rs:15:7
+   |
+15 | const VICTIM_SEED: u64 = 0x5445_5353_5649_4354;
+   |       ^^^^^^^^^^^
+
+warning: constant `FOREIGN_SEED` is never used
+  --> kernel/k02.rs:16:7
+   |
+16 | const FOREIGN_SEED: u64 = 0x5445_5353_464f_524e;
+   |       ^^^^^^^^^^^^
+
+warning: constant `WRITE_VALUE` is never used
+  --> kernel/k02.rs:17:7
+   |
+17 | const WRITE_VALUE: u64 = 0x5445_5353_5752_4954;
+   |       ^^^^^^^^^^^
+
+warning: static `ROOT_A` is never used
+  --> kernel/k02.rs:19:12
+   |
+19 | static mut ROOT_A: Tables<16> = Tables::empty();
+   |            ^^^^^^
+
+warning: static `ROOT_B` is never used
+  --> kernel/k02.rs:20:12
+   |
+20 | static mut ROOT_B: Tables<16> = Tables::empty();
+   |            ^^^^^^
+
+warning: struct `Probe` is never constructed
+  --> kernel/k02.rs:23:8
+   |
+23 | struct Probe {
+   |        ^^^^^
+
+warning: static `PROBE` is never used
+  --> kernel/k02.rs:27:12
+   |
+27 | static mut PROBE: Probe = Probe { active: false, domain: 0, vector: 0, error: 0,
+   |            ^^^^^
+
+warning: function `case` is never used
+  --> kernel/k02.rs:34:4
+   |
+34 | fn case() -> &'static str {
+   |    ^^^^
+
+warning: function `pattern` is never used
+  --> kernel/k02.rs:42:4
+   |
+42 | fn pattern(seed: u64, index: usize) -> u64 { seed ^ index as u64 }
+   |    ^^^^^^^
+
+warning: function `fill_page` is never used
+  --> kernel/k02.rs:43:11
+   |
+43 | unsafe fn fill_page(physical: u64, seed: u64) {
+   |           ^^^^^^^^^
+
+warning: function `page_matches` is never used
+  --> kernel/k02.rs:49:11
+   |
+49 | unsafe fn page_matches(physical: u64, seed: u64, own_write: bool) -> bool {
+   |           ^^^^^^^^^^^^
+
+warning: function `page_zero` is never used
+  --> kernel/k02.rs:56:11
+   |
+56 | unsafe fn page_zero(physical: u64) -> bool {
+   |           ^^^^^^^^^
+
+warning: function `map` is never used
+  --> kernel/k02.rs:86:4
+   |
+86 | fn map(root: &mut Tables<16>, role: &str, va: u64, page: PageLease, domain: u64) {
+   |    ^^^
+
+warning: function `run` is never used
+  --> kernel/k02.rs:92:8
+   |
+92 | pub fn run(handoff: &crate::uefi::Handoff) -> ! {
+   |        ^^^
+
+warning: function `handle_exception` is never used
+   --> kernel/k02.rs:205:8
+    |
+205 | pub fn handle_exception(frame: &crate::cpu::ExceptionFrame, cr2: u64) {
+    |        ^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_own_write` is never used
+  --> kernel/k02_cpu.rs:57:16
+   |
+57 |     pub static k02_probe_own_write: u8;
+   |                ^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_own_read` is never used
+  --> kernel/k02_cpu.rs:58:16
+   |
+58 |     pub static k02_probe_own_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_own_return` is never used
+  --> kernel/k02_cpu.rs:59:16
+   |
+59 |     pub static k02_probe_own_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_foreign_read` is never used
+  --> kernel/k02_cpu.rs:60:16
+   |
+60 |     pub static k02_probe_foreign_read: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_kernel_read_return` is never used
+  --> kernel/k02_cpu.rs:69:16
+   |
+69 |     pub static k02_probe_kernel_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_readonly_write_return` is never used
+  --> kernel/k02_cpu.rs:70:16
+   |
+70 |     pub static k02_probe_readonly_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_unauthorized_read_return` is never used
+  --> kernel/k02_cpu.rs:72:16
+   |
+72 |     pub static k02_probe_unauthorized_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_guard_read_return` is never used
+  --> kernel/k02_cpu.rs:74:16
+   |
+74 |     pub static k02_probe_guard_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_kernel_write_return` is never used
+  --> kernel/k02_cpu.rs:76:16
+   |
+76 |     pub static k02_probe_kernel_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_policy_read_return` is never used
+  --> kernel/k02_cpu.rs:78:16
+   |
+78 |     pub static k02_probe_policy_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_policy_write_return` is never used
+  --> kernel/k02_cpu.rs:80:16
+   |
+80 |     pub static k02_probe_policy_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_page_table_read_return` is never used
+  --> kernel/k02_cpu.rs:82:16
+   |
+82 |     pub static k02_probe_page_table_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_page_table_write_return` is never used
+  --> kernel/k02_cpu.rs:84:16
+   |
+84 |     pub static k02_probe_page_table_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_B_read_return` is never used
+  --> kernel/k02_cpu.rs:86:16
+   |
+86 |     pub static k02_probe_recursive_B_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_B_write_return` is never used
+  --> kernel/k02_cpu.rs:88:16
+   |
+88 |     pub static k02_probe_recursive_B_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_D_read_return` is never used
+  --> kernel/k02_cpu.rs:90:16
+   |
+90 |     pub static k02_probe_recursive_D_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_recursive_D_write_return` is never used
+  --> kernel/k02_cpu.rs:92:16
+   |
+92 |     pub static k02_probe_recursive_D_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_reuse_B_read_return` is never used
+  --> kernel/k02_cpu.rs:94:16
+   |
+94 |     pub static k02_probe_reuse_B_read_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: static `k02_probe_reuse_B_write_return` is never used
+  --> kernel/k02_cpu.rs:96:16
+   |
+96 |     pub static k02_probe_reuse_B_write_return: u8;
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: constant `DOMAIN_BUDGET_PAGES` is never used
+  --> kernel/k02_memory.rs:20:11
+   |
+20 | pub const DOMAIN_BUDGET_PAGES: u64 = 16;
+   |           ^^^^^^^^^^^^^^^^^^^
+
+warning: fields `physical`, `length`, `lease`, and `writable` are never read
+  --> kernel/k02_memory.rs:45:9
+   |
+44 | pub struct RegionLease {
+   |            ----------- fields in this struct
+45 |     pub physical: u64,
+   |         ^^^^^^^^
+46 |     pub length: u64,
+   |         ^^^^^^
+47 |     pub lease: LeaseId,
+   |         ^^^^^
+48 |     pub writable: bool,
+   |         ^^^^^^^^
+   |
+   = note: `RegionLease` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: methods `scrubbed_pages`, `checked_view`, `acquire`, and `acquire_page` are never used
+   --> kernel/k02_memory.rs:184:12
+    |
+180 | impl NativeMemory {
+    | ----------------- methods in this implementation
+...
+184 |     pub fn scrubbed_pages(&self) -> u64 { self.scrubbed_pages }
+    |            ^^^^^^^^^^^^^^
+...
+253 |     fn checked_view(&self, caller: u64, handle: CapabilityRef, rights: Rights,
+    |        ^^^^^^^^^^^^
+...
+286 |     pub fn acquire(&mut self, caller: u64, handle: CapabilityRef, access: Access,
+    |            ^^^^^^^
+...
+316 |     pub fn acquire_page(&mut self, caller: u64, handle: CapabilityRef,
+    |            ^^^^^^^^^^^^
+
+warning: method `label` is never used
+  --> kernel/k02_paging.rs:36:18
+   |
+35 | impl Error {
+   | ---------- method in this implementation
+36 |     pub const fn label(self) -> &'static str {
+   |                  ^^^^^
+
+warning: methods `table_count`, `supervisor_leaf_count`, and `object_range` are never used
+   --> kernel/k02_paging.rs:98:12
+    |
+ 91 | impl<const N: usize> Tables<N> {
+    | ------------------------------ methods in this implementation
+...
+ 98 |     pub fn table_count(&self) -> usize { self.used }
+    |            ^^^^^^^^^^^
+ 99 |     pub fn user_leaf_count(&self) -> usize { self.user_leaves }
+100 |     pub fn supervisor_leaf_count(&self) -> usize { self.supervisor_leaves }
+    |            ^^^^^^^^^^^^^^^^^^^^^
+...
+106 |     pub fn object_range(&self) -> Result<Range, Error> {
+    |            ^^^^^^^^^^^^
+
+warning: 46 warnings emitted
+

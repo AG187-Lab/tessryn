@@ -18,6 +18,8 @@ These documents record research, architectural decisions, implementation gates a
 | [Runnable kernel benchmarks](kernel-benchmarks.md) | Host policy latency, memory/queue overhead, retained packets and measurement scope |
 | [Build and evaluation](build-and-evaluation.md) | Pinned toolchain, artifact manifests and bounded emulator fixtures |
 | [First kernel](first-kernel.md) | Original UEFI kernel, boot/fault tests and GPU Mart virtual-CD workflow |
+| [Native memory isolation slice](k02-native-slice.md) | Four single-CPU CPL3 memory probes, artifact-bound traps and remaining K02 gates |
+| [Native memory isolation matrix](k02-native-matrix.md) | Ten fresh single-CPU CPL3 cases, protected request dispatch and ordered revocation/reuse |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
@@ -43,7 +45,7 @@ QEMU boot, exception, panic and reset paths, including actual high image/handoff
 regressions. The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification)
 records two owner-accepted native `t3a.small` boots and independent recovery on a
 separate Ubuntu instance, with cleanup complete. [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58)
-builds on K01 and records four single-CPU CPL3 protection probes under QEMU.
+builds on K01: the historical four-probe slice and the [ten-case matrix](k02-native-matrix.md) have separate source-bound evidence under QEMU.
 Physical hardware, full native isolation, native device drivers, GPU execution,
 Thunderbolt, inference and distributed performance remain unqualified. See the
 [roadmap](roadmap.md) for observed progress and remaining gates; historical

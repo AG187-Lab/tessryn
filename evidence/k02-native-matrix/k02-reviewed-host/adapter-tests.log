@@ -1,0 +1,21 @@
+
+running 16 tests
+test k02_memory::tests::admitted_guard_preserves_alignment_error_and_rejects_before_lease_publication ... ok
+test k02_memory::tests::an_earlier_released_hole_does_not_imply_next_allocation_reuses_it ... ok
+test k02_memory::tests::bounded_delegation_preserves_rights_bounds_alignment_order_without_owners ... ok
+test k02_memory::tests::byte_write_only_operations_do_not_create_cpu_mapping_authority ... ok
+test k02_memory::tests::failed_private_initializer_publishes_no_capability_charge_or_lease ... ok
+test k02_memory::tests::final_handoff_copies_numeric_inventory_and_subtracts_live_pages ... ok
+test k02_memory::tests::four_domains_keep_original_owner_charge_and_reject_claimed_identity ... ok
+test k02_memory::tests::last_allocation_reuses_exact_frame_scrubs_host_model_and_rejects_stale_ids ... ok
+test k02_memory::tests::last_target_reuses_exact_frame_when_its_free_extent_was_consumed ... ok
+test k02_memory::tests::operation_completion_retains_backing_until_trusted_quiescence ... ok
+test k02_memory::tests::recursive_revocation_holds_charge_until_each_descendant_teardown_finishes ... ok
+test k02_memory::tests::revoked_mapping_remains_owned_through_fence_until_quiescence ... ok
+test k02_memory::tests::scrub_admission_rejects_null_high_gaps_and_multi_page_work ... ok
+test k02_memory::tests::trusted_caller_identity_and_readonly_lease_are_enforced ... ok
+test k02_memory::tests::trusted_initializer_checks_last_word_zero_before_any_payload_store ... ok
+test k02_memory::tests::volatile_scrub_erases_whole_page_and_preserves_both_guards ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
