@@ -1,0 +1,237 @@
+{
+  "artifacts_equal_previous_review": true,
+  "benchmark_focused_tests": 42,
+  "clock_tests": 2,
+  "compiler_dependencies": [
+    "sources/interfaces/abi-v1/native.rs",
+    "sources/kernel-core/boot_inventory.rs",
+    "sources/kernel-core/capabilities.rs",
+    "sources/kernel-core/frames.rs",
+    "sources/kernel-core/lib.rs",
+    "sources/kernel/benchmark_clock.rs",
+    "sources/kernel/cpu.rs",
+    "sources/kernel/diagnostics.rs",
+    "sources/kernel/entry.S",
+    "sources/kernel/framebuffer.rs",
+    "sources/kernel/main.rs",
+    "sources/kernel/native_benchmarks.rs",
+    "sources/kernel/paging.rs",
+    "sources/kernel/uefi.rs",
+    "sources/scheduler-core/lib.rs"
+  ],
+  "design_validator_tests": 3,
+  "integrated_main_revision": "3e5a1254251038d26bd2a8c77c517607d842bdea",
+  "kind": "native_benchmark_main_refresh_validation",
+  "native_qualification": false,
+  "packets": [
+    {
+      "cases": 13,
+      "file_count": 55,
+      "packet": "build/native-benchmarks/main-final-run-a",
+      "registration_sha256": "503d6344677cacbf3d29b1a692d09a5961347ce103c9285f306d9e69e626a1df",
+      "samples": 208
+    },
+    {
+      "cases": 13,
+      "file_count": 55,
+      "packet": "build/native-benchmarks/main-final-run-b",
+      "registration_sha256": "a4f65f12723411f32934411351a02901c1a18f6a9c44f5232fa4dd798e8c74ed",
+      "samples": 208
+    }
+  ],
+  "python_skipped": 0,
+  "python_tests": 622,
+  "retained_source_inputs": [
+    {
+      "file": "sources/kernel/main.rs",
+      "sha256": "a196dc1cc8ccf7a524e9f99e857d8826af4782bbdfc00ed04d88660ed466fabe",
+      "size": 4958
+    },
+    {
+      "file": "sources/kernel/benchmark_clock.rs",
+      "sha256": "1b9f116563e9c2635f41b1c675187b8c967550b7d31f22c18fad04d94c85d318",
+      "size": 4165
+    },
+    {
+      "file": "sources/kernel/native_benchmarks.rs",
+      "sha256": "1087c33fae876ef1867644e06f9b634868fe8a076f6ad6151219af92fe1f7d07",
+      "size": 21988
+    },
+    {
+      "file": "sources/kernel/cpu.rs",
+      "sha256": "95047bd5c6c6635da548a55724ed05b81f1d9904e928ee5495e0f5c98f99b6b1",
+      "size": 9957
+    },
+    {
+      "file": "sources/kernel/entry.S",
+      "sha256": "73056a13e46060aa61aeb439181196e857f70a70b81172c72964b05ffca39875",
+      "size": 5024
+    },
+    {
+      "file": "sources/kernel/uefi.rs",
+      "sha256": "abcedf5a450f4f1796e5c33a8fb61fa394f05051eb83e92766cc0f53ee47c493",
+      "size": 22707
+    },
+    {
+      "file": "sources/kernel/paging.rs",
+      "sha256": "f33ceb09a28c5c8ecb3ebed988a38e42ca9ddbdc585f829b221b98abcbea58a4",
+      "size": 6226
+    },
+    {
+      "file": "sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size": 3005
+    },
+    {
+      "file": "sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size": 4436
+    },
+    {
+      "file": "sources/kernel-core/lib.rs",
+      "sha256": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+      "size": 1279
+    },
+    {
+      "file": "sources/kernel-core/capabilities.rs",
+      "sha256": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+      "size": 26647
+    },
+    {
+      "file": "sources/kernel-core/frames.rs",
+      "sha256": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+      "size": 8061
+    },
+    {
+      "file": "sources/kernel-core/boot_inventory.rs",
+      "sha256": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+      "size": 12946
+    },
+    {
+      "file": "sources/interfaces/abi-v1/native.rs",
+      "sha256": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+      "size": 7626
+    },
+    {
+      "file": "sources/tools/build_native_kernel_benchmarks.py",
+      "sha256": "690d7da157b5714c4b4f963d14b5ac8611bd21948725b8d82681dc49fc4536ce",
+      "size": 17010
+    },
+    {
+      "file": "sources/tools/run_native_kernel_benchmarks.py",
+      "sha256": "b0e31f7f6b519c33b4bbb0948aa69c6c5ff58275548bab309a40f90982ac108c",
+      "size": 12367
+    },
+    {
+      "file": "sources/tools/verify_native_kernel_benchmarks.py",
+      "sha256": "5895a71aede11c319d8802932b959a8d17b142ba084a561087095cf8b8c96837",
+      "size": 37779
+    },
+    {
+      "file": "sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size": 12867
+    },
+    {
+      "file": "sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size": 19816
+    },
+    {
+      "file": "sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size": 17457
+    },
+    {
+      "file": "sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size": 13199
+    },
+    {
+      "file": "sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size": 10501
+    },
+    {
+      "file": "sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size": 6728
+    },
+    {
+      "file": "sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size": 1073
+    },
+    {
+      "file": "sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size": 3748
+    },
+    {
+      "file": "sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size": 3623
+    },
+    {
+      "file": "sources/LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size": 11358
+    },
+    {
+      "file": "sources/NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size": 194
+    },
+    {
+      "file": "sources/planning/native-kernel-benchmark-profile.json",
+      "sha256": "51424717527d62478670fb9af2e97101d6b6f6e3c05d981f25f8a27f31a221ab",
+      "size": 4196
+    },
+    {
+      "file": "sources/scheduler-core/lib.rs",
+      "sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+      "size": 18365
+    }
+  ],
+  "schema_version": 1,
+  "scope": "single_cpu_qemu_guest_microbenchmark",
+  "source_dirty": false,
+  "source_revision": "da2a4cf8364530e91ea6ce5f7a5b86aa149af625",
+  "twin_artifacts": [
+    {
+      "file": "BOOTX64.EFI",
+      "role": "kernel_efi",
+      "sha256": "fe411a1d8a3b61978b5edc0ed9cca8e3da27c241bb945745f16ae92f290bfc6f",
+      "size": 66560
+    },
+    {
+      "file": "boot.img",
+      "role": "boot_disk",
+      "sha256": "920278c04cb55fc11d7d4f3531f65cf21f061993b93a64b2b456d5a00f24fe28",
+      "size": 35651584
+    },
+    {
+      "file": "libtessryn_owned_memory.rlib",
+      "role": "memory_rlib",
+      "sha256": "20663aef8737ed04085feb30808669036fd03de81993d8dec64cd320f77d8c44",
+      "size": 558398
+    },
+    {
+      "file": "libtessryn_scheduler.rlib",
+      "role": "scheduler_rlib",
+      "sha256": "a337cd2058032e7838e11223d68f160a9dd3ac44e91ec640c1b0bd2a20290947",
+      "size": 180010
+    }
+  ],
+  "twin_artifacts_byte_identical": true,
+  "unavailable": [
+    "counter_frequency",
+    "CPU_cycles",
+    "hardware_latency",
+    "native_scheduler_enforcement",
+    "SMP",
+    "GPU",
+    "inference_performance",
+    "independent_capture_authentication"
+  ]
+}
