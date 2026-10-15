@@ -10,6 +10,16 @@ k02_enter_user:
     push r15
     sub rsp, 8
     sub rsp, 512
+    // QEMU 11.1.2 does not populate the FOP field in FXSAVE. Initialize the
+    // complete image using GPR stores before capturing FP state, so unwritten
+    // capture holes cannot contain stale stack bytes. Keep comparing FOP on
+    // implementations that populate it; no architectural field is excluded.
+    xor r9d, r9d
+.Lk02_save_zero:
+    mov qword ptr [rsp + r9], 0
+    add r9, 8
+    cmp r9, 512
+    jne .Lk02_save_zero
     fxsave64 [rsp]
     mov qword ptr [rip + k02_kernel_fp_restored], 0
     mov [rip + k02_saved_kernel_rsp], rsp
@@ -105,8 +115,14 @@ k02_return_kernel:
     // Compare actual restored architectural fields with the original image.
     // Reserved FXSAVE bytes are not architectural state and were not written
     // by the initial save: skip byte 5 and each x87 slot's six padding bytes.
-    fxsave64 [rip + k02_restored_fp]
     lea rdx, [rip + k02_restored_fp]
+    xor r9d, r9d
+.Lk02_restored_zero:
+    mov qword ptr [rdx + r9], 0
+    add r9, 8
+    cmp r9, 512
+    jne .Lk02_restored_zero
+    fxsave64 [rdx]
     xor ecx, ecx
 .Lk02_fp_compare:
     cmp ecx, 416
@@ -141,6 +157,8 @@ k02_return_kernel:
     mov eax, 1
     ret
 .Lk02_fp_restore_failed:
+    mov rdi, rcx
+    call k02_fp_restore_failure
     ud2
 
 .global exception_k02_return
