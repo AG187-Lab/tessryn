@@ -1,0 +1,1 @@
+{"status": "built", "cases": ["caller_forgery", "trusted_operation_forgery", "unauthorized_read", "read_only_sharing", "exact_bounds", "kernel_isolation", "data_nx", "recursive_revocation", "writable_reuse", "stale_identities"], "matrix_complete": true, "qualification": "not_established"}

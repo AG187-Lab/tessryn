@@ -1,0 +1,19 @@
+
+running 14 tests
+test k02_paging::tests::all_mapping_budget_and_collision_failures_are_atomic ... ok
+test k02_paging::tests::domains_have_distinct_roots_and_foreign_page_is_absent ... ok
+test k02_paging::tests::every_parent_and_leaf_user_bit_is_required_and_corruption_is_refused ... ok
+test k02_paging::tests::exact_readonly_and_writable_nx_with_supervisor_ancestors ... ok
+test k02_paging::tests::hardware_accessed_dirty_bits_do_not_change_authority ... ok
+test k02_paging::tests::mandatory_low_map_and_high_pool_coverage_before_user_installation ... ok
+test k02_paging::tests::preserves_sparse_high_supervisor_ranges_and_rejects_late_seeding ... ok
+test k02_paging::tests::rejects_alignment_width_guard_and_whole_table_object_aliases ... ok
+test k02_paging::tests::rejects_retargeted_supervisor_hidden_user_leaf_and_not_present_huge_leaf ... ok
+test k02_paging::tests::sparse_user_paths_capacity_and_record_limits_fail_without_exposure ... ok
+test k02_paging::tests::supervisor_table_capacity_and_guard_fail_atomically ... ok
+test k02_paging::tests::trusted_code_is_readonly_executable_and_data_cannot_gain_exec ... ok
+test k02_paging::tests::unmap_removes_only_exact_leaf_and_does_not_recycle_page_tables ... ok
+test k02_paging::tests::virtual_address_and_physical_width_are_independent ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
