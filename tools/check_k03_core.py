@@ -129,11 +129,16 @@ def portable(message: str, work: Path | None = None) -> str:
                   "<host-path>", message)
 
 
-def execute(command: list[str], *, timeout: int = 60, work: Path | None = None) -> str:
+def execute(command: list[str], *, timeout: int = 60, work: Path | None = None,
+            stdout_only: bool = False) -> str:
     result = run_bounded(command, ROOT, timeout, 262144)
     output = portable((result.stdout + result.stderr).decode(errors="replace"), work)
     if result.status != "completed" or result.returncode != 0:
         raise ValueError(f"{Path(command[0]).name}: {result.status}/{result.returncode}: {output[:4000]}")
+    if stdout_only:
+        # Successful Git warnings remain diagnostics, never revision/status data.
+        sys.stderr.write(portable(result.stderr.decode(errors="replace"), work))
+        return portable(result.stdout.decode(errors="replace"), work)
     return output
 
 
@@ -164,8 +169,10 @@ def sources() -> dict[str, str]:
 
 
 def git_binding() -> tuple[str, str]:
-    revision = execute(["/usr/bin/git", "rev-parse", "HEAD"]).strip()
-    status = execute(["/usr/bin/git", "status", "--porcelain"]).strip()
+    revision = execute(["/usr/bin/git", "rev-parse", "HEAD"], stdout_only=True).strip()
+    if re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", revision) is None:
+        raise ValueError("Git revision is not a complete object identity")
+    status = execute(["/usr/bin/git", "status", "--porcelain"], stdout_only=True).strip()
     return revision, status
 
 

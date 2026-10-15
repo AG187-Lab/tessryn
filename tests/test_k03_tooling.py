@@ -1,6 +1,7 @@
 """K03 evidence must fail closed without publishing native scheduling claims."""
 
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr
 from unittest.mock import patch
 
 from tools import check_k03_core as checker
@@ -17,6 +19,24 @@ SUMMARY = "test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filter
 
 
 class K03EvidenceTests(unittest.TestCase):
+    def test_git_success_warnings_do_not_corrupt_revision_or_clean_status(self):
+        revision = "a" * 40
+        warning = b"git: warning: /Users/operator/private/temp unavailable; using fallback\n"
+        replies = [ProcessResult("completed", "done", 0, 0, (revision + "\n").encode(), warning),
+                   ProcessResult("completed", "done", 0, 0, b"", warning)]
+        diagnostics = io.StringIO()
+        with patch.object(checker, "run_bounded", side_effect=replies), redirect_stderr(diagnostics):
+            self.assertEqual(checker.git_binding(), (revision, ""))
+        self.assertEqual(diagnostics.getvalue().count("git: warning:"), 2)
+        self.assertNotIn("/Users/", diagnostics.getvalue())
+
+    def test_successful_git_output_still_requires_a_complete_object_identity(self):
+        for revision in ("", "abc", "a" * 40 + "\nwarning", "g" * 40):
+            reply = ProcessResult("completed", "done", 0, 0, revision.encode(), b"")
+            with self.subTest(revision=revision), patch.object(checker, "run_bounded", return_value=reply):
+                with self.assertRaisesRegex(ValueError, "complete object identity"):
+                    checker.git_binding()
+
     def test_retained_artifact_alias_is_replaced_without_changing_its_target(self):
         with tempfile.TemporaryDirectory() as temporary:
             work = Path(temporary)
