@@ -22,7 +22,7 @@ bring-up criteria are complete in [issue #4](https://github.com/AG187-Lab/tessry
 The AWS CPU proof remains limited to its recorded boot/reprovisioning profile.
 K01 does not complete G02's broader native-device contracts.
 
-[K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58) now implements the
+[K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58) merged the
 [ten-case single-CPU matrix](k02-native-matrix.md), with
 [clean execution evidence](../evidence/k02-native-matrix/README.md) and passing
 historical slice/K01 regressions. Its protected requests execute known image-bound
@@ -33,8 +33,11 @@ quiescence remain open in [issue #5](https://github.com/AG187-Lab/tessryn/issues
 Its host accounting/timeline tests and freestanding library do not complete native
 SMP, clocks or timer enforcement. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
 remains open and dependent on K02. The [host benchmark harness](kernel-benchmarks.md)
-is merged; dependent guest benchmark integration remains tracked in
-[PR #63](https://github.com/AG187-Lab/tessryn/pull/63).
+is merged. The separate [in-kernel benchmark experiment](native-kernel-benchmarks.md)
+executes 13 fixed cases and 208 raw-counter samples under single-CPU QEMU;
+[PR #63](https://github.com/AG187-Lab/tessryn/pull/63) records its implementation
+and source-bound review evidence. Hardware latency, native scheduling and
+inference performance remain unqualified.
 
 [Physical hardware requirements](hardware-intake.md) are ready through
 [PR #64](https://github.com/AG187-Lab/tessryn/pull/64). No server has been rented or

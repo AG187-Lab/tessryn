@@ -3,12 +3,23 @@
 #![no_main]
 #![deny(unsafe_op_in_unsafe_fn)]
 
+#[cfg_attr(native_benchmarks, allow(dead_code))]
 mod cpu;
 mod diagnostics;
 mod framebuffer;
 mod paging;
 mod uefi;
-#[cfg(k02_native)]
+#[cfg(all(native_benchmarks, any(k02_native, k02_matrix)))]
+compile_error!("native_benchmarks and k02_native are separate opt-in images");
+#[cfg(all(native_benchmarks, any(k01_aws, not(k01_emulator))))]
+compile_error!("the first native benchmark profile requires k01_emulator only");
+#[cfg(native_benchmarks)]
+mod benchmark_clock;
+#[cfg(native_benchmarks)]
+mod native_benchmarks;
+#[cfg(native_benchmarks)]
+extern crate tessryn_scheduler;
+#[cfg(any(k02_native, native_benchmarks))]
 extern crate tessryn_owned_memory;
 #[cfg(k02_native)]
 mod k02;
@@ -23,11 +34,14 @@ mod k02_matrix;
 #[cfg(k02_matrix)]
 mod k02_sha256;
 
+#[cfg(not(native_benchmarks))]
 use core::arch::asm;
 use core::mem::MaybeUninit;
 use core::panic::PanicInfo;
 use core::ptr;
-use diagnostics::{fail, finish, print};
+#[cfg(not(native_benchmarks))]
+use diagnostics::fail;
+use diagnostics::{finish, print};
 
 static mut HANDOFF: MaybeUninit<uefi::Handoff> = MaybeUninit::uninit();
 
@@ -55,6 +69,10 @@ pub unsafe extern "efiapi" fn efi_main(image: uefi::Handle, system: *const uefi:
 pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     // SAFETY: firmware has exited; kernel owns its loaded image and stack.
     unsafe { cpu::take_ownership(handoff) };
+    #[cfg(native_benchmarks)]
+    native_benchmarks::run(handoff);
+    #[cfg(not(native_benchmarks))]
+    {
     #[cfg(k02_matrix)]
     k02_matrix::run(handoff);
     #[cfg(all(k02_native, not(k02_matrix)))]
@@ -96,6 +114,7 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_PASS\n"));
     finish(true)
+    }
 }
 
 #[panic_handler]
