@@ -205,6 +205,25 @@ class NativeTranscriptTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             verify.parse_transcript(transcript(), returncode=True)
 
+    def test_exceptions_and_mixed_k02_markers_rejected_before_begin(self):
+        base = transcript()
+        markers = (b"TESSRYN_K01_EXCEPTION vector=6 error=0 rip=0x1234 cs=0x38 rflags=0x2 rsp=0x8000 cr2=0x0",
+                   b"TESSRYN_K01_EXCEPTION_UNKNOWN", b"TESSRYN_K02_FP_RESTORE_MISMATCH first_offset=6",
+                   b"TESSRYN_K02_PASS case=own_page", b"TESSRYN_K02_MATRIX_PASS case=exact_bounds")
+        for marker in markers:
+            for position in (0, base.index(b"TESSRYN_NBENCH_BEGIN"), len(base)):
+                raw = base[:position] + marker + b"\n" + base[position:]
+                with self.subTest(marker=marker, position=position), self.assertRaisesRegex(
+                        ValueError, "guest exception or mixed K02 transcript"):
+                    verify.parse_transcript(raw)
+
+    def test_harmless_firmware_and_kernel_startup_still_accepted(self):
+        startup = (b"Firmware: loading Tessryn\n"
+                   b"TESSRYN_K01_FRAMEBUFFER status=ready width=800 height=600\n"
+                   b"TESSRYN_K01_LIVE_RANGES image_start=0x1000 image_end=0x2000\n"
+                   b"TESSRYN_K01_EXIT_BOOT_SERVICES_RETRY\n")
+        self.assertEqual(verify.parse_transcript(startup + transcript()), verify.parse_transcript(transcript()))
+
     def test_media_reconstruction_matches_frozen_existing_format(self):
         for efi in (b"MZfixture", b"MZ" + bytes(range(256)) * 5):
             self.assertEqual(verify.canonical_disk(efi), make_disk(efi))
@@ -254,6 +273,19 @@ class NativePacketTests(unittest.TestCase):
         path.write_bytes(path.read_bytes().replace(b'"elapsed_ticks": 1,', b'"elapsed_ticks": 9,', 1))
         with self.assertRaises(ValueError):
             verify.verify_packet(self.root)
+
+    def test_rebound_pre_begin_exception_cannot_preserve_observed_result(self):
+        path = self.root / "qemu-stdout.log"
+        raw = path.read_bytes().replace(b"TESSRYN_NBENCH_BEGIN",
+            b"TESSRYN_K01_EXCEPTION vector=6 error=0 rip=0x1234 cs=0x38 rflags=0x2 rsp=0x8000 cr2=0x0\n"
+            b"TESSRYN_NBENCH_BEGIN", 1)
+        path.write_bytes(raw)
+        receipt_path = self.root / "run_receipts.json"
+        receipts = json.loads(receipt_path.read_bytes())
+        receipts["execution"]["stdout"].update(sha256=verify.digest(raw), size=len(raw))
+        receipt_path.write_bytes(encoded(receipts))
+        with self.assertRaisesRegex(ValueError, "guest exception or mixed K02 transcript"):
+            verify.verify_packet(self.root, require_result=True)
 
     def test_failed_execution_and_result_rejected(self):
         path = self.root / "run_receipts.json"

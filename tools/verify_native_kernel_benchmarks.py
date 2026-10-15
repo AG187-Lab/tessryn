@@ -226,6 +226,10 @@ def parse_transcript(stdout: bytes, stderr: bytes = b"", returncode: int = 33, m
     except UnicodeError as error:
         raise ValueError("guest transcript must be ASCII") from error
     require(not any(re.search(r"FAIL|PANIC|UNEXPECTED|Triple fault", line, re.I) for line in lines), "guest failure observed")
+    # Startup output precedes BEGIN, but this profile cannot recover exceptions
+    # or execute a separate K02 slice/matrix before reporting benchmark success.
+    require(not any(line.startswith(("TESSRYN_K01_EXCEPTION", "TESSRYN_K02_")) for line in lines),
+            "guest exception or mixed K02 transcript observed")
     ownership = []
     for marker in ("TESSRYN_K01_ENTRY", "TESSRYN_K01_EXIT_BOOT_SERVICES_OK", "TESSRYN_K01_CPU_OWNED"):
         positions = [index for index, line in enumerate(lines) if line == marker or line.startswith(marker + " ")]
