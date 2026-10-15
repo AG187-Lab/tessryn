@@ -45,8 +45,10 @@ The [K01 implementation and evidence](first-kernel.md), recorded in
 QEMU boot, exception, panic and reset paths, including actual high image/handoff
 regressions. The [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification)
 records two owner-accepted native `t3a.small` boots and independent recovery on a
-separate Ubuntu instance, with cleanup complete. [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58)
+separate Ubuntu instance, with cleanup complete. Merged [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58)
 builds on K01: the historical four-probe slice and the [ten-case matrix](k02-native-matrix.md) have separate source-bound evidence under QEMU.
+The [in-kernel benchmark experiment](native-kernel-benchmarks.md) separately
+executes 13 fixed cases and 208 raw TSC samples with retained capture bindings.
 Physical hardware, full native isolation, native device drivers, GPU execution,
 Thunderbolt, inference and distributed performance remain unqualified. See the
 [roadmap](roadmap.md) for observed progress and remaining gates; historical
