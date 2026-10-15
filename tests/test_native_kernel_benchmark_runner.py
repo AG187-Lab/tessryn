@@ -228,6 +228,42 @@ class NativeRunnerTests(unittest.TestCase):
         self.assertIn("differ", result["reason"])
         self.assertEqual(calls, [])
 
+    def test_self_consistent_foreign_helpers_cannot_execute_on_host(self):
+        path, manifest, _ = self.fake_build()
+        checkout = Path(builder.__file__).resolve().parents[1]
+        runtime_sources = [name for name in builder.SOURCE_FILES if name.endswith(".py")]
+        refs = {row["file"]: row for row in manifest["sources"]}
+        for name in runtime_sources:
+            data = (checkout / name).read_bytes()
+            current, retained = self.root / name, path.parent / "sources" / name
+            builder.write_bytes(current, data)
+            if not retained.exists():
+                builder.write_bytes(retained, data)
+            refs["sources/" + name] = builder.reference(retained, path.parent)
+        manifest["sources"] = list(refs.values())
+        # The existing runner/builder checks already cover those entry points.
+        # Every remaining helper must reject before any retained module imports.
+        for index, name in enumerate(runtime_sources):
+            if name in {"tools/run_native_kernel_benchmarks.py", "tools/build_native_kernel_benchmarks.py"}:
+                continue
+            retained = path.parent / "sources" / name
+            original = retained.read_bytes()
+            retained.write_bytes(b'raise AssertionError("foreign host helper executed")\n')
+            refs["sources/" + name].update(builder.reference(retained, path.parent))
+            path.unlink()
+            builder.write_json(path, manifest)
+            out = self.output("foreign-helper-" + str(index))
+            with self.subTest(helper=name), patch.object(runner, "_preflight_build", return_value=manifest):
+                result = runner.run(path, out, allow_qemu=True)
+                self.assertEqual(result["status"], "failed")
+                self.assertFalse(result["valid"])
+                self.assertIn("retained runtime source differs", result["reason"])
+                self.assertIsNone(result["registration_sha256"])
+                receipt = json.loads((out / "run_receipts.json").read_text())["execution"]
+                self.assertEqual(receipt["status"], "unavailable")
+            retained.write_bytes(original)
+            refs["sources/" + name].update(builder.reference(retained, path.parent))
+
     def test_compiler_probe_subprocess_failures_publish_failed_manifest(self):
         source = self.root / "tools/build_native_kernel_benchmarks.py"
         builder.write_bytes(source, builder.LOADED_SOURCE)

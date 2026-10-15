@@ -122,6 +122,11 @@ def captured_runtime(snapshot: Path):
     Existing K01 helpers address the checked live toolchain. Their source comes
     from the retained snapshot; only module-level filesystem roots are remapped.
     """
+    # A manifest's self-consistent hashes do not authorize host Python code.
+    # Historical packets must use their matching reviewed checkout before run.
+    for name in SOURCE_FILES:
+        if name.endswith(".py") and regular_bytes(snapshot / name, 2 << 20) != regular_bytes(ROOT / name, 2 << 20):
+            raise ValueError("retained runtime source differs from reviewed checkout: " + name)
     saved = {name: module for name, module in sys.modules.items()
              if name == "tools" or name.startswith("tools.") or name == "fixtures" or name.startswith("fixtures.")}
     old_path, old_bytecode = sys.path[:], sys.dont_write_bytecode

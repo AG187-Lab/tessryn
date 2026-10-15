@@ -35,6 +35,12 @@ python3 tools/verify_native_kernel_benchmarks.py build/native-benchmarks/run-1
 
 Each output directory must be new. Execution requires the explicit `--allow-qemu` flag. Failed attempts remain retained. No AWS allocation or hardware rental is part of these commands.
 
+Running a retained build also requires every executable Python helper to match
+the reviewed checkout before any retained helper is imported on the host.
+Self-consistent packet hashes do not grant host-code authority. Use the matching
+reviewed source checkout to rerun a historical build; standalone offline packet
+verification reads retained bytes without executing their Python source.
+
 ## Work and units
 
 The first profile fixes 16 measured samples, four excluded warmups, 128 iterations and seed 1. Its 13 cases cover:
