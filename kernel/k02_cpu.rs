@@ -38,6 +38,12 @@ static mut MXCSR_MASK:u32=0;
 pub fn mxcsr_mask() -> u32 {unsafe{ptr::addr_of!(MXCSR_MASK).read()}}
 
 #[unsafe(no_mangle)]
+pub extern "sysv64" fn k02_fp_restore_failure(offset:u64)->! {
+    print(format_args!("TESSRYN_K02_FP_RESTORE_MISMATCH first_offset={offset}\n"));
+    fail("k02-kernel-fp-restore-mismatch")
+}
+
+#[unsafe(no_mangle)]
 static mut k02_saved_kernel_rsp: u64 = 0;
 #[unsafe(no_mangle)]
 static mut k02_saved_kernel_cr3: u64 = 0;

@@ -77,6 +77,7 @@ def synthetic_serial(case, binding):
              'TESSRYN_K02_INVENTORY descriptors=25 available_pages=10000 protected_state=0x170000 source=final_successful_handoff']
     lines += [f'TESSRYN_K02_MAPPING role={role} domain={domain} virtual={va:#x} physical={pa:#x} page_bytes=4096 writable={writable} nx=1' for role,domain,va,pa,writable in mappings]
     lines += [f'TESSRYN_K02_USER_ENTER case={case} domain=2 root=0x120000 code={USER_CODE:#x} code_physical={0x100000+binding["efi_rva"]:#x} stack_start={USER_STACK:#x} stack_end={USER_STACK+4096:#x} instruction={instruction:#x} probe_rip={expected:#x} target={target:#x} trap_start=0x180000 trap_end=0x184000',
+              f'TESSRYN_K01_EXCEPTION vector={vector} error={error:#x} rip={expected:#x} cs=0x33 rflags=0x2 rsp={USER_STACK+4000:#x} cr2={target:#x}',
               f'TESSRYN_K02_TRAP case={case} domain=2 vector={vector} error={error:#x} rip={expected:#x} cs=0x33 ss=0x2b rflags=0x2 rsp={USER_STACK+4000:#x} cr2={target:#x} frame=0x183d00 kind={kind}',
               'TESSRYN_K02_SENTINELS victim_unchanged=1 foreign_unchanged=1 own_verified=1 pages_scrubbed=4 victim=0x302000 foreign=0x303000 own=0x300000']
     lines += [f'TESSRYN_K02_TEARDOWN virtual={va:#x} physical={pa:#x} order=fence_pte_remove_cr3_reload_quiesce' for _,_,va,pa,_ in mappings]
@@ -144,6 +145,54 @@ class K02NativeToolingTests(unittest.TestCase):
         for case in CASES:
             with self.subTest(case=case):
                 self.assertEqual(parse_transcript(case, synthetic_serial(case, self.binding), 33, b'', self.binding)['pass']['case'], case)
+
+    def test_raw_hardware_exception_is_required_and_extra_kernel_faults_reject(self):
+        for case in CASES:
+            raw = synthetic_serial(case, self.binding)
+            exception = next(line for line in raw.splitlines(keepends=True) if line.startswith(b'TESSRYN_K01_EXCEPTION '))
+            extra = b'TESSRYN_K01_EXCEPTION vector=6 error=0x0 rip=0x100000 cs=0x8 rflags=0x2 rsp=0x200000 cr2=0x0\n'
+            mutations = (raw.replace(exception, b''), raw.replace(exception, exception + extra),
+                         raw.replace(exception, exception + exception),
+                         raw.replace(exception, exception + b'TESSRYN_K01_EXCEPTION_UNKNOWN bogus=1\n'),
+                         raw.replace(exception, exception.replace(b'TESSRYN_K01_EXCEPTION ', b'TESSRYN_K01_EXCEPTION_UNKNOWN ')))
+            for index, changed in enumerate(mutations):
+                with self.subTest(case=case, mutation=index), self.assertRaises(ValueError):
+                    parse_transcript(case, changed, 33, b'', self.binding)
+
+    def test_each_raw_exception_field_must_match_normalized_trap(self):
+        raw = synthetic_serial('foreign_read', self.binding)
+        line = next(line for line in raw.splitlines(keepends=True) if line.startswith(b'TESSRYN_K01_EXCEPTION '))
+        fields = dict(token.split(b'=', 1) for token in line.strip().split()[1:])
+        for name in ('vector', 'error', 'rip', 'cs', 'rflags', 'rsp', 'cr2'):
+            changed_fields = dict(fields)
+            changed_fields[name.encode()] = str(int(fields[name.encode()], 0) + 1).encode()
+            changed_line = b'TESSRYN_K01_EXCEPTION ' + b' '.join(key + b'=' + value for key, value in changed_fields.items()) + b'\n'
+            with self.subTest(field=name), self.assertRaisesRegex(ValueError, 'differs from normalized trap'):
+                parse_transcript('foreign_read', raw.replace(line, changed_line), 33, b'', self.binding)
+        for changed_line in (line.replace(b' cr2=' + fields[b'cr2'], b''), line.rstrip() + b' extra=1\n'):
+            with self.assertRaises(ValueError):
+                parse_transcript('foreign_read', raw.replace(line, changed_line), 33, b'', self.binding)
+
+    def test_raw_exception_cannot_be_reordered_or_separated_from_boundary(self):
+        raw = synthetic_serial('own_page', self.binding)
+        exception = next(line for line in raw.splitlines(keepends=True) if line.startswith(b'TESSRYN_K01_EXCEPTION '))
+        removed = raw.replace(exception, b'')
+        mutations = (exception + removed,
+                     removed.replace(b'TESSRYN_K02_SENTINELS', exception + b'TESSRYN_K02_SENTINELS'),
+                     raw.replace(exception, b'intervening diagnostic\n' + exception),
+                     raw.replace(exception, exception + b'intervening diagnostic\n'))
+        for index, changed in enumerate(mutations):
+            with self.subTest(mutation=index), self.assertRaisesRegex(ValueError, 'ordered user entry/trap boundary'):
+                parse_transcript('own_page', changed, 33, b'', self.binding)
+
+    def test_all_retained_historical_raw_exceptions_still_match_their_traps(self):
+        root = Path(__file__).resolve().parents[1] / 'evidence/k02-native-slice'
+        manifest = json.loads((root / 'a/manifest.json').read_bytes())
+        for case in CASES:
+            with self.subTest(case=case):
+                observed = parse_transcript(case, (root / case / 'stdout.log').read_bytes(), 33,
+                                            (root / case / 'stderr.log').read_bytes(), manifest['probes'][case])
+                self.assertEqual(observed['pass']['case'], case)
 
     def test_low_conventional_frames_accept_but_null_reserved_and_shared_backing_do_not(self):
         raw = synthetic_serial('foreign_read', self.binding)

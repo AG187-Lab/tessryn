@@ -138,6 +138,16 @@ def parse_transcript(case: str, data: bytes, returncode: int | None,
     require(number(trap['vector']) == vector and number(trap['error']) == error and number(trap['rip']) == expected_rip
             and trap['kind'] == kind and (case == 'own_page' or number(trap['cr2']) == target),
             "actual hardware fault/return cause or probe address differs")
+    exceptions = [line for line in lines if line.startswith('TESSRYN_K01_EXCEPTION')]
+    require(len(exceptions) == 1, "actual raw hardware exception missing, duplicated or unknown")
+    raw_exception = fields(exceptions[0], 'TESSRYN_K01_EXCEPTION')
+    exception_fields = {'vector', 'error', 'rip', 'cs', 'rflags', 'rsp', 'cr2'}
+    require(set(raw_exception) == exception_fields
+            and all(number(raw_exception[key]) == number(trap[key]) for key in exception_fields),
+            "raw hardware exception differs from normalized trap")
+    entered_at = lines.index(events[6])
+    require(entered_at + 2 < len(lines) and lines[entered_at + 1] == exceptions[0]
+            and lines[entered_at + 2] == events[7], "raw hardware exception is outside the ordered user entry/trap boundary")
     require(set(sentinels) == {'victim_unchanged','foreign_unchanged','own_verified','pages_scrubbed','victim','foreign','own'}
             and sentinels['victim_unchanged'] == sentinels['foreign_unchanged'] == sentinels['own_verified'] == '1'
             and number(sentinels['pages_scrubbed']) == 4

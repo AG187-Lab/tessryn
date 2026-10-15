@@ -30,6 +30,12 @@ return. Active OSXSAVE, protection keys, CET, SGX, PCID and global translations 
 outside this profile; extended-state and multicore context switching need their
 own implementation and evidence.
 
+The pinned QEMU 11.1.2 FXSAVE implementation leaves its opcode field unwritten.
+Both capture buffers are initialized before saving, so undefined capture holes
+cannot inherit stack bytes; implementations that populate the field still have
+it compared. This emulator observation cannot qualify physical x87 opcode-state
+preservation. A restoration mismatch fails with a bounded field offset.
+
 Controlled requests use a fixed, authorized NX request page. The trap derives the
 caller from protected context, actual CR3 and the saved privilege frame; submitted
 caller/domain and lease bits never become trusted internal identities. These
