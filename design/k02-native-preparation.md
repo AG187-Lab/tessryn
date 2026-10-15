@@ -1,8 +1,10 @@
 # Native K02 preparation
 
-Status: independent implementation and protocol preparation, 2026-10-11. No new native execution or
-isolation result is claimed. [K02](https://github.com/AG187-Lab/tessryn/issues/5)
+Packet status: independent implementation and protocol preparation, 2026-10-11. This packet supplies no native execution or
+isolation result. [K02](https://github.com/AG187-Lab/tessryn/issues/5)
 remains open and depends on [K01](https://github.com/AG187-Lab/tessryn/issues/4).
+
+Later progress, 2026-10-12: [draft PR 58](https://github.com/AG187-Lab/tessryn/pull/58) has separate [source-bound execution evidence](https://github.com/AG187-Lab/tessryn/blob/7b1b07259be350db76657d0d1183078e6f8c610f/evidence/k02-native-slice/README.md) for four CPL3 protection probes in the original kernel on one QEMU CPU. It does not complete the ten-case protocol below, physical qualification, SMP or DMA. This preparation packet and its synthetic results retain their original scope.
 
 This packet uses K01 [PR 53](https://github.com/AG187-Lab/tessryn/pull/53) at
 `bf079253b0f39b6abf3a1ab764e48916e3f11399` and the merged K02 core at
@@ -177,5 +179,5 @@ user mapper/dispatch/teardown backend, and execute the full negative-test matrix
 in the original kernel. Keep K02 open until its native acceptance evidence is
 reviewed. The existing host core results remain useful regressions, while this
 packet supplies the integration contract. Independent implementation results
-must retain their exact source and toolchain bindings, while native execution
-and qualification remain unavailable.
+must retain their exact source and toolchain bindings. This preparation packet
+supplies no native execution evidence; full K02 qualification remains open.

@@ -1,8 +1,8 @@
 # Platform qualification
 
-Status: physical target profiles remain unqualified. The [K01 emulator profile](first-kernel.md) has original-kernel CPU boot and fault evidence, and the bounded [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification) has owner-accepted native `t3a.small` boot and separate Ubuntu recovery evidence. Qualify physical CPU boot, networking/storage, accelerator compute, and distributed inference separately. A successful boot does not prove accelerator availability.
+Status, October 12, 2026: physical target profiles remain unqualified. The [K01 emulator profile](first-kernel.md) has original-kernel CPU boot and fault evidence, and the bounded [AWS CPU profile](aws-boot-and-recovery.md#observed-cpu-qualification) has owner-accepted native `t3a.small` boot and separate Ubuntu recovery evidence. Its implementation and evidence are recorded in [PR #53](https://github.com/AG187-Lab/tessryn/pull/53). Qualify physical CPU boot, networking/storage, accelerator compute and distributed inference separately. A successful boot does not prove accelerator availability.
 
-The [initial G01 qualification record](platform-qualification.md) prepares a short bare-metal inventory session without selecting supported hardware. Its candidate descriptions and costs are vendor facts and analytical examples; actual device/firmware/topology, notebook access and native execution remain unavailable.
+The [initial G01 qualification record](platform-qualification.md) prepares a short bare-metal inventory session without selecting supported hardware. Its candidate descriptions and costs are vendor facts and analytical examples; actual physical device/firmware/topology, notebook access and physical native execution remain unavailable. The later AWS CPU observation does not replace these G01 records or qualify native NVMe/ENA/GPU execution.
 
 G01 selects exact engineering targets only after physical inventories,
 boot/device-access feasibility, recovery prerequisites and artifact constraints
@@ -18,13 +18,14 @@ Start with modern x86-64 UEFI hardware on Intel or AMD CPUs, a fixed wired NIC, 
 A notebook can be a native model shard. Admission measures sustained execution under mains power, thermal behavior, usable memory, link latency/jitter, and availability. Initially use a headless profile with sleep disabled. GPU power restoration and multi-function PCI behavior need explicit qualification; [NVIDIA's notebook power documentation](https://download.nvidia.com/XFree86/Linux-x86_64/580.95.05/README/dynamicpowermanagement.html) describes relevant platform dependencies, not a Tessryn driver.
 
 The bounded cloud CPU experiment established two fresh original-kernel boots on
-UEFI x86-64 `t3a.small` Nitro guests, separated by independent recovery on a fresh
+virtualized UEFI x86-64 `t3a.small` guests, separated by independent recovery on a fresh
 Ubuntu instance, with cleanup complete. The
 [AWS workflow](aws-boot-and-recovery.md) builds fixed GPT/FAT32 media, headless
 COM1 diagnostics and local firmware-NVMe tests. No ENA or native NVMe driver is
-present, and an EC2 guest boot does
-not qualify bare-metal CPU access, a GPU, networking or inference. The wider
-cloud target still needs ACPI/interrupt, ENA and NVMe implementation evidence.
+present. Firmware loading the boot disk does not establish kernel storage
+support. An EC2 guest boot does not qualify bare-metal CPU access, a GPU, networking or inference. The wider
+cloud target still needs ACPI/interrupt, ENA and NVMe implementation evidence;
+GPU instances require separate device and firmware qualification.
 
 The resource owner must confirm the exact instance type's `SupportedBootModes`
 and launched `CurrentInstanceBootMode`; generic Nitro guarantees exclude metal.

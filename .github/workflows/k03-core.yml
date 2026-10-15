@@ -1,0 +1,32 @@
+name: K03 scheduler policy core
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  scheduler-policy-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.13'
+      - name: Verify setup identity and failure evidence boundaries
+        run: python3 -m unittest discover -s tests -p 'test_k0[23]*.py' -v
+      - name: Install checksum-pinned compiler, target and host test libraries
+        run: python3 tools/setup_k02_toolchain.py
+      - name: Execute scheduler policy tests and compile repeated freestanding artifacts
+        run: python3 tools/check_k03_core.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: k03-scheduler-policy-core
+          path: build/k03/
+          if-no-files-found: error
+          retention-days: 14

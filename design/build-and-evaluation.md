@@ -1,11 +1,13 @@
 # G03 build and evaluation foundation
 
-Status: G03 host tooling with original test fixtures. This fixture workflow
-establishes no kernel boot, native services, GPU execution or inference. The
-separate [K01 workflow](first-kernel.md) builds and boots the original kernel.
-A fixture pass
+Status: G03 host tooling with original test fixtures. Within this fixture
+profile, kernel boot, native services, GPU execution and inference remain
+**unavailable**. The separate [K01 workflow](first-kernel.md) builds and boots
+the original kernel. A fixture pass
 establishes only that this harness observed its marker and expected emulator
 exit. The freestanding Rust ELF probe is inspected, never executed.
+
+Separate K01 execution evidence now establishes bounded original-kernel CPU boot and recovery. See the [roadmap](roadmap.md) for current implementation progress and the limits of that evidence. The G03 fixture records retain their original source, date and unavailable-capability labels.
 
 ## Selected development profile
 

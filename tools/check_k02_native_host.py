@@ -19,10 +19,11 @@ from tools import setup_k02_toolchain as setup
 from tools.check_k02_core import digest, execute, portable, test_count, write_result
 from tools.build_fixture import source_identity
 
-SCOPE = "host tests of original ownership policy, native adapter and pure page-table mapper; CPU enforcement unqualified"
+SCOPE = "host tests of original ownership policy, native adapter, pure page-table mapper and page digest; CPU enforcement unqualified"
 SUITES = (("core", "kernel-core/lib.rs", 57),
           ("paging", "tests/k02_paging_host.rs", 14),
-          ("adapter", "kernel/k02_memory_host_tests.rs", 6))
+          ("adapter", "kernel/k02_memory_host_tests.rs", 16),
+          ("sha256", "tests/k02_sha256_host.rs", 10))
 
 
 def sources() -> dict[str, str]:
@@ -32,6 +33,7 @@ def sources() -> dict[str, str]:
                  "kernel/k02_paging.rs", "kernel/k02_paging_tests.rs",
                  "tests/k02_paging_host.rs", "kernel/k02_memory.rs",
                  "kernel/k02_memory_tests.rs", "kernel/k02_memory_host_tests.rs",
+                 "kernel/k02_sha256.rs", "tests/k02_sha256_host.rs",
                  "toolchain.lock.json", "planning/k02-toolchain.lock.json",
                  "tools/setup_toolchain.py", "tools/setup_k02_toolchain.py",
                  "tools/check_k02_core.py", "tools/g03/process.py",
@@ -110,7 +112,7 @@ def main() -> int:
                                               "reason": portable(str(error), out)[:4000]})
         print("K02 native host checks failed; inspect the scoped result", file=sys.stderr)
         return 1
-    print("K02 native host checks passed: 57 core, 14 mapper, 6 adapter; CPU enforcement unqualified")
+    print("K02 native host checks passed: 57 core, 14 mapper, 16 adapter, 10 SHA-256; CPU enforcement unqualified")
     return 0
 
 

@@ -9,7 +9,7 @@ mod diagnostics;
 mod framebuffer;
 mod paging;
 mod uefi;
-#[cfg(all(native_benchmarks, k02_native))]
+#[cfg(all(native_benchmarks, any(k02_native, k02_matrix)))]
 compile_error!("native_benchmarks and k02_native are separate opt-in images");
 #[cfg(all(native_benchmarks, any(k01_aws, not(k01_emulator))))]
 compile_error!("the first native benchmark profile requires k01_emulator only");
@@ -29,6 +29,10 @@ mod k02_cpu;
 mod k02_memory;
 #[cfg(k02_native)]
 mod k02_paging;
+#[cfg(k02_matrix)]
+mod k02_matrix;
+#[cfg(k02_matrix)]
+mod k02_sha256;
 
 #[cfg(not(native_benchmarks))]
 use core::arch::asm;
@@ -69,7 +73,9 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     native_benchmarks::run(handoff);
     #[cfg(not(native_benchmarks))]
     {
-    #[cfg(k02_native)]
+    #[cfg(k02_matrix)]
+    k02_matrix::run(handoff);
+    #[cfg(all(k02_native, not(k02_matrix)))]
     k02::run(handoff);
     // Read/write one page from conventional RAM only. Every live allocation,
     // runtime, ACPI and reserved descriptor has been excluded by validation.
