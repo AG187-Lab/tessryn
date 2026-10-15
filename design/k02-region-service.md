@@ -1,8 +1,10 @@
 # Single-CPU region service and resumable tasks
 
-Status: implementation contract; native execution acceptance is pending. This
-document does not turn the earlier matrix or host benchmark observations into
-evidence for the new service. [K02 issue #5](https://github.com/AG187-Lab/tessryn/issues/5)
+Status: bounded single-CPU emulated execution accepted on October 15, 2026.
+The [original execution packet](../evidence/k02-region-service/README.md) binds
+clean implementation `bf9c82528f83e25814334c696a02aff86120fa21` and source
+snapshot `3bf0016316e5aafac1527eb854de169a3370a956f17cda2ccab5be222dadf592`.
+This acceptance covers the declared two image programs and CPU profile. [K02 issue #5](https://github.com/AG187-Lab/tessryn/issues/5)
 remains open. [ADR 0018](decisions/0018-resumable-region-service.md) records this
 bounded integration decision.
 
@@ -173,9 +175,32 @@ It stays journaled and charged until that peer unmaps and release actually
 succeeds. Each domain's two baseline stack/request pages remain retained until
 global cleanup. Erasure precedes exposing released backing to a new owner.
 
-## Required acceptance evidence
+## Acceptance evidence
 
-Three separately captured case images are planned:
+Three separately captured case images passed the independent raw-trace verifier:
+`sharing` submitted 14 requests through 15 actual CPL3 traps, `revocation` 14
+through 15, and `authority` 38 through 38. Each observed four context switches,
+continued user execution after replies and final zero leaves, mappings,
+allocations and charged/committed/reserved pages. Both complete service builds
+matched all ten artifacts, with 22 compiler dependencies, 27 reviewed runtime
+files and 49 retained inputs per twin. The original host receipt binds 21 policy
+tests. All 658 Python tests, 97 original memory/mapper/adapter/digest host tests,
+ten matrix boots, four earlier slice boots, seven K01 boots and the 13-case,
+208-sample guest benchmark regression passed on the same clean implementation.
+Host tests remain separate from CPU enforcement; raw benchmark ticks do not
+establish frequency, hardware latency or performance gains.
+
+[The verification report](../evidence/k02-region-service/verification.json)
+has SHA-256 `ac0a72dcb4ebdf4fed6e566180e23855795a7edaeaa7276af3ab5d4cedfdcbf9`.
+The public packet retains byte-preserved successful text records and notices,
+source-bound regression reports and a complete text hash index. Executables,
+media, firmware and source snapshots stay in the complete ignored local/CI
+packets. Offline records do not independently authenticate capture. The packet
+README gives complete reproduction commands and historical checkout/toolchain
+requirements, and separately records the failed sandbox launcher and approved
+fresh retry without publishing failed raw host diagnostics.
+
+The admitted cases establish these bounded observations:
 
 | Case | Required original-kernel observations |
 | --- | --- |
@@ -200,7 +225,7 @@ validate rejection behavior and cannot replace guest execution. Public evidence
 must contain required notices and complete hash coverage without credentials,
 workspace paths or raw failed host diagnostics.
 
-Tooling is being implemented as `tools/build_k02_region_service.py`,
+Tooling is available as `tools/build_k02_region_service.py`,
 `tools/run_k02_region_service.py` and `tools/verify_k02_region_service.py` with
 the `sharing`, `revocation` and `authority` cases. After building both twins,
 running `tools/check_k02_region_host.py --out build/k02-region-service/host`
@@ -218,10 +243,10 @@ python3 tools/verify_k02_region_service.py \
 ```
 
 The host receipt binds the original policy test inputs, pinned compiler and
-retained test/build logs; it cannot substitute for any guest capture. Complete
-reproduction commands and observed source/artifact/receipt identities will be
-added after the execution packet is verified; no successful run is recorded here
-yet.
+retained test/build logs; it cannot substitute for any guest capture. Use the
+[packet reproduction commands](../evidence/k02-region-service/README.md#reproduce-the-executed-source)
+in a fresh checkout/output tree to reproduce the executed source. The text
+packet alone omits binary artifacts needed for complete artifact verification.
 
 This is correctness preparation under the
 [inference performance contract](inference-performance.md). The conservative

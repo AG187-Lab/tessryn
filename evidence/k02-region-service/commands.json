@@ -1,0 +1,530 @@
+{
+  "commands": [
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/build_native_kernel_benchmarks.py",
+          "--out",
+          "build/region-reg-benchmark-image",
+          "--scheduler-source",
+          "build/native-inputs/scheduler-core.rs"
+        ],
+        "elapsed_seconds": 3.728776125004515,
+        "log": "build/region-reg-logs/benchmark-build.log",
+        "log_sha256": "5f1af46f81da1bfa93d4cba72eb0a9197f0d710967b43c4e81febc8e54c59ed6",
+        "name": "benchmark-build",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:00.732177+00:00"
+      },
+      "retained_log": "regressions/commands/benchmark-build.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/build_kernel.py",
+          "--out",
+          "build/region-reg-k01-a"
+        ],
+        "elapsed_seconds": 5.743169167020824,
+        "log": "build/region-reg-logs/k01-build-a.log",
+        "log_sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+        "name": "k01-build-a",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:00.730256+00:00"
+      },
+      "retained_log": "regressions/commands/k01-build-a.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/build_k02_native.py",
+          "--out",
+          "build/region-reg-slice-a"
+        ],
+        "elapsed_seconds": 7.263961124990601,
+        "log": "build/region-reg-logs/slice-build-a.log",
+        "log_sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+        "name": "slice-build-a",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:00.730625+00:00"
+      },
+      "retained_log": "regressions/commands/slice-build-a.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_native_kernel_benchmarks.py",
+          "--manifest",
+          "build/region-reg-benchmark-image/manifest.json",
+          "--out",
+          "build/region-reg-benchmark-run",
+          "--allow-qemu"
+        ],
+        "elapsed_seconds": 4.293350125022698,
+        "log": "build/region-reg-logs/benchmark-run.log",
+        "log_sha256": "dc8afc7130ae1f2c1727d8d0ba06c4eb3b077cc6c278a69c6bfeb56880cd56f0",
+        "name": "benchmark-run",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:04.461542+00:00"
+      },
+      "retained_log": "regressions/commands/benchmark-run.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/verify_native_kernel_benchmarks.py",
+          "build/region-reg-benchmark-run"
+        ],
+        "elapsed_seconds": 0.1773420840036124,
+        "log": "build/region-reg-logs/benchmark-verify.log",
+        "log_sha256": "c66ae48e512307a4ae60284524495f1d0092a88ac2fde4ac62b3b2ce7f27d907",
+        "name": "benchmark-verify",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:08.755476+00:00"
+      },
+      "retained_log": "regressions/commands/benchmark-verify.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/build_kernel.py",
+          "--out",
+          "build/region-reg-k01-b"
+        ],
+        "elapsed_seconds": 4.737513667030726,
+        "log": "build/region-reg-logs/k01-build-b.log",
+        "log_sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+        "name": "k01-build-b",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:06.474250+00:00"
+      },
+      "retained_log": "regressions/commands/k01-build-b.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/build_k02_native.py",
+          "--out",
+          "build/region-reg-slice-b"
+        ],
+        "elapsed_seconds": 6.345651915995404,
+        "log": "build/region-reg-logs/slice-build-b.log",
+        "log_sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+        "name": "slice-build-b",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:07.995176+00:00"
+      },
+      "retained_log": "regressions/commands/slice-build-b.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_k02_native.py",
+          "--manifest",
+          "build/region-reg-slice-a/manifest.json",
+          "--case",
+          "own_page",
+          "--out",
+          "build/region-reg-slice-own_page"
+        ],
+        "elapsed_seconds": 2.784671790956054,
+        "log": "build/region-reg-logs/slice-run-own_page.log",
+        "log_sha256": "ba4ce5edf7f3e7d0187676a695a2b180263a715bfb6141fa8ee6ae45a6a59193",
+        "name": "slice-run-own_page",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:14.341227+00:00"
+      },
+      "retained_log": "regressions/commands/slice-run-own_page.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_k02_native.py",
+          "--manifest",
+          "build/region-reg-slice-a/manifest.json",
+          "--case",
+          "foreign_read",
+          "--out",
+          "build/region-reg-slice-foreign_read"
+        ],
+        "elapsed_seconds": 2.8671869579702616,
+        "log": "build/region-reg-logs/slice-run-foreign_read.log",
+        "log_sha256": "524e8470be27adbe2e0ed3081a0b110db7cc12aa17dc23c5d0678175daf9008f",
+        "name": "slice-run-foreign_read",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:17.126523+00:00"
+      },
+      "retained_log": "regressions/commands/slice-run-foreign_read.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_k02_native.py",
+          "--manifest",
+          "build/region-reg-slice-a/manifest.json",
+          "--case",
+          "kernel_read",
+          "--out",
+          "build/region-reg-slice-kernel_read"
+        ],
+        "elapsed_seconds": 3.075419917004183,
+        "log": "build/region-reg-logs/slice-run-kernel_read.log",
+        "log_sha256": "c052b8e2fb22c8c9dde333c65e8a826e5d8f450f1ed233a3096a449782192248",
+        "name": "slice-run-kernel_read",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:19.998875+00:00"
+      },
+      "retained_log": "regressions/commands/slice-run-kernel_read.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_k02_native.py",
+          "--manifest",
+          "build/region-reg-slice-a/manifest.json",
+          "--case",
+          "readonly_write",
+          "--out",
+          "build/region-reg-slice-readonly_write"
+        ],
+        "elapsed_seconds": 3.15396220801631,
+        "log": "build/region-reg-logs/slice-run-readonly_write.log",
+        "log_sha256": "1d3d3dfb15bdbd0a8dada382c659bb89a7f55606922ec7fa051610c7990ac3c5",
+        "name": "slice-run-readonly_write",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:23.078950+00:00"
+      },
+      "retained_log": "regressions/commands/slice-run-readonly_write.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-logs/commands.json",
+        "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+        "size_bytes": 7230
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/verify_k02_native.py",
+          "--first",
+          "build/region-reg-slice-a/manifest.json",
+          "--second",
+          "build/region-reg-slice-b/manifest.json",
+          "--result",
+          "build/region-reg-slice-own_page/result.json",
+          "--result",
+          "build/region-reg-slice-foreign_read/result.json",
+          "--result",
+          "build/region-reg-slice-kernel_read/result.json",
+          "--result",
+          "build/region-reg-slice-readonly_write/result.json",
+          "--out",
+          "build/region-reg-slice-verification.json"
+        ],
+        "elapsed_seconds": 0.5578905830043368,
+        "log": "build/region-reg-logs/slice-verify.log",
+        "log_sha256": "43da62d345370ddaf56a7b88a5de874994e5145f103ad781c0e57dc9649c99ef",
+        "name": "slice-verify",
+        "returncode": 0,
+        "started_at": "2026-10-15T07:00:26.234325+00:00"
+      },
+      "retained_log": "regressions/commands/slice-verify.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "normal",
+          "--out",
+          "build/region-reg-k01-retry-normal"
+        ],
+        "elapsed_seconds": 2.761526042013429,
+        "log": "build/region-reg-k01-retry-logs/normal.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "normal",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-normal.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "int3",
+          "--out",
+          "build/region-reg-k01-retry-int3"
+        ],
+        "elapsed_seconds": 2.663734832953196,
+        "log": "build/region-reg-k01-retry-logs/int3.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "int3",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-int3.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "invalid_opcode",
+          "--out",
+          "build/region-reg-k01-retry-invalid_opcode"
+        ],
+        "elapsed_seconds": 2.70861375000095,
+        "log": "build/region-reg-k01-retry-logs/invalid_opcode.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "invalid_opcode",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-invalid_opcode.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "page_fault",
+          "--out",
+          "build/region-reg-k01-retry-page_fault"
+        ],
+        "elapsed_seconds": 2.7122595830005594,
+        "log": "build/region-reg-k01-retry-logs/page_fault.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "page_fault",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-page_fault.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "panic",
+          "--out",
+          "build/region-reg-k01-retry-panic"
+        ],
+        "elapsed_seconds": 2.7661250000237487,
+        "log": "build/region-reg-k01-retry-logs/panic.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "panic",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-panic.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "reboot",
+          "--out",
+          "build/region-reg-k01-retry-reboot"
+        ],
+        "elapsed_seconds": 2.707870374957565,
+        "log": "build/region-reg-k01-retry-logs/reboot.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "reboot",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-reboot.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/run_kernel.py",
+          "--manifest",
+          "build/region-reg-k01-a/manifest.json",
+          "--case",
+          "normal",
+          "--media",
+          "iso",
+          "--out",
+          "build/region-reg-k01-retry-iso"
+        ],
+        "elapsed_seconds": 2.8086647909949534,
+        "log": "build/region-reg-k01-retry-logs/iso.log",
+        "log_sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "name": "iso",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-iso.log"
+    },
+    {
+      "original_index": {
+        "path": "build/region-reg-k01-retry-logs/commands.json",
+        "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+        "size_bytes": 4699
+      },
+      "original_record": {
+        "command": [
+          "python3",
+          "tools/verify_kernel.py",
+          "--first",
+          "build/region-reg-k01-a/manifest.json",
+          "--second",
+          "build/region-reg-k01-b/manifest.json",
+          "--result",
+          "build/region-reg-k01-retry-normal/result.json",
+          "--result",
+          "build/region-reg-k01-retry-int3/result.json",
+          "--result",
+          "build/region-reg-k01-retry-invalid_opcode/result.json",
+          "--result",
+          "build/region-reg-k01-retry-page_fault/result.json",
+          "--result",
+          "build/region-reg-k01-retry-panic/result.json",
+          "--result",
+          "build/region-reg-k01-retry-reboot/result.json",
+          "--result",
+          "build/region-reg-k01-retry-iso/result.json",
+          "--out",
+          "build/region-reg-k01-retry-verification.json"
+        ],
+        "elapsed_seconds": 2.435070125036873,
+        "log": "build/region-reg-k01-retry-logs/verify.log",
+        "log_sha256": "47eeaf7326836ad352419f7bd6828d388628e7a56c2fad3a252eab9547a32b6e",
+        "name": "verify",
+        "returncode": 0
+      },
+      "retained_log": "regressions/commands/k01-retry-verify.log"
+    }
+  ],
+  "derived_navigation_only": true,
+  "failed_attempt": {
+    "raw_logs_published": false,
+    "reason": "sandbox denied emulator temporary-file creation before guest execution; fresh approved seven-case retry passed",
+    "returncode": 1,
+    "stage": "initial K01 normal launcher"
+  },
+  "format": "tessryn-region-public-command-navigation/v1",
+  "source": {
+    "dirty": false,
+    "revision": "bf9c82528f83e25814334c696a02aff86120fa21",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "3bf0016316e5aafac1527eb854de169a3370a956f17cda2ccab5be222dadf592"
+  }
+}

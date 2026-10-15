@@ -1,0 +1,26 @@
+
+running 21 tests
+test byte_bounds_and_alignment_never_round_authority_outward ... ok
+test checked_buffer_accepts_last_byte_extent_and_rejects_overflow_or_neighbor ... ok
+test child_revocation_keeps_unaffected_peer_mapping_and_charge ... ok
+test codec_has_exact_little_endian_offsets_and_round_trip ... ok
+test codec_rejects_every_header_and_reserved_region ... ok
+test exact_frame_is_zeroed_again_before_successful_reuse_and_stale_cap_rejects ... ok
+test failed_hardware_install_rolls_back_real_core_ownership_before_rejection ... ok
+test fatal_failed_map_cleanup_never_returns_an_ordinary_error_reply ... ok
+test malformed_wire_consumes_fresh_id_but_each_caller_has_an_independent_sequence ... ok
+test mapping_id_generations_and_domain_ownership_preserve_current_mapping ... ok
+test protected_caller_rejects_foreign_handle_without_charge_or_pte_changes ... ok
+test public_table_capacity_precedes_backend_map_and_retains_existing_owner ... ok
+test readonly_delegation_attenuates_write_and_redelegation_authority ... ok
+test recursive_revoke_drains_every_retained_descendant_before_success ... ok
+test replay_zero_and_decreasing_ids_never_repeat_a_mutation_and_gaps_are_allowed ... ok
+test strict_unused_fields_reject_trusted_or_ambiguous_operations ... ok
+test teardown_failure_is_fatal_retains_lease_charge_and_blocks_all_dispatch ... ok
+test trusted_buffer_rejections_count_without_ids_or_backend_mutation_and_fail_closed ... ok
+test trusted_stop_drains_one_domain_then_revocation_drains_peer ... ok
+test unexpected_retained_authority_failure_blocks_instead_of_skipping_teardown ... ok
+test yield_exit_and_rejected_control_requests_have_no_hidden_memory_outputs ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

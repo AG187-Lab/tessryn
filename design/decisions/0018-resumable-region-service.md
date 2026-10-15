@@ -1,7 +1,8 @@
 # ADR 0018: Bounded region service with resumable CPL3 tasks
 
-Status: accepted implementation contract; execution acceptance pending in the
-[service report](../k02-region-service.md).
+Status: accepted and observed on the bounded single-CPU emulator profile on
+October 15, 2026; see the [service report](../k02-region-service.md) and
+[original execution packet](../../evidence/k02-region-service/README.md).
 
 ## Context
 
@@ -66,7 +67,16 @@ Source-bound twin builds, raw frames, program results, backing/accounting checks
 and the independent verifier must agree. Full verification requires the original
 policy host receipt through `--host-result`, with its exact inputs, compiler and
 retained logs; host tests do not replace guest execution. Retain K01 and both earlier K02 suites
-as regressions. Execution acceptance is pending until this evidence exists.
+as regressions. Clean implementation `bf9c82528f83e25814334c696a02aff86120fa21`
+passed that bounded acceptance: three fresh guest captures cover 66 submitted
+requests and 68 actual traps, with four context switches per case and final zero
+ownership. Twin builds matched all ten artifacts and the independent verifier
+bound 22 compiler dependencies, 27 runtime files and the 21-test host receipt.
+All 658 Python tests and the same-source K01, earlier K02 and guest-benchmark
+regressions passed. Original successful text records and notices are public;
+complete artifact verification requires the retained binaries or fresh rebuilds,
+the reviewed source checkout and matching current-host tools. Offline capture
+authentication remains unverified.
 
 This step advances [K02](https://github.com/AG187-Lab/tessryn/issues/5) and prepares
 the execution adapter for [K03](https://github.com/AG187-Lab/tessryn/issues/6).

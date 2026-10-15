@@ -1,0 +1,201 @@
+{
+  "capture_authentication": "unverified_offline",
+  "format": "tessryn-k02-region-verification/v1",
+  "host_policy": {
+    "receipts": 3,
+    "result_sha256": "999449885e79c309741dd729df5be1e45dc87a121c6475dd70ed78b07dceda6e",
+    "source_files": 7,
+    "tests": 21
+  },
+  "observations": {
+    "authority": {
+      "case": "authority",
+      "context_switches": 4,
+      "domains": [
+        {
+          "charged": 0,
+          "committed": 0,
+          "domain": 1,
+          "leaves": 0,
+          "reserved": 0
+        },
+        {
+          "charged": 0,
+          "committed": 0,
+          "domain": 2,
+          "leaves": 0,
+          "reserved": 0
+        }
+      ],
+      "final_allocated_pages": 0,
+      "final_mappings": 0,
+      "requests": 38,
+      "service_records": 209,
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "a:first_yield",
+        "b:map",
+        "b:read_confirmed",
+        "b:first_yield",
+        "a:cross_page",
+        "a:unmapped_buffer",
+        "a:overflow_buffer",
+        "a:short_buffer",
+        "a:bad_magic",
+        "a:bad_version",
+        "a:bad_operation",
+        "a:private_stack",
+        "a:private_request",
+        "a:stale_mapping",
+        "a:foreign",
+        "a:stale",
+        "a:collision",
+        "a:busy_release",
+        "a:authority_yield",
+        "b:foreign_mapping",
+        "b:foreign",
+        "b:write_authority",
+        "b:unmap",
+        "b:busy_release",
+        "b:exit",
+        "a:authority_unmap",
+        "a:release",
+        "a:allocate",
+        "a:old_cap",
+        "a:remap",
+        "a:reunmap",
+        "a:rerelease",
+        "a:final_accounting",
+        "a:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        29,
+        9
+      ],
+      "traps": 38
+    },
+    "revocation": {
+      "case": "revocation",
+      "context_switches": 4,
+      "domains": [
+        {
+          "charged": 0,
+          "committed": 0,
+          "domain": 1,
+          "leaves": 0,
+          "reserved": 0
+        },
+        {
+          "charged": 0,
+          "committed": 0,
+          "domain": 2,
+          "leaves": 0,
+          "reserved": 0
+        }
+      ],
+      "final_allocated_pages": 0,
+      "final_mappings": 0,
+      "requests": 14,
+      "service_records": 104,
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "a:first_yield",
+        "b:map",
+        "b:read_confirmed",
+        "b:first_yield",
+        "a:revoke",
+        "a:second_yield",
+        "b:stale_fault",
+        "a:revoked_mapping",
+        "a:release",
+        "a:final_accounting",
+        "a:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        11,
+        4
+      ],
+      "traps": 15
+    },
+    "sharing": {
+      "case": "sharing",
+      "context_switches": 4,
+      "domains": [
+        {
+          "charged": 0,
+          "committed": 0,
+          "domain": 1,
+          "leaves": 0,
+          "reserved": 0
+        },
+        {
+          "charged": 0,
+          "committed": 0,
+          "domain": 2,
+          "leaves": 0,
+          "reserved": 0
+        }
+      ],
+      "final_allocated_pages": 0,
+      "final_mappings": 0,
+      "requests": 14,
+      "service_records": 105,
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "a:first_yield",
+        "b:map",
+        "b:read_confirmed",
+        "b:first_yield",
+        "a:accounting",
+        "a:second_yield",
+        "b:write_fault",
+        "a:unmap",
+        "a:release",
+        "a:final_accounting",
+        "a:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        11,
+        4
+      ],
+      "traps": 15
+    }
+  },
+  "provenance": {
+    "compiler_dependencies": 22,
+    "reviewed_runtime_files": 27,
+    "revision": "bf9c82528f83e25814334c696a02aff86120fa21",
+    "tree_sha256": "3bf0016316e5aafac1527eb854de169a3370a956f17cda2ccab5be222dadf592"
+  },
+  "qualification": "not_established",
+  "scope": "bounded original-kernel single-CPU region service; physical hardware, arbitrary-program isolation, SMP and DMA unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "bf9c82528f83e25814334c696a02aff86120fa21",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "3bf0016316e5aafac1527eb854de169a3370a956f17cda2ccab5be222dadf592"
+  },
+  "status": "pass",
+  "twin_artifacts": 10
+}
