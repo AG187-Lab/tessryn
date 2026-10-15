@@ -279,6 +279,7 @@ pub struct Statistics {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Fatal {
     UnknownCaller,
+    InvalidBufferStatus,
     CounterOverflow,
     Backend(MemoryError),
     Teardown(MemoryError),
@@ -362,6 +363,62 @@ impl<M: Copy, const D: usize, const N: usize> Service<M, D, N> {
             .iter()
             .position(|domain| *domain == caller)
             .map(|i| self.last_ids[i])
+    }
+
+    /// Count a trusted pre-copy buffer rejection without consuming a descriptor
+    /// ID. The tag is correlation data only: no wire bytes were read. Immutable
+    /// backend access cannot acknowledge ownership or mutate mappings/charges.
+    pub fn reject_buffer<B: Backend<Mapping = M>>(
+        &mut self,
+        caller: u64,
+        request_id: u64,
+        status: Status,
+        backend: &B,
+    ) -> Result<Response, Fatal> {
+        if self.blocked {
+            return Err(Fatal::Blocked);
+        }
+        let result = self.reject_buffer_inner(caller, request_id, status, backend);
+        if result.is_err() {
+            self.blocked = true;
+        }
+        result
+    }
+
+    fn reject_buffer_inner<B: Backend<Mapping = M>>(
+        &mut self,
+        caller: u64,
+        request_id: u64,
+        status: Status,
+        backend: &B,
+    ) -> Result<Response, Fatal> {
+        let domain = self
+            .domains
+            .iter()
+            .position(|domain| *domain == caller)
+            .ok_or(Fatal::UnknownCaller)?;
+        if !matches!(
+            status,
+            Status::InvalidDescriptor | Status::Bounds | Status::Alignment | Status::Overflow
+        ) {
+            return Err(Fatal::InvalidBufferStatus);
+        }
+        let stats = &mut self.statistics[domain];
+        if stats.requests == u64::MAX || stats.accepted == u64::MAX || stats.rejected == u64::MAX {
+            return Err(Fatal::CounterOverflow);
+        }
+        let accounting = backend.accounting(caller).map_err(Fatal::Accounting)?;
+        stats.requests += 1;
+        stats.rejected += 1;
+        Ok(Response {
+            request_id,
+            opcode: 0,
+            status,
+            capability: NO_CAP,
+            mapping: 0,
+            accounting,
+            control: Control::Continue,
+        })
     }
 
     /// Trusted stopped-task cleanup; it cannot be requested as a quiescence

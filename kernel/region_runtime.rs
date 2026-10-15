@@ -699,15 +699,10 @@ fn request(
             service.dispatch(t.domain, &bytes, adapter),
             "service-dispatch-fatal",
         ),
-        Err(status) => Response {
-            request_id: t.saved.registers[0],
-            opcode: 0,
-            status,
-            capability: EMPTY_CAP,
-            mapping: 0,
-            accounting: before[index],
-            control: Control::Continue,
-        },
+        Err(status) => checked(
+            service.reject_buffer(t.domain, t.saved.registers[0], status, adapter),
+            "service-buffer-rejection-fatal",
+        ),
     };
     if response.status != Status::Ok
         && (before

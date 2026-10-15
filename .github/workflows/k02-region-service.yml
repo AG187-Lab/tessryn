@@ -1,0 +1,239 @@
+name: K02 resumable region service
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  region-service:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Check region wire, capture and evidence boundaries
+        run: |
+          python3 -m unittest discover -s tests -p 'test_k02_region*.py' -v
+          python3 tools/validate_design.py
+      - name: Install compiler, host libraries and pinned UEFI emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Test reusable policy against the original ownership core
+        run: python3 tools/check_k02_region_host.py --out build/k02-region-service/host
+      - name: Build complete original-kernel scenarios independently twice
+        run: |
+          python3 tools/build_k02_region_service.py --out build/k02-region-service/a
+          python3 tools/build_k02_region_service.py --out build/k02-region-service/b
+      - name: Capture three fresh resumable two-program executions
+        run: |
+          for case in sharing revocation authority; do
+            python3 tools/run_k02_region_service.py --manifest build/k02-region-service/a/manifest.json --case "$case" --out "build/k02-region-service/$case" --allow-qemu
+          done
+      - name: Independently verify source, twins and all raw contexts
+        run: |
+          python3 tools/verify_k02_region_service.py --first build/k02-region-service/a/manifest.json --second build/k02-region-service/b/manifest.json \
+            --result build/k02-region-service/sharing/result.json --result build/k02-region-service/revocation/result.json \
+            --result build/k02-region-service/authority/result.json --host-result build/k02-region-service/host/result.json \
+            --out build/k02-region-service/verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: k02-region-service-single-cpu-evidence
+          include-hidden-files: true
+          path: |
+            build/k02-region-service/a/manifest.json
+            build/k02-region-service/a/libtessryn_owned_memory.rlib
+            build/k02-region-service/a/core-stdout.log
+            build/k02-region-service/a/core-stderr.log
+            build/k02-region-service/a/sharing/BOOTX64.EFI
+            build/k02-region-service/a/sharing/boot.img
+            build/k02-region-service/a/sharing/kernel.obj
+            build/k02-region-service/a/sharing/sharing-stdout.log
+            build/k02-region-service/a/sharing/sharing-stderr.log
+            build/k02-region-service/a/revocation/BOOTX64.EFI
+            build/k02-region-service/a/revocation/boot.img
+            build/k02-region-service/a/revocation/kernel.obj
+            build/k02-region-service/a/revocation/revocation-stdout.log
+            build/k02-region-service/a/revocation/revocation-stderr.log
+            build/k02-region-service/a/authority/BOOTX64.EFI
+            build/k02-region-service/a/authority/boot.img
+            build/k02-region-service/a/authority/kernel.obj
+            build/k02-region-service/a/authority/authority-stdout.log
+            build/k02-region-service/a/authority/authority-stderr.log
+            build/k02-region-service/a/notices/tessryn-LICENSE
+            build/k02-region-service/a/notices/tessryn-NOTICE
+            build/k02-region-service/a/notices/rust-LICENSE-APACHE
+            build/k02-region-service/a/notices/rust-LICENSE-MIT
+            build/k02-region-service/a/notices/rust-COPYRIGHT
+            build/k02-region-service/a/sources/.github/workflows/k02-region-service.yml
+            build/k02-region-service/a/sources/fixtures/rom.py
+            build/k02-region-service/a/sources/interfaces/abi-v1/native.rs
+            build/k02-region-service/a/sources/kernel-core/boot_inventory.rs
+            build/k02-region-service/a/sources/kernel-core/capabilities.rs
+            build/k02-region-service/a/sources/kernel-core/frames.rs
+            build/k02-region-service/a/sources/kernel-core/lib.rs
+            build/k02-region-service/a/sources/kernel/cpu.rs
+            build/k02-region-service/a/sources/kernel/diagnostics.rs
+            build/k02-region-service/a/sources/kernel/entry.S
+            build/k02-region-service/a/sources/kernel/framebuffer.rs
+            build/k02-region-service/a/sources/kernel/k02.rs
+            build/k02-region-service/a/sources/kernel/k02_cpu.rs
+            build/k02-region-service/a/sources/kernel/k02_entry.S
+            build/k02-region-service/a/sources/kernel/k02_memory.rs
+            build/k02-region-service/a/sources/kernel/k02_paging.rs
+            build/k02-region-service/a/sources/kernel/k02_sha256.rs
+            build/k02-region-service/a/sources/kernel/main.rs
+            build/k02-region-service/a/sources/kernel/paging.rs
+            build/k02-region-service/a/sources/kernel/region_entry.S
+            build/k02-region-service/a/sources/kernel/region_programs.S
+            build/k02-region-service/a/sources/kernel/region_runtime.rs
+            build/k02-region-service/a/sources/kernel/region_service.rs
+            build/k02-region-service/a/sources/kernel/uefi.rs
+            build/k02-region-service/a/sources/planning/k02-region-service.json
+            build/k02-region-service/a/sources/planning/k02-toolchain.lock.json
+            build/k02-region-service/a/sources/toolchain.lock.json
+            build/k02-region-service/a/sources/tools/build_fixture.py
+            build/k02-region-service/a/sources/tools/build_k02_native.py
+            build/k02-region-service/a/sources/tools/build_k02_region_service.py
+            build/k02-region-service/a/sources/tools/build_kernel.py
+            build/k02-region-service/a/sources/tools/check_k02_region_host.py
+            build/k02-region-service/a/sources/tools/g03/__init__.py
+            build/k02-region-service/a/sources/tools/g03/evidence.py
+            build/k02-region-service/a/sources/tools/g03/process.py
+            build/k02-region-service/a/sources/tools/k01_media.py
+            build/k02-region-service/a/sources/tools/k02_region_protocol.py
+            build/k02-region-service/a/sources/tools/k02_region_provenance.py
+            build/k02-region-service/a/sources/tools/k02_region_trace.py
+            build/k02-region-service/a/sources/tools/run_k02_native.py
+            build/k02-region-service/a/sources/tools/run_k02_region_service.py
+            build/k02-region-service/a/sources/tools/run_kernel.py
+            build/k02-region-service/a/sources/tools/setup_k02_toolchain.py
+            build/k02-region-service/a/sources/tools/setup_toolchain.py
+            build/k02-region-service/a/sources/tools/setup_uefi.py
+            build/k02-region-service/a/sources/tools/summarize_k02_region_failure.py
+            build/k02-region-service/a/sources/tools/verify_k02_native.py
+            build/k02-region-service/a/sources/tools/verify_k02_region_service.py
+            build/k02-region-service/a/sources/uefi-toolchain.lock.json
+            build/k02-region-service/b/manifest.json
+            build/k02-region-service/b/libtessryn_owned_memory.rlib
+            build/k02-region-service/b/core-stdout.log
+            build/k02-region-service/b/core-stderr.log
+            build/k02-region-service/b/sharing/BOOTX64.EFI
+            build/k02-region-service/b/sharing/boot.img
+            build/k02-region-service/b/sharing/kernel.obj
+            build/k02-region-service/b/sharing/sharing-stdout.log
+            build/k02-region-service/b/sharing/sharing-stderr.log
+            build/k02-region-service/b/revocation/BOOTX64.EFI
+            build/k02-region-service/b/revocation/boot.img
+            build/k02-region-service/b/revocation/kernel.obj
+            build/k02-region-service/b/revocation/revocation-stdout.log
+            build/k02-region-service/b/revocation/revocation-stderr.log
+            build/k02-region-service/b/authority/BOOTX64.EFI
+            build/k02-region-service/b/authority/boot.img
+            build/k02-region-service/b/authority/kernel.obj
+            build/k02-region-service/b/authority/authority-stdout.log
+            build/k02-region-service/b/authority/authority-stderr.log
+            build/k02-region-service/b/notices/tessryn-LICENSE
+            build/k02-region-service/b/notices/tessryn-NOTICE
+            build/k02-region-service/b/notices/rust-LICENSE-APACHE
+            build/k02-region-service/b/notices/rust-LICENSE-MIT
+            build/k02-region-service/b/notices/rust-COPYRIGHT
+            build/k02-region-service/b/sources/.github/workflows/k02-region-service.yml
+            build/k02-region-service/b/sources/fixtures/rom.py
+            build/k02-region-service/b/sources/interfaces/abi-v1/native.rs
+            build/k02-region-service/b/sources/kernel-core/boot_inventory.rs
+            build/k02-region-service/b/sources/kernel-core/capabilities.rs
+            build/k02-region-service/b/sources/kernel-core/frames.rs
+            build/k02-region-service/b/sources/kernel-core/lib.rs
+            build/k02-region-service/b/sources/kernel/cpu.rs
+            build/k02-region-service/b/sources/kernel/diagnostics.rs
+            build/k02-region-service/b/sources/kernel/entry.S
+            build/k02-region-service/b/sources/kernel/framebuffer.rs
+            build/k02-region-service/b/sources/kernel/k02.rs
+            build/k02-region-service/b/sources/kernel/k02_cpu.rs
+            build/k02-region-service/b/sources/kernel/k02_entry.S
+            build/k02-region-service/b/sources/kernel/k02_memory.rs
+            build/k02-region-service/b/sources/kernel/k02_paging.rs
+            build/k02-region-service/b/sources/kernel/k02_sha256.rs
+            build/k02-region-service/b/sources/kernel/main.rs
+            build/k02-region-service/b/sources/kernel/paging.rs
+            build/k02-region-service/b/sources/kernel/region_entry.S
+            build/k02-region-service/b/sources/kernel/region_programs.S
+            build/k02-region-service/b/sources/kernel/region_runtime.rs
+            build/k02-region-service/b/sources/kernel/region_service.rs
+            build/k02-region-service/b/sources/kernel/uefi.rs
+            build/k02-region-service/b/sources/planning/k02-region-service.json
+            build/k02-region-service/b/sources/planning/k02-toolchain.lock.json
+            build/k02-region-service/b/sources/toolchain.lock.json
+            build/k02-region-service/b/sources/tools/build_fixture.py
+            build/k02-region-service/b/sources/tools/build_k02_native.py
+            build/k02-region-service/b/sources/tools/build_k02_region_service.py
+            build/k02-region-service/b/sources/tools/build_kernel.py
+            build/k02-region-service/b/sources/tools/check_k02_region_host.py
+            build/k02-region-service/b/sources/tools/g03/__init__.py
+            build/k02-region-service/b/sources/tools/g03/evidence.py
+            build/k02-region-service/b/sources/tools/g03/process.py
+            build/k02-region-service/b/sources/tools/k01_media.py
+            build/k02-region-service/b/sources/tools/k02_region_protocol.py
+            build/k02-region-service/b/sources/tools/k02_region_provenance.py
+            build/k02-region-service/b/sources/tools/k02_region_trace.py
+            build/k02-region-service/b/sources/tools/run_k02_native.py
+            build/k02-region-service/b/sources/tools/run_k02_region_service.py
+            build/k02-region-service/b/sources/tools/run_kernel.py
+            build/k02-region-service/b/sources/tools/setup_k02_toolchain.py
+            build/k02-region-service/b/sources/tools/setup_toolchain.py
+            build/k02-region-service/b/sources/tools/setup_uefi.py
+            build/k02-region-service/b/sources/tools/summarize_k02_region_failure.py
+            build/k02-region-service/b/sources/tools/verify_k02_native.py
+            build/k02-region-service/b/sources/tools/verify_k02_region_service.py
+            build/k02-region-service/b/sources/uefi-toolchain.lock.json
+            build/k02-region-service/sharing/registration.json
+            build/k02-region-service/sharing/result.json
+            build/k02-region-service/sharing/stdout.log
+            build/k02-region-service/sharing/stderr.log
+            build/k02-region-service/sharing/firmware/code.fd
+            build/k02-region-service/sharing/firmware/vars.fd
+            build/k02-region-service/sharing/firmware/NOTICE
+            build/k02-region-service/revocation/registration.json
+            build/k02-region-service/revocation/result.json
+            build/k02-region-service/revocation/stdout.log
+            build/k02-region-service/revocation/stderr.log
+            build/k02-region-service/revocation/firmware/code.fd
+            build/k02-region-service/revocation/firmware/vars.fd
+            build/k02-region-service/revocation/firmware/NOTICE
+            build/k02-region-service/authority/registration.json
+            build/k02-region-service/authority/result.json
+            build/k02-region-service/authority/stdout.log
+            build/k02-region-service/authority/stderr.log
+            build/k02-region-service/authority/firmware/code.fd
+            build/k02-region-service/authority/firmware/vars.fd
+            build/k02-region-service/authority/firmware/NOTICE
+            build/k02-region-service/host/result.json
+            build/k02-region-service/host/library-stdout.log
+            build/k02-region-service/host/library-stderr.log
+            build/k02-region-service/host/test-build-stdout.log
+            build/k02-region-service/host/test-build-stderr.log
+            build/k02-region-service/host/tests-stdout.log
+            build/k02-region-service/host/tests-stderr.log
+            build/k02-region-service/verification.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain portable failure metadata
+        if: failure()
+        run: python3 tools/summarize_k02_region_failure.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: k02-region-service-failure-metadata
+          path: build/k02-region-service/failure-summary.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -22,6 +22,7 @@ struct Model {
     fatal_install: bool,
     fail_teardown: bool,
     bad_authority: bool,
+    fail_accounting: bool,
     map_calls: usize,
 }
 impl Model {
@@ -42,6 +43,7 @@ impl Model {
             fatal_install: false,
             fail_teardown: false,
             bad_authority: false,
+            fail_accounting: false,
             map_calls: 0,
         }
     }
@@ -167,6 +169,9 @@ impl Backend for Model {
         self.policy.release_capability(caller, cap)
     }
     fn accounting(&self, caller: u64) -> Result<Accounting, MemoryError> {
+        if self.fail_accounting {
+            return Err(MemoryError::UnknownDomain);
+        }
         self.policy.accounting(caller)
     }
 }
@@ -636,6 +641,110 @@ fn malformed_wire_consumes_fresh_id_but_each_caller_has_an_independent_sequence(
     );
     assert_eq!(f.model.pages(), 0);
     assert_eq!(f.service.last_request_id(1), Some(50));
+}
+
+#[test]
+fn trusted_buffer_rejections_count_without_ids_or_backend_mutation_and_fail_closed() {
+    let mut f = Fixture::<16>::new();
+    let cap = f.allocate(1);
+    assert_eq!(f.map(1, cap, 0x1_0000_0000, false).status, Status::Ok);
+    let policy = format!("{:?}", f.model.policy);
+    let ram = f.model.ram;
+    let ptes = f.model.ptes;
+    let events = f.model.events.clone();
+    let map_calls = f.model.map_calls;
+    let accounting = f.model.accounting(1).unwrap();
+    let last_id = f.service.last_request_id(1);
+    for (tag, status) in [
+        (0, Status::InvalidDescriptor),
+        (1, Status::Bounds),
+        (u64::MAX, Status::Alignment),
+        (2, Status::Overflow),
+    ] {
+        assert_eq!(
+            f.service.reject_buffer(1, tag, status, &f.model),
+            Ok(Response {
+                request_id: tag,
+                opcode: 0,
+                status,
+                capability: CapabilityRef::default(),
+                mapping: 0,
+                accounting,
+                control: Control::Continue,
+            })
+        );
+        assert_eq!(f.service.last_request_id(1), last_id);
+        assert_eq!(f.service.mapping_count(), 1);
+        assert_eq!(format!("{:?}", f.model.policy), policy);
+        assert_eq!(f.model.ram, ram);
+        assert_eq!(f.model.ptes, ptes);
+        assert_eq!(f.model.events, events);
+        assert_eq!(f.model.map_calls, map_calls);
+    }
+    assert_eq!(
+        f.service.statistics(1),
+        Some(Statistics {
+            requests: 6,
+            accepted: 2,
+            rejected: 4
+        })
+    );
+    assert_eq!(f.service.statistics(2), Some(Statistics::default()));
+    // Even an untrusted maximum correlation tag cannot exhaust descriptor IDs.
+    assert_eq!(f.call(1, Request::new(0, OP_ACCOUNTING)).status, Status::Ok);
+    assert_eq!(f.service.last_request_id(1), Some(3));
+    let stats = f.service.statistics(1);
+    f.model.fail_accounting = true;
+    assert_eq!(
+        f.service.reject_buffer(1, 99, Status::Bounds, &f.model),
+        Err(Fatal::Accounting(MemoryError::UnknownDomain))
+    );
+    assert!(f.service.blocked());
+    assert_eq!(f.service.statistics(1), stats);
+    assert_eq!(f.service.last_request_id(1), Some(3));
+    assert_eq!(f.model.ptes, ptes);
+    assert_eq!(f.model.ram, ram);
+    f.model.fail_accounting = false;
+    assert_eq!(
+        f.service.reject_buffer(1, 99, Status::Bounds, &f.model),
+        Err(Fatal::Blocked)
+    );
+    assert_eq!(
+        f.service
+            .dispatch(2, &Request::new(1, OP_ACCOUNTING).encode(), &mut f.model),
+        Err(Fatal::Blocked)
+    );
+    for status in [
+        Status::Ok,
+        Status::UnsupportedVersion,
+        Status::UnsupportedOperation,
+        Status::InvalidAuthority,
+        Status::StaleHandle,
+        Status::Revoked,
+        Status::InsufficientRights,
+        Status::Capacity,
+        Status::Budget,
+        Status::Busy,
+        Status::BackendRejected,
+    ] {
+        let mut bad = Fixture::<16>::new();
+        assert_eq!(
+            bad.service.reject_buffer(1, 1, status, &bad.model),
+            Err(Fatal::InvalidBufferStatus)
+        );
+        assert!(bad.service.blocked());
+        assert_eq!(bad.service.statistics(1), Some(Statistics::default()));
+        assert_eq!(bad.service.last_request_id(1), Some(0));
+        assert_eq!(bad.model.pages(), 0);
+    }
+    let mut unknown = Fixture::<16>::new();
+    assert_eq!(
+        unknown
+            .service
+            .reject_buffer(3, 1, Status::Bounds, &unknown.model),
+        Err(Fatal::UnknownCaller)
+    );
+    assert!(unknown.service.blocked());
 }
 
 #[test]
