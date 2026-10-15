@@ -46,7 +46,8 @@ def validate_backlog() -> tuple[int, int]:
         require(issue.get("phase") in {"Now", "Next", "Later"}, f"{key}: invalid horizon")
         require(bool(issue.get("title")) and isinstance(issue.get("body"), str), f"{key}: missing title/body")
         require(isinstance(issue.get("labels"), list) and bool(issue.get("labels")), f"{key}: missing workstream labels")
-        require("- [ ]" in issue.get("body", ""), f"{key}: acceptance checkboxes required")
+        require(re.search(r"(?m)^- \[[ xX]\] ", issue.get("body", "")) is not None,
+                f"{key}: acceptance checkboxes required")
         require("evidence" in issue.get("body", "").lower(), f"{key}: required evidence missing")
         deps = issue.get("depends_on", [])
         require(isinstance(deps, list), f"{key}: dependencies must be a list")
