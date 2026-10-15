@@ -41,6 +41,11 @@ Self-consistent packet hashes do not grant host-code authority. Use the matching
 reviewed source checkout to rerun a historical build; standalone offline packet
 verification reads retained bytes without executing their Python source.
 
+CI publishes a complete raw packet only after independent verification succeeds.
+On failure it publishes fixed status/exit metadata and log hashes/sizes; raw
+failed captures remain in the ignored local job workspace for private review.
+Failed host messages can contain workspace paths and are not public artifacts.
+
 ## Work and units
 
 The first profile fixes 16 measured samples, four excluded warmups, 128 iterations and seed 1. Its 13 cases cover:
@@ -67,6 +72,6 @@ QEMU runs prove that the original kernel reaches and executes the instrumentatio
 
 Native observations use a separately versioned profile and packet. The build binds retained source inputs, the pinned policy, compiler flags and tool identities to the EFI image and boot media. Capture preregisters the profile and artifacts before launching fresh bounded QEMU, retains exact stdout/stderr and process outcome, and verifies the original guest transcript. Offline verification establishes packet consistency; it does not authenticate execution independently.
 
-The original native K02 protection cases, their transcripts and the frozen AWS intake image/evaluator remain separate. This experiment starts from the last committed native baseline and does not incorporate another chat's unfinished matrix changes. New measurement media cannot be substituted into prior accepted boot/recovery evidence.
+The original native K02 protection slice/matrix, their transcripts and the frozen AWS intake image/evaluator remain separate. Benchmark builds use the committed integration baseline while prohibiting mixed benchmark/K02 execution configurations. New measurement media cannot be substituted into prior accepted boot/recovery evidence.
 
 The next performance gate is a separately approved hardware profile: exact machine and CPU configuration, counter ordering and frequency qualification, virtualization/power conditions, instrumentation cost, repeated observations and uncertainty. Scheduler wakeup/context-switch and enforcement timing also require the corresponding trusted runtime. Cross-core measurements additionally require synchronization and clock evidence. End-to-end inference still requires the model, numerical-quality, cancellation, recovery, resource and latency contracts in [benchmarks](benchmarks.md) and [evaluation evidence](evaluation-evidence.md).
