@@ -191,8 +191,10 @@ pub extern "sysv64" fn exception_handler(frame: &ExceptionFrame) {
     unsafe { asm!("mov {}, cr2", out(reg) cr2, options(nomem, nostack)) };
     print(format_args!("TESSRYN_K01_EXCEPTION vector={} error={:#x} rip={:#x} cs={:#x} rflags={:#x} rsp={:#x} cr2={:#x}\n",
         frame.vector, frame.error, frame.rip, frame.cs, frame.rflags, frame.rsp, cr2));
-    #[cfg(k02_native)]
+    #[cfg(all(k02_native, not(k02_matrix)))]
     crate::k02::handle_exception(frame, cr2);
+    #[cfg(k02_matrix)]
+    crate::k02_matrix::handle_exception(frame, cr2);
     if cfg!(k01_case = "int3") && frame.vector == 3 && frame.error == 0 {
         // Deliberately clobber caller-saved FP registers; the returning trap
         // wrapper must restore the interrupted context's sentinels.

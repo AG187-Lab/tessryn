@@ -90,3 +90,5 @@ NX instruction fetch, kernel writes, recursive revocation, stale identity and
 writable-frame reuse execution remain in the full
 [K02 protocol](k02-native-preparation.md). K02 stays open until that matrix and
 its acceptance evidence are complete. AWS and GPU rental evidence is separate.
+
+The [ten-case matrix](k02-native-matrix.md) extends this historical four-probe profile with controlled request dispatch, bounds, NX, revocation/reuse and generation checks. Its results and limits are reported separately.

@@ -1,24 +1,31 @@
 // Original native adapter for the existing owned-memory policy. Apache-2.0.
 // This is a trusted single-CPU bootstrap API, never a user descriptor dispatcher.
-use core::mem::{MaybeUninit, size_of};
+use core::mem::{MaybeUninit, offset_of, size_of};
 use core::ptr;
 
-pub use tessryn_owned_memory::{Access, Accounting, CapabilityRef, Error as MemoryError, LeaseId};
+pub use tessryn_owned_memory::{Access, Accounting, CapabilityRef, Error as MemoryError,
+    FrameRange, LeaseId, RegionInfo, RegionView, Rights};
 use tessryn_owned_memory::{BootDescriptor, BootInventory, BootRange, BootReservations,
-    FrameRange, MemoryPolicy, PAGE_SIZE, Rights};
+    MemoryPolicy, PAGE_SIZE};
 
 const DESCRIPTOR_CAPACITY: usize = 4096;
 const EXTENT_CAPACITY: usize = 128;
 const LOW_LIMIT: u64 = 1 << 32;
-type Policy = MemoryPolicy<2, 8, 8, 16, EXTENT_CAPACITY>;
+type Policy = MemoryPolicy<4, 32, 32, 32, EXTENT_CAPACITY>;
 
 pub const DOMAIN_A: u64 = 1;
 pub const DOMAIN_B: u64 = 2;
-pub const DOMAIN_BUDGET_PAGES: u64 = 4;
+pub const DOMAIN_C: u64 = 3;
+pub const DOMAIN_D: u64 = 4;
+pub const DOMAIN_BUDGET_PAGES: u64 = 16;
 
 const EMPTY_DESCRIPTOR: BootDescriptor = BootDescriptor { kind: 0, start: 0, pages: 0, attributes: 0 };
 static mut DESCRIPTORS: [BootDescriptor; DESCRIPTOR_CAPACITY] = [EMPTY_DESCRIPTOR; DESCRIPTOR_CAPACITY];
-static mut MEMORY: MaybeUninit<NativeMemory> = MaybeUninit::uninit();
+// Isolate every policy page from unrelated mutable statics. In particular the
+// first-page kernel-isolation snapshot cannot share PROBE or neighbor storage.
+#[repr(C, align(4096))]
+struct ProtectedSlot { memory: MaybeUninit<NativeMemory> }
+static mut MEMORY: ProtectedSlot = ProtectedSlot { memory: MaybeUninit::uninit() };
 static mut INITIALIZED: bool = false;
 
 /// Numerical page authority retained by a real mapping or operation lease.
@@ -26,6 +33,17 @@ static mut INITIALIZED: bool = false;
 #[derive(Clone, Copy, Debug)]
 pub struct PageLease {
     pub physical: u64,
+    pub lease: LeaseId,
+    pub writable: bool,
+}
+
+/// Exact checked bytes retained by the original policy's operation or mapping
+/// lease. This is a private kernel adapter value, not another service wire ABI.
+/// `acquire` creates no mapping authority; only `map_intent` retains a mapping.
+#[derive(Clone, Copy, Debug)]
+pub struct RegionLease {
+    pub physical: u64,
+    pub length: u64,
     pub lease: LeaseId,
     pub writable: bool,
 }
@@ -42,6 +60,9 @@ pub struct NativeMemory {
 
 const _: () = {
     assert!(size_of::<NativeMemory>() <= 32 * 1024);
+    assert!(offset_of!(ProtectedSlot, memory) == 0);
+    assert!(size_of::<ProtectedSlot>() <= 32 * 1024);
+    assert!(size_of::<ProtectedSlot>() % PAGE_SIZE as usize == 0);
     assert!(size_of::<[BootDescriptor; DESCRIPTOR_CAPACITY]>() <= 128 * 1024);
 };
 
@@ -68,7 +89,7 @@ pub unsafe fn initialize(handoff: &crate::uefi::Handoff) -> Result<&'static mut 
     let state_address = ptr::addr_of!(MEMORY) as u64;
     if !contains(handoff.image.start, handoff.image.end, descriptors_address,
                  size_of::<[BootDescriptor; DESCRIPTOR_CAPACITY]>())
-        || !contains(handoff.image.start, handoff.image.end, state_address, size_of::<NativeMemory>())
+        || !contains(handoff.image.start, handoff.image.end, state_address, size_of::<ProtectedSlot>())
         || !contains(handoff.image.start, handoff.image.end, ptr::addr_of!(INITIALIZED) as u64, 1)
     { return Err(MemoryError::Excluded); }
     if handoff.descriptor_size < size_of::<crate::uefi::Descriptor>()
@@ -126,6 +147,13 @@ fn admitted_page(range: FrameRange, admitted: &[Option<FrameRange>]) -> bool {
             extent.start() <= range.start() && range.end() <= extent.end())
 }
 
+fn admitted_view(view: RegionView, admitted: &[Option<FrameRange>]) -> bool {
+    view.physical_start != 0 && view.length != 0
+        && view.physical_start.checked_add(view.length).is_some_and(|end|
+            end <= LOW_LIMIT && admitted.iter().flatten().any(|extent|
+                extent.start() <= view.physical_start && end <= extent.end()))
+}
+
 /// SAFETY: exactly one valid, exclusively owned, aligned writable page exists
 /// at `page`. Native callers additionally prove it belongs to admitted low RAM.
 unsafe fn zero_page(page: *mut u64) {
@@ -136,6 +164,19 @@ unsafe fn zero_page(page: *mut u64) {
     }
 }
 
+/// SAFETY: the exclusive aligned page is valid for every volatile load/store.
+/// Verify the ENTIRE erased page before any fixture payload store. Returning an
+/// error publishes no payload; the allocator can then abandon its private plan.
+unsafe fn initialize_zeroed_page(page: *mut u64, seed: u64) -> Result<(), ()> {
+    for index in 0..(PAGE_SIZE as usize / size_of::<u64>()) {
+        if unsafe { page.add(index).read_volatile() } != 0 { return Err(()); }
+    }
+    for index in 0..(PAGE_SIZE as usize / size_of::<u64>()) {
+        unsafe { page.add(index).write_volatile(seed ^ index as u64); }
+    }
+    Ok(())
+}
+
 impl NativeMemory {
     pub fn protected_state_address(&self) -> u64 { self as *const Self as u64 }
     pub fn available_pages(&self) -> u64 { self.policy.frames().available_pages() }
@@ -144,7 +185,7 @@ impl NativeMemory {
     pub fn accounting(&self, domain: u64) -> Result<Accounting, MemoryError> { self.policy.accounting(domain) }
 
     pub fn create_domain(&mut self, domain: u64, budget_pages: u64) -> Result<(), MemoryError> {
-        if domain != DOMAIN_A && domain != DOMAIN_B { return Err(MemoryError::InvalidAuthority); }
+        if ![DOMAIN_A, DOMAIN_B, DOMAIN_C, DOMAIN_D].contains(&domain) { return Err(MemoryError::InvalidAuthority); }
         self.policy.create_domain(domain, budget_pages)
     }
 
@@ -152,6 +193,19 @@ impl NativeMemory {
     /// The original policy chooses and charges the backing before its callback;
     /// only actual successful erasure can install capability authority.
     pub fn allocate_page(&mut self, caller: u64) -> Result<CapabilityRef, MemoryError> {
+        self.allocate_private_page(caller, None)
+    }
+
+    /// Trusted boot-fixture initialization, never a user allocator operation.
+    /// `caller` and `seed` come from protected kernel context. Core admission
+    /// checks precede this private callback; full erasure and zero verification
+    /// precede payload initialization and capability/charge publication. No
+    /// operation or mapping lease is consumed while this backing is private.
+    pub fn allocate_initialized_page(&mut self, caller: u64, seed: u64) -> Result<CapabilityRef, MemoryError> {
+        self.allocate_private_page(caller, Some(seed))
+    }
+
+    fn allocate_private_page(&mut self, caller: u64, seed: Option<u64>) -> Result<CapabilityRef, MemoryError> {
         let scrubbed_pages = self.scrubbed_pages.checked_add(1).ok_or(MemoryError::Overflow)?;
         let admitted = &self.admitted[..self.admitted_count];
         let rights = Rights::READ | Rights::WRITE | Rights::MAP | Rights::SUBMIT | Rights::DELEGATE;
@@ -161,6 +215,12 @@ impl NativeMemory {
             // low identity map; policy owns the allocation exclusively and all
             // boot exclusions and protected state have been removed.
             unsafe { zero_page(range.start() as *mut u64); }
+            if let Some(seed) = seed {
+                // SAFETY: this same exclusive admitted page remains private
+                // inside the allocation callback. Verification completes before
+                // the first payload store; Core publishes only after Ok.
+                unsafe { initialize_zeroed_page(range.start() as *mut u64, seed)?; }
+            }
             Ok(())
         })?;
         self.scrubbed_pages = scrubbed_pages;
@@ -169,7 +229,70 @@ impl NativeMemory {
 
     pub fn delegate_readonly(&mut self, caller: u64, parent: CapabilityRef,
                              target: u64) -> Result<CapabilityRef, MemoryError> {
-        self.policy.delegate(caller, parent, target, Rights::READ | Rights::MAP, 0, PAGE_SIZE)
+        self.delegate(caller, parent, target, Rights::READ | Rights::MAP, 0, PAGE_SIZE)
+    }
+
+    /// The protected dispatcher supplies `caller`; a claimed descriptor domain
+    /// can neither select this identity nor administer another namespace.
+    pub fn delegate(&mut self, caller: u64, parent: CapabilityRef, target: u64,
+                    rights: Rights, offset: u64, length: u64) -> Result<CapabilityRef, MemoryError> {
+        self.policy.delegate(caller, parent, target, rights, offset, length)
+    }
+
+    /// Checked numeric inspection only. This installs no PTE or lease and is
+    /// never a substitute for retaining ownership across actual CPU access.
+    pub fn authorize(&self, caller: u64, handle: CapabilityRef, rights: Rights,
+                     offset: u64, length: u64) -> Result<RegionView, MemoryError> {
+        self.policy.authorize(caller, handle, rights, offset, length)
+    }
+
+    pub fn region_info(&self, caller: u64, handle: CapabilityRef) -> Result<RegionInfo, MemoryError> {
+        self.policy.region_info(caller, handle)
+    }
+
+    fn checked_view(&self, caller: u64, handle: CapabilityRef, rights: Rights,
+                    offset: u64, length: u64) -> Result<RegionView, MemoryError> {
+        let view = self.policy.authorize(caller, handle, rights, offset, length)?;
+        if !admitted_view(view, &self.admitted[..self.admitted_count]) { return Err(MemoryError::Excluded); }
+        Ok(view)
+    }
+
+    /// Retains exact complete pages without rounding byte authority outward.
+    /// The core performs its original alignment/bounds/right checks before
+    /// installing an owner; errors are returned unchanged, with no partial PTE.
+    pub fn map_intent(&mut self, caller: u64, handle: CapabilityRef, access: Access,
+                      offset: u64, length: u64) -> Result<RegionLease, MemoryError> {
+        let rights = match access {
+            Access::Read => Rights::READ | Rights::MAP,
+            Access::Write => Rights::READ | Rights::WRITE | Rights::MAP,
+        };
+        // The core's pure authorization preserves rights/bounds ordering. For
+        // a valid page-aligned backing, physical and absolute offset alignment
+        // are equivalent; check it before the extra admitted-RAM guard so that
+        // the guard cannot hide the original Alignment result. The core then
+        // repeats its own checks before publishing the lease.
+        let view = self.policy.authorize(caller, handle, rights, offset, length)?;
+        if view.physical_start % PAGE_SIZE != 0 || view.length % PAGE_SIZE != 0 {
+            return Err(MemoryError::Alignment);
+        }
+        if !admitted_view(view, &self.admitted[..self.admitted_count]) { return Err(MemoryError::Excluded); }
+        let lease = self.policy.map_intent(caller, handle, access, offset, length)?;
+        Ok(RegionLease { physical: view.physical_start, length: view.length,
+            lease, writable: access == Access::Write })
+    }
+
+    /// Bounded byte operation, including write-only service operations. No
+    /// mapping permission is added and no byte view is widened to a page.
+    pub fn acquire(&mut self, caller: u64, handle: CapabilityRef, access: Access,
+                   offset: u64, length: u64) -> Result<RegionLease, MemoryError> {
+        let rights = match access {
+            Access::Read => Rights::READ | Rights::SUBMIT,
+            Access::Write => Rights::WRITE | Rights::SUBMIT,
+        };
+        let view = self.checked_view(caller, handle, rights, offset, length)?;
+        let lease = self.policy.acquire(caller, handle, access, offset, length)?;
+        Ok(RegionLease { physical: view.physical_start, length: view.length,
+            lease, writable: access == Access::Write })
     }
 
     fn checked_page(&self, caller: u64, handle: CapabilityRef, access: Access,

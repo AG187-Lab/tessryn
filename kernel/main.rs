@@ -18,6 +18,10 @@ mod k02_cpu;
 mod k02_memory;
 #[cfg(k02_native)]
 mod k02_paging;
+#[cfg(k02_matrix)]
+mod k02_matrix;
+#[cfg(k02_matrix)]
+mod k02_sha256;
 
 use core::arch::asm;
 use core::mem::MaybeUninit;
@@ -51,7 +55,9 @@ pub unsafe extern "efiapi" fn efi_main(image: uefi::Handle, system: *const uefi:
 pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     // SAFETY: firmware has exited; kernel owns its loaded image and stack.
     unsafe { cpu::take_ownership(handoff) };
-    #[cfg(k02_native)]
+    #[cfg(k02_matrix)]
+    k02_matrix::run(handoff);
+    #[cfg(all(k02_native, not(k02_matrix)))]
     k02::run(handoff);
     // Read/write one page from conventional RAM only. Every live allocation,
     // runtime, ACPI and reserved descriptor has been excluded by validation.

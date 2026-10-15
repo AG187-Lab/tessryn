@@ -60,7 +60,7 @@ unsafe fn page_zero(physical: u64) -> bool {
     true
 }
 
-fn seed_root(root: &mut Tables<16>, handoff: &crate::uefi::Handoff) {
+pub(crate) fn seed_root(root: &mut Tables<16>, handoff: &crate::uefi::Handoff) {
     let base = root as *const Tables<16> as u64;
     let end = base.checked_add(size_of::<Tables<16>>() as u64).unwrap_or_else(|| fail("k02-root-pool-overflow"));
     if base < handoff.image.start || end > handoff.image.end { fail("k02-root-pool-ownership"); }
