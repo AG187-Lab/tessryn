@@ -1,0 +1,49 @@
+{
+  "schema": "tessryn-k02-region-service/v1",
+  "scope": "bounded original-kernel single-CPU region service; physical hardware, arbitrary-program isolation, SMP and DMA unqualified",
+  "cases": ["sharing", "revocation", "authority"],
+  "profile": {
+    "architecture": "x86_64",
+    "cpu_count": 1,
+    "paging_levels": 4,
+    "page_size": 4096,
+    "physical_bits": 48,
+    "nx_enabled": true,
+    "pcid_enabled": false,
+    "global_translations": false,
+    "legacy_fp_only": true,
+    "invalidation": "cr3_reload"
+  },
+  "request": {
+    "size": 96,
+    "magic": "TESSRGN1",
+    "version": 1,
+    "fields": {
+      "magic": [0, 8], "version": [8, 2], "size": [10, 2],
+      "flags": [12, 4], "request_id": [16, 8], "opcode": [24, 4],
+      "reserved0": [28, 4], "capability_slot": [32, 4],
+      "capability_generation": [36, 4], "capability_domain": [40, 8],
+      "argument": [48, 8], "offset": [56, 8], "length": [64, 8],
+      "virtual_address": [72, 8], "rights": [80, 8], "reserved1": [88, 8]
+    }
+  },
+  "operations": {
+    "allocate": 1, "map": 2, "delegate_readonly": 3, "revoke": 4,
+    "unmap": 5, "release": 6, "accounting": 7, "yield": 8, "exit": 9
+  },
+  "statuses": {
+    "ok": 0, "invalid_descriptor": 1, "unsupported_version": 2,
+    "unsupported_operation": 3, "invalid_authority": 4, "stale_handle": 5,
+    "revoked": 6, "bounds": 7, "alignment": 8, "insufficient_rights": 9,
+    "capacity": 10, "budget": 11, "busy": 12, "overflow": 13,
+    "backend_rejected": 14
+  },
+  "reply_registers": {
+    "status": "rax", "capability_or_mapping": "rdx", "capability_domain": "rcx",
+    "charged": "r8", "committed": "r9", "reserved": "r10"
+  },
+  "addresses": {
+    "code": 4294967296, "stack": 4294975488,
+    "request": 4295028736, "data": 4294983680
+  }
+}

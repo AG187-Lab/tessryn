@@ -9,7 +9,7 @@ mod diagnostics;
 mod framebuffer;
 mod paging;
 mod uefi;
-#[cfg(all(native_benchmarks, any(k02_native, k02_matrix)))]
+#[cfg(all(native_benchmarks, any(k02_native, k02_matrix, k02_region_service)))]
 compile_error!("native_benchmarks and k02_native are separate opt-in images");
 #[cfg(all(native_benchmarks, any(k01_aws, not(k01_emulator))))]
 compile_error!("the first native benchmark profile requires k01_emulator only");
@@ -32,6 +32,16 @@ mod k02_paging;
 #[cfg(k02_matrix)]
 mod k02_matrix;
 #[cfg(k02_matrix)]
+mod k02_sha256;
+#[cfg(all(k02_region_service, k02_matrix))]
+compile_error!("region service and fixed matrix are separate profiles");
+#[cfg(all(k02_region_service, any(k01_aws, not(k01_emulator), not(k02_native))))]
+compile_error!("the first region service profile requires K02 native emulator only");
+#[cfg(k02_region_service)]
+mod region_service;
+#[cfg(k02_region_service)]
+mod region_runtime;
+#[cfg(all(k02_region_service, not(k02_matrix)))]
 mod k02_sha256;
 
 #[cfg(not(native_benchmarks))]
@@ -75,7 +85,9 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     {
     #[cfg(k02_matrix)]
     k02_matrix::run(handoff);
-    #[cfg(all(k02_native, not(k02_matrix)))]
+    #[cfg(k02_region_service)]
+    region_runtime::run(handoff);
+    #[cfg(all(k02_native, not(any(k02_matrix, k02_region_service))))]
     k02::run(handoff);
     // Read/write one page from conventional RAM only. Every live allocation,
     // runtime, ACPI and reserved descriptor has been excluded by validation.

@@ -1,0 +1,74 @@
+{
+  "guest_benchmark": {
+    "cases": 13,
+    "manifest": {
+      "path": "build/region-reg-benchmark-image/manifest.json",
+      "sha256": "a30aaa5eded806259c1e395a2566d821aa9a8c04a74ec7cefa6b8d685bf930bf",
+      "size_bytes": 15667
+    },
+    "native_qualification": false,
+    "result": {
+      "path": "build/region-reg-benchmark-run/result.json",
+      "sha256": "fa6fc57ae4233e9b08581c87b8451dd9e0fd159f7319d1e7459af86083b68291",
+      "size_bytes": 12323
+    },
+    "samples": 208,
+    "verification_log": {
+      "path": "build/region-reg-logs/benchmark-verify.log",
+      "sha256": "c66ae48e512307a4ae60284524495f1d0092a88ac2fde4ac62b3b2ce7f27d907",
+      "size_bytes": 8559
+    }
+  },
+  "initial_command_index": {
+    "path": "build/region-reg-logs/commands.json",
+    "sha256": "4db5444a0655dc14178d546661ebb502d2e77717cba81b4e16cc5c8192f04103",
+    "size_bytes": 7230
+  },
+  "k01": {
+    "boots": 7,
+    "commands": {
+      "path": "build/region-reg-k01-retry-logs/commands.json",
+      "sha256": "e6e7cb8ab0be904c066ce795d3eb85e5f429c4d69337834c1fdb121bbd3dbcac",
+      "size_bytes": 4699
+    },
+    "manifest": {
+      "path": "build/region-reg-k01-a/manifest.json",
+      "sha256": "a1ec1f5010cc157fc0ba0149d3b7270a46019a77c43f56807d9024d32ed62bd7",
+      "size_bytes": 18839
+    },
+    "twins_identical": true,
+    "verification": {
+      "path": "build/region-reg-k01-retry-verification.json",
+      "sha256": "e5a169b1749e81a8290ccf2c092f5da9a7ccfdc5d6498e125f621d968ec436ba",
+      "size_bytes": 658
+    }
+  },
+  "preserved_environment_failure": {
+    "case": "k01 normal",
+    "path": "build/region-reg-k01-normal",
+    "reason": "Sandbox denied local emulator temporary-file creation before guest execution; fresh approved retry and all seven boots passed."
+  },
+  "slice": {
+    "boots": 4,
+    "manifest": {
+      "path": "build/region-reg-slice-a/manifest.json",
+      "sha256": "1fa10694c5728f88e7a5aaddfde6567c56c6499e043e87d181d072b43aa56c5b",
+      "size_bytes": 23886
+    },
+    "twins_identical": true,
+    "verification": {
+      "path": "build/region-reg-slice-verification.json",
+      "sha256": "990e569bd5773efc4467f79ffe63e056b4ca4c9e1ca9b7b3a36e96d82165ad12",
+      "size_bytes": 13392
+    }
+  },
+  "source": {
+    "dirty": false,
+    "revision": "bf9c82528f83e25814334c696a02aff86120fa21",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "3bf0016316e5aafac1527eb854de169a3370a956f17cda2ccab5be222dadf592"
+  },
+  "source_freeze_checks_complete": true,
+  "status": "pass",
+  "verified_commands": 20
+}

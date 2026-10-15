@@ -25,9 +25,13 @@ K01 does not complete G02's broader native-device contracts.
 [K02 PR #58](https://github.com/AG187-Lab/tessryn/pull/58) merged the
 [ten-case single-CPU matrix](k02-native-matrix.md), with
 [clean execution evidence](../evidence/k02-native-matrix/README.md) and passing
-historical slice/K01 regressions. Its protected requests execute known image-bound
-probes; general service dispatch, arbitrary-program isolation, SMP and device
-quiescence remain open in [issue #5](https://github.com/AG187-Lab/tessryn/issues/5).
+historical slice/K01 regressions. The [resumable region service](k02-region-service.md)
+now extends that baseline with reusable request dispatch and two CPL3 programs.
+Its [clean evidence](../evidence/k02-region-service/README.md) records three accepted
+boots, 68 actual traps, 21 service-policy host tests, 658 Python tests and passing
+K01, four-probe, ten-case and guest-benchmark regressions. Arbitrary program
+loading, production native services, timer preemption, SMP and device quiescence
+remain open in [issue #5](https://github.com/AG187-Lab/tessryn/issues/5).
 
 [K03 policy preparation](https://github.com/AG187-Lab/tessryn/pull/61) is merged.
 Its host accounting/timeline tests and freestanding library do not complete native

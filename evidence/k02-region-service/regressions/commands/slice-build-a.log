@@ -1,0 +1,1 @@
+{"status": "built", "cases": ["own_page", "foreign_read", "kernel_read", "readonly_write"], "scope": "four original-kernel single-CPU QEMU enforcement cases; full K02 protocol, physical hardware, SMP and DMA unqualified"}
