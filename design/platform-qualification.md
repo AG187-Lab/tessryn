@@ -66,6 +66,11 @@ inventories do not resolve the physical qualification gates.
 
 ## Candidate laboratory and GPU profiles
 
+The [physical laboratory intake](hardware-intake.md) records provider-neutral
+admission requirements, GPU Mart's October 14 source recheck and the bounded CPU
+boot/recovery runbook. No machine is available yet; this requirements packet
+does not select a target or complete G01.
+
 For early GPU work, investigate the [inexpensive rental shortlist](../evidence/g01-research/early-gpu-rentals.md)
 before AWS. GPU Mart's anonymous RTX 2060 dedicated preview shows USD 0.22/hour
 and zero setup; exact UEFI/IPMI/RAM-only access and account terms remain gates.
