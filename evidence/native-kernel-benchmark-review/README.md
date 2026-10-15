@@ -8,6 +8,12 @@ for two fresh original-kernel QEMU packets. Each independently verified packet
 contains 13 cases, 208 raw-counter samples and exactly 55 files. The external
 scheduler policy pin matches the reviewed policy now on main.
 
+The final K02 base refresh `709f67cd448fb8a088ac1ca5761c472656960709`
+adds documentation and retained evidence only. After merging it, all 30 source
+input hashes still match the verified twin builds, and both retained guest
+packets pass independent verification again. The refreshed design log covers
+76 Markdown documents, 10 milestones and 49 acyclic work items.
+
 The [repository test log](python-tests.log) records 617 passing Python tests,
 with no skips. The [clock log](clock-tests.log) records two passing pinned host
 tests; [design validation](design.log) records documentation/dependency checks.
