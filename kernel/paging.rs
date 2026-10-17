@@ -11,7 +11,9 @@ pub const LEAF_CAPACITY: usize = 16_384;
 const ADDRESS_MASK: u64 = 0x000f_ffff_ffff_f000;
 // One fixed supervisor MMIO leaf, used only by the admitted HPET profile.
 // PAT index 3 (PWT=PCD=1, PAT=0) must be admitted as UC by the CPU owner.
+#[cfg(any(k02_native, k03_timer, test))]
 pub const HPET_LEAF: u64 = 0xfec0_0000;
+#[cfg(any(k02_native, k03_timer, test))]
 pub const HPET_UC_FLAGS: u64 = 0x83 | (1 << 3) | (1 << 4) | (1 << 63);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -140,6 +142,7 @@ impl Tables {
     /// Change only the already mapped HPET-containing supervisor leaf. The
     /// CPU owner enables NXE, admits PAT[3]=UC and reloads CR3 before access.
     /// There is no allocation, new alias or user permission in this operation.
+    #[cfg(any(k03_timer, test))]
     pub fn set_hpet_uncached(&mut self) -> Result<(), Error> {
         let (directory, slot) = self.hpet_slot()?;
         let leaf = self.pages[directory].0[slot];
@@ -150,12 +153,14 @@ impl Tables {
         self.pages[directory].0[slot] = HPET_LEAF | HPET_UC_FLAGS | (leaf & ((1 << 5) | (1 << 6)));
         Ok(())
     }
+    #[cfg(any(k03_timer, test))]
     fn hpet_slot(&self) -> Result<(usize, usize), Error> {
         if self.used == 0 { return Err(Error::TableLink); }
         let pdpt = self.link_index(self.pages[0].0[((HPET_LEAF >> 39) & 511) as usize])?;
         let directory = self.link_index(self.pages[pdpt].0[((HPET_LEAF >> 30) & 511) as usize])?;
         Ok((directory, ((HPET_LEAF >> 21) & 511) as usize))
     }
+    #[cfg(any(k03_timer, test))]
     pub fn hpet_uncached(&self) -> Result<bool, Error> {
         let (directory, slot) = self.hpet_slot()?;
         Ok(self.pages[directory].0[slot] & !((1 << 5) | (1 << 6)) == HPET_LEAF | HPET_UC_FLAGS)
