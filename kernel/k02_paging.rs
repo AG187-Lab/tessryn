@@ -180,7 +180,7 @@ impl<const N: usize> Tables<N> {
             if let Some(directory) = directory {
                 let leaf = self.pages[directory].0[((address >> 21) & 511) as usize];
                 if leaf == 0 { leaves += 1; }
-                else if leaf & !(ACCESSED | DIRTY) != address | PRESENT | WRITE | HUGE {
+                else if !Self::supervisor_leaf(address, leaf) {
                     return Err(Error::Collision);
                 }
             } else {
@@ -201,6 +201,38 @@ impl<const N: usize> Tables<N> {
         }
         self.supervisor_leaves += leaves;
         Ok(())
+    }
+
+    fn supervisor_leaf(address: u64, leaf: u64) -> bool {
+        let value = leaf & !(ACCESSED | DIRTY);
+        value == address | PRESENT | WRITE | HUGE
+            || (address == crate::paging::HPET_LEAF
+                && value == address | crate::paging::HPET_UC_FLAGS)
+    }
+    fn hpet_slot(&self) -> Result<(usize, usize), Error> {
+        if self.used == 0 { return Err(Error::Uninitialized); }
+        let address = crate::paging::HPET_LEAF;
+        let pdpt = self.link(self.pages[0].0[((address >> 39) & 511) as usize])?;
+        let directory = self.link(self.pages[pdpt].0[((address >> 30) & 511) as usize])?;
+        Ok((directory, ((address >> 21) & 511) as usize))
+    }
+    /// Before the first user mapping, specialize just the fixed HPET leaf to
+    /// supervisor RW/NX, PAT index 3. NXE/PAT admission and CR3 fencing belong
+    /// to the CPU owner. Every other supervisor leaf keeps its original flags.
+    pub fn set_hpet_uncached(&mut self) -> Result<(), Error> {
+        if self.sealed { return Err(Error::SupervisorSealed); }
+        self.validate()?;
+        let (directory, slot) = self.hpet_slot()?;
+        let leaf = self.pages[directory].0[slot];
+        if !Self::supervisor_leaf(crate::paging::HPET_LEAF, leaf) { return Err(Error::SupervisorInvalid); }
+        self.pages[directory].0[slot] = crate::paging::HPET_LEAF | crate::paging::HPET_UC_FLAGS
+            | (leaf & (ACCESSED | DIRTY));
+        Ok(())
+    }
+    pub fn hpet_uncached(&self) -> Result<bool, Error> {
+        let (directory, slot) = self.hpet_slot()?;
+        Ok(self.pages[directory].0[slot] & !(ACCESSED | DIRTY)
+            == crate::paging::HPET_LEAF | crate::paging::HPET_UC_FLAGS)
     }
 
     fn user_address(address: u64) -> Result<(), Error> {
@@ -294,7 +326,7 @@ impl<const N: usize> Tables<N> {
             writable &= entry & WRITE != 0;
             executable &= entry & NX == 0;
             if level == 2 && entry & HUGE != 0 {
-                if entry & !(ADDRESS_MASK | PRESENT | WRITE | HUGE | ACCESSED | DIRTY) != 0
+                if !Self::supervisor_leaf(address & !(HUGE_PAGE - 1), entry)
                     || entry & (HUGE_PAGE - 1) & ADDRESS_MASK != 0 { return Err(Error::Corrupt); }
                 return Ok(Translation { physical: (entry & ADDRESS_MASK) | (address & (HUGE_PAGE - 1)),
                     page_bytes: HUGE_PAGE, user, writable, executable });
@@ -370,7 +402,7 @@ impl<const N: usize> Tables<N> {
                 if role == 1 || (role == 2 && entry & HUGE != 0) {
                     if entry & PRESENT == 0 { return Err(Error::Corrupt); }
                     if role == 2 {
-                        if entry & !(ACCESSED | DIRTY) != address | PRESENT | WRITE | HUGE
+                        if !Self::supervisor_leaf(address, entry)
                             || address >= GUARD || address + HUGE_PAGE > 1u64 << self.bits {
                             return Err(Error::Corrupt);
                         }

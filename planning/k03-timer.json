@@ -1,0 +1,15 @@
+{
+  "schema": "tessryn-k03-timer/v1",
+  "scope": "single-CPU original-kernel HPET timer and unchanged K03 policy integration; physical clocks, SMP, DMA and performance unqualified",
+  "cases": ["preemption", "budget", "deadline", "forged_irq"],
+  "clock": {"source": "hpet64", "address": 4275044352, "period_fs": 10000000, "ns_per_tick": 10, "tsc": false},
+  "timer": {"route": "legacy_replacement_pic_irq0", "vector": 32, "quantum_ns": 250000000, "soft_ns": 10000000, "arm_delay": "max(1,min(soft_ns,grant_ns/2))", "min_irqs": 3},
+  "budgets": {"default_ns": 2000000000, "budget_case_a_ns": 80000000, "deadline_case_a_offset_ns": 100000000},
+  "accounting": {"full_observed_elapsed": true, "clamping": false, "grace": false, "refill": false, "late_stop": "domain_halt_and_failure"},
+  "request_bytes": 96,
+  "mailbox_offset": 128,
+  "descriptor_bytes": 144,
+  "policy_source": "scheduler-core/lib.rs",
+  "policy_sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+  "qualified_scope": "advertised 10ns HPET counter ticks in the declared QEMU guest only"
+}

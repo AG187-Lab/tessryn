@@ -175,6 +175,14 @@ fn hardware_accessed_dirty_bits_do_not_change_authority() {
         else { table = tables.link(tables.pages[table].0[*slot]).unwrap(); }
     }
     tables.validate().unwrap(); tables.unmap_user(USER_BASE).unwrap(); tables.validate().unwrap();
+    let mut mmio = ready::<16>(BASE);
+    let (directory, slot) = mmio.hpet_slot().unwrap();
+    mmio.pages[directory].0[slot] |= ACCESSED | DIRTY;
+    mmio.set_hpet_uncached().unwrap();
+    assert_eq!(mmio.pages[directory].0[slot], crate::paging::HPET_LEAF
+        | crate::paging::HPET_UC_FLAGS | ACCESSED | DIRTY);
+    assert!(mmio.hpet_uncached().unwrap());
+    mmio.validate().unwrap();
 }
 
 #[test]
@@ -239,4 +247,20 @@ fn rejects_retargeted_supervisor_hidden_user_leaf_and_not_present_huge_leaf() {
     let before = snapshot(&tables);
     assert_eq!(tables.map_data(USER_BASE + 2 * PAGE_BYTES, BACKING + 2 * PAGE_BYTES, UserAccess::ReadOnly), Err(Error::Corrupt));
     assert_eq!(snapshot(&tables), before);
+    // The timer exception permits exactly one fixed UC/NX supervisor leaf;
+    // cache bits elsewhere, partial UC flags and an executable MMIO leaf remain
+    // corrupt. The trusted conversion rejects each without changing any table.
+    for (address, mask) in [(0, 1 << 3), (crate::paging::HPET_LEAF, 1 << 3),
+        (crate::paging::HPET_LEAF, (1 << 3) | (1 << 4)),
+        (crate::paging::HPET_LEAF, USER)] {
+        let mut mmio = ready::<16>(BASE);
+        let pdpt = mmio.link(mmio.pages[0].0[0]).unwrap();
+        let directory = mmio.link(mmio.pages[pdpt].0[((address >> 30) & 511) as usize]).unwrap();
+        let slot = ((address >> 21) & 511) as usize;
+        mmio.pages[directory].0[slot] |= mask;
+        let before = snapshot(&mmio);
+        assert_eq!(mmio.validate(), Err(Error::Corrupt));
+        assert_eq!(mmio.set_hpet_uncached(), Err(Error::Corrupt));
+        assert_eq!(snapshot(&mmio), before);
+    }
 }
