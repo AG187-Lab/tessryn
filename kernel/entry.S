@@ -217,6 +217,14 @@ exception_unexpected:
     jmp exception_common
 
 .global exception_common
+.if {timer_profile}
+.global timer_interrupt_32
+timer_interrupt_32:
+    push 0
+    push 32
+    jmp exception_common
+.endif
+
 exception_common:
     cld
     push rax

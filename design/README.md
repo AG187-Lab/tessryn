@@ -21,6 +21,8 @@ These documents record research, architectural decisions, implementation gates a
 | [Native memory isolation slice](k02-native-slice.md) | Four single-CPU CPL3 memory probes, artifact-bound traps and remaining K02 gates |
 | [Native memory isolation matrix](k02-native-matrix.md) | Ten fresh single-CPU CPL3 cases, protected request dispatch and ordered revocation/reuse |
 | [Resumable region service](k02-region-service.md) | Reusable bounded request dispatch, two CPL3 programs, context preservation and trusted teardown |
+| [Scheduler policy preparation](k03-preparation.md) | Shared lifetime CPU caps, protected reservations, deadlines and retained stop ownership |
+| [Single-CPU timer preemption](k03-timer-preemption.md) | HPET/PIC interrupts, resumable CPL3 contexts, strict actual-time budgets and evidence requirements |
 | [In-kernel benchmark experiment](native-kernel-benchmarks.md) | Opt-in raw-counter guest observations, capture boundaries and hardware timing gates |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |

@@ -1,0 +1,15 @@
+
+running 10 tests
+test abc_known_vector ... ok
+test empty_known_vector ... ok
+test exact_middle_byte_mutation_has_independent_digest ... ok
+test little_endian_page_pattern_vector ... ok
+test long_112_byte_known_vector ... ok
+test long_56_byte_known_vector ... ok
+test million_a_known_vector ... ok
+test padding_and_complete_block_boundaries ... ok
+test unaligned_slice_hashes_only_the_requested_bytes ... ok
+test zero_page_multiblock_vector ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

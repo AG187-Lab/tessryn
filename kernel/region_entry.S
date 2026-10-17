@@ -1,4 +1,4 @@
-// Original cooperative context entry. Layout is asserted by region_runtime.rs.
+// Original resumable context entry. Layout is asserted by region_runtime.rs.
 // Each entry saves the kernel continuation; each trap returns to that owner.
 .text
 .global region_resume_user

@@ -1,0 +1,280 @@
+name: K03 single-CPU HPET timer and budgets
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  k03-timer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Check timer evidence and source boundaries
+        run: |
+          python3 -m unittest discover -s tests -p 'test_k03_timer*.py' -v
+          python3 tools/validate_design.py
+      - name: Install pinned compiler, host libraries and emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Test original scheduler and timer adapter models
+        run: python3 tools/check_k03_timer_host.py --out build/k03-timer/host
+      - name: Build independent memory and scheduler integrated twins
+        run: |
+          python3 tools/build_k03_timer.py --out build/k03-timer/a
+          python3 tools/build_k03_timer.py --out build/k03-timer/b
+      - name: Capture four fresh IRQ and budget cases
+        run: |
+          for case in preemption budget deadline forged_irq; do
+            python3 tools/run_k03_timer.py --manifest build/k03-timer/a/manifest.json --case "$case" --out "build/k03-timer/$case" --allow-qemu
+          done
+      - name: Verify source, twins, host receipts and original IRQ traces
+        run: |
+          python3 tools/verify_k03_timer.py --first build/k03-timer/a/manifest.json --second build/k03-timer/b/manifest.json \
+            --host-result build/k03-timer/host/result.json --result build/k03-timer/preemption/result.json \
+            --result build/k03-timer/budget/result.json --result build/k03-timer/deadline/result.json \
+            --result build/k03-timer/forged_irq/result.json --out build/k03-timer/verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: k03-timer-single-cpu-evidence
+          include-hidden-files: true
+          path: |
+            build/k03-timer/a/manifest.json
+            build/k03-timer/a/libtessryn_owned_memory.rlib
+            build/k03-timer/a/libtessryn_scheduler.rlib
+            build/k03-timer/a/core-stdout.log
+            build/k03-timer/a/core-stderr.log
+            build/k03-timer/a/scheduler-stdout.log
+            build/k03-timer/a/scheduler-stderr.log
+            build/k03-timer/a/preemption/BOOTX64.EFI
+            build/k03-timer/a/preemption/boot.img
+            build/k03-timer/a/preemption/kernel.obj
+            build/k03-timer/a/preemption/preemption-stdout.log
+            build/k03-timer/a/preemption/preemption-stderr.log
+            build/k03-timer/a/budget/BOOTX64.EFI
+            build/k03-timer/a/budget/boot.img
+            build/k03-timer/a/budget/kernel.obj
+            build/k03-timer/a/budget/budget-stdout.log
+            build/k03-timer/a/budget/budget-stderr.log
+            build/k03-timer/a/deadline/BOOTX64.EFI
+            build/k03-timer/a/deadline/boot.img
+            build/k03-timer/a/deadline/kernel.obj
+            build/k03-timer/a/deadline/deadline-stdout.log
+            build/k03-timer/a/deadline/deadline-stderr.log
+            build/k03-timer/a/forged_irq/BOOTX64.EFI
+            build/k03-timer/a/forged_irq/boot.img
+            build/k03-timer/a/forged_irq/kernel.obj
+            build/k03-timer/a/forged_irq/forged_irq-stdout.log
+            build/k03-timer/a/forged_irq/forged_irq-stderr.log
+            build/k03-timer/a/notices/tessryn-LICENSE
+            build/k03-timer/a/notices/tessryn-NOTICE
+            build/k03-timer/a/notices/rust-LICENSE-APACHE
+            build/k03-timer/a/notices/rust-LICENSE-MIT
+            build/k03-timer/a/notices/rust-COPYRIGHT
+            build/k03-timer/a/sources/.github/workflows/k03-timer.yml
+            build/k03-timer/a/sources/fixtures/rom.py
+            build/k03-timer/a/sources/interfaces/abi-v1/native.rs
+            build/k03-timer/a/sources/kernel-core/boot_inventory.rs
+            build/k03-timer/a/sources/kernel-core/capabilities.rs
+            build/k03-timer/a/sources/kernel-core/frames.rs
+            build/k03-timer/a/sources/kernel-core/lib.rs
+            build/k03-timer/a/sources/kernel/cpu.rs
+            build/k03-timer/a/sources/kernel/diagnostics.rs
+            build/k03-timer/a/sources/kernel/entry.S
+            build/k03-timer/a/sources/kernel/framebuffer.rs
+            build/k03-timer/a/sources/kernel/k02.rs
+            build/k03-timer/a/sources/kernel/k02_cpu.rs
+            build/k03-timer/a/sources/kernel/k02_entry.S
+            build/k03-timer/a/sources/kernel/k02_memory.rs
+            build/k03-timer/a/sources/kernel/k02_paging.rs
+            build/k03-timer/a/sources/kernel/k02_sha256.rs
+            build/k03-timer/a/sources/kernel/main.rs
+            build/k03-timer/a/sources/kernel/paging.rs
+            build/k03-timer/a/sources/kernel/preempt_policy.rs
+            build/k03-timer/a/sources/kernel/preempt_timer.rs
+            build/k03-timer/a/sources/kernel/region_entry.S
+            build/k03-timer/a/sources/kernel/region_runtime.rs
+            build/k03-timer/a/sources/kernel/region_service.rs
+            build/k03-timer/a/sources/kernel/timer_programs.S
+            build/k03-timer/a/sources/kernel/timer_runtime.rs
+            build/k03-timer/a/sources/kernel/uefi.rs
+            build/k03-timer/a/sources/planning/k02-toolchain.lock.json
+            build/k03-timer/a/sources/planning/k03-timer.json
+            build/k03-timer/a/sources/scheduler-core/lib.rs
+            build/k03-timer/a/sources/toolchain.lock.json
+            build/k03-timer/a/sources/tools/build_fixture.py
+            build/k03-timer/a/sources/tools/build_k02_native.py
+            build/k03-timer/a/sources/tools/build_k03_timer.py
+            build/k03-timer/a/sources/tools/build_kernel.py
+            build/k03-timer/a/sources/tools/check_k03_timer_host.py
+            build/k03-timer/a/sources/tools/g03/__init__.py
+            build/k03-timer/a/sources/tools/g03/evidence.py
+            build/k03-timer/a/sources/tools/g03/process.py
+            build/k03-timer/a/sources/tools/k01_media.py
+            build/k03-timer/a/sources/tools/k02_region_protocol.py
+            build/k03-timer/a/sources/tools/k03_timer_protocol.py
+            build/k03-timer/a/sources/tools/k03_timer_provenance.py
+            build/k03-timer/a/sources/tools/k03_timer_trace.py
+            build/k03-timer/a/sources/tools/run_k02_native.py
+            build/k03-timer/a/sources/tools/run_k03_timer.py
+            build/k03-timer/a/sources/tools/run_kernel.py
+            build/k03-timer/a/sources/tools/setup_k02_toolchain.py
+            build/k03-timer/a/sources/tools/setup_toolchain.py
+            build/k03-timer/a/sources/tools/setup_uefi.py
+            build/k03-timer/a/sources/tools/summarize_k03_timer_failure.py
+            build/k03-timer/a/sources/tools/verify_k02_native.py
+            build/k03-timer/a/sources/tools/verify_k03_timer.py
+            build/k03-timer/a/sources/uefi-toolchain.lock.json
+            build/k03-timer/b/manifest.json
+            build/k03-timer/b/libtessryn_owned_memory.rlib
+            build/k03-timer/b/libtessryn_scheduler.rlib
+            build/k03-timer/b/core-stdout.log
+            build/k03-timer/b/core-stderr.log
+            build/k03-timer/b/scheduler-stdout.log
+            build/k03-timer/b/scheduler-stderr.log
+            build/k03-timer/b/preemption/BOOTX64.EFI
+            build/k03-timer/b/preemption/boot.img
+            build/k03-timer/b/preemption/kernel.obj
+            build/k03-timer/b/preemption/preemption-stdout.log
+            build/k03-timer/b/preemption/preemption-stderr.log
+            build/k03-timer/b/budget/BOOTX64.EFI
+            build/k03-timer/b/budget/boot.img
+            build/k03-timer/b/budget/kernel.obj
+            build/k03-timer/b/budget/budget-stdout.log
+            build/k03-timer/b/budget/budget-stderr.log
+            build/k03-timer/b/deadline/BOOTX64.EFI
+            build/k03-timer/b/deadline/boot.img
+            build/k03-timer/b/deadline/kernel.obj
+            build/k03-timer/b/deadline/deadline-stdout.log
+            build/k03-timer/b/deadline/deadline-stderr.log
+            build/k03-timer/b/forged_irq/BOOTX64.EFI
+            build/k03-timer/b/forged_irq/boot.img
+            build/k03-timer/b/forged_irq/kernel.obj
+            build/k03-timer/b/forged_irq/forged_irq-stdout.log
+            build/k03-timer/b/forged_irq/forged_irq-stderr.log
+            build/k03-timer/b/notices/tessryn-LICENSE
+            build/k03-timer/b/notices/tessryn-NOTICE
+            build/k03-timer/b/notices/rust-LICENSE-APACHE
+            build/k03-timer/b/notices/rust-LICENSE-MIT
+            build/k03-timer/b/notices/rust-COPYRIGHT
+            build/k03-timer/b/sources/.github/workflows/k03-timer.yml
+            build/k03-timer/b/sources/fixtures/rom.py
+            build/k03-timer/b/sources/interfaces/abi-v1/native.rs
+            build/k03-timer/b/sources/kernel-core/boot_inventory.rs
+            build/k03-timer/b/sources/kernel-core/capabilities.rs
+            build/k03-timer/b/sources/kernel-core/frames.rs
+            build/k03-timer/b/sources/kernel-core/lib.rs
+            build/k03-timer/b/sources/kernel/cpu.rs
+            build/k03-timer/b/sources/kernel/diagnostics.rs
+            build/k03-timer/b/sources/kernel/entry.S
+            build/k03-timer/b/sources/kernel/framebuffer.rs
+            build/k03-timer/b/sources/kernel/k02.rs
+            build/k03-timer/b/sources/kernel/k02_cpu.rs
+            build/k03-timer/b/sources/kernel/k02_entry.S
+            build/k03-timer/b/sources/kernel/k02_memory.rs
+            build/k03-timer/b/sources/kernel/k02_paging.rs
+            build/k03-timer/b/sources/kernel/k02_sha256.rs
+            build/k03-timer/b/sources/kernel/main.rs
+            build/k03-timer/b/sources/kernel/paging.rs
+            build/k03-timer/b/sources/kernel/preempt_policy.rs
+            build/k03-timer/b/sources/kernel/preempt_timer.rs
+            build/k03-timer/b/sources/kernel/region_entry.S
+            build/k03-timer/b/sources/kernel/region_runtime.rs
+            build/k03-timer/b/sources/kernel/region_service.rs
+            build/k03-timer/b/sources/kernel/timer_programs.S
+            build/k03-timer/b/sources/kernel/timer_runtime.rs
+            build/k03-timer/b/sources/kernel/uefi.rs
+            build/k03-timer/b/sources/planning/k02-toolchain.lock.json
+            build/k03-timer/b/sources/planning/k03-timer.json
+            build/k03-timer/b/sources/scheduler-core/lib.rs
+            build/k03-timer/b/sources/toolchain.lock.json
+            build/k03-timer/b/sources/tools/build_fixture.py
+            build/k03-timer/b/sources/tools/build_k02_native.py
+            build/k03-timer/b/sources/tools/build_k03_timer.py
+            build/k03-timer/b/sources/tools/build_kernel.py
+            build/k03-timer/b/sources/tools/check_k03_timer_host.py
+            build/k03-timer/b/sources/tools/g03/__init__.py
+            build/k03-timer/b/sources/tools/g03/evidence.py
+            build/k03-timer/b/sources/tools/g03/process.py
+            build/k03-timer/b/sources/tools/k01_media.py
+            build/k03-timer/b/sources/tools/k02_region_protocol.py
+            build/k03-timer/b/sources/tools/k03_timer_protocol.py
+            build/k03-timer/b/sources/tools/k03_timer_provenance.py
+            build/k03-timer/b/sources/tools/k03_timer_trace.py
+            build/k03-timer/b/sources/tools/run_k02_native.py
+            build/k03-timer/b/sources/tools/run_k03_timer.py
+            build/k03-timer/b/sources/tools/run_kernel.py
+            build/k03-timer/b/sources/tools/setup_k02_toolchain.py
+            build/k03-timer/b/sources/tools/setup_toolchain.py
+            build/k03-timer/b/sources/tools/setup_uefi.py
+            build/k03-timer/b/sources/tools/summarize_k03_timer_failure.py
+            build/k03-timer/b/sources/tools/verify_k02_native.py
+            build/k03-timer/b/sources/tools/verify_k03_timer.py
+            build/k03-timer/b/sources/uefi-toolchain.lock.json
+            build/k03-timer/preemption/registration.json
+            build/k03-timer/preemption/result.json
+            build/k03-timer/preemption/stdout.log
+            build/k03-timer/preemption/stderr.log
+            build/k03-timer/preemption/firmware/code.fd
+            build/k03-timer/preemption/firmware/vars.fd
+            build/k03-timer/preemption/firmware/NOTICE
+            build/k03-timer/budget/registration.json
+            build/k03-timer/budget/result.json
+            build/k03-timer/budget/stdout.log
+            build/k03-timer/budget/stderr.log
+            build/k03-timer/budget/firmware/code.fd
+            build/k03-timer/budget/firmware/vars.fd
+            build/k03-timer/budget/firmware/NOTICE
+            build/k03-timer/deadline/registration.json
+            build/k03-timer/deadline/result.json
+            build/k03-timer/deadline/stdout.log
+            build/k03-timer/deadline/stderr.log
+            build/k03-timer/deadline/firmware/code.fd
+            build/k03-timer/deadline/firmware/vars.fd
+            build/k03-timer/deadline/firmware/NOTICE
+            build/k03-timer/forged_irq/registration.json
+            build/k03-timer/forged_irq/result.json
+            build/k03-timer/forged_irq/stdout.log
+            build/k03-timer/forged_irq/stderr.log
+            build/k03-timer/forged_irq/firmware/code.fd
+            build/k03-timer/forged_irq/firmware/vars.fd
+            build/k03-timer/forged_irq/firmware/NOTICE
+            build/k03-timer/host/result.json
+            build/k03-timer/host/scheduler-library-stdout.log
+            build/k03-timer/host/scheduler-library-stderr.log
+            build/k03-timer/host/scheduler-build-stdout.log
+            build/k03-timer/host/scheduler-build-stderr.log
+            build/k03-timer/host/scheduler-tests-stdout.log
+            build/k03-timer/host/scheduler-tests-stderr.log
+            build/k03-timer/host/adapter-build-stdout.log
+            build/k03-timer/host/adapter-build-stderr.log
+            build/k03-timer/host/adapter-tests-stdout.log
+            build/k03-timer/host/adapter-tests-stderr.log
+            build/k03-timer/host/driver-build-stdout.log
+            build/k03-timer/host/driver-build-stderr.log
+            build/k03-timer/host/driver-tests-stdout.log
+            build/k03-timer/host/driver-tests-stderr.log
+            build/k03-timer/verification.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain portable failure metadata
+        if: failure()
+        run: python3 tools/summarize_k03_timer_failure.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: k03-timer-failure-metadata
+          path: build/k03-timer/failure-summary.json
+          if-no-files-found: warn
+          retention-days: 14

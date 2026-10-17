@@ -4,7 +4,8 @@ use core::mem::{size_of, offset_of};
 use core::ptr;
 use crate::diagnostics::{fail, print, finish};
 
-global_asm!(include_str!("entry.S"), region_service = const cfg!(k02_region_service) as u8);
+global_asm!(include_str!("entry.S"), region_service = const cfg!(k02_region_service) as u8,
+    timer_profile = const cfg!(k03_timer) as u8);
 
 unsafe extern "efiapi" {
     pub fn kernel_enter(stack: u64, handoff: *const core::ffi::c_void) -> !;
@@ -184,11 +185,31 @@ pub unsafe fn install_user_test_boundary(stack_top: u64, return_gate: usize) {
     }
 }
 
+/// The timer profile owns exactly one DPL0 hardware gate. CPL3 INT32 must #GP.
+#[cfg(k03_timer)]
+pub unsafe fn install_timer_boundary() {
+    unsafe extern "sysv64" { fn timer_interrupt_32(); }
+    unsafe {
+        ptr::addr_of_mut!(IDT).cast::<Gate>().add(32)
+            .write(Gate::new(timer_interrupt_32 as *const () as usize, 0));
+    }
+}
+
+/// Change the admitted HPET identity leaf before its first MMIO access.
+#[cfg(k03_timer)]
+pub unsafe fn prepare_timer_mmio() {
+    let tables = unsafe { &mut *ptr::addr_of_mut!(TABLES) };
+    tables.set_hpet_uncached().unwrap_or_else(|_| fail("timer-kernel-mmio-map"));
+    if !tables.hpet_uncached().unwrap_or(false) { fail("timer-kernel-mmio-flags"); }
+    unsafe { asm!("wbinvd", "mov cr3, {}", in(reg) tables.root(), options(nostack)); }
+}
+
 #[unsafe(no_mangle)]
 pub extern "sysv64" fn exception_handler(frame: &ExceptionFrame, _fp: *const u8) {
     let cr2: u64;
     // SAFETY: entry stubs supply a live normalized frame in privileged mode.
     unsafe { asm!("mov {}, cr2", out(reg) cr2, options(nomem, nostack)) };
+    #[cfg(not(k03_timer))]
     print(format_args!("TESSRYN_K01_EXCEPTION vector={} error={:#x} rip={:#x} cs={:#x} rflags={:#x} rsp={:#x} cr2={:#x}\n",
         frame.vector, frame.error, frame.rip, frame.cs, frame.rflags, frame.rsp, cr2));
     #[cfg(k02_region_service)]

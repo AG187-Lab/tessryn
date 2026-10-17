@@ -1,6 +1,6 @@
-//! One-CPU region service adapter and cooperative, image-bound task experiment.
-//! No policy/MMU mutable borrow survives an entry. The trap callback only copies
-//! CPU state into protected task slots and returns to the kernel continuation.
+//! Shared single-CPU region backend and protected, image-bound task contexts.
+//! No policy/MMU mutable borrow survives entry. The trap callback captures CPU
+//! and profile IRQ state before returning to the owning kernel continuation.
 use crate::diagnostics::{fail, print};
 use crate::k02_memory::{
     Access, Accounting, CapabilityRef, MemoryError, NativeMemory, PageLease, RegionLease, Rights,
@@ -24,6 +24,7 @@ const EMPTY_CAP: CapabilityRef = CapabilityRef {
     generation: 0,
     domain: 0,
 };
+#[cfg(not(k03_timer))]
 const fn case_id() -> u64 {
     if cfg!(k02_service_case = "sharing") {
         0
@@ -35,6 +36,7 @@ const fn case_id() -> u64 {
         u64::MAX
     }
 }
+#[cfg(not(k03_timer))]
 fn case_name() -> &'static str {
     match case_id() {
         0 => "sharing",
@@ -44,7 +46,10 @@ fn case_name() -> &'static str {
     }
 }
 global_asm!(include_str!("region_entry.S"));
+#[cfg(not(k03_timer))]
 global_asm!(include_str!("region_programs.S"));
+#[cfg(k03_timer)]
+global_asm!(include_str!("timer_programs.S"));
 unsafe extern "sysv64" {
     fn region_resume_user(root: u64, state: *const Saved) -> u64;
     static region_program_a_start: u8;
@@ -63,6 +68,7 @@ struct Contract {
     addresses: [u64; 4],
     request_size: u64,
 }
+#[cfg(not(k03_timer))]
 #[used]
 #[unsafe(no_mangle)]
 static K02_REGION_SERVICE_CONTRACT: Contract = Contract {
@@ -99,7 +105,7 @@ const fn initial() -> Saved {
         error: 0,
         rip: CODE,
         cs: 0x33,
-        rflags: 2,
+        rflags: if cfg!(k03_timer) { 0x202 } else { 2 },
         rsp: STACK + 4096 - 16,
         ss: 0x2b,
         fp,
@@ -165,9 +171,8 @@ fn record(kind: &str, fields: impl FnOnce()) {
                 .unwrap_or_else(|| fail("service-sequence")),
         );
     }
-    print(format_args!(
-        "TESSRYN_K02_SERVICE_{kind} sequence={sequence}"
-    ));
+    let prefix = if cfg!(k03_timer) { "TESSRYN_K03_TIMER" } else { "TESSRYN_K02_SERVICE" };
+    print(format_args!("{prefix}_{kind} sequence={sequence}"));
     fields();
     print(format_args!("\n"));
 }
@@ -306,12 +311,20 @@ pub fn capture(frame: &crate::cpu::ExceptionFrame, fp: *const u8, cr2: u64) {
         || frame.rsp >= STACK + 4096
         || frame.rip < CODE
         || frame.rip >= CODE + 4096
-        || frame.rflags & ((3 << 12) | (1 << 8) | (1 << 9) | (1 << 14) | (1 << 17)) != 0
+        || frame.rflags & ((3 << 12) | (1 << 8) | (1 << 14) | (1 << 17)) != 0
+        || (frame.rflags & (1 << 9) != if cfg!(k03_timer) { 1 << 9 } else { 0 })
+        // The pinned QEMU TCG interrupt path includes RF in an external IRQ's
+        // saved image. Retain that genuine frame bit; TF/debug state stay off.
         || (frame.vector == 128 && frame.rflags & (1 << 16) != 0)
-        || !matches!(frame.vector, 128 | 14 | 6)
+        || if cfg!(k03_timer) { !matches!(frame.vector, 128 | 32 | 13) } else { !matches!(frame.vector, 128 | 14 | 6) }
     {
+        #[cfg(k03_timer)]
+        print(format_args!("TESSRYN_K03_INVALID_TRAP task={index} state={} root={current:#x} expected_root={:#x} vector={} error={:#x} rip={:#x} cs={:#x} ss={:#x} flags={:#x} rsp={:#x} frame={address:#x} fp={:#x} trap_start={:#x} trap_end={:#x}\n",
+            t.state,t.root,frame.vector,frame.error,frame.rip,frame.cs,frame.ss,frame.rflags,frame.rsp,fp as u64,stack.start,stack.end));
         fail("service-trap-context");
     }
+    #[cfg(k03_timer)]
+    timer_capture_hardware(frame, address, current);
     t.saved.registers = frame.registers;
     t.saved.vector = frame.vector;
     t.saved.error = frame.error;
@@ -330,6 +343,7 @@ pub fn capture(frame: &crate::cpu::ExceptionFrame, fp: *const u8, cr2: u64) {
     t.state = 2;
     t.cr2 = cr2;
     save(index, t);
+    #[cfg(not(k03_timer))]
     record("TRAP", || {
         n("task", index as u64);
         n("domain", t.domain);
@@ -749,6 +763,7 @@ fn request(
     response
 }
 
+#[cfg(not(k03_timer))]
 pub fn run(handoff: &crate::uefi::Handoff) -> ! {
     if case_id() > 2 {
         fail("service-case");
@@ -1032,3 +1047,6 @@ pub fn run(handoff: &crate::uefi::Handoff) -> ! {
     }
     crate::diagnostics::finish(true)
 }
+
+#[cfg(k03_timer)]
+include!("timer_runtime.rs");

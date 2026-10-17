@@ -1,0 +1,19 @@
+{
+  "execution": {
+    "elapsed_seconds": 1.8197539590182714,
+    "reason": "process exited and captured pipes reached EOF",
+    "returncode": 33,
+    "status": "completed",
+    "stderr": {
+      "file": "qemu-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout": {
+      "file": "qemu-stdout.log",
+      "sha256": "990b507fec8192c2b2a6a323bae15137766b571f134ffc7b2bfdc7566e1881cf",
+      "size": 61580
+    }
+  },
+  "schema_version": 1
+}

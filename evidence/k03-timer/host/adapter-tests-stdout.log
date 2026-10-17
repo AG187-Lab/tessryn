@@ -1,0 +1,22 @@
+
+running 17 tests
+test admission_rejects_zero_limits_and_expired_deadlines ... ok
+test advance_requests_stop_but_keeps_exact_cpu_reservation_owned ... ok
+test backwards_stop_and_all_mutations_leave_exact_adapter_snapshot_unchanged ... ok
+test blocked_deadline_is_terminal_without_fictitious_cpu_consumption ... ok
+test blocked_idle_advance_charges_no_task_and_wake_refunds_nothing ... ok
+test completion_at_budget_cap_succeeds_but_deadline_boundary_expires ... ok
+test deadline_caps_hard_grant_and_soft_target_without_rounding_it_up ... ok
+test early_timer_target_does_not_clamp_actual_charged_runtime ... ok
+test exact_budget_stop_exhausts_without_halt_and_never_refills ... ok
+test exactly_two_permanent_protected_task_mappings ... ok
+test failure_keeps_cpu_owned_until_real_stop_and_overrides_completion ... ok
+test hard_deadline_overflow_rejects_without_publishing_dispatch_or_cursor ... ok
+test hard_grant_and_early_soft_target_use_actual_remaining_budget ... ok
+test invalid_indices_are_rejected_before_any_clock_or_policy_mutation ... ok
+test stale_and_foreign_grant_fields_cannot_stop_or_charge_another_context ... ok
+test strict_hard_overrun_is_fully_charged_and_domain_halt_is_sticky ... ok
+test trusted_bootstrap_block_wake_and_domain_round_robin ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

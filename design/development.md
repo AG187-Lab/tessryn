@@ -30,12 +30,16 @@ now extends that baseline with reusable request dispatch and two CPL3 programs.
 Its [clean evidence](../evidence/k02-region-service/README.md) records three accepted
 boots, 68 actual traps, 21 service-policy host tests, 658 Python tests and passing
 K01, four-probe, ten-case and guest-benchmark regressions. Arbitrary program
-loading, production native services, timer preemption, SMP and device quiescence
+loading, production native services, SMP and device quiescence
 remain open in [issue #5](https://github.com/AG187-Lab/tessryn/issues/5).
 
 [K03 policy preparation](https://github.com/AG187-Lab/tessryn/pull/61) is merged.
-Its host accounting/timeline tests and freestanding library do not complete native
-SMP, clocks or timer enforcement. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
+The [single-CPU timer integration](k03-timer-preemption.md) now implements HPET
+preemption and actual-time budget/deadline enforcement for the two image-bound
+programs. Its [clean evidence](../evidence/k03-timer/README.md) records four accepted boots,
+69 actual traps, matching 14-artifact twins, 90 focused host checks, 697 Python
+tests and passing regressions. Physical clocks, native SMP, contention and general
+idle/wakeup remain separate gates. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
 remains open and dependent on K02. The [host benchmark harness](kernel-benchmarks.md)
 is merged. The separate [in-kernel benchmark experiment](native-kernel-benchmarks.md)
 executes 13 fixed cases and 208 raw-counter samples under single-CPU QEMU;

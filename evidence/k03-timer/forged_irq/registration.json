@@ -1,0 +1,98 @@
+{
+  "capture_origin": "local_runner_claim_unverified_offline",
+  "case": "forged_irq",
+  "command": [
+    "qemu-system-x86_64",
+    "-machine",
+    "q35,accel=tcg,hpet=on",
+    "-cpu",
+    "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off",
+    "-m",
+    "256M",
+    "-smp",
+    "1",
+    "-nodefaults",
+    "-no-user-config",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "null",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-device",
+    "VGA,romfile=",
+    "-global",
+    "apic.vapic=off",
+    "-drive",
+    "if=pflash,format=raw,readonly=on,file=code.fd",
+    "-drive",
+    "if=pflash,format=raw,file=vars.fd",
+    "-debugcon",
+    "stdio",
+    "-global",
+    "isa-debugcon.iobase=0xe9",
+    "-device",
+    "isa-debug-exit,iobase=0xf4,iosize=0x04",
+    "-drive",
+    "if=ide,format=raw,snapshot=on,file=boot.img",
+    "-boot",
+    "order=c"
+  ],
+  "created_at_utc": "2026-10-17T02:53:05.027126Z",
+  "emulator_sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80",
+  "evaluator_sha256": "0c2a9d2526017201c7101d47f84544cef0c9aced2a8cfc9c18d6bcac85684e21",
+  "firmware": [
+    {
+      "path": "firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    }
+  ],
+  "format": "tessryn-k03-timer-registration/v1",
+  "launcher": {
+    "executable": "/usr/bin/env",
+    "sha256": "6e506aec3c0cff703ac1e66cedc6f1945354ad41339a38db4425c7c88227128f",
+    "temporary_scope": "fresh private owned directory removed after child reap"
+  },
+  "manifest_sha256": "adfcd033981df768e922efc693c871b206e321009df2a992c50a762dc8836810",
+  "max_log_bytes": 1048576,
+  "qualification": "not_established",
+  "scope": "bounded original-kernel single-CPU HPET timer and K03 budget integration; physical clocks, arbitrary-program isolation, SMP and DMA unqualified",
+  "selected_artifacts": [
+    {
+      "case": "forged_irq",
+      "kind": "kernel_efi",
+      "path": "forged_irq/BOOTX64.EFI",
+      "sha256": "930559b08956b3705a20916de8ae9ee5e02a6162571b278cb064807f1e892bb3",
+      "size_bytes": 303616
+    },
+    {
+      "case": "forged_irq",
+      "kind": "boot_disk",
+      "path": "forged_irq/boot.img",
+      "sha256": "d03021ea1af0edb91d24d94404ee0d35de62c837af50d171bcbeeba34caab1d8",
+      "size_bytes": 35651584
+    },
+    {
+      "case": "forged_irq",
+      "kind": "compiler_object",
+      "path": "forged_irq/kernel.obj",
+      "sha256": "62ad965b237f8f5d043248868bc422f40f9bb2d03b70f2bd115da104c7460cde",
+      "size_bytes": 2186733
+    }
+  ],
+  "timeout_seconds": 45
+}

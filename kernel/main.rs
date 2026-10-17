@@ -17,8 +17,14 @@ compile_error!("the first native benchmark profile requires k01_emulator only");
 mod benchmark_clock;
 #[cfg(native_benchmarks)]
 mod native_benchmarks;
-#[cfg(native_benchmarks)]
+#[cfg(any(native_benchmarks, k03_timer))]
 extern crate tessryn_scheduler;
+#[cfg(k03_timer)]
+mod preempt_timer;
+#[cfg(k03_timer)]
+mod preempt_policy;
+#[cfg(all(k03_timer, any(not(k02_region_service), k02_matrix, native_benchmarks)))]
+compile_error!("timer preemption requires the separate region-service emulator profile");
 #[cfg(any(k02_native, native_benchmarks))]
 extern crate tessryn_owned_memory;
 #[cfg(k02_native)]

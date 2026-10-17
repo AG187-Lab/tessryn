@@ -1,0 +1,313 @@
+{
+  "capture_authentication": "unverified_offline",
+  "format": "tessryn-k03-timer-verification/v1",
+  "host_policy": {
+    "receipts": 7,
+    "result_sha256": "8ffdb0c86af420b475e307cef7f54747aa01eb27208d940e4a0603e26de94271",
+    "source_files": 9,
+    "tests": {
+      "adapter": 17,
+      "driver": 31,
+      "scheduler": 42
+    }
+  },
+  "observations": {
+    "budget": {
+      "b_read_confirmed": true,
+      "case": "budget",
+      "clock": {
+        "end_ns": 192961000,
+        "end_raw": 19299800,
+        "epoch_raw": 3700,
+        "kernel_ns": 42442000,
+        "period_fs": 10000000,
+        "tenant_ns": 150519000
+      },
+      "context_switches": 9,
+      "dispatches": 16,
+      "final_allocated_pages": 0,
+      "final_cpu_leases": 0,
+      "final_mappings": 0,
+      "irqs": [
+        4,
+        3
+      ],
+      "missed_arms": 0,
+      "pending_irq_probe": false,
+      "policy": [
+        {
+          "consumed_ns": 81704000,
+          "deadline_ns": 0,
+          "domain": 1,
+          "halted": true,
+          "limit_ns": 80000000,
+          "reserved_ns": 0,
+          "state": "failed"
+        },
+        {
+          "consumed_ns": 68815000,
+          "deadline_ns": 0,
+          "domain": 2,
+          "halted": false,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "completed"
+        }
+      ],
+      "requests": 9,
+      "service_records": 276,
+      "spin_irqs": [
+        4,
+        3
+      ],
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "b:map",
+        "b:read_confirmed",
+        "b:resumed_accounting",
+        "b:stale_unmap",
+        "b:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        8,
+        8
+      ],
+      "traps": 16
+    },
+    "deadline": {
+      "b_read_confirmed": true,
+      "case": "deadline",
+      "clock": {
+        "end_ns": 173384000,
+        "end_raw": 17340900,
+        "epoch_raw": 2500,
+        "kernel_ns": 41696000,
+        "period_fs": 10000000,
+        "tenant_ns": 131688000
+      },
+      "context_switches": 7,
+      "dispatches": 15,
+      "final_allocated_pages": 0,
+      "final_cpu_leases": 0,
+      "final_mappings": 0,
+      "irqs": [
+        3,
+        3
+      ],
+      "missed_arms": 0,
+      "pending_irq_probe": false,
+      "policy": [
+        {
+          "consumed_ns": 63454000,
+          "deadline_ns": 110346000,
+          "domain": 1,
+          "halted": true,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "failed"
+        },
+        {
+          "consumed_ns": 68234000,
+          "deadline_ns": 0,
+          "domain": 2,
+          "halted": false,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "completed"
+        }
+      ],
+      "requests": 9,
+      "service_records": 266,
+      "spin_irqs": [
+        3,
+        3
+      ],
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "b:map",
+        "b:read_confirmed",
+        "b:resumed_accounting",
+        "b:stale_unmap",
+        "b:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        7,
+        8
+      ],
+      "traps": 15
+    },
+    "forged_irq": {
+      "b_read_confirmed": true,
+      "case": "forged_irq",
+      "clock": {
+        "end_ns": 144777000,
+        "end_raw": 14480300,
+        "epoch_raw": 2600,
+        "kernel_ns": 36593000,
+        "period_fs": 10000000,
+        "tenant_ns": 108184000
+      },
+      "context_switches": 5,
+      "dispatches": 14,
+      "final_allocated_pages": 0,
+      "final_cpu_leases": 0,
+      "final_mappings": 0,
+      "irqs": [
+        1,
+        3
+      ],
+      "missed_arms": 0,
+      "pending_irq_probe": false,
+      "policy": [
+        {
+          "consumed_ns": 36455000,
+          "deadline_ns": 0,
+          "domain": 1,
+          "halted": false,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "failed"
+        },
+        {
+          "consumed_ns": 71729000,
+          "deadline_ns": 0,
+          "domain": 2,
+          "halted": false,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "completed"
+        }
+      ],
+      "requests": 9,
+      "service_records": 256,
+      "spin_irqs": [
+        0,
+        3
+      ],
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "b:map",
+        "b:read_confirmed",
+        "b:resumed_accounting",
+        "b:stale_unmap",
+        "b:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        6,
+        8
+      ],
+      "traps": 14
+    },
+    "preemption": {
+      "b_read_confirmed": true,
+      "case": "preemption",
+      "clock": {
+        "end_ns": 291933000,
+        "end_raw": 29197700,
+        "epoch_raw": 4400,
+        "kernel_ns": 56026000,
+        "period_fs": 10000000,
+        "tenant_ns": 235907000
+      },
+      "context_switches": 16,
+      "dispatches": 24,
+      "final_allocated_pages": 0,
+      "final_cpu_leases": 0,
+      "final_mappings": 0,
+      "irqs": [
+        7,
+        3
+      ],
+      "missed_arms": 0,
+      "pending_irq_probe": true,
+      "policy": [
+        {
+          "consumed_ns": 167685000,
+          "deadline_ns": 0,
+          "domain": 1,
+          "halted": false,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "completed"
+        },
+        {
+          "consumed_ns": 68222000,
+          "deadline_ns": 0,
+          "domain": 2,
+          "halted": false,
+          "limit_ns": 2000000000,
+          "reserved_ns": 0,
+          "state": "completed"
+        }
+      ],
+      "requests": 14,
+      "service_records": 375,
+      "spin_irqs": [
+        7,
+        3
+      ],
+      "stages": [
+        "a:map",
+        "a:writable_unmap",
+        "a:readonly_remap",
+        "a:delegate",
+        "b:map",
+        "b:read_confirmed",
+        "b:resumed_accounting",
+        "b:unmap",
+        "b:exit",
+        "a:resumed_accounting",
+        "a:unmap",
+        "a:release",
+        "a:final_accounting",
+        "a:exit"
+      ],
+      "task_fp_sha256": [
+        "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+        "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+      ],
+      "task_resumes": [
+        16,
+        8
+      ],
+      "traps": 24
+    }
+  },
+  "provenance": {
+    "compiler_dependencies": 26,
+    "reviewed_runtime_files": 28,
+    "revision": "a2ed4cc20d148d7d9337ed815cb8d517f0dbd29d",
+    "tree_sha256": "a33697fe6286124440bc1967db6b1abb5381e451e1fc11555dad006437cb2da3"
+  },
+  "qualification": "not_established",
+  "scope": "bounded original-kernel single-CPU HPET timer and K03 budget integration; physical clocks, arbitrary-program isolation, SMP and DMA unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "a2ed4cc20d148d7d9337ed815cb8d517f0dbd29d",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "a33697fe6286124440bc1967db6b1abb5381e451e1fc11555dad006437cb2da3"
+  },
+  "status": "pass",
+  "twin_artifacts": 14
+}

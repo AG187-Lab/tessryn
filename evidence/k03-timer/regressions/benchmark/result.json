@@ -1,0 +1,426 @@
+{
+  "evidence_scope": "qemu_guest_microbenchmark",
+  "kind": "native_kernel_benchmark_run",
+  "native_qualification": false,
+  "reason": "captured original kernel completed fixed raw-counter protocol in pinned single-CPU QEMU",
+  "registration_sha256": "add2f88bf37027fff96cbb8d9d27deac1c589158020da863e641d0e18e37c147",
+  "schema_version": 1,
+  "status": "observed",
+  "summary": {
+    "capture_origin": "unverified_offline",
+    "cases": [
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "counter_pair",
+        "elapsed_ticks": {
+          "max": 12000,
+          "mean": 11562.5,
+          "min": 11000,
+          "p50": 12000,
+          "p95": 12000,
+          "p99": 12000
+        },
+        "implementation": "native_serialized_tsc_probe",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 93.75,
+          "mean": 90.33203125,
+          "min": 85.9375,
+          "p50": 93.75,
+          "p95": 93.75,
+          "p99": 93.75
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "empty_loop",
+        "elapsed_ticks": {
+          "max": 1000,
+          "mean": 500.0,
+          "min": 0,
+          "p50": 0,
+          "p95": 1000,
+          "p99": 1000
+        },
+        "implementation": "native_loop_reference",
+        "measurement_status": "resolution_limited",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": null,
+        "zero_duration_samples": 8
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "queue_roundtrip_batch_1",
+        "elapsed_ticks": {
+          "max": 3000,
+          "mean": 2437.5,
+          "min": 2000,
+          "p50": 2000,
+          "p95": 3000,
+          "p99": 3000
+        },
+        "implementation": "bounded_ring_fixture",
+        "measurement_status": "observed",
+        "operations_per_iteration": 2,
+        "operations_per_sample": 256,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 11.71875,
+          "mean": 9.521484375,
+          "min": 7.8125,
+          "p50": 7.8125,
+          "p95": 11.71875,
+          "p99": 11.71875
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 8,
+        "bytes_per_operation": 0,
+        "case": "queue_roundtrip_batch_8",
+        "elapsed_ticks": {
+          "max": 18000,
+          "mean": 17875.0,
+          "min": 17000,
+          "p50": 18000,
+          "p95": 18000,
+          "p99": 18000
+        },
+        "implementation": "bounded_ring_fixture",
+        "measurement_status": "observed",
+        "operations_per_iteration": 16,
+        "operations_per_sample": 2048,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 8.7890625,
+          "mean": 8.72802734375,
+          "min": 8.30078125,
+          "p50": 8.7890625,
+          "p95": 8.7890625,
+          "p99": 8.7890625
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 64,
+        "bytes_per_operation": 0,
+        "case": "queue_roundtrip_batch_64",
+        "elapsed_ticks": {
+          "max": 149000,
+          "mean": 138000.0,
+          "min": 130000,
+          "p50": 137000,
+          "p95": 149000,
+          "p99": 149000
+        },
+        "implementation": "bounded_ring_fixture",
+        "measurement_status": "observed",
+        "operations_per_iteration": 128,
+        "operations_per_sample": 16384,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 9.09423828125,
+          "mean": 8.4228515625,
+          "min": 7.9345703125,
+          "p50": 8.36181640625,
+          "p95": 9.09423828125,
+          "p99": 9.09423828125
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "queue_full_rejection",
+        "elapsed_ticks": {
+          "max": 1000,
+          "mean": 1000.0,
+          "min": 1000,
+          "p50": 1000,
+          "p95": 1000,
+          "p99": 1000
+        },
+        "implementation": "bounded_ring_fixture",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 7.8125,
+          "mean": 7.8125,
+          "min": 7.8125,
+          "p50": 7.8125,
+          "p95": 7.8125,
+          "p99": 7.8125
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "queue_empty_rejection",
+        "elapsed_ticks": {
+          "max": 1000,
+          "mean": 1000.0,
+          "min": 1000,
+          "p50": 1000,
+          "p95": 1000,
+          "p99": 1000
+        },
+        "implementation": "bounded_ring_fixture",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 7.8125,
+          "mean": 7.8125,
+          "min": 7.8125,
+          "p50": 7.8125,
+          "p95": 7.8125,
+          "p99": 7.8125
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "memory_allocate_revoke_release",
+        "elapsed_ticks": {
+          "max": 162000,
+          "mean": 147000.0,
+          "min": 142000,
+          "p50": 145000,
+          "p95": 162000,
+          "p99": 162000
+        },
+        "implementation": "tessryn_memory_policy_metadata",
+        "measurement_status": "observed",
+        "operations_per_iteration": 3,
+        "operations_per_sample": 384,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 421.875,
+          "mean": 382.8125,
+          "min": 369.7916666666667,
+          "p50": 377.6041666666667,
+          "p95": 421.875,
+          "p99": 421.875
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "memory_access_check",
+        "elapsed_ticks": {
+          "max": 15000,
+          "mean": 10562.5,
+          "min": 10000,
+          "p50": 10000,
+          "p95": 15000,
+          "p99": 15000
+        },
+        "implementation": "tessryn_memory_policy_metadata",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 117.1875,
+          "mean": 82.51953125,
+          "min": 78.125,
+          "p50": 78.125,
+          "p95": 117.1875,
+          "p99": 117.1875
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 4096,
+        "case": "native_zero_4096",
+        "elapsed_ticks": {
+          "max": 1641000,
+          "mean": 1468125.0,
+          "min": 1405000,
+          "p50": 1458000,
+          "p95": 1641000,
+          "p99": 1641000
+        },
+        "implementation": "native_owned_volatile_page",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 12820.3125,
+          "mean": 11469.7265625,
+          "min": 10976.5625,
+          "p50": 11390.625,
+          "p95": 12820.3125,
+          "p99": 12820.3125
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 4096,
+        "case": "native_copy_4096",
+        "elapsed_ticks": {
+          "max": 1736000,
+          "mean": 1585500.0,
+          "min": 1524000,
+          "p50": 1572000,
+          "p95": 1736000,
+          "p99": 1736000
+        },
+        "implementation": "native_owned_volatile_page",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 128,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 13562.5,
+          "mean": 12386.71875,
+          "min": 11906.25,
+          "p50": 12281.25,
+          "p95": 13562.5,
+          "p99": 13562.5
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "scheduler_policy_dispatch_stop_cycle",
+        "elapsed_ticks": {
+          "max": 269000,
+          "mean": 259312.5,
+          "min": 251000,
+          "p50": 260000,
+          "p95": 269000,
+          "p99": 269000
+        },
+        "implementation": "tessryn_scheduler_policy",
+        "measurement_status": "observed",
+        "operations_per_iteration": 2,
+        "operations_per_sample": 256,
+        "quantile_population": "amortized_timed_batch_averages",
+        "sample_count": 16,
+        "sample_unit": "timed_batch",
+        "ticks_per_operation": {
+          "max": 1050.78125,
+          "mean": 1012.939453125,
+          "min": 980.46875,
+          "p50": 1015.625,
+          "p95": 1050.78125,
+          "p99": 1050.78125
+        },
+        "zero_duration_samples": 0
+      },
+      {
+        "batch_size": 1,
+        "bytes_per_operation": 0,
+        "case": "scheduler_policy_dispatch_latency",
+        "elapsed_ticks": {
+          "max": 2000,
+          "mean": 1250.0,
+          "min": 1000,
+          "p50": 1000,
+          "p95": 2000,
+          "p99": 2000
+        },
+        "implementation": "tessryn_scheduler_policy",
+        "measurement_status": "observed",
+        "operations_per_iteration": 1,
+        "operations_per_sample": 1,
+        "quantile_population": "individual_guest_policy_calls",
+        "sample_count": 16,
+        "sample_unit": "single_operation",
+        "ticks_per_operation": {
+          "max": 2000.0,
+          "mean": 1250.0,
+          "min": 1000.0,
+          "p50": 1000.0,
+          "p95": 2000.0,
+          "p99": 2000.0
+        },
+        "zero_duration_samples": 0
+      }
+    ],
+    "checks": [
+      "ring_full_empty_wrap_fifo",
+      "memory_rejects_foreign_bounds_revoked",
+      "memory_lifecycle_drained",
+      "native_volatile_zero_and_copy_exact",
+      "benchmark_operations_exact",
+      "scheduler_policy_reservations_stops_and_denials",
+      "counter_deltas_no_regression",
+      "owned_pages_from_final_handoff"
+    ],
+    "clock": {
+      "counter": "tsc",
+      "frequency_hz": null,
+      "hypervisor_present": true,
+      "interrupts_masked": true,
+      "invariant_tsc": false,
+      "rdtscp_supported": true,
+      "serialization": "cpuid_rdtsc_cpuid",
+      "started_cpus": 1,
+      "tsc_supported": true,
+      "unit": "tsc_ticks"
+    },
+    "counter_frequency_qualified": false,
+    "evidence_scope": "qemu_guest_microbenchmark",
+    "native_qualification": false,
+    "overhead_subtraction": false,
+    "quantile_method": "nearest_rank",
+    "unavailable": [
+      "nanoseconds",
+      "counter_frequency_qualification",
+      "CPU_cycles",
+      "hardware_performance",
+      "native_context_switch_and_wakeup",
+      "SMP",
+      "production_queue_runtime",
+      "DMA",
+      "GPU_execution",
+      "inference_performance",
+      "independent_capture_authentication",
+      "complete_compiler_dependency_identity"
+    ]
+  },
+  "valid": true
+}
