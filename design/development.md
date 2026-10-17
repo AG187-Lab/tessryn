@@ -36,8 +36,10 @@ remain open in [issue #5](https://github.com/AG187-Lab/tessryn/issues/5).
 [K03 policy preparation](https://github.com/AG187-Lab/tessryn/pull/61) is merged.
 The [single-CPU timer integration](k03-timer-preemption.md) now implements HPET
 preemption and actual-time budget/deadline enforcement for the two image-bound
-programs. Its contract records the clean execution acceptance gate separately
-from physical clocks, native SMP, contention and general idle/wakeup. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
+programs. Its [clean evidence](../evidence/k03-timer/README.md) records four accepted boots,
+69 actual traps, matching 14-artifact twins, 90 focused host checks, 697 Python
+tests and passing regressions. Physical clocks, native SMP, contention and general
+idle/wakeup remain separate gates. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
 remains open and dependent on K02. The [host benchmark harness](kernel-benchmarks.md)
 is merged. The separate [in-kernel benchmark experiment](native-kernel-benchmarks.md)
 executes 13 fixed cases and 208 raw-counter samples under single-CPU QEMU;

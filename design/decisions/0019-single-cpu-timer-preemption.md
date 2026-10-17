@@ -1,7 +1,7 @@
 # ADR 0019: Integrate strict CPU budgets with single-CPU timer preemption
 
 Date: 2026-10-16.
-Status: accepted implementation contract; native execution acceptance pending.
+Status: accepted; bounded single-CPU emulator execution accepted.
 
 ## Context
 
@@ -72,8 +72,11 @@ IRQ0 and verifies cancellation drains it before another lease enters; it does
 not count as a CPL3 timer interrupt. Raw hardware frames, actual user progress/context preservation,
 checked clock/accounting replay, retained leases and final cleanup must agree.
 Host policy tests and synthetic transcript rejection remain distinct evidence.
-Execution acceptance stays pending until clean-source twins, captures, independent
-verification and required regressions pass.
+The [clean execution packet](../../evidence/k03-timer/README.md) records matching
+twins, four accepted captures, independent accounting/context verification and
+passing required regressions. Its native budget/deadline stops remain explicitly
+late Failed states with full charge and sticky halt. ARM_MISSED is covered by
+host models and a synthetic parser fixture, with no native observation claimed.
 
 The [detailed contract](../k03-timer-preemption.md) records planned cases, ownership,
 accounting boundaries and evidence limits. [K03 issue #6](https://github.com/AG187-Lab/tessryn/issues/6)

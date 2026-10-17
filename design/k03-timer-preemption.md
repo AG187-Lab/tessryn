@@ -1,6 +1,6 @@
 # Single-CPU timer preemption and strict CPU budgets
 
-Status: implementation contract; original-kernel execution acceptance pending.
+Status: single-CPU emulator execution accepted; physical clock and SMP qualification remain open.
 This step integrates the existing [scheduler policy](k03-preparation.md) with the
 [two resumable CPL3 programs](k02-region-service.md). It advances
 [K03 issue #6](https://github.com/AG187-Lab/tessryn/issues/6) without closing its
@@ -72,6 +72,15 @@ system gaps separately, and never charge an interval twice. INT80 requests,
 including ordinary errors and cooperative yields, cannot manufacture elapsed
 values, reset consumed budget or offload unlimited uncharged service work.
 
+The measured tenant interval starts at the pre-arm dispatch sample and ends at
+the actual sample after capture, service work and deferred dispatch/trap logging.
+The subsequent policy-stop bookkeeping, ACCOUNT/LEDGER/terminal records, reaping,
+final cleanup and between-entry work belong to separately recorded kernel gaps.
+Tenant intervals and those gaps partition one HPET epoch through the shutdown
+sample exactly once. Reporting after that final sample is outside the window.
+This is attributable runtime accounting, not a measurement of CPL3 instructions
+alone or an inference-performance claim.
+
 Charge is never clamped to the soft target, hard target, nominal quantum or
 remaining budget. An actual stop after `hard_stop` retains the unchanged policy
 result: full elapsed consumption, Failed state and sticky domain halt. Exact
@@ -139,7 +148,7 @@ Legacy FP, FS/GS/TLS, debug, protection-key, CET/SGX and alternate-entry restric
 remain those of the region-service profile. This bounded image experiment does
 not admit arbitrary programs or preserve all architectural state.
 
-## Planned native cases and acceptance
+## Native cases and acceptance
 
 | Case | Required original-kernel behavior |
 | --- | --- |
@@ -168,8 +177,13 @@ Release still requires clean source and pinned tools, exact compiler/runtime
 closure, matching independent builds, all four fresh native captures, independent
 raw/accounting verification and K01/K02/service/benchmark regressions. Public
 successful evidence retains original portable logs and notices; failed raw host
-diagnostics remain private. Execution acceptance is pending until those records
-exist.
+diagnostics remain private. The [clean evidence packet](../evidence/k03-timer/README.md) records four accepted
+boots, 69 actual traps, matching 14-artifact twins, 90 focused host checks,
+697 Python tests and passing required regressions. Budget and deadline native
+stops in that packet are strict late Failed states with full charge and sticky
+domain halt; exact-cap Exhausted and inclusive DeadlineExpired have separate host
+coverage. ARM_MISSED has host-model and synthetic-parser coverage, with no native
+observation claimed by that packet.
 
 The [inference performance contract](inference-performance.md) keeps this work in
 correctness preparation. Qualified physical clocks, native SMP/contended

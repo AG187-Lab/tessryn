@@ -1,0 +1,47 @@
+
+running 42 tests
+test tests::advance_expires_runnable_and_blocked_tasks_without_cpu_runtime_charge ... ok
+test tests::advance_of_known_lateness_halts_domain_and_retains_all_outstanding_grants ... ok
+test tests::blocked_and_idle_failed_tasks_do_not_prevent_other_tenant_dispatch ... ok
+test tests::both_wide_accounting_additions_are_checked_before_stop_publishes_anything ... ok
+test tests::budget_caps_slice_and_yield_exhaustion_is_permanent ... ok
+test tests::cpu_generation_last_lease_retires_cpu_instead_of_wrapping ... ok
+test tests::deadline_caps_grant_and_expires_at_inclusive_boundary ... ok
+test tests::deadline_subtraction_caps_large_grant_without_overflow ... ok
+test tests::dispatch_is_exclusive_for_both_cpu_and_task ... ok
+test tests::domain_round_robin_prevents_task_splitting_from_buying_turns ... ok
+test tests::exact_stop_boundary_is_not_overdue_and_does_not_halt_peer_completion ... ok
+test tests::explicit_completion_at_exact_budget_limit_remains_successful ... ok
+test tests::explicit_failure_and_block_acknowledgments_have_distinct_lifecycles ... ok
+test tests::fabricated_task_slot_and_generation_never_name_a_live_task ... ok
+test tests::failed_foreign_request_cannot_advance_time_to_expire_another_task ... ok
+test tests::failure_dominates_deadline_and_budget_boundary_while_complete_does_not ... ok
+test tests::fixed_task_capacity_rejects_without_publishing_time_or_identity ... ok
+test tests::global_time_regression_is_rejected_across_all_mutation_families ... ok
+test tests::halted_domain_cannot_create_new_work_or_wake_idle_work ... ok
+test tests::healthy_domain_can_dispatch_at_timestamp_that_reveals_other_domain_lateness ... ok
+test tests::invalid_cpu_zero_quantum_and_empty_selection_preserve_clock_and_cursors ... ok
+test tests::known_late_lease_denies_fresh_dispatch_and_admission_before_advance ... ok
+test tests::malformed_cpu_lease_cannot_release_any_execution_or_advance_time ... ok
+test tests::multicore_dispatch_reserves_once_against_shared_domain_ceiling ... ok
+test tests::numeric_domain_in_task_identity_cannot_authenticate_a_caller ... ok
+test tests::on_time_peer_stop_observes_late_lease_and_halts_before_clearing_itself ... ok
+test tests::overflowing_stop_timestamp_is_rejected_without_reserving_or_advancing ... ok
+test tests::overlapping_cpu_intervals_count_as_sum_of_cpu_time_not_wall_time ... ok
+test tests::overrun_charges_actual_runtime_halts_domain_and_retains_peer_lease ... ok
+test tests::permanent_domains_have_bounded_validated_registry ... ok
+test tests::permanently_exhausted_domain_cannot_reset_consumption_by_recreating_tasks ... ok
+test tests::requested_failure_keeps_running_task_owned_and_dominates_completion ... ok
+test tests::running_deadline_preserves_lease_and_reservation_until_stop ... ok
+test tests::simultaneous_long_cpu_overruns_use_wide_counters_without_budget_wrap ... ok
+test tests::slice_elapsed_is_stop_request_until_acknowledgment ... ok
+test tests::stale_cpu_lease_cannot_stop_a_replacement_dispatch ... ok
+test tests::stale_requests_at_late_timestamp_cannot_halt_a_domain_or_advance_time ... ok
+test tests::task_admission_rejects_bad_identity_budget_and_expired_deadline_atomically ... ok
+test tests::task_generation_last_identity_retires_slot_instead_of_wrapping ... ok
+test tests::task_reaping_reuses_generation_without_refunding_tenant_consumption ... ok
+test tests::wake_and_block_cannot_overwrite_failure_from_known_lateness ... ok
+test tests::zero_capacity_configurations_are_rejected ... ok
+
+test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

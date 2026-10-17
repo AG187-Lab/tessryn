@@ -1,0 +1,4609 @@
+{
+  "cases": {
+    "caller_forgery": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "caller_forgery"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcf000",
+          "sequence": "0"
+        },
+        {
+          "case": "caller_forgery",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "1",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "0",
+          "sequence": "3",
+          "word0": "0x1",
+          "word1": "0x100000003",
+          "word2": "0x1",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "1",
+          "cs": "0x33",
+          "denial_reason": "InvalidAuthority",
+          "event": "dispatch_denied",
+          "operation": "map",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "4"
+        },
+        {
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "event": "owner_retained",
+          "sequence": "5"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53282",
+        "baseline_pages": "12",
+        "case": "caller_forgery",
+        "descriptors": "118",
+        "protected_state": "0xe023000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "caller_forgery",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234610688,
+        "2": 234680320,
+        "3": 234749952,
+        "4": 234819584
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa8000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b7030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa8000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b7030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        }
+      ]
+    },
+    "data_nx": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "data_nx"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcf000",
+          "sequence": "0"
+        },
+        {
+          "case": "data_nx",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "3"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100006000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcf000",
+          "sequence": "4",
+          "writable": "0"
+        },
+        {
+          "enabled": "1",
+          "event": "nx_confirmed",
+          "sequence": "5",
+          "supported": "1"
+        },
+        {
+          "cr2": "0x100006000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "21",
+          "event": "page_fault",
+          "probe": "nx_fetch",
+          "recovered": "1",
+          "rip": "0x100006000",
+          "root": "0xdfcf000",
+          "sequence": "6",
+          "vector": "14"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100006000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "7"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100006000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "8"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100006000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "9"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100006000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "10",
+          "trusted": "1"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53282",
+        "baseline_pages": "12",
+        "case": "data_nx",
+        "descriptors": "118",
+        "protected_state": "0xe023000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "data_nx",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234610688,
+        "2": 234680320,
+        "3": 234749952,
+        "4": 234819584
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa8000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b7030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa8000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "nx_data_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100006000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b7030",
+            "probe": "nx_data_read",
+            "rax": "0x5445535356494354",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa8000",
+            "domain": "2",
+            "instruction": "0x100006000",
+            "probe": "nx_fetch",
+            "probe_rip": "0x100006000",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100006000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x100006000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x15",
+            "frame": "0xe0b7030",
+            "probe": "nx_fetch",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100006000",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        }
+      ]
+    },
+    "exact_bounds": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "exact_bounds"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcc000",
+          "sequence": "0"
+        },
+        {
+          "case": "exact_bounds",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "3"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcc000",
+          "sequence": "4",
+          "writable": "0"
+        },
+        {
+          "cr2": "0x100005000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "4",
+          "event": "page_fault",
+          "probe": "guard_read",
+          "recovered": "1",
+          "rip": "0x100000039",
+          "root": "0xdfcc000",
+          "sequence": "5",
+          "vector": "14"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "4",
+          "event": "delegated",
+          "length": "4094",
+          "offset": "1",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "6"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "6",
+          "sequence": "7",
+          "word0": "0x1",
+          "word1": "0x100000004",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0xffe",
+          "word5": "0x5",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_length": "4094",
+          "capability_offset": "1",
+          "capability_slot": "4",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "Alignment",
+          "event": "dispatch_denied",
+          "length": "4094",
+          "offset": "0",
+          "operation": "map_byte_slice",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "8"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "7",
+          "sequence": "9",
+          "word0": "0x1",
+          "word1": "0x100000004",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_length": "4094",
+          "capability_offset": "1",
+          "capability_slot": "4",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "Bounds",
+          "event": "dispatch_denied",
+          "length": "4096",
+          "offset": "0",
+          "operation": "map_byte_slice",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "10"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "11"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "12"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "13"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "14",
+          "trusted": "1"
+        },
+        {
+          "charge_retained": "1",
+          "event": "lease_released",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "physical_frame": "0xd000",
+          "sequence": "15"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "5",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "6",
+          "sequence": "16"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "8",
+          "sequence": "17",
+          "word0": "0x1",
+          "word1": "0x100000005",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x6",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "5",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "InsufficientRights",
+          "event": "dispatch_denied",
+          "operation": "map_without_read",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "rights": "6",
+          "sequence": "18"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53279",
+        "baseline_pages": "12",
+        "case": "exact_bounds",
+        "descriptors": "118",
+        "protected_state": "0xe020000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "exact_bounds",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234598400,
+        "2": 234668032,
+        "3": 234737664,
+        "4": 234807296
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x100000039",
+            "probe": "guard_read",
+            "probe_rip": "0x100000039",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100005000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100005000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x4",
+            "frame": "0xe0b4030",
+            "probe": "guard_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000039",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100005000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100005000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100005000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        }
+      ]
+    },
+    "kernel_isolation": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "kernel_isolation"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfd1000",
+          "sequence": "0"
+        },
+        {
+          "case": "kernel_isolation",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "cr2": "0xdfa9000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "5",
+          "event": "page_fault",
+          "probe": "kernel_read",
+          "recovered": "1",
+          "rip": "0x100000012",
+          "root": "0xdfd1000",
+          "sequence": "2",
+          "vector": "14"
+        },
+        {
+          "cr2": "0xdfa9000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "7",
+          "event": "page_fault",
+          "probe": "kernel_write",
+          "recovered": "1",
+          "rip": "0x100000040",
+          "root": "0xdfd1000",
+          "sequence": "3",
+          "vector": "14"
+        },
+        {
+          "after_sha256": "a023ca7cf223b68b6bc9dc6272f2503d2fae3d6c5e23c77a3458d94dd3792df5",
+          "before_sha256": "a023ca7cf223b68b6bc9dc6272f2503d2fae3d6c5e23c77a3458d94dd3792df5",
+          "event": "sentinel_unchanged",
+          "page": "0xdfa9000",
+          "sequence": "4"
+        },
+        {
+          "cr2": "0xe025000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "5",
+          "event": "page_fault",
+          "probe": "policy_read",
+          "recovered": "1",
+          "rip": "0x100000047",
+          "root": "0xdfd1000",
+          "sequence": "5",
+          "vector": "14"
+        },
+        {
+          "cr2": "0xe025000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "7",
+          "event": "page_fault",
+          "probe": "policy_write",
+          "recovered": "1",
+          "rip": "0x10000004e",
+          "root": "0xdfd1000",
+          "sequence": "6",
+          "vector": "14"
+        },
+        {
+          "after_sha256": "9a0f4faad9bea1832601fc8df33ca28c4a02a5336df6d75ac6fb928010d8136e",
+          "before_sha256": "9a0f4faad9bea1832601fc8df33ca28c4a02a5336df6d75ac6fb928010d8136e",
+          "event": "sentinel_unchanged",
+          "page": "0xe025000",
+          "sequence": "7"
+        },
+        {
+          "cr2": "0xdfd1000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "5",
+          "event": "page_fault",
+          "probe": "page_table_read",
+          "recovered": "1",
+          "rip": "0x100000055",
+          "root": "0xdfd1000",
+          "sequence": "8",
+          "vector": "14"
+        },
+        {
+          "cr2": "0xdfd1000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "7",
+          "event": "page_fault",
+          "probe": "page_table_write",
+          "recovered": "1",
+          "rip": "0x10000005c",
+          "root": "0xdfd1000",
+          "sequence": "9",
+          "vector": "14"
+        },
+        {
+          "after_sha256": "e2c8cc17d0307b32b4717c04a2e5b9ba2f60af0dfd81442c462c2bfff9d88444",
+          "before_sha256": "e2c8cc17d0307b32b4717c04a2e5b9ba2f60af0dfd81442c462c2bfff9d88444",
+          "event": "sentinel_unchanged",
+          "page": "0xdfd1000",
+          "sequence": "10"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53283",
+        "baseline_pages": "12",
+        "case": "kernel_isolation",
+        "descriptors": "118",
+        "protected_state": "0xe025000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "kernel_isolation",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234618880,
+        "2": 234688512,
+        "3": 234758144,
+        "4": 234827776
+      },
+      "target_frame": null,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b9030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "supervisor_prime",
+            "probe_rip": "0x100000025",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100001000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b9030",
+            "probe": "supervisor_prime",
+            "rax": "0x5445535356494356",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x100000012",
+            "probe": "kernel_read",
+            "probe_rip": "0x100000012",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0xdfa9000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0xdfa9000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x5",
+            "frame": "0xe0b9030",
+            "probe": "kernel_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000012",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x100000040",
+            "probe": "kernel_write",
+            "probe_rip": "0x100000040",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0xdfa9000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0xdfa9000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x7",
+            "frame": "0xe0b9030",
+            "probe": "kernel_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000040",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x100000047",
+            "probe": "policy_read",
+            "probe_rip": "0x100000047",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0xe025000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0xe025000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x5",
+            "frame": "0xe0b9030",
+            "probe": "policy_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000047",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x10000004e",
+            "probe": "policy_write",
+            "probe_rip": "0x10000004e",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0xe025000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0xe025000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x7",
+            "frame": "0xe0b9030",
+            "probe": "policy_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x10000004e",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x100000055",
+            "probe": "page_table_read",
+            "probe_rip": "0x100000055",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0xdfd1000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0xdfd1000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x5",
+            "frame": "0xe0b9030",
+            "probe": "page_table_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000055",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfab000",
+            "domain": "2",
+            "instruction": "0x10000005c",
+            "probe": "page_table_write",
+            "probe_rip": "0x10000005c",
+            "root": "0xdfd1000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0xdfd1000",
+            "trap_end": "0xe0b90e0",
+            "trap_start": "0xe0b10e0"
+          },
+          "trap": {
+            "cr2": "0xdfd1000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x7",
+            "frame": "0xe0b9030",
+            "probe": "page_table_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x10000005c",
+            "root": "0xdfd1000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        }
+      ]
+    },
+    "read_only_sharing": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "read_only_sharing"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcf000",
+          "sequence": "0"
+        },
+        {
+          "case": "read_only_sharing",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "3"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcf000",
+          "sequence": "4",
+          "writable": "0"
+        },
+        {
+          "domain": "2",
+          "event": "read_observed",
+          "page": "0x100004000",
+          "sequence": "5",
+          "sha256": "faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89"
+        },
+        {
+          "cr2": "0x100004000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "7",
+          "event": "page_fault",
+          "probe": "readonly_write",
+          "recovered": "1",
+          "rip": "0x100000019",
+          "root": "0xdfcf000",
+          "sequence": "6",
+          "vector": "14"
+        },
+        {
+          "after_sha256": "faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89",
+          "before_sha256": "faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89",
+          "event": "sentinel_unchanged",
+          "page": "0x100004000",
+          "sequence": "7"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "8"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "9"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "10"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcf000",
+          "sequence": "11",
+          "trusted": "1"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53281",
+        "baseline_pages": "12",
+        "case": "read_only_sharing",
+        "descriptors": "118",
+        "protected_state": "0xe023000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "read_only_sharing",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234610688,
+        "2": 234680320,
+        "3": 234749952,
+        "4": 234819584
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa7000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b7030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa7000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "protection_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100004000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b7030",
+            "probe": "protection_read",
+            "rax": "0x5445535356494354",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa7000",
+            "domain": "2",
+            "instruction": "0x100000019",
+            "probe": "readonly_write",
+            "probe_rip": "0x100000019",
+            "root": "0xdfcf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100004000",
+            "trap_end": "0xe0b70e0",
+            "trap_start": "0xe0af0e0"
+          },
+          "trap": {
+            "cr2": "0x100004000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x7",
+            "frame": "0xe0b7030",
+            "probe": "readonly_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000019",
+            "root": "0xdfcf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        }
+      ]
+    },
+    "recursive_revocation": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "recursive_revocation"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcc000",
+          "sequence": "0"
+        },
+        {
+          "case": "recursive_revocation",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "21",
+          "sequence": "3"
+        },
+        {
+          "child_domain": "4",
+          "child_generation": "1",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "2",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "4"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100007000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcc000",
+          "sequence": "5",
+          "writable": "0"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_primed",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100007000",
+          "physical_frame": "0xd000",
+          "read_executed": "1",
+          "root": "0xdfcc000",
+          "sequence": "6",
+          "write_executed": "0"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "4",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "length": "4096",
+          "page": "0x100008000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfee000",
+          "sequence": "7",
+          "writable": "0"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "4",
+          "event": "mapping_primed",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "page": "0x100008000",
+          "physical_frame": "0xd000",
+          "read_executed": "1",
+          "root": "0xdfee000",
+          "sequence": "8",
+          "write_executed": "0"
+        },
+        {
+          "charge_retained": "1",
+          "descendant_B_domain": "2",
+          "descendant_B_generation": "1",
+          "descendant_B_slot": "3",
+          "descendant_D_domain": "4",
+          "descendant_D_generation": "1",
+          "descendant_D_slot": "3",
+          "event": "descendants_revoked",
+          "root_capability_domain": "1",
+          "root_capability_generation": "1",
+          "root_capability_slot": "3",
+          "sequence": "9"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "11",
+          "sequence": "10",
+          "word0": "0x1",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "Revoked",
+          "domain": "2",
+          "event": "revoked_request_denied",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "operation": "map",
+          "origin": "CPL3",
+          "sequence": "11"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "denial_reason": "Revoked",
+          "domain": "2",
+          "event": "revoked_request_denied",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "operation": "complete_lease",
+          "origin": "trusted_backend",
+          "sequence": "12",
+          "trusted": "1"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100007000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "13"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100007000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "14"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100007000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "15"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100007000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "16",
+          "trusted": "1"
+        },
+        {
+          "caller": "4",
+          "claimed_caller": "4",
+          "event": "request_observed",
+          "physical_frame": "0xc000",
+          "pointer": "0x10000f000",
+          "recipe": "12",
+          "sequence": "17",
+          "word0": "0x1",
+          "word1": "0x100000003",
+          "word2": "0x4",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "4",
+          "capability_domain": "4",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "claimed_caller": "4",
+          "cs": "0x33",
+          "denial_reason": "Revoked",
+          "domain": "4",
+          "event": "revoked_request_denied",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "operation": "map",
+          "origin": "CPL3",
+          "sequence": "18"
+        },
+        {
+          "capability_domain": "4",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "denial_reason": "Revoked",
+          "domain": "4",
+          "event": "revoked_request_denied",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "operation": "complete_lease",
+          "origin": "trusted_backend",
+          "sequence": "19",
+          "trusted": "1"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "4",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "page": "0x100008000",
+          "physical_frame": "0xd000",
+          "root": "0xdfee000",
+          "sequence": "20"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "4",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "page": "0x100008000",
+          "physical_frame": "0xd000",
+          "root": "0xdfee000",
+          "sequence": "21"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "4",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "method": "cr3_reload",
+          "page": "0x100008000",
+          "physical_frame": "0xd000",
+          "root": "0xdfee000",
+          "sequence": "22"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "4",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "13",
+          "page": "0x100008000",
+          "physical_frame": "0xd000",
+          "root": "0xdfee000",
+          "sequence": "23",
+          "trusted": "1"
+        },
+        {
+          "B_generation": "1",
+          "B_slot": "12",
+          "D_generation": "1",
+          "D_slot": "13",
+          "charge_retained": "1",
+          "event": "mapping_leases_released",
+          "sequence": "24"
+        },
+        {
+          "cr2": "0x100007000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "4",
+          "event": "page_fault",
+          "probe": "recursive_B_read",
+          "recovered": "1",
+          "rip": "0x100000063",
+          "root": "0xdfcc000",
+          "sequence": "25",
+          "vector": "14"
+        },
+        {
+          "cr2": "0x100007000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "6",
+          "event": "page_fault",
+          "probe": "recursive_B_write",
+          "recovered": "1",
+          "rip": "0x10000006a",
+          "root": "0xdfcc000",
+          "sequence": "26",
+          "vector": "14"
+        },
+        {
+          "cr2": "0x100008000",
+          "cs": "0x33",
+          "domain": "4",
+          "error_code": "4",
+          "event": "page_fault",
+          "probe": "recursive_D_read",
+          "recovered": "1",
+          "rip": "0x100000071",
+          "root": "0xdfee000",
+          "sequence": "27",
+          "vector": "14"
+        },
+        {
+          "cr2": "0x100008000",
+          "cs": "0x33",
+          "domain": "4",
+          "error_code": "6",
+          "event": "page_fault",
+          "probe": "recursive_D_write",
+          "recovered": "1",
+          "rip": "0x100000078",
+          "root": "0xdfee000",
+          "sequence": "28",
+          "vector": "14"
+        },
+        {
+          "A_domain": "1",
+          "A_generation": "1",
+          "A_slot": "3",
+          "B_domain": "2",
+          "B_generation": "1",
+          "B_slot": "3",
+          "D_domain": "4",
+          "D_generation": "1",
+          "D_slot": "3",
+          "charge_released": "1",
+          "event": "capabilities_released",
+          "sequence": "29"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53278",
+        "baseline_pages": "12",
+        "case": "recursive_revocation",
+        "descriptors": "118",
+        "protected_state": "0xe020000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "recursive_revocation",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234598400,
+        "2": 234668032,
+        "3": 234737664,
+        "4": 234807296
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "prime_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100007000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "prime_read",
+            "rax": "0x5445535356494354",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "4",
+            "instruction": "0x100000020",
+            "probe": "prime_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfee000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100008000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "4",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "prime_read",
+            "rax": "0x5445535356494354",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfee000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "4",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfee000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "4",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfee000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "2",
+            "instruction": "0x100000063",
+            "probe": "recursive_B_read",
+            "probe_rip": "0x100000063",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100007000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100007000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x4",
+            "frame": "0xe0b4030",
+            "probe": "recursive_B_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000063",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "2",
+            "instruction": "0x10000006a",
+            "probe": "recursive_B_write",
+            "probe_rip": "0x10000006a",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100007000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100007000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x6",
+            "frame": "0xe0b4030",
+            "probe": "recursive_B_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x10000006a",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "4",
+            "instruction": "0x100000071",
+            "probe": "recursive_D_read",
+            "probe_rip": "0x100000071",
+            "root": "0xdfee000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100008000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100008000",
+            "cs": "0x33",
+            "domain": "4",
+            "error": "0x4",
+            "frame": "0xe0b4030",
+            "probe": "recursive_D_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000071",
+            "root": "0xdfee000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa1000",
+            "domain": "4",
+            "instruction": "0x100000078",
+            "probe": "recursive_D_write",
+            "probe_rip": "0x100000078",
+            "root": "0xdfee000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100008000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x100008000",
+            "cs": "0x33",
+            "domain": "4",
+            "error": "0x6",
+            "frame": "0xe0b4030",
+            "probe": "recursive_D_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000078",
+            "root": "0xdfee000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        }
+      ]
+    },
+    "stale_identities": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "stale_identities"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcb000",
+          "sequence": "0"
+        },
+        {
+          "case": "stale_identities",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "2",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcb000",
+          "sequence": "3",
+          "writable": "1"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_primed",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "read_executed": "1",
+          "root": "0xdfcb000",
+          "sequence": "4",
+          "write_executed": "1"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "event": "revoked",
+          "physical_frame": "0xd000",
+          "sequence": "5"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "6"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "7"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "8"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "9",
+          "trusted": "1"
+        },
+        {
+          "charge_retained": "1",
+          "event": "lease_released",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "physical_frame": "0xd000",
+          "sequence": "10"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "1",
+          "event": "capability_released",
+          "physical_frame": "0xd000",
+          "sequence": "11"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "event": "retired_generation",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "released": "1",
+          "sequence": "12"
+        },
+        {
+          "event": "scrubbed",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "sequence": "13",
+          "trusted": "1",
+          "zero_before_payload": "1"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "3",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "3",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "14"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "2",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "3",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "15"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcb000",
+          "sequence": "16",
+          "writable": "0"
+        },
+        {
+          "capability_domain": "3",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "domain": "3",
+          "event": "victim_initialized",
+          "initial_sha256": "0400c995c2c85ba352bf1918b4dec9bf7c568395323b947a89e5647e03abb1c1",
+          "length": "4096",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "root": "0xdfdc000",
+          "sequence": "17"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "9",
+          "sequence": "18",
+          "word0": "0x7",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x1",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "StaleHandle",
+          "event": "dispatch_denied",
+          "operation": "release_stale_capability",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "19"
+        },
+        {
+          "charge_released": "0",
+          "denial_reason": "StaleLease",
+          "event": "backend_stale_lease_denied",
+          "operation": "fence",
+          "origin": "trusted_backend",
+          "pte_installed": "1",
+          "replacement_lease_generation": "2",
+          "replacement_lease_slot": "12",
+          "replacement_phase": "active",
+          "sequence": "20",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12",
+          "trusted": "1"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "2",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "replacement_retained",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "phase": "active",
+          "physical_frame": "0xd000",
+          "pte_installed": "1",
+          "root": "0xdfcb000",
+          "sequence": "21"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "10",
+          "sequence": "22",
+          "word0": "0x8",
+          "word1": "0x200000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x1",
+          "word6": "0x0",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "2",
+          "capability_slot": "3",
+          "event": "replacement_read_authorized",
+          "length": "4096",
+          "offset": "0",
+          "physical_frame": "0xd000",
+          "sequence": "23"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "24"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "trusted_fence_state",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "phase": "fenced",
+          "physical_frame": "0xd000",
+          "pte_installed": "1",
+          "root": "0xdfcb000",
+          "sequence": "25",
+          "trusted": "1"
+        },
+        {
+          "after_sha256": "0400c995c2c85ba352bf1918b4dec9bf7c568395323b947a89e5647e03abb1c1",
+          "before_sha256": "0400c995c2c85ba352bf1918b4dec9bf7c568395323b947a89e5647e03abb1c1",
+          "event": "sentinel_unchanged",
+          "page": "0x10000a000",
+          "sequence": "26"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "27"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "28"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcb000",
+          "sequence": "29",
+          "trusted": "1"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53276",
+        "baseline_pages": "12",
+        "case": "stale_identities",
+        "descriptors": "118",
+        "protected_state": "0xe01f000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "stale_identities",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234594304,
+        "2": 234663936,
+        "3": 234733568,
+        "4": 234803200
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdf9e000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcb000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b30e0",
+            "trap_start": "0xe0ab0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b3030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcb000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdf9e000",
+            "domain": "2",
+            "instruction": "0x100000027",
+            "probe": "prime_write",
+            "probe_rip": "0x10000002c",
+            "root": "0xdfcb000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b30e0",
+            "trap_start": "0xe0ab0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b3030",
+            "probe": "prime_write",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x10000002c",
+            "root": "0xdfcb000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdf9e000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "prime_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfcb000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b30e0",
+            "trap_start": "0xe0ab0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b3030",
+            "probe": "prime_read",
+            "rax": "0x5445535357524954",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfcb000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdf9e000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcb000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b30e0",
+            "trap_start": "0xe0ab0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b3030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcb000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdf9e000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcb000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b30e0",
+            "trap_start": "0xe0ab0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b3030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcb000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdf9e000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "replacement_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfcb000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b30e0",
+            "trap_start": "0xe0ab0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b3030",
+            "probe": "replacement_read",
+            "rax": "0x544553534e455743",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfcb000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        }
+      ]
+    },
+    "trusted_operation_forgery": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "trusted_operation_forgery"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfcc000",
+          "sequence": "0"
+        },
+        {
+          "case": "trusted_operation_forgery",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "child_domain": "2",
+          "child_generation": "1",
+          "child_slot": "3",
+          "event": "delegated",
+          "length": "4096",
+          "offset": "0",
+          "parent_domain": "1",
+          "parent_generation": "1",
+          "parent_slot": "3",
+          "rights": "5",
+          "sequence": "3"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfcc000",
+          "sequence": "4",
+          "writable": "0"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "1",
+          "sequence": "5",
+          "word0": "0x2",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x10000000c",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "untrusted_origin",
+          "event": "dispatch_denied",
+          "operation": "fence",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "6",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "2",
+          "sequence": "7",
+          "word0": "0x3",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x10000000c",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "untrusted_origin",
+          "event": "dispatch_denied",
+          "operation": "quiesce",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "8",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "3",
+          "sequence": "9",
+          "word0": "0x4",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x10000000c",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "untrusted_origin",
+          "event": "dispatch_denied",
+          "operation": "allocator_admin",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "10",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "4",
+          "sequence": "11",
+          "word0": "0x5",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x10000000c",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "untrusted_origin",
+          "event": "dispatch_denied",
+          "operation": "complete_lease",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "12",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "5",
+          "sequence": "13",
+          "word0": "0x6",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x10000000c",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "untrusted_origin",
+          "event": "dispatch_denied",
+          "operation": "activate_reserved",
+          "origin": "CPL3",
+          "pte_published": "0",
+          "sequence": "14",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "15"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "trusted_fence_state",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "phase": "fenced",
+          "physical_frame": "0xd000",
+          "pte_installed": "1",
+          "root": "0xdfcc000",
+          "sequence": "16",
+          "trusted": "1"
+        },
+        {
+          "caller": "2",
+          "claimed_caller": "2",
+          "event": "request_observed",
+          "physical_frame": "0x6000",
+          "pointer": "0x10000f000",
+          "recipe": "2",
+          "sequence": "17",
+          "word0": "0x3",
+          "word1": "0x100000003",
+          "word2": "0x2",
+          "word3": "0x0",
+          "word4": "0x1000",
+          "word5": "0x5",
+          "word6": "0x10000000c",
+          "word7": "0x4b30325245515631"
+        },
+        {
+          "caller": "2",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "0",
+          "claimed_caller": "2",
+          "cs": "0x33",
+          "denial_reason": "untrusted_origin",
+          "event": "dispatch_denied",
+          "lease_phase": "fenced",
+          "operation": "quiesce",
+          "origin": "CPL3",
+          "pte_installed": "1",
+          "pte_published": "0",
+          "sequence": "18",
+          "submitted_lease_generation": "1",
+          "submitted_lease_slot": "12"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_owner_retained",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "phase": "fenced",
+          "physical_frame": "0xd000",
+          "pte_installed": "1",
+          "root": "0xdfcc000",
+          "sequence": "19"
+        },
+        {
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "event": "owner_retained",
+          "sequence": "20"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "21"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "22"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100004000",
+          "physical_frame": "0xd000",
+          "root": "0xdfcc000",
+          "sequence": "23",
+          "trusted": "1"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53279",
+        "baseline_pages": "12",
+        "case": "trusted_operation_forgery",
+        "descriptors": "118",
+        "protected_state": "0xe020000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "trusted_operation_forgery",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234598400,
+        "2": 234668032,
+        "3": 234737664,
+        "4": 234807296
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa2000",
+            "domain": "2",
+            "instruction": "0x10000002e",
+            "probe": "request",
+            "probe_rip": "0x100000030",
+            "root": "0xdfcc000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b40e0",
+            "trap_start": "0xe0ac0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b4030",
+            "probe": "request",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000030",
+            "root": "0xdfcc000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        }
+      ]
+    },
+    "unauthorized_read": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "unauthorized_read"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfd0000",
+          "sequence": "0"
+        },
+        {
+          "case": "unauthorized_read",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "1",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "1",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "1",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100003000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfbf000",
+          "sequence": "3",
+          "writable": "0"
+        },
+        {
+          "domain": "1",
+          "event": "read_observed",
+          "page": "0x100003000",
+          "sequence": "4",
+          "sha256": "faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89"
+        },
+        {
+          "cr2": "0x100003000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "4",
+          "event": "page_fault",
+          "probe": "unauthorized_read",
+          "recovered": "1",
+          "rip": "0x100000032",
+          "root": "0xdfd0000",
+          "sequence": "5",
+          "vector": "14"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "1",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100003000",
+          "physical_frame": "0xd000",
+          "root": "0xdfbf000",
+          "sequence": "6"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "1",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100003000",
+          "physical_frame": "0xd000",
+          "root": "0xdfbf000",
+          "sequence": "7"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "1",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100003000",
+          "physical_frame": "0xd000",
+          "root": "0xdfbf000",
+          "sequence": "8"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "1",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100003000",
+          "physical_frame": "0xd000",
+          "root": "0xdfbf000",
+          "sequence": "9",
+          "trusted": "1"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53282",
+        "baseline_pages": "12",
+        "case": "unauthorized_read",
+        "descriptors": "118",
+        "protected_state": "0xe024000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "unauthorized_read",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234614784,
+        "2": 234684416,
+        "3": 234754048,
+        "4": 234823680
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa9000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfd0000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b80e0",
+            "trap_start": "0xe0b00e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b8030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfd0000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa9000",
+            "domain": "1",
+            "instruction": "0x100000020",
+            "probe": "protection_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfbf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100003000",
+            "trap_end": "0xe0b80e0",
+            "trap_start": "0xe0b00e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "1",
+            "error": "0x0",
+            "frame": "0xe0b8030",
+            "probe": "protection_read",
+            "rax": "0x5445535356494354",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfbf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa9000",
+            "domain": "2",
+            "instruction": "0x100000032",
+            "probe": "unauthorized_read",
+            "probe_rip": "0x100000032",
+            "root": "0xdfd0000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100003000",
+            "trap_end": "0xe0b80e0",
+            "trap_start": "0xe0b00e0"
+          },
+          "trap": {
+            "cr2": "0x100003000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x4",
+            "frame": "0xe0b8030",
+            "probe": "unauthorized_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000032",
+            "root": "0xdfd0000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        }
+      ]
+    },
+    "writable_reuse": {
+      "accounting": [
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "1",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "2",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "3",
+          "reserved_pages": "0"
+        },
+        {
+          "charged_pages": "0",
+          "committed_pages": "0",
+          "domain": "4",
+          "reserved_pages": "0"
+        }
+      ],
+      "case_complete": {
+        "allocated_pages": "12",
+        "case": "writable_reuse"
+      },
+      "cpu": {
+        "cet_enabled": "0",
+        "cr0": "0x80010033",
+        "fxsave_mxcsr_mask": "0xffff",
+        "osxsave_enabled": "0",
+        "pke_enabled": "0",
+        "pks_enabled": "0",
+        "sgx_supported": "0",
+        "wp_enabled": "1"
+      },
+      "events": [
+        {
+          "domain": "2",
+          "event": "boundary_sanitized",
+          "fcw": "895",
+          "fp_bytes": "512",
+          "fp_sha256": "3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902",
+          "gpr_words": "16",
+          "gpr_zeroed": "1",
+          "kernel_fp_restored": "1",
+          "length": "640",
+          "mxcsr": "8064",
+          "mxcsr_mask": "0xffff",
+          "osxsave_enabled": "0",
+          "page": "0x10000f000",
+          "physical_frame": "0x6000",
+          "root": "0xdfce000",
+          "sequence": "0"
+        },
+        {
+          "case": "writable_reuse",
+          "event": "fresh_boot",
+          "reset": "original_kernel_entry",
+          "sequence": "1",
+          "untrusted_state_retained": "0"
+        },
+        {
+          "baseline_pages": "3",
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_owner": "2",
+          "charged_pages": "1",
+          "committed_pages": "1",
+          "domain_charged_pages": "4",
+          "event": "backing_owned",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "reserved_pages": "0",
+          "sequence": "2"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfce000",
+          "sequence": "3",
+          "writable": "1"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "mapping_primed",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "read_executed": "1",
+          "root": "0xdfce000",
+          "sequence": "4",
+          "write_executed": "1"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_retained": "1",
+          "event": "revoked",
+          "physical_frame": "0xd000",
+          "sequence": "5"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "fence",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfce000",
+          "sequence": "6"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "clear_pte",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfce000",
+          "sequence": "7"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "invalidate",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfce000",
+          "sequence": "8"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "2",
+          "event": "quiesce",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "page": "0x100009000",
+          "physical_frame": "0xd000",
+          "root": "0xdfce000",
+          "sequence": "9",
+          "trusted": "1"
+        },
+        {
+          "charge_retained": "1",
+          "event": "lease_released",
+          "lease_generation": "1",
+          "lease_slot": "12",
+          "physical_frame": "0xd000",
+          "sequence": "10"
+        },
+        {
+          "capability_domain": "2",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "charge_released": "1",
+          "event": "capability_released",
+          "physical_frame": "0xd000",
+          "sequence": "11"
+        },
+        {
+          "event": "scrubbed",
+          "length": "4096",
+          "physical_frame": "0xd000",
+          "sequence": "12",
+          "trusted": "1",
+          "zero_before_payload": "1"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "3",
+          "event": "mapping_installed",
+          "executable": "0",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "length": "4096",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "readable": "1",
+          "root": "0xdfdf000",
+          "sequence": "13",
+          "writable": "0"
+        },
+        {
+          "capability_domain": "3",
+          "capability_generation": "1",
+          "capability_slot": "3",
+          "domain": "3",
+          "event": "reassigned",
+          "initial_sha256": "0400c995c2c85ba352bf1918b4dec9bf7c568395323b947a89e5647e03abb1c1",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "root": "0xdfdf000",
+          "sequence": "14"
+        },
+        {
+          "cr2": "0x100009000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "4",
+          "event": "page_fault",
+          "probe": "reuse_B_read",
+          "recovered": "1",
+          "rip": "0x10000007f",
+          "root": "0xdfce000",
+          "sequence": "15",
+          "vector": "14"
+        },
+        {
+          "cr2": "0x100009000",
+          "cs": "0x33",
+          "domain": "2",
+          "error_code": "6",
+          "event": "page_fault",
+          "probe": "reuse_B_write",
+          "recovered": "1",
+          "rip": "0x100000086",
+          "root": "0xdfce000",
+          "sequence": "16",
+          "vector": "14"
+        },
+        {
+          "after_sha256": "0400c995c2c85ba352bf1918b4dec9bf7c568395323b947a89e5647e03abb1c1",
+          "before_sha256": "0400c995c2c85ba352bf1918b4dec9bf7c568395323b947a89e5647e03abb1c1",
+          "event": "sentinel_unchanged",
+          "page": "0x10000a000",
+          "sequence": "17"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "3",
+          "event": "fence",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "root": "0xdfdf000",
+          "sequence": "18"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "3",
+          "event": "clear_pte",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "root": "0xdfdf000",
+          "sequence": "19"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "3",
+          "event": "invalidate",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "method": "cr3_reload",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "root": "0xdfdf000",
+          "sequence": "20"
+        },
+        {
+          "charge_retained": "1",
+          "domain": "3",
+          "event": "quiesce",
+          "lease_generation": "2",
+          "lease_slot": "12",
+          "page": "0x10000a000",
+          "physical_frame": "0xd000",
+          "root": "0xdfdf000",
+          "sequence": "21",
+          "trusted": "1"
+        }
+      ],
+      "inventory": {
+        "available_pages": "53281",
+        "baseline_pages": "12",
+        "case": "writable_reuse",
+        "descriptors": "118",
+        "protected_state": "0xe022000",
+        "source": "final_successful_handoff"
+      },
+      "pass": {
+        "case": "writable_reuse",
+        "owned_pages_after": "0",
+        "scope": "single_cpu_emulated_matrix_case"
+      },
+      "profile": {
+        "cpu_count": "1",
+        "cr4": "0x668",
+        "efer_low": "0xd00",
+        "global_translations": "0",
+        "la57_enabled": "0",
+        "nx_enabled": "1",
+        "nx_supported": "1",
+        "paging_levels": "4",
+        "pcid_enabled": "0",
+        "physical_bits": "48"
+      },
+      "roots": {
+        "1": 234606592,
+        "2": 234676224,
+        "3": 234745856,
+        "4": 234815488
+      },
+      "target_frame": 53248,
+      "user_probes": [
+        {
+          "enter": {
+            "code_physical": "0xdfa6000",
+            "domain": "2",
+            "instruction": "0x10000008d",
+            "probe": "boundary_snapshot",
+            "probe_rip": "0x100000103",
+            "root": "0xdfce000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000f000",
+            "trap_end": "0xe0b60e0",
+            "trap_start": "0xe0ae0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b6030",
+            "probe": "boundary_snapshot",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x100000103",
+            "root": "0xdfce000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa6000",
+            "domain": "2",
+            "instruction": "0x100000027",
+            "probe": "prime_write",
+            "probe_rip": "0x10000002c",
+            "root": "0xdfce000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b60e0",
+            "trap_start": "0xe0ae0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b6030",
+            "probe": "prime_write",
+            "rax": "0x0",
+            "rflags": "0x2",
+            "rip": "0x10000002c",
+            "root": "0xdfce000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa6000",
+            "domain": "2",
+            "instruction": "0x100000020",
+            "probe": "prime_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfce000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b60e0",
+            "trap_start": "0xe0ae0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x0",
+            "frame": "0xe0b6030",
+            "probe": "prime_read",
+            "rax": "0x5445535357524954",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfce000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa6000",
+            "domain": "3",
+            "instruction": "0x100000020",
+            "probe": "new_owner_read",
+            "probe_rip": "0x100000025",
+            "root": "0xdfdf000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x10000a000",
+            "trap_end": "0xe0b60e0",
+            "trap_start": "0xe0ae0e0"
+          },
+          "trap": {
+            "cr2": "0x0",
+            "cs": "0x33",
+            "domain": "3",
+            "error": "0x0",
+            "frame": "0xe0b6030",
+            "probe": "new_owner_read",
+            "rax": "0x544553534e455743",
+            "rflags": "0x2",
+            "rip": "0x100000025",
+            "root": "0xdfdf000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "128"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa6000",
+            "domain": "2",
+            "instruction": "0x10000007f",
+            "probe": "reuse_B_read",
+            "probe_rip": "0x10000007f",
+            "root": "0xdfce000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b60e0",
+            "trap_start": "0xe0ae0e0"
+          },
+          "trap": {
+            "cr2": "0x100009000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x4",
+            "frame": "0xe0b6030",
+            "probe": "reuse_B_read",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x10000007f",
+            "root": "0xdfce000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        },
+        {
+          "enter": {
+            "code_physical": "0xdfa6000",
+            "domain": "2",
+            "instruction": "0x100000086",
+            "probe": "reuse_B_write",
+            "probe_rip": "0x100000086",
+            "root": "0xdfce000",
+            "stack_end": "0x100003000",
+            "stack_start": "0x100002000",
+            "target": "0x100009000",
+            "trap_end": "0xe0b60e0",
+            "trap_start": "0xe0ae0e0"
+          },
+          "trap": {
+            "cr2": "0x100009000",
+            "cs": "0x33",
+            "domain": "2",
+            "error": "0x6",
+            "frame": "0xe0b6030",
+            "probe": "reuse_B_write",
+            "rax": "0x0",
+            "rflags": "0x10002",
+            "rip": "0x100000086",
+            "root": "0xdfce000",
+            "rsp": "0x100002ff0",
+            "ss": "0x2b",
+            "vector": "14"
+          }
+        }
+      ]
+    }
+  },
+  "checked_current_host_toolchain": true,
+  "evaluator_sha256": "de319d8b8124f3bb4a7c16c60f269b8bbbee5fc2a1215b9b5e7b2ee834e6f9a3",
+  "format": "tessryn-k02-matrix-verification/v1",
+  "manifest_sha256": "a889d0e92c0ee57d48e383d806035b1b1549440ce94da5964ae8a5d985608f7a",
+  "qualification": "single_cpu_emulated_matrix_only",
+  "scope": "ten-case original-kernel single-CPU emulated matrix; physical hardware, SMP and DMA unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "a2ed4cc20d148d7d9337ed815cb8d517f0dbd29d",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "a33697fe6286124440bc1967db6b1abb5381e451e1fc11555dad006437cb2da3"
+  },
+  "source_verification": {
+    "compiler_dependencies": 21,
+    "reviewed_runtime_files": 19,
+    "revision": "a2ed4cc20d148d7d9337ed815cb8d517f0dbd29d",
+    "tree_sha256": "a33697fe6286124440bc1967db6b1abb5381e451e1fc11555dad006437cb2da3"
+  },
+  "status": "pass"
+}

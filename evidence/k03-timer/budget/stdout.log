@@ -1,0 +1,302 @@
+TESSRYN_K01_ENTRY
+TESSRYN ORIGINAL KERNEL
+TESSRYN_K01_FRAMEBUFFER status=ready width=1280 height=800 stride=1280 base=0x80000000 format=bgrx selection=firmware-console
+TESSRYN_K01_LIVE_RANGES image_start=0xdfc7000 image_end=0xe0cb000 stack_start=0xe0f6000 stack_end=0xe116000 map_start=0xe0e6000 map_end=0xe0f6000 scratch=0x100000 runtime_high=0 gop_start=0x80000000 gop_end=0x803e8000
+TESSRYN_K01_PAGING_READY cr3=0xe03f000 tables=6 leaves=2048 physical_bits=48 guard=0x7fffffe00000 free_scope=low-conventional
+TESSRYN_K01_RESET_POINTER address=0xfad3522 method=uefi-runtime
+TESSRYN_K01_MEMORY_MAP_VALID descriptors=118 stride=48 free_pages=53300 attempt=1
+TESSRYN_K01_EXIT_BOOT_SERVICES_OK
+TESSRYN_K01_CPU_OWNED cr3=0xe03f000 rsp=0xe115f20 rip=0xdfe33fa gdt=owned idt=owned tss=owned
+TESSRYN_K02_PROFILE physical_bits=48 cpu_count=1 paging_levels=4 nx_supported=1 nx_enabled=1 pcid_enabled=0 global_translations=0 la57_enabled=0 cr4=0x668 efer_low=0xd00
+TESSRYN_K03_TIMER_BEGIN sequence=0 case=budget version=1 programs=2 request_bytes=96
+TESSRYN_K03_TIMER_PROFILE sequence=1 cpu_count=1 fsgsbase=0 pce=0 syscall=0 sysenter=0 fs_base=0 gs_base=0 kernel_gs_base=0 ldtr=0 debug_enabled=0 osxsave=0 fp=legacy_fxsave
+TESSRYN_K03_TIMER_CLOCK sequence=2 source=hpet64 base=0xfed00000 capability=0x9896808086a201 period_fs=10000000 epoch_raw=0xe74 timers=3 apic_before=0xfee00900 apic_after=0xfee00100 pat=0x7040600070406 master_mask=255 slave_mask=255 vector=32 kernel_if=0 user_if=1 qualification=emulator_only
+TESSRYN_K03_TIMER_CAP sequence=3 domain=1 phase=provision cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_BACKING sequence=4 phase=ready frame=0x5000 sha256=6aec03492e09c741688328b16f359023228c842bec7b7bd05d9edb85815924a2
+TESSRYN_K03_TIMER_TASK sequence=5 domain=1 root=0xdff0000 code_physical=0xdfcb000 entry=0x100000000 stack=0x100002000 stack_physical=0x1000 stack_lease_slot=0 stack_lease_generation=1 request=0x10000f000 request_physical=0x2000 request_lease_slot=1 request_lease_generation=1 generation=1
+TESSRYN_K03_TIMER_TASK sequence=6 domain=2 root=0xe001000 code_physical=0xdfcc000 entry=0x100000000 stack=0x100002000 stack_physical=0x3000 stack_lease_slot=2 stack_lease_generation=1 request=0x10000f000 request_physical=0x4000 request_lease_slot=3 request_lease_generation=1 generation=1
+TESSRYN_K03_TIMER_ADMIT sequence=7 raw=0xfa7d0 now_ns=10223000 hard_quantum_ns=250000000 soft_target_ns=10000000 budget_a=80000000 budget_b=2000000000 deadline_a=0 deadline_b=0 b_blocked=1
+TESSRYN_K03_TIMER_LEDGER sequence=8 phase=admit task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=0 task_reserved=0 domain_limit=80000000 domain_consumed=0 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_LEDGER sequence=9 phase=admit task=1 domain=2 task_slot=1 task_generation=1 state=blocked task_limit=2000000000 task_consumed=0 task_reserved=0 domain_limit=2000000000 domain_consumed=0 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=10 raw=0x130c90 now_ns=12447000
+TESSRYN_K03_TIMER_MAILBOX sequence=11 task=0 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=12 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=13 start_raw=0xe74 end_raw=0x13e55c start_ns=0 end_ns=13002000 elapsed_ns=13002000
+TESSRYN_K03_TIMER_DISPATCH sequence=14 task=0 domain=1 cpu=0 lease_generation=1 task_slot=0 task_generation=1 start_raw=0x13e55c start_ns=13002000 grant_ns=80000000 hard_ns=93002000 soft_ns=23002000
+TESSRYN_K03_TIMER_LEDGER sequence=15 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=0 task_reserved=80000000 domain_limit=80000000 domain_consumed=0 domain_reserved=80000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=16 task=0 domain=1 generation=1 root=0xdff0000 rip=0x100000000 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x202 first=1 resumes=0 r0=0x0 r1=0x0 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x0 r7=0x0 r8=0x0 r9=0x0 r10=0x0 r11=0x0 r12=0x0 r13=0x0 r14=0x0 fp_sha256=0165d211ca23a12125d75a4438e7587ca673e07c8e48e2e3c677c3e79ea66058
+TESSRYN_K03_TIMER_ARM sequence=17 task=0 generation=1 armed_raw=0x149b00 armed_ns=13467000 soft_ns=23002000 target_raw=0x23279c readback_raw=0x23279c vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x1000000dd cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=18 task=0 domain=1 root=0xdff0000 vector=128 error=0x0 rip=0x1000000dd rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x1 r1=0x0 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x0 r7=0x0 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_CANCEL sequence=19 task=0 generation=1 capture_raw=0x159ba4 capture_ns=14124000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=20 task=0 caller=1 pointer=0x10000f000 length=96 valid=1 request_id=1 bytes=5445535352474e3101006000000000000100000000000000020000000000000002000000010000000100000000000000000000000000000000000000000000000010000000000000004000000100000007000000000000000000000000000000
+TESSRYN_K03_TIMER_MAP_EVENT sequence=21 domain=1 phase=install va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=1 charged=3
+TESSRYN_K03_TIMER_RESPONSE sequence=22 task=0 caller=1 request_id=1 opcode=2 status=0 value=0x100000001 cap_domain=0 charged=3 committed=3 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=23 task=0 domain=1 lease_generation=1 reason=syscall outcome=yield start_raw=0x13e55c capture_raw=0x159ba4 stop_raw=0x1ef3d4 start_ns=13002000 capture_ns=14124000 stop_ns=20248000 elapsed_ns=7246000 grant_ns=80000000 hard_ns=93002000 late=0 state=runnable irqs=0 spin_irqs=0
+TESSRYN_K03_TIMER_LEDGER sequence=24 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=7246000 task_reserved=0 domain_limit=80000000 domain_consumed=7246000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=25 raw=0x212014 now_ns=21672000
+TESSRYN_K03_TIMER_MAILBOX sequence=26 task=0 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=27 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=28 start_raw=0x1ef3d4 end_raw=0x218dd8 start_ns=20248000 end_ns=21953000 elapsed_ns=1705000
+TESSRYN_K03_TIMER_DISPATCH sequence=29 task=0 domain=1 cpu=0 lease_generation=2 task_slot=0 task_generation=1 start_raw=0x218dd8 start_ns=21953000 grant_ns=72754000 hard_ns=94707000 soft_ns=31953000
+TESSRYN_K03_TIMER_LEDGER sequence=30 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=7246000 task_reserved=72754000 domain_limit=80000000 domain_consumed=7246000 domain_reserved=72754000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=31 task=0 domain=1 generation=1 root=0xdff0000 rip=0x1000000dd rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=1 r0=0x1 r1=0x0 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000001 r13=0x0 r14=0x0 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=32 task=0 generation=2 armed_raw=0x21bf74 armed_ns=22080000 soft_ns=31953000 target_raw=0x30d018 readback_raw=0x30d018 vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x100000132 cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=33 task=0 domain=1 root=0xdff0000 vector=128 error=0x0 rip=0x100000132 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x2 r1=0x100000001 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x544553535245474e r13=0x1122334455667788 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_CANCEL sequence=34 task=0 generation=2 capture_raw=0x21efe4 capture_ns=22204000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=35 task=0 caller=1 pointer=0x10000f000 length=96 valid=1 request_id=2 bytes=5445535352474e3101006000000000000200000000000000050000000000000000000000000000000000000000000000010000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+TESSRYN_K03_TIMER_MAP_EVENT sequence=36 domain=1 phase=fence va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=1 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=37 domain=1 phase=clear va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=1 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=38 domain=1 phase=invalidate va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=1 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=39 domain=1 phase=quiesce va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=1 charged=3
+TESSRYN_K03_TIMER_RESPONSE sequence=40 task=0 caller=1 request_id=2 opcode=5 status=0 value=0x0 cap_domain=0 charged=3 committed=3 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=41 task=0 domain=1 lease_generation=2 reason=syscall outcome=yield start_raw=0x218dd8 capture_raw=0x21efe4 stop_raw=0x283430 start_ns=21953000 capture_ns=22204000 stop_ns=26311000 elapsed_ns=4358000 grant_ns=72754000 hard_ns=94707000 late=0 state=runnable irqs=0 spin_irqs=0
+TESSRYN_K03_TIMER_LEDGER sequence=42 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=11604000 task_reserved=0 domain_limit=80000000 domain_consumed=11604000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=43 raw=0x296b20 now_ns=27107000
+TESSRYN_K03_TIMER_MAILBOX sequence=44 task=0 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=45 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=46 start_raw=0x283430 end_raw=0x29d81c start_ns=26311000 end_ns=27386000 elapsed_ns=1075000
+TESSRYN_K03_TIMER_DISPATCH sequence=47 task=0 domain=1 cpu=0 lease_generation=3 task_slot=0 task_generation=1 start_raw=0x29d81c start_ns=27386000 grant_ns=68396000 hard_ns=95782000 soft_ns=37386000
+TESSRYN_K03_TIMER_LEDGER sequence=48 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=11604000 task_reserved=68396000 domain_limit=80000000 domain_consumed=11604000 domain_reserved=68396000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=49 task=0 domain=1 generation=1 root=0xdff0000 rip=0x100000132 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=2 r0=0x2 r1=0x100000001 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x0 r13=0x0 r14=0x0 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=50 task=0 generation=3 armed_raw=0x29f4a0 armed_ns=27459000 soft_ns=37386000 target_raw=0x391a5c readback_raw=0x391a5c vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x10000017c cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=51 task=0 domain=1 root=0xdff0000 vector=128 error=0x0 rip=0x10000017c rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x3 r1=0x100000001 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_CANCEL sequence=52 task=0 generation=3 capture_raw=0x2a0f30 capture_ns=27527000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=53 task=0 caller=1 pointer=0x10000f000 length=96 valid=1 request_id=3 bytes=5445535352474e3101006000000000000300000000000000020000000000000002000000010000000100000000000000000000000000000000000000000000000010000000000000004000000100000005000000000000000000000000000000
+TESSRYN_K03_TIMER_MAP_EVENT sequence=54 domain=1 phase=install va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=2 charged=3
+TESSRYN_K03_TIMER_RESPONSE sequence=55 task=0 caller=1 request_id=3 opcode=2 status=0 value=0x200000001 cap_domain=0 charged=3 committed=3 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=56 task=0 domain=1 lease_generation=3 reason=syscall outcome=yield start_raw=0x29d81c capture_raw=0x2a0f30 stop_raw=0x316938 start_ns=27386000 capture_ns=27527000 stop_ns=32345000 elapsed_ns=4959000 grant_ns=68396000 hard_ns=95782000 late=0 state=runnable irqs=0 spin_irqs=0
+TESSRYN_K03_TIMER_LEDGER sequence=57 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=16563000 task_reserved=0 domain_limit=80000000 domain_consumed=16563000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=58 raw=0x327274 now_ns=33024000
+TESSRYN_K03_TIMER_MAILBOX sequence=59 task=0 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=60 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=61 start_raw=0x316938 end_raw=0x32e100 start_ns=32345000 end_ns=33307000 elapsed_ns=962000
+TESSRYN_K03_TIMER_DISPATCH sequence=62 task=0 domain=1 cpu=0 lease_generation=4 task_slot=0 task_generation=1 start_raw=0x32e100 start_ns=33307000 grant_ns=63437000 hard_ns=96744000 soft_ns=43307000
+TESSRYN_K03_TIMER_LEDGER sequence=63 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=16563000 task_reserved=63437000 domain_limit=80000000 domain_consumed=16563000 domain_reserved=63437000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=64 task=0 domain=1 generation=1 root=0xdff0000 rip=0x10000017c rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=3 r0=0x3 r1=0x100000001 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x200000001 r13=0x0 r14=0x0 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=65 task=0 generation=4 armed_raw=0x32f8d4 armed_ns=33368000 soft_ns=43307000 target_raw=0x422340 readback_raw=0x422340 vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x1000001c3 cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=66 task=0 domain=1 root=0xdff0000 vector=128 error=0x0 rip=0x1000001c3 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x200000001 r13=0x0 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_CANCEL sequence=67 task=0 generation=4 capture_raw=0x331170 capture_ns=33431000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=68 task=0 caller=1 pointer=0x10000f000 length=96 valid=1 request_id=4 bytes=5445535352474e3101006000000000000400000000000000030000000000000002000000010000000100000000000000020000000000000000000000000000000010000000000000000000000000000005000000000000000000000000000000
+TESSRYN_K03_TIMER_CAP sequence=69 domain=2 phase=delegate cap_slot=2 cap_generation=1 cap_domain=2
+TESSRYN_K03_TIMER_RESPONSE sequence=70 task=0 caller=1 request_id=4 opcode=3 status=0 value=0x100000002 cap_domain=2 charged=3 committed=3 reserved=0 control=continue
+TESSRYN_K03_TIMER_WAKE sequence=71 task=1 raw=0x37ea74 now_ns=36608000
+TESSRYN_K03_TIMER_ACCOUNT sequence=72 task=0 domain=1 lease_generation=4 reason=syscall outcome=yield start_raw=0x32e100 capture_raw=0x331170 stop_raw=0x3850cc start_ns=33307000 capture_ns=33431000 stop_ns=36870000 elapsed_ns=3563000 grant_ns=63437000 hard_ns=96744000 late=0 state=runnable irqs=0 spin_irqs=0
+TESSRYN_K03_TIMER_LEDGER sequence=73 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=20126000 task_reserved=0 domain_limit=80000000 domain_consumed=20126000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=74 raw=0x39448c now_ns=37494000
+TESSRYN_K03_TIMER_MAILBOX sequence=75 task=0 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=76 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=77 start_raw=0x3850cc end_raw=0x39aff8 start_ns=36870000 end_ns=37769000 elapsed_ns=899000
+TESSRYN_K03_TIMER_DISPATCH sequence=78 task=1 domain=2 cpu=0 lease_generation=5 task_slot=1 task_generation=1 start_raw=0x39aff8 start_ns=37769000 grant_ns=250000000 hard_ns=287769000 soft_ns=47769000
+TESSRYN_K03_TIMER_LEDGER sequence=79 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=0 task_reserved=250000000 domain_limit=2000000000 domain_consumed=0 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=80 task=1 domain=2 generation=1 root=0xe001000 rip=0x100000000 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x202 first=1 resumes=0 r0=0x0 r1=0x0 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x0 r7=0x0 r8=0x0 r9=0x0 r10=0x0 r11=0x0 r12=0x0 r13=0x0 r14=0x0 fp_sha256=0165d211ca23a12125d75a4438e7587ca673e07c8e48e2e3c677c3e79ea66058
+TESSRYN_K03_TIMER_ARM sequence=81 task=1 generation=5 armed_raw=0x39d064 armed_ns=37852000 soft_ns=47769000 target_raw=0x48f238 readback_raw=0x48f238 vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x1000000e3 cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=82 task=1 domain=2 root=0xe001000 vector=128 error=0x0 rip=0x1000000e3 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x1 r1=0x0 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x0 r7=0x0 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_CANCEL sequence=83 task=1 generation=5 capture_raw=0x3a032c capture_ns=37982000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=84 task=1 caller=2 pointer=0x10000f000 length=96 valid=1 request_id=1 bytes=5445535352474e3101006000000000000100000000000000020000000000000002000000010000000200000000000000000000000000000000000000000000000010000000000000004000000100000005000000000000000000000000000000
+TESSRYN_K03_TIMER_MAP_EVENT sequence=85 domain=2 phase=install va=0x100004000 frame=0x5000 lease_slot=5 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_RESPONSE sequence=86 task=1 caller=2 request_id=1 opcode=2 status=0 value=0x100000002 cap_domain=0 charged=2 committed=2 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=87 task=1 domain=2 lease_generation=5 reason=syscall outcome=yield start_raw=0x39aff8 capture_raw=0x3a032c stop_raw=0x3eafa8 start_ns=37769000 capture_ns=37982000 stop_ns=41045000 elapsed_ns=3276000 grant_ns=250000000 hard_ns=287769000 late=0 state=runnable irqs=0 spin_irqs=0
+TESSRYN_K03_TIMER_LEDGER sequence=88 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=3276000 task_reserved=0 domain_limit=2000000000 domain_consumed=3276000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=89 raw=0x3fba10 now_ns=41727000
+TESSRYN_K03_TIMER_MAILBOX sequence=90 task=0 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=91 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=92 start_raw=0x3eafa8 end_raw=0x4025e0 start_ns=41045000 end_ns=42003000 elapsed_ns=958000
+TESSRYN_K03_TIMER_DISPATCH sequence=93 task=0 domain=1 cpu=0 lease_generation=6 task_slot=0 task_generation=1 start_raw=0x4025e0 start_ns=42003000 grant_ns=59874000 hard_ns=101877000 soft_ns=52003000
+TESSRYN_K03_TIMER_LEDGER sequence=94 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=20126000 task_reserved=59874000 domain_limit=80000000 domain_consumed=20126000 domain_reserved=59874000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=95 task=0 domain=1 generation=1 root=0xdff0000 rip=0x1000001c3 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=4 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x0 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=96 task=0 generation=6 armed_raw=0x403ee0 armed_ns=42067000 soft_ns=52003000 target_raw=0x4f6820 readback_raw=0x4f6820 vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000200 cs=0x33 rflags=0x10202 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=97 task=0 domain=1 root=0xdff0000 vector=32 error=0x0 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x107c6cf r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_IRQ sequence=98 task=0 generation=6 capture_raw=0x54be24 capture_ns=55500000 target_raw=0x4f6820 isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=99 task=0 domain=1 lease_generation=6 reason=irq outcome=yield start_raw=0x4025e0 capture_raw=0x54be24 stop_raw=0x59018c start_ns=42003000 capture_ns=55500000 stop_ns=58294000 elapsed_ns=16291000 grant_ns=59874000 hard_ns=101877000 late=0 state=runnable irqs=1 spin_irqs=1
+TESSRYN_K03_TIMER_LEDGER sequence=100 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=36417000 task_reserved=0 domain_limit=80000000 domain_consumed=36417000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=101 raw=0x5cddd4 now_ns=60824000
+TESSRYN_K03_TIMER_MAILBOX sequence=102 task=0 spin_irqs=1 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_MAILBOX sequence=103 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=104 start_raw=0x59018c end_raw=0x5d7244 start_ns=58294000 end_ns=61204000 elapsed_ns=2910000
+TESSRYN_K03_TIMER_DISPATCH sequence=105 task=1 domain=2 cpu=0 lease_generation=7 task_slot=1 task_generation=1 start_raw=0x5d7244 start_ns=61204000 grant_ns=250000000 hard_ns=311204000 soft_ns=71204000
+TESSRYN_K03_TIMER_LEDGER sequence=106 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=3276000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=3276000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=107 task=1 domain=2 generation=1 root=0xe001000 rip=0x1000000e3 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=1 r0=0x1 r1=0x0 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x100000002 r13=0x0 r14=0x0 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=108 task=1 generation=7 armed_raw=0x5d9184 armed_ns=61284000 soft_ns=71204000 target_raw=0x6cb484 readback_raw=0x6cb484 vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x10000013d cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=109 task=1 domain=2 root=0xe001000 vector=128 error=0x0 rip=0x10000013d rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x1122334455667788 r13=0x1122334455667788 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_CANCEL sequence=110 task=1 generation=7 capture_raw=0x5dcc1c capture_ns=61434000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=111 task=1 caller=2 pointer=0x10000f000 length=96 valid=1 request_id=2 bytes=5445535352474e3101006000000000000200000000000000070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+TESSRYN_K03_TIMER_RESPONSE sequence=112 task=1 caller=2 request_id=2 opcode=7 status=0 value=0x0 cap_domain=0 charged=2 committed=2 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=113 task=1 domain=2 lease_generation=7 reason=syscall outcome=yield start_raw=0x5d7244 capture_raw=0x5dcc1c stop_raw=0x6247c4 start_ns=61204000 capture_ns=61434000 stop_ns=64372000 elapsed_ns=3168000 grant_ns=250000000 hard_ns=311204000 late=0 state=runnable irqs=0 spin_irqs=0
+TESSRYN_K03_TIMER_LEDGER sequence=114 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=6444000 task_reserved=0 domain_limit=2000000000 domain_consumed=6444000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=115 raw=0x63af24 now_ns=65292000
+TESSRYN_K03_TIMER_MAILBOX sequence=116 task=0 spin_irqs=1 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=117 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=118 start_raw=0x6247c4 end_raw=0x643264 start_ns=64372000 end_ns=65628000 elapsed_ns=1256000
+TESSRYN_K03_TIMER_DISPATCH sequence=119 task=0 domain=1 cpu=0 lease_generation=8 task_slot=0 task_generation=1 start_raw=0x643264 start_ns=65628000 grant_ns=43583000 hard_ns=109211000 soft_ns=75628000
+TESSRYN_K03_TIMER_LEDGER sequence=120 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=36417000 task_reserved=43583000 domain_limit=80000000 domain_consumed=36417000 domain_reserved=43583000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=121 task=0 domain=1 generation=1 root=0xdff0000 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 first=0 resumes=5 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x107c6cf r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=122 task=0 generation=8 armed_raw=0x644e20 armed_ns=65699000 soft_ns=75628000 target_raw=0x7374a4 readback_raw=0x7374a4 vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000200 cs=0x33 rflags=0x10202 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=123 task=0 domain=1 root=0xdff0000 vector=32 error=0x0 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x2303f20 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_IRQ sequence=124 task=0 generation=8 capture_raw=0x7b49b8 capture_ns=80761000 target_raw=0x7374a4 isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=125 task=0 domain=1 lease_generation=8 reason=irq outcome=yield start_raw=0x643264 capture_raw=0x7b49b8 stop_raw=0x7f3be0 start_ns=65628000 capture_ns=80761000 stop_ns=83347000 elapsed_ns=17719000 grant_ns=43583000 hard_ns=109211000 late=0 state=runnable irqs=2 spin_irqs=2
+TESSRYN_K03_TIMER_LEDGER sequence=126 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=54136000 task_reserved=0 domain_limit=80000000 domain_consumed=54136000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=127 raw=0x802e74 now_ns=83968000
+TESSRYN_K03_TIMER_MAILBOX sequence=128 task=0 spin_irqs=2 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=129 task=1 spin_irqs=0 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=130 start_raw=0x7f3be0 end_raw=0x8096c0 start_ns=83347000 end_ns=84235000 elapsed_ns=888000
+TESSRYN_K03_TIMER_DISPATCH sequence=131 task=1 domain=2 cpu=0 lease_generation=9 task_slot=1 task_generation=1 start_raw=0x8096c0 start_ns=84235000 grant_ns=250000000 hard_ns=334235000 soft_ns=94235000
+TESSRYN_K03_TIMER_LEDGER sequence=132 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=6444000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=6444000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=133 task=1 domain=2 generation=1 root=0xe001000 rip=0x10000013d rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=2 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x0 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x0 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=134 task=1 generation=9 armed_raw=0x80b600 armed_ns=84315000 soft_ns=94235000 target_raw=0x8fd900 readback_raw=0x8fd900 vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000159 cs=0x33 rflags=0x10293 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=135 task=1 domain=2 root=0xe001000 vector=32 error=0x0 rip=0x100000159 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10293 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x5ca02a r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_IRQ sequence=136 task=1 generation=9 capture_raw=0x976120 capture_ns=99171000 target_raw=0x8fd900 isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=137 task=1 domain=2 lease_generation=9 reason=irq outcome=yield start_raw=0x8096c0 capture_raw=0x976120 stop_raw=0x9acfa4 start_ns=84235000 capture_ns=99171000 stop_ns=101420000 elapsed_ns=17185000 grant_ns=250000000 hard_ns=334235000 late=0 state=runnable irqs=1 spin_irqs=1
+TESSRYN_K03_TIMER_LEDGER sequence=138 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=23629000 task_reserved=0 domain_limit=2000000000 domain_consumed=23629000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=139 raw=0x9bd688 now_ns=102093000
+TESSRYN_K03_TIMER_MAILBOX sequence=140 task=0 spin_irqs=2 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=141 task=1 spin_irqs=1 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=142 start_raw=0x9acfa4 end_raw=0x9c40c8 start_ns=101420000 end_ns=102365000 elapsed_ns=945000
+TESSRYN_K03_TIMER_DISPATCH sequence=143 task=0 domain=1 cpu=0 lease_generation=10 task_slot=0 task_generation=1 start_raw=0x9c40c8 start_ns=102365000 grant_ns=25864000 hard_ns=128229000 soft_ns=112365000
+TESSRYN_K03_TIMER_LEDGER sequence=144 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=54136000 task_reserved=25864000 domain_limit=80000000 domain_consumed=54136000 domain_reserved=25864000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=145 task=0 domain=1 generation=1 root=0xdff0000 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 first=0 resumes=6 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x2303f20 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=146 task=0 generation=10 armed_raw=0x9c5e78 armed_ns=102441000 soft_ns=112365000 target_raw=0xab8308 readback_raw=0xab8308 vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000200 cs=0x33 rflags=0x10202 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=147 task=0 domain=1 root=0xdff0000 vector=32 error=0x0 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x35a6290 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_IRQ sequence=148 task=0 generation=10 capture_raw=0xb35b3c capture_ns=117506000 target_raw=0xab8308 isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=149 task=0 domain=1 lease_generation=10 reason=irq outcome=yield start_raw=0x9c40c8 capture_raw=0xb35b3c stop_raw=0xb721a4 start_ns=102365000 capture_ns=117506000 stop_ns=119980000 elapsed_ns=17615000 grant_ns=25864000 hard_ns=128229000 late=0 state=runnable irqs=3 spin_irqs=3
+TESSRYN_K03_TIMER_LEDGER sequence=150 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=runnable task_limit=80000000 task_consumed=71751000 task_reserved=0 domain_limit=80000000 domain_consumed=71751000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=151 raw=0xbabf6c now_ns=122350000
+TESSRYN_K03_TIMER_MAILBOX sequence=152 task=0 spin_irqs=3 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=153 task=1 spin_irqs=1 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=154 start_raw=0xb721a4 end_raw=0xbb43d8 start_ns=119980000 end_ns=122689000 elapsed_ns=2709000
+TESSRYN_K03_TIMER_DISPATCH sequence=155 task=1 domain=2 cpu=0 lease_generation=11 task_slot=1 task_generation=1 start_raw=0xbb43d8 start_ns=122689000 grant_ns=250000000 hard_ns=372689000 soft_ns=132689000
+TESSRYN_K03_TIMER_LEDGER sequence=156 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=23629000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=23629000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=157 task=1 domain=2 generation=1 root=0xe001000 rip=0x100000159 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10293 first=0 resumes=3 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x5ca02a r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=158 task=1 generation=11 armed_raw=0xbb6250 armed_ns=122767000 soft_ns=132689000 target_raw=0xca8618 readback_raw=0xca8618 vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000159 cs=0x33 rflags=0x10293 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=159 task=1 domain=2 root=0xe001000 vector=32 error=0x0 rip=0x100000159 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10293 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0xbb29b0 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_IRQ sequence=160 task=1 generation=11 capture_raw=0xd266e4 capture_ns=137852000 target_raw=0xca8618 isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=161 task=1 domain=2 lease_generation=11 reason=irq outcome=yield start_raw=0xbb43d8 capture_raw=0xd266e4 stop_raw=0xd63a94 start_ns=122689000 capture_ns=137852000 stop_ns=140360000 elapsed_ns=17671000 grant_ns=250000000 hard_ns=372689000 late=0 state=runnable irqs=2 spin_irqs=2
+TESSRYN_K03_TIMER_LEDGER sequence=162 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=41300000 task_reserved=0 domain_limit=2000000000 domain_consumed=41300000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_ADVANCE sequence=163 raw=0xd746f0 now_ns=141047000
+TESSRYN_K03_TIMER_MAILBOX sequence=164 task=0 spin_irqs=3 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=165 task=1 spin_irqs=2 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=166 start_raw=0xd63a94 end_raw=0xd7c9cc start_ns=140360000 end_ns=141382000 elapsed_ns=1022000
+TESSRYN_K03_TIMER_DISPATCH sequence=167 task=0 domain=1 cpu=0 lease_generation=12 task_slot=0 task_generation=1 start_raw=0xd7c9cc start_ns=141382000 grant_ns=8249000 hard_ns=149631000 soft_ns=145506500
+TESSRYN_K03_TIMER_LEDGER sequence=168 phase=dispatch task=0 domain=1 task_slot=0 task_generation=1 state=running task_limit=80000000 task_consumed=71751000 task_reserved=8249000 domain_limit=80000000 domain_consumed=71751000 domain_reserved=8249000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=169 task=0 domain=1 generation=1 root=0xdff0000 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 first=0 resumes=7 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x35a6290 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_ARM sequence=170 task=0 generation=12 armed_raw=0xd7ec2c armed_ns=141470000 soft_ns=145506500 target_raw=0xde14ee readback_raw=0xde14ee vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000200 cs=0x33 rflags=0x10202 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=171 task=0 domain=1 root=0xdff0000 vector=32 error=0x0 rip=0x100000200 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10202 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x4 r1=0x200000001 r2=0x1 r3=0x100000002 r4=0x3effe22 r5=0x0 r6=0x3 r7=0x3 r8=0x10000f000 r9=0x60 r10=0xaaaaaaaa55555555 r11=0x4141414141414141 r12=0x100000002 r13=0x2 r14=0x10000f000 fp_sha256=c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c
+TESSRYN_K03_TIMER_IRQ sequence=172 task=0 generation=12 capture_raw=0xe3754c capture_ns=149030000 target_raw=0xde14ee isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=173 task=0 domain=1 lease_generation=12 reason=irq outcome=yield start_raw=0xd7c9cc capture_raw=0xe3754c stop_raw=0xe6f9b0 start_ns=141382000 capture_ns=149030000 stop_ns=151335000 elapsed_ns=9953000 grant_ns=8249000 hard_ns=149631000 late=1 state=failed irqs=4 spin_irqs=4
+TESSRYN_K03_TIMER_LEDGER sequence=174 phase=stop task=0 domain=1 task_slot=0 task_generation=1 state=failed task_limit=80000000 task_consumed=81704000 task_reserved=0 domain_limit=80000000 domain_consumed=81704000 domain_reserved=0 halted=1 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_TERMINAL sequence=175 task=0 domain=1 reason=irq state=failed resumes=8
+TESSRYN_K03_TIMER_MAP_EVENT sequence=176 domain=1 phase=fence va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=2 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=177 domain=1 phase=clear va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=2 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=178 domain=1 phase=invalidate va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=2 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=179 domain=1 phase=quiesce va=0x100004000 frame=0x5000 lease_slot=4 lease_generation=2 charged=3
+TESSRYN_K03_TIMER_MAP_EVENT sequence=180 domain=2 phase=fence va=0x100004000 frame=0x5000 lease_slot=5 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=181 domain=2 phase=clear va=0x100004000 frame=0x5000 lease_slot=5 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=182 domain=2 phase=invalidate va=0x100004000 frame=0x5000 lease_slot=5 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=183 domain=2 phase=quiesce va=0x100004000 frame=0x5000 lease_slot=5 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_CAP sequence=184 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_ADVANCE sequence=185 raw=0xeb7cc4 now_ns=154292000
+TESSRYN_K03_TIMER_CAP sequence=186 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_MAILBOX sequence=187 task=0 spin_irqs=4 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=188 task=1 spin_irqs=2 peer_stopped=1 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=189 start_raw=0xe6f9b0 end_raw=0xec1db4 start_ns=151335000 end_ns=154704000 elapsed_ns=3369000
+TESSRYN_K03_TIMER_DISPATCH sequence=190 task=1 domain=2 cpu=0 lease_generation=13 task_slot=1 task_generation=1 start_raw=0xec1db4 start_ns=154704000 grant_ns=250000000 hard_ns=404704000 soft_ns=164704000
+TESSRYN_K03_TIMER_LEDGER sequence=191 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=41300000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=41300000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=192 task=1 domain=2 generation=1 root=0xe001000 rip=0x100000159 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10293 first=0 resumes=4 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0xbb29b0 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=193 task=1 generation=13 armed_raw=0xec390c armed_ns=154774000 soft_ns=164704000 target_raw=0xfb5ff4 readback_raw=0xfb5ff4 vector=32
+TESSRYN_K01_EXCEPTION vector=32 error=0x0 rip=0x100000159 cs=0x33 rflags=0x10297 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=194 task=1 domain=2 root=0xe001000 vector=32 error=0x0 rip=0x100000159 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10297 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123880 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_IRQ sequence=195 task=1 generation=13 capture_raw=0x1017ec0 capture_ns=168715000 target_raw=0xfb5ff4 isr_before=1 isr_after=0 irr_after=0 eoi=96
+TESSRYN_K03_TIMER_ACCOUNT sequence=196 task=1 domain=2 lease_generation=13 reason=irq outcome=yield start_raw=0xec1db4 capture_raw=0x1017ec0 stop_raw=0x10537e0 start_ns=154704000 capture_ns=168715000 stop_ns=171155000 elapsed_ns=16451000 grant_ns=250000000 hard_ns=404704000 late=0 state=runnable irqs=3 spin_irqs=3
+TESSRYN_K03_TIMER_LEDGER sequence=197 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=57751000 task_reserved=0 domain_limit=2000000000 domain_consumed=57751000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_CAP sequence=198 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_ADVANCE sequence=199 raw=0x1067a24 now_ns=171980000
+TESSRYN_K03_TIMER_CAP sequence=200 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_MAILBOX sequence=201 task=0 spin_irqs=4 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=202 task=1 spin_irqs=3 peer_stopped=1 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=203 start_raw=0x10537e0 end_raw=0x1071b78 start_ns=171155000 end_ns=172393000 elapsed_ns=1238000
+TESSRYN_K03_TIMER_DISPATCH sequence=204 task=1 domain=2 cpu=0 lease_generation=14 task_slot=1 task_generation=1 start_raw=0x1071b78 start_ns=172393000 grant_ns=250000000 hard_ns=422393000 soft_ns=182393000
+TESSRYN_K03_TIMER_LEDGER sequence=205 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=57751000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=57751000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=206 task=1 domain=2 generation=1 root=0xe001000 rip=0x100000159 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x10297 first=0 resumes=5 r0=0x2 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123880 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=207 task=1 generation=14 armed_raw=0x107398c armed_ns=172470000 soft_ns=182393000 target_raw=0x1165db8 readback_raw=0x1165db8 vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x100000186 cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=208 task=1 domain=2 root=0xe001000 vector=128 error=0x0 rip=0x100000186 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x3 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123881 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_CANCEL sequence=209 task=1 generation=14 capture_raw=0x1075804 capture_ns=172548000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=210 task=1 caller=2 pointer=0x10000f000 length=96 valid=1 request_id=3 bytes=5445535352474e3101006000000000000300000000000000070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+TESSRYN_K03_TIMER_CAP sequence=211 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_RESPONSE sequence=212 task=1 caller=2 request_id=3 opcode=7 status=0 value=0x0 cap_domain=0 charged=2 committed=2 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=213 task=1 domain=2 lease_generation=14 reason=syscall outcome=yield start_raw=0x1071b78 capture_raw=0x1075804 stop_raw=0x10e6068 start_ns=172393000 capture_ns=172548000 stop_ns=177157000 elapsed_ns=4764000 grant_ns=250000000 hard_ns=422393000 late=0 state=runnable irqs=3 spin_irqs=3
+TESSRYN_K03_TIMER_LEDGER sequence=214 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=62515000 task_reserved=0 domain_limit=2000000000 domain_consumed=62515000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_CAP sequence=215 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_ADVANCE sequence=216 raw=0x10f9d98 now_ns=177969000
+TESSRYN_K03_TIMER_CAP sequence=217 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_MAILBOX sequence=218 task=0 spin_irqs=4 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=219 task=1 spin_irqs=3 peer_stopped=1 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=220 start_raw=0x10e6068 end_raw=0x1103b68 start_ns=177157000 end_ns=178373000 elapsed_ns=1216000
+TESSRYN_K03_TIMER_DISPATCH sequence=221 task=1 domain=2 cpu=0 lease_generation=15 task_slot=1 task_generation=1 start_raw=0x1103b68 start_ns=178373000 grant_ns=250000000 hard_ns=428373000 soft_ns=188373000
+TESSRYN_K03_TIMER_LEDGER sequence=222 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=62515000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=62515000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=223 task=1 domain=2 generation=1 root=0xe001000 rip=0x100000186 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 first=0 resumes=6 r0=0x3 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123881 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x0 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=224 task=1 generation=15 armed_raw=0x1105724 armed_ns=178444000 soft_ns=188373000 target_raw=0x11f7da8 readback_raw=0x11f7da8 vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x1000001c7 cs=0x33 rflags=0x202 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=225 task=1 domain=2 root=0xe001000 vector=128 error=0x0 rip=0x1000001c7 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x202 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x4 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123881 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_CANCEL sequence=226 task=1 generation=15 capture_raw=0x1106e30 capture_ns=178503000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=227 task=1 caller=2 pointer=0x10000f000 length=96 valid=1 request_id=4 bytes=5445535352474e3101006000000000000400000000000000050000000000000000000000000000000000000000000000020000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+TESSRYN_K03_TIMER_CAP sequence=228 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_RESPONSE sequence=229 task=1 caller=2 request_id=4 opcode=5 status=5 value=0x0 cap_domain=0 charged=2 committed=2 reserved=0 control=continue
+TESSRYN_K03_TIMER_ACCOUNT sequence=230 task=1 domain=2 lease_generation=15 reason=syscall outcome=yield start_raw=0x1103b68 capture_raw=0x1106e30 stop_raw=0x1156f70 start_ns=178373000 capture_ns=178503000 stop_ns=181783000 elapsed_ns=3410000 grant_ns=250000000 hard_ns=428373000 late=0 state=runnable irqs=3 spin_irqs=3
+TESSRYN_K03_TIMER_LEDGER sequence=231 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=runnable task_limit=2000000000 task_consumed=65925000 task_reserved=0 domain_limit=2000000000 domain_consumed=65925000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_CAP sequence=232 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_ADVANCE sequence=233 raw=0x1169530 now_ns=182535000
+TESSRYN_K03_TIMER_CAP sequence=234 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_MAILBOX sequence=235 task=0 spin_irqs=4 peer_stopped=0 b_read_confirmed=1
+TESSRYN_K03_TIMER_MAILBOX sequence=236 task=1 spin_irqs=3 peer_stopped=1 b_read_confirmed=1
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=237 start_raw=0x1156f70 end_raw=0x117261c start_ns=181783000 end_ns=182906000 elapsed_ns=1123000
+TESSRYN_K03_TIMER_DISPATCH sequence=238 task=1 domain=2 cpu=0 lease_generation=16 task_slot=1 task_generation=1 start_raw=0x117261c start_ns=182906000 grant_ns=250000000 hard_ns=432906000 soft_ns=192906000
+TESSRYN_K03_TIMER_LEDGER sequence=239 phase=dispatch task=1 domain=2 task_slot=1 task_generation=1 state=running task_limit=2000000000 task_consumed=65925000 task_reserved=250000000 domain_limit=2000000000 domain_consumed=65925000 domain_reserved=250000000 halted=0 deadline_ns=0 cpu_owned=1
+TESSRYN_K03_TIMER_RESUME sequence=240 task=1 domain=2 generation=1 root=0xe001000 rip=0x1000001c7 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x202 first=0 resumes=7 r0=0x4 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123881 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x5 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_ARM sequence=241 task=1 generation=16 armed_raw=0x1173e54 armed_ns=182968000 soft_ns=192906000 target_raw=0x126685c readback_raw=0x126685c vector=32
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x1000001e7 cs=0x33 rflags=0x246 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K03_TIMER_TRAP sequence=242 task=1 domain=2 root=0xe001000 vector=128 error=0x0 rip=0x1000001e7 rsp=0x100002ff0 cs=0x33 ss=0x2b rflags=0x246 frame=0xe0c8030 trap_start=0xe0c00e0 trap_end=0xe0c80e0 cr2=0x0 r0=0x5 r1=0x100000002 r2=0x1 r3=0x100000002 r4=0x1123881 r5=0x0 r6=0x2 r7=0x2 r8=0x10000f000 r9=0x60 r10=0xbbbbbbbb66666666 r11=0x4242424242424242 r12=0x0 r13=0x0 r14=0x10000f000 fp_sha256=ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9
+TESSRYN_K03_TIMER_CANCEL sequence=243 task=1 generation=16 capture_raw=0x1175178 capture_ns=183017000 pending_probe=0 pending_before=0 isr_before=0 pending_after=0 isr_after=0
+TESSRYN_K03_TIMER_REQUEST sequence=244 task=1 caller=2 pointer=0x10000f000 length=96 valid=1 request_id=5 bytes=5445535352474e3101006000000000000500000000000000090000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+TESSRYN_K03_TIMER_CAP sequence=245 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_RESPONSE sequence=246 task=1 caller=2 request_id=5 opcode=9 status=0 value=0x0 cap_domain=0 charged=2 committed=2 reserved=0 control=exit
+TESSRYN_K03_TIMER_ACCOUNT sequence=247 task=1 domain=2 lease_generation=16 reason=exit outcome=complete start_raw=0x117261c capture_raw=0x1175178 stop_raw=0x11b8f04 start_ns=182906000 capture_ns=183017000 stop_ns=185796000 elapsed_ns=2890000 grant_ns=250000000 hard_ns=432906000 late=0 state=completed irqs=3 spin_irqs=3
+TESSRYN_K03_TIMER_LEDGER sequence=248 phase=stop task=1 domain=2 task_slot=1 task_generation=1 state=completed task_limit=2000000000 task_consumed=68815000 task_reserved=0 domain_limit=2000000000 domain_consumed=68815000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_TERMINAL sequence=249 task=1 domain=2 reason=exit state=completed resumes=8
+TESSRYN_K03_TIMER_CAP sequence=250 domain=1 phase=deferred cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_CAP sequence=251 domain=2 phase=release cap_slot=2 cap_generation=1 cap_domain=2
+TESSRYN_K03_TIMER_CAP sequence=252 domain=1 phase=release cap_slot=2 cap_generation=1 cap_domain=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=253 domain=1 phase=fence va=0x100002000 frame=0x1000 lease_slot=0 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=254 domain=1 phase=clear va=0x100002000 frame=0x1000 lease_slot=0 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=255 domain=1 phase=invalidate va=0x100002000 frame=0x1000 lease_slot=0 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=256 domain=1 phase=quiesce va=0x100002000 frame=0x1000 lease_slot=0 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=257 domain=1 phase=fence va=0x10000f000 frame=0x2000 lease_slot=1 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=258 domain=1 phase=clear va=0x10000f000 frame=0x2000 lease_slot=1 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=259 domain=1 phase=invalidate va=0x10000f000 frame=0x2000 lease_slot=1 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=260 domain=1 phase=quiesce va=0x10000f000 frame=0x2000 lease_slot=1 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_FINAL sequence=261 domain=1 leaves=0 charged=0 committed=0 reserved=0
+TESSRYN_K03_TIMER_MAP_EVENT sequence=262 domain=2 phase=fence va=0x100002000 frame=0x3000 lease_slot=2 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=263 domain=2 phase=clear va=0x100002000 frame=0x3000 lease_slot=2 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=264 domain=2 phase=invalidate va=0x100002000 frame=0x3000 lease_slot=2 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=265 domain=2 phase=quiesce va=0x100002000 frame=0x3000 lease_slot=2 lease_generation=1 charged=2
+TESSRYN_K03_TIMER_MAP_EVENT sequence=266 domain=2 phase=fence va=0x10000f000 frame=0x4000 lease_slot=3 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=267 domain=2 phase=clear va=0x10000f000 frame=0x4000 lease_slot=3 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=268 domain=2 phase=invalidate va=0x10000f000 frame=0x4000 lease_slot=3 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_MAP_EVENT sequence=269 domain=2 phase=quiesce va=0x10000f000 frame=0x4000 lease_slot=3 lease_generation=1 charged=1
+TESSRYN_K03_TIMER_FINAL sequence=270 domain=2 leaves=0 charged=0 committed=0 reserved=0
+TESSRYN_K03_TIMER_LEDGER sequence=271 phase=final task=0 domain=1 task_slot=0 task_generation=1 state=failed task_limit=80000000 task_consumed=81704000 task_reserved=0 domain_limit=80000000 domain_consumed=81704000 domain_reserved=0 halted=1 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_LEDGER sequence=272 phase=final task=1 domain=2 task_slot=1 task_generation=1 state=completed task_limit=2000000000 task_consumed=68815000 task_reserved=0 domain_limit=2000000000 domain_consumed=68815000 domain_reserved=0 halted=0 deadline_ns=0 cpu_owned=0
+TESSRYN_K03_TIMER_KERNEL_GAP sequence=273 start_raw=0x11b8f04 end_raw=0x1267dd8 start_ns=185796000 end_ns=192961000 elapsed_ns=7165000
+TESSRYN_K03_TIMER_CLOCK_END sequence=274 raw=0x1267dd8 now_ns=192961000 tenant_ns=150519000 kernel_ns=42442000 pending_after=0 isr_after=0 generation=0
+TESSRYN_K03_TIMER_PASS sequence=275 case=budget allocated_pages=0 mappings=0 cpu_leases=0 context_switches=9 requests=9 irqs_a=4 irqs_b=3 spin_irqs_a=4 spin_irqs_b=3 qualification=emulator_only

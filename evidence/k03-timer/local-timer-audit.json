@@ -1,0 +1,1105 @@
+{
+  "derived_navigation_only": true,
+  "format": "tessryn-k03-timer-local-artifact-audit/v1",
+  "host": "aarch64-apple-darwin",
+  "inventory": [
+    {
+      "path": "a/budget/BOOTX64.EFI",
+      "sha256": "70674fbe02967b344b15b0312303c0bb99f95daa8092066875c0d167339dce64",
+      "size_bytes": 303616
+    },
+    {
+      "path": "a/budget/boot.img",
+      "sha256": "840c85e4ff44c5760c073af3e50aadfbfbf7504d65893f79832778cbab22aa7b",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "a/budget/budget-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "a/budget/budget-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/budget/kernel.obj",
+      "sha256": "606f5d0505bdf298f60afcef4291283a3b4e536eec6b13fd65b1676c2e34effa",
+      "size_bytes": 2188082
+    },
+    {
+      "path": "a/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/deadline/BOOTX64.EFI",
+      "sha256": "ac5e870ee43b7c32f7ab2cf82ccc01f8ef24b88fcef116223cfbf8a31dc47285",
+      "size_bytes": 303616
+    },
+    {
+      "path": "a/deadline/boot.img",
+      "sha256": "deec1251827fa88e34cc414bcf88ad70460dda43e805c60a078e81143a4e09d4",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "a/deadline/deadline-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "a/deadline/deadline-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/deadline/kernel.obj",
+      "sha256": "03babc2a45e4b4ead254ff1edbf7b8086d9b1e0d1ef31c0df0c10fb31a091171",
+      "size_bytes": 2189408
+    },
+    {
+      "path": "a/forged_irq/BOOTX64.EFI",
+      "sha256": "930559b08956b3705a20916de8ae9ee5e02a6162571b278cb064807f1e892bb3",
+      "size_bytes": 303616
+    },
+    {
+      "path": "a/forged_irq/boot.img",
+      "sha256": "d03021ea1af0edb91d24d94404ee0d35de62c837af50d171bcbeeba34caab1d8",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "a/forged_irq/forged_irq-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "a/forged_irq/forged_irq-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/forged_irq/kernel.obj",
+      "sha256": "62ad965b237f8f5d043248868bc422f40f9bb2d03b70f2bd115da104c7460cde",
+      "size_bytes": 2186733
+    },
+    {
+      "path": "a/libtessryn_owned_memory.rlib",
+      "sha256": "3702e7ddf48b20e84f3d37ff05502c867b98fac6506eb747167bf0d1f247402c",
+      "size_bytes": 558054
+    },
+    {
+      "path": "a/libtessryn_scheduler.rlib",
+      "sha256": "6edfa2765dfae3b780ffbf411a94ce13d1b9b476270a502d912e3ab94b3b130a",
+      "size_bytes": 179916
+    },
+    {
+      "path": "a/manifest.json",
+      "sha256": "adfcd033981df768e922efc693c871b206e321009df2a992c50a762dc8836810",
+      "size_bytes": 47623
+    },
+    {
+      "path": "a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "a/preemption/BOOTX64.EFI",
+      "sha256": "05bc1fa534b004989e320e8504c849ac3c281a3a9da6efac675a22ee5510dc31",
+      "size_bytes": 304128
+    },
+    {
+      "path": "a/preemption/boot.img",
+      "sha256": "4f8f895b4ea2e29594eada17c2836b3002c8646ed76b5ef9bf50fedade41733f",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "a/preemption/kernel.obj",
+      "sha256": "766d0d4b5380bcffeda2d26e5c64c100961138f32c9eef2685e545c242f0aea0",
+      "size_bytes": 2197223
+    },
+    {
+      "path": "a/preemption/preemption-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "a/preemption/preemption-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/sources/.github/workflows/k03-timer.yml",
+      "sha256": "da320f5c2abc4cc0beba0dd67e6946907c6cd277e5758b9095021c3d754975a3",
+      "size_bytes": 15212
+    },
+    {
+      "path": "a/sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size_bytes": 1073
+    },
+    {
+      "path": "a/sources/interfaces/abi-v1/native.rs",
+      "sha256": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+      "size_bytes": 7626
+    },
+    {
+      "path": "a/sources/kernel-core/boot_inventory.rs",
+      "sha256": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+      "size_bytes": 12946
+    },
+    {
+      "path": "a/sources/kernel-core/capabilities.rs",
+      "sha256": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+      "size_bytes": 26647
+    },
+    {
+      "path": "a/sources/kernel-core/frames.rs",
+      "sha256": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+      "size_bytes": 8061
+    },
+    {
+      "path": "a/sources/kernel-core/lib.rs",
+      "sha256": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+      "size_bytes": 1279
+    },
+    {
+      "path": "a/sources/kernel/cpu.rs",
+      "sha256": "4d64cdf3037f8e994a7621cdae181673009856c7bd066ecb560eaec16aca9571",
+      "size_bytes": 11006
+    },
+    {
+      "path": "a/sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size_bytes": 3005
+    },
+    {
+      "path": "a/sources/kernel/entry.S",
+      "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+      "size_bytes": 5558
+    },
+    {
+      "path": "a/sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size_bytes": 4436
+    },
+    {
+      "path": "a/sources/kernel/k02.rs",
+      "sha256": "75ecb48581aecec25fe4f6aeaf78ae36fafda2df2ba183553d12627ea8ea4191",
+      "size_bytes": 14242
+    },
+    {
+      "path": "a/sources/kernel/k02_cpu.rs",
+      "sha256": "566af73ae191d4653c4a985faad0047919f4c2047c64f57606bb9fa9e6cf240b",
+      "size_bytes": 10687
+    },
+    {
+      "path": "a/sources/kernel/k02_entry.S",
+      "sha256": "026d506941c6e01a4700596a49b83796c094eef2abd68ed49fad0e89b4a4afdb",
+      "size_bytes": 7886
+    },
+    {
+      "path": "a/sources/kernel/k02_memory.rs",
+      "sha256": "c44d39ac5263959b5b65bd98fb8ec244d98520978e1d315fb6d82651c06c7fe1",
+      "size_bytes": 18116
+    },
+    {
+      "path": "a/sources/kernel/k02_paging.rs",
+      "sha256": "be28a0fd1a3137c01de79626176e0c6bd38756149607751e5be74a6f38cf7aa1",
+      "size_bytes": 22512
+    },
+    {
+      "path": "a/sources/kernel/k02_sha256.rs",
+      "sha256": "dc7a7af2973538c7700eb04eec49de6b61f2ae190c8b2c3e9e6c37f11f345f28",
+      "size_bytes": 3980
+    },
+    {
+      "path": "a/sources/kernel/main.rs",
+      "sha256": "e89125669a4710b032b5f02a5ff04748462ce6f198a56ef875159c47cf7da6d6",
+      "size_bytes": 5777
+    },
+    {
+      "path": "a/sources/kernel/paging.rs",
+      "sha256": "cb733741fe1edb176c3ccb43a0622cda784a9255b77160a856ab8599910ea035",
+      "size_bytes": 7961
+    },
+    {
+      "path": "a/sources/kernel/preempt_policy.rs",
+      "sha256": "585d445f4cd963a2f9ec680a55332410148cc128997b9399a2d275a913779b78",
+      "size_bytes": 6050
+    },
+    {
+      "path": "a/sources/kernel/preempt_timer.rs",
+      "sha256": "c1719731cd0fc02689403022a31490aae0efa20ab89ee5fb74944ac0921bf413",
+      "size_bytes": 16710
+    },
+    {
+      "path": "a/sources/kernel/region_entry.S",
+      "sha256": "869e0ea76d213a608b1609c7d18e47dc218cff96b6ee4a0f62e293a6eb051ee0",
+      "size_bytes": 1279
+    },
+    {
+      "path": "a/sources/kernel/region_runtime.rs",
+      "sha256": "762e38bced3989a020f03c955e9f64fe4477aaca027050d75306f67d16f9ce62",
+      "size_bytes": 34074
+    },
+    {
+      "path": "a/sources/kernel/region_service.rs",
+      "sha256": "b82edbc0a71ec90fe3d53b695595b0bac7bff0b9c7895e1dbbb14f658d6a9b2f",
+      "size_bytes": 22787
+    },
+    {
+      "path": "a/sources/kernel/timer_programs.S",
+      "sha256": "9c05714e565fec292d835507d80f5eec48ba097317f1a38cd5ed8930ff604831",
+      "size_bytes": 7271
+    },
+    {
+      "path": "a/sources/kernel/timer_runtime.rs",
+      "sha256": "04a37a2def875fd66b64dbb32ebc1428ed953893bab3366e64a929b8dff53c79",
+      "size_bytes": 31848
+    },
+    {
+      "path": "a/sources/kernel/uefi.rs",
+      "sha256": "abcedf5a450f4f1796e5c33a8fb61fa394f05051eb83e92766cc0f53ee47c493",
+      "size_bytes": 22707
+    },
+    {
+      "path": "a/sources/planning/k02-toolchain.lock.json",
+      "sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+      "size_bytes": 883
+    },
+    {
+      "path": "a/sources/planning/k03-timer.json",
+      "sha256": "0d8b0bd3e28bde5e8296d237c1b2d4caeca4ad2791e6653650700f600423a339",
+      "size_bytes": 1082
+    },
+    {
+      "path": "a/sources/scheduler-core/lib.rs",
+      "sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+      "size_bytes": 18365
+    },
+    {
+      "path": "a/sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size_bytes": 3748
+    },
+    {
+      "path": "a/sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size_bytes": 19816
+    },
+    {
+      "path": "a/sources/tools/build_k02_native.py",
+      "sha256": "ffcfbb8c30fa0e40073fa73557b3947fad827ac07669531d4ae3eeeacedf0720",
+      "size_bytes": 12135
+    },
+    {
+      "path": "a/sources/tools/build_k03_timer.py",
+      "sha256": "12d68f8a99882e932c5d49ec799af885c7f99dbfe17c3b7727e5b5c09ef5ae43",
+      "size_bytes": 15325
+    },
+    {
+      "path": "a/sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size_bytes": 12867
+    },
+    {
+      "path": "a/sources/tools/check_k03_timer_host.py",
+      "sha256": "9ceaefbe4e81785acb1e741aca2a02e3452e658cefe9aaa74268f8f359df2a5d",
+      "size_bytes": 5819
+    },
+    {
+      "path": "a/sources/tools/g03/__init__.py",
+      "sha256": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+      "size_bytes": 71
+    },
+    {
+      "path": "a/sources/tools/g03/evidence.py",
+      "sha256": "a26425ffc225a6e640670838cfdc35e94f01cf13174797b9802ad80bff85ebf8",
+      "size_bytes": 43470
+    },
+    {
+      "path": "a/sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size_bytes": 6728
+    },
+    {
+      "path": "a/sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size_bytes": 10501
+    },
+    {
+      "path": "a/sources/tools/k02_region_protocol.py",
+      "sha256": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+      "size_bytes": 8099
+    },
+    {
+      "path": "a/sources/tools/k03_timer_protocol.py",
+      "sha256": "9f825ba9143f7ff0e99c494486cd8fc22049bb943124f30d374581ea82fbd5bf",
+      "size_bytes": 2315
+    },
+    {
+      "path": "a/sources/tools/k03_timer_provenance.py",
+      "sha256": "46d64fb561f9285e548bbdc1be58ce17ed1099fcfe5ca16be3bc0dab4f09a896",
+      "size_bytes": 8793
+    },
+    {
+      "path": "a/sources/tools/k03_timer_trace.py",
+      "sha256": "62b2a831ac8ad99782322e61418a7e97165d63bcfec81c94b97e65b898c1ddba",
+      "size_bytes": 45729
+    },
+    {
+      "path": "a/sources/tools/run_k02_native.py",
+      "sha256": "aa2487eeda7ec0371280613eda182a7956c92c2cdae6e395fbc8c17920f9cc1d",
+      "size_bytes": 8433
+    },
+    {
+      "path": "a/sources/tools/run_k03_timer.py",
+      "sha256": "be7230d187452b9bebacace3c7a9d023041eacf9351b66275ecd709301f2292c",
+      "size_bytes": 8919
+    },
+    {
+      "path": "a/sources/tools/run_kernel.py",
+      "sha256": "deef0fcf1c040a82e15b3f135cb1f20cb448ee62bac96e7958478b10912ccd6f",
+      "size_bytes": 11228
+    },
+    {
+      "path": "a/sources/tools/setup_k02_toolchain.py",
+      "sha256": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+      "size_bytes": 13215
+    },
+    {
+      "path": "a/sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size_bytes": 13199
+    },
+    {
+      "path": "a/sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size_bytes": 17457
+    },
+    {
+      "path": "a/sources/tools/summarize_k03_timer_failure.py",
+      "sha256": "0e0f3ab9ea86afbc33f1b4c48b6a7acc782f59de846bda3f514c8c9182c712b8",
+      "size_bytes": 3708
+    },
+    {
+      "path": "a/sources/tools/verify_k02_native.py",
+      "sha256": "e6b3a7e8688c981ea884da80c577e281d3cabc83c727cb9af3826e88b8ca98a8",
+      "size_bytes": 19704
+    },
+    {
+      "path": "a/sources/tools/verify_k03_timer.py",
+      "sha256": "2c239d9e692dd40efcadc6ad7da6a1fd4d6893df450549ad52ca976dbc203aa4",
+      "size_bytes": 18893
+    },
+    {
+      "path": "a/sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size_bytes": 3623
+    },
+    {
+      "path": "b/budget/BOOTX64.EFI",
+      "sha256": "70674fbe02967b344b15b0312303c0bb99f95daa8092066875c0d167339dce64",
+      "size_bytes": 303616
+    },
+    {
+      "path": "b/budget/boot.img",
+      "sha256": "840c85e4ff44c5760c073af3e50aadfbfbf7504d65893f79832778cbab22aa7b",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "b/budget/budget-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "b/budget/budget-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/budget/kernel.obj",
+      "sha256": "606f5d0505bdf298f60afcef4291283a3b4e536eec6b13fd65b1676c2e34effa",
+      "size_bytes": 2188082
+    },
+    {
+      "path": "b/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/deadline/BOOTX64.EFI",
+      "sha256": "ac5e870ee43b7c32f7ab2cf82ccc01f8ef24b88fcef116223cfbf8a31dc47285",
+      "size_bytes": 303616
+    },
+    {
+      "path": "b/deadline/boot.img",
+      "sha256": "deec1251827fa88e34cc414bcf88ad70460dda43e805c60a078e81143a4e09d4",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "b/deadline/deadline-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "b/deadline/deadline-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/deadline/kernel.obj",
+      "sha256": "03babc2a45e4b4ead254ff1edbf7b8086d9b1e0d1ef31c0df0c10fb31a091171",
+      "size_bytes": 2189408
+    },
+    {
+      "path": "b/forged_irq/BOOTX64.EFI",
+      "sha256": "930559b08956b3705a20916de8ae9ee5e02a6162571b278cb064807f1e892bb3",
+      "size_bytes": 303616
+    },
+    {
+      "path": "b/forged_irq/boot.img",
+      "sha256": "d03021ea1af0edb91d24d94404ee0d35de62c837af50d171bcbeeba34caab1d8",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "b/forged_irq/forged_irq-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "b/forged_irq/forged_irq-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/forged_irq/kernel.obj",
+      "sha256": "62ad965b237f8f5d043248868bc422f40f9bb2d03b70f2bd115da104c7460cde",
+      "size_bytes": 2186733
+    },
+    {
+      "path": "b/libtessryn_owned_memory.rlib",
+      "sha256": "3702e7ddf48b20e84f3d37ff05502c867b98fac6506eb747167bf0d1f247402c",
+      "size_bytes": 558054
+    },
+    {
+      "path": "b/libtessryn_scheduler.rlib",
+      "sha256": "6edfa2765dfae3b780ffbf411a94ce13d1b9b476270a502d912e3ab94b3b130a",
+      "size_bytes": 179916
+    },
+    {
+      "path": "b/manifest.json",
+      "sha256": "ffd8af378130af3f9f734f15171548b85b45a55e6cd31ef54251dc8946bf0c65",
+      "size_bytes": 47619
+    },
+    {
+      "path": "b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "b/preemption/BOOTX64.EFI",
+      "sha256": "05bc1fa534b004989e320e8504c849ac3c281a3a9da6efac675a22ee5510dc31",
+      "size_bytes": 304128
+    },
+    {
+      "path": "b/preemption/boot.img",
+      "sha256": "4f8f895b4ea2e29594eada17c2836b3002c8646ed76b5ef9bf50fedade41733f",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "b/preemption/kernel.obj",
+      "sha256": "766d0d4b5380bcffeda2d26e5c64c100961138f32c9eef2685e545c242f0aea0",
+      "size_bytes": 2197223
+    },
+    {
+      "path": "b/preemption/preemption-stderr.log",
+      "sha256": "e0bc16ee68047885c1d6098d57943613c20ccba2f3bf380834877b7fab265c43",
+      "size_bytes": 18015
+    },
+    {
+      "path": "b/preemption/preemption-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/sources/.github/workflows/k03-timer.yml",
+      "sha256": "da320f5c2abc4cc0beba0dd67e6946907c6cd277e5758b9095021c3d754975a3",
+      "size_bytes": 15212
+    },
+    {
+      "path": "b/sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size_bytes": 1073
+    },
+    {
+      "path": "b/sources/interfaces/abi-v1/native.rs",
+      "sha256": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+      "size_bytes": 7626
+    },
+    {
+      "path": "b/sources/kernel-core/boot_inventory.rs",
+      "sha256": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+      "size_bytes": 12946
+    },
+    {
+      "path": "b/sources/kernel-core/capabilities.rs",
+      "sha256": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+      "size_bytes": 26647
+    },
+    {
+      "path": "b/sources/kernel-core/frames.rs",
+      "sha256": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+      "size_bytes": 8061
+    },
+    {
+      "path": "b/sources/kernel-core/lib.rs",
+      "sha256": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+      "size_bytes": 1279
+    },
+    {
+      "path": "b/sources/kernel/cpu.rs",
+      "sha256": "4d64cdf3037f8e994a7621cdae181673009856c7bd066ecb560eaec16aca9571",
+      "size_bytes": 11006
+    },
+    {
+      "path": "b/sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size_bytes": 3005
+    },
+    {
+      "path": "b/sources/kernel/entry.S",
+      "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+      "size_bytes": 5558
+    },
+    {
+      "path": "b/sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size_bytes": 4436
+    },
+    {
+      "path": "b/sources/kernel/k02.rs",
+      "sha256": "75ecb48581aecec25fe4f6aeaf78ae36fafda2df2ba183553d12627ea8ea4191",
+      "size_bytes": 14242
+    },
+    {
+      "path": "b/sources/kernel/k02_cpu.rs",
+      "sha256": "566af73ae191d4653c4a985faad0047919f4c2047c64f57606bb9fa9e6cf240b",
+      "size_bytes": 10687
+    },
+    {
+      "path": "b/sources/kernel/k02_entry.S",
+      "sha256": "026d506941c6e01a4700596a49b83796c094eef2abd68ed49fad0e89b4a4afdb",
+      "size_bytes": 7886
+    },
+    {
+      "path": "b/sources/kernel/k02_memory.rs",
+      "sha256": "c44d39ac5263959b5b65bd98fb8ec244d98520978e1d315fb6d82651c06c7fe1",
+      "size_bytes": 18116
+    },
+    {
+      "path": "b/sources/kernel/k02_paging.rs",
+      "sha256": "be28a0fd1a3137c01de79626176e0c6bd38756149607751e5be74a6f38cf7aa1",
+      "size_bytes": 22512
+    },
+    {
+      "path": "b/sources/kernel/k02_sha256.rs",
+      "sha256": "dc7a7af2973538c7700eb04eec49de6b61f2ae190c8b2c3e9e6c37f11f345f28",
+      "size_bytes": 3980
+    },
+    {
+      "path": "b/sources/kernel/main.rs",
+      "sha256": "e89125669a4710b032b5f02a5ff04748462ce6f198a56ef875159c47cf7da6d6",
+      "size_bytes": 5777
+    },
+    {
+      "path": "b/sources/kernel/paging.rs",
+      "sha256": "cb733741fe1edb176c3ccb43a0622cda784a9255b77160a856ab8599910ea035",
+      "size_bytes": 7961
+    },
+    {
+      "path": "b/sources/kernel/preempt_policy.rs",
+      "sha256": "585d445f4cd963a2f9ec680a55332410148cc128997b9399a2d275a913779b78",
+      "size_bytes": 6050
+    },
+    {
+      "path": "b/sources/kernel/preempt_timer.rs",
+      "sha256": "c1719731cd0fc02689403022a31490aae0efa20ab89ee5fb74944ac0921bf413",
+      "size_bytes": 16710
+    },
+    {
+      "path": "b/sources/kernel/region_entry.S",
+      "sha256": "869e0ea76d213a608b1609c7d18e47dc218cff96b6ee4a0f62e293a6eb051ee0",
+      "size_bytes": 1279
+    },
+    {
+      "path": "b/sources/kernel/region_runtime.rs",
+      "sha256": "762e38bced3989a020f03c955e9f64fe4477aaca027050d75306f67d16f9ce62",
+      "size_bytes": 34074
+    },
+    {
+      "path": "b/sources/kernel/region_service.rs",
+      "sha256": "b82edbc0a71ec90fe3d53b695595b0bac7bff0b9c7895e1dbbb14f658d6a9b2f",
+      "size_bytes": 22787
+    },
+    {
+      "path": "b/sources/kernel/timer_programs.S",
+      "sha256": "9c05714e565fec292d835507d80f5eec48ba097317f1a38cd5ed8930ff604831",
+      "size_bytes": 7271
+    },
+    {
+      "path": "b/sources/kernel/timer_runtime.rs",
+      "sha256": "04a37a2def875fd66b64dbb32ebc1428ed953893bab3366e64a929b8dff53c79",
+      "size_bytes": 31848
+    },
+    {
+      "path": "b/sources/kernel/uefi.rs",
+      "sha256": "abcedf5a450f4f1796e5c33a8fb61fa394f05051eb83e92766cc0f53ee47c493",
+      "size_bytes": 22707
+    },
+    {
+      "path": "b/sources/planning/k02-toolchain.lock.json",
+      "sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+      "size_bytes": 883
+    },
+    {
+      "path": "b/sources/planning/k03-timer.json",
+      "sha256": "0d8b0bd3e28bde5e8296d237c1b2d4caeca4ad2791e6653650700f600423a339",
+      "size_bytes": 1082
+    },
+    {
+      "path": "b/sources/scheduler-core/lib.rs",
+      "sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+      "size_bytes": 18365
+    },
+    {
+      "path": "b/sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size_bytes": 3748
+    },
+    {
+      "path": "b/sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size_bytes": 19816
+    },
+    {
+      "path": "b/sources/tools/build_k02_native.py",
+      "sha256": "ffcfbb8c30fa0e40073fa73557b3947fad827ac07669531d4ae3eeeacedf0720",
+      "size_bytes": 12135
+    },
+    {
+      "path": "b/sources/tools/build_k03_timer.py",
+      "sha256": "12d68f8a99882e932c5d49ec799af885c7f99dbfe17c3b7727e5b5c09ef5ae43",
+      "size_bytes": 15325
+    },
+    {
+      "path": "b/sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size_bytes": 12867
+    },
+    {
+      "path": "b/sources/tools/check_k03_timer_host.py",
+      "sha256": "9ceaefbe4e81785acb1e741aca2a02e3452e658cefe9aaa74268f8f359df2a5d",
+      "size_bytes": 5819
+    },
+    {
+      "path": "b/sources/tools/g03/__init__.py",
+      "sha256": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+      "size_bytes": 71
+    },
+    {
+      "path": "b/sources/tools/g03/evidence.py",
+      "sha256": "a26425ffc225a6e640670838cfdc35e94f01cf13174797b9802ad80bff85ebf8",
+      "size_bytes": 43470
+    },
+    {
+      "path": "b/sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size_bytes": 6728
+    },
+    {
+      "path": "b/sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size_bytes": 10501
+    },
+    {
+      "path": "b/sources/tools/k02_region_protocol.py",
+      "sha256": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+      "size_bytes": 8099
+    },
+    {
+      "path": "b/sources/tools/k03_timer_protocol.py",
+      "sha256": "9f825ba9143f7ff0e99c494486cd8fc22049bb943124f30d374581ea82fbd5bf",
+      "size_bytes": 2315
+    },
+    {
+      "path": "b/sources/tools/k03_timer_provenance.py",
+      "sha256": "46d64fb561f9285e548bbdc1be58ce17ed1099fcfe5ca16be3bc0dab4f09a896",
+      "size_bytes": 8793
+    },
+    {
+      "path": "b/sources/tools/k03_timer_trace.py",
+      "sha256": "62b2a831ac8ad99782322e61418a7e97165d63bcfec81c94b97e65b898c1ddba",
+      "size_bytes": 45729
+    },
+    {
+      "path": "b/sources/tools/run_k02_native.py",
+      "sha256": "aa2487eeda7ec0371280613eda182a7956c92c2cdae6e395fbc8c17920f9cc1d",
+      "size_bytes": 8433
+    },
+    {
+      "path": "b/sources/tools/run_k03_timer.py",
+      "sha256": "be7230d187452b9bebacace3c7a9d023041eacf9351b66275ecd709301f2292c",
+      "size_bytes": 8919
+    },
+    {
+      "path": "b/sources/tools/run_kernel.py",
+      "sha256": "deef0fcf1c040a82e15b3f135cb1f20cb448ee62bac96e7958478b10912ccd6f",
+      "size_bytes": 11228
+    },
+    {
+      "path": "b/sources/tools/setup_k02_toolchain.py",
+      "sha256": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+      "size_bytes": 13215
+    },
+    {
+      "path": "b/sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size_bytes": 13199
+    },
+    {
+      "path": "b/sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size_bytes": 17457
+    },
+    {
+      "path": "b/sources/tools/summarize_k03_timer_failure.py",
+      "sha256": "0e0f3ab9ea86afbc33f1b4c48b6a7acc782f59de846bda3f514c8c9182c712b8",
+      "size_bytes": 3708
+    },
+    {
+      "path": "b/sources/tools/verify_k02_native.py",
+      "sha256": "e6b3a7e8688c981ea884da80c577e281d3cabc83c727cb9af3826e88b8ca98a8",
+      "size_bytes": 19704
+    },
+    {
+      "path": "b/sources/tools/verify_k03_timer.py",
+      "sha256": "2c239d9e692dd40efcadc6ad7da6a1fd4d6893df450549ad52ca976dbc203aa4",
+      "size_bytes": 18893
+    },
+    {
+      "path": "b/sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size_bytes": 3623
+    },
+    {
+      "path": "budget/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "budget/firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "budget/firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "budget/registration.json",
+      "sha256": "73ecd918d43ce9b6215c6944d7b545629f5bb05a94a4945ec1c361ffd3223a5d",
+      "size_bytes": 2933
+    },
+    {
+      "path": "budget/result.json",
+      "sha256": "b4448ae1611b3e81ae000b838187fa3fa74de26fe0fe89eee0f8ade053f4f02d",
+      "size_bytes": 3557
+    },
+    {
+      "path": "budget/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "budget/stdout.log",
+      "sha256": "6bff2baa211e31d8007aebf15ab099c5ca7a88889e81fb10d175d99e76493156",
+      "size_bytes": 58524
+    },
+    {
+      "path": "deadline/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "deadline/firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "deadline/firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "deadline/registration.json",
+      "sha256": "13070131432514498bc49fc0978139fc181cad2f12801ac0798e617887b66c59",
+      "size_bytes": 2947
+    },
+    {
+      "path": "deadline/result.json",
+      "sha256": "9f489868beeaaf227f47c5d03976e19e692ce36ff7372f942830e6b5a737bab7",
+      "size_bytes": 3570
+    },
+    {
+      "path": "deadline/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "deadline/stdout.log",
+      "sha256": "0ab95b9e501b3c825999544faf93aae253f4461d163cddb5dd873120de9a42c3",
+      "size_bytes": 56115
+    },
+    {
+      "path": "forged_irq/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "forged_irq/firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "forged_irq/firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "forged_irq/registration.json",
+      "sha256": "d93af7d9f84899cd4f773d0452d5c50edfa4653c5ba0060c47cb6c8004e71380",
+      "size_bytes": 2961
+    },
+    {
+      "path": "forged_irq/result.json",
+      "sha256": "3157d96a4cb6301174793278b36844a18eccfed24cb4e17f655ceaf391e2f53c",
+      "size_bytes": 3568
+    },
+    {
+      "path": "forged_irq/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "forged_irq/stdout.log",
+      "sha256": "933a90d02cb6514e609d94c624b3c7d164df4a442158a3cfddda37bc0b50f826",
+      "size_bytes": 53409
+    },
+    {
+      "path": "host/adapter-build-stderr.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "host/adapter-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/adapter-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/adapter-tests-stdout.log",
+      "sha256": "7e94682382d453a92b844d2eda0ffa48993a6d03981520f37debe2ce07a9a9a4",
+      "size_bytes": 1362
+    },
+    {
+      "path": "host/driver-build-stderr.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "host/driver-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/driver-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/driver-tests-stdout.log",
+      "sha256": "4c58ed439a1fb7db7ec23a0521b80e4f834e28ee1a5e78bda04f7d5474fdbd5f",
+      "size_bytes": 2664
+    },
+    {
+      "path": "host/result.json",
+      "sha256": "8ffdb0c86af420b475e307cef7f54747aa01eb27208d940e4a0603e26de94271",
+      "size_bytes": 8170
+    },
+    {
+      "path": "host/scheduler-build-stderr.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "host/scheduler-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/scheduler-library-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/scheduler-library-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/scheduler-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/scheduler-tests-stdout.log",
+      "sha256": "7c0b7add37a115dd6c4bc0957d871370805b96c309d3a43c65e32eb485cb52b4",
+      "size_bytes": 3578
+    },
+    {
+      "path": "preemption/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "preemption/firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "preemption/firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "preemption/registration.json",
+      "sha256": "ed9473c59d8b7b6e065f3dc830e82588f47b44f547eac39d753330ad4ed6a8aa",
+      "size_bytes": 2961
+    },
+    {
+      "path": "preemption/result.json",
+      "sha256": "09733ff410ab9719c6fa7f91bd2f8f401d733d6f226a9860dd73387a99d52a1f",
+      "size_bytes": 3678
+    },
+    {
+      "path": "preemption/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "preemption/stdout.log",
+      "sha256": "6b0c86081e1e5e589a23c058bc35477108ff313484582350d49f2753ca52ba7a",
+      "size_bytes": 82805
+    },
+    {
+      "path": "verification.json",
+      "sha256": "367b3b10e9327c497584cf10d66b2dcdc66b5b438a8558e67ef400789fc0dbf5",
+      "size_bytes": 7647
+    }
+  ],
+  "local_packet": "build/k03-timer-clean-v2",
+  "paths": 216,
+  "privacy_findings": [],
+  "privacy_scope": "all text metadata/logs/notices/retained inputs; binary artifacts hashed without source execution",
+  "source": {
+    "dirty": false,
+    "revision": "a2ed4cc20d148d7d9337ed815cb8d517f0dbd29d",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "a33697fe6286124440bc1967db6b1abb5381e451e1fc11555dad006437cb2da3"
+  },
+  "status": "pass",
+  "total_bytes": 325508254,
+  "verification_sha256": "367b3b10e9327c497584cf10d66b2dcdc66b5b438a8558e67ef400789fc0dbf5",
+  "workflow": {
+    "path": ".github/workflows/k03-timer.yml",
+    "sha256": "da320f5c2abc4cc0beba0dd67e6946907c6cd277e5758b9095021c3d754975a3",
+    "size_bytes": 15212
+  }
+}
