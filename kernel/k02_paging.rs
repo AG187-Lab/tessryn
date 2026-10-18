@@ -208,6 +208,8 @@ impl<const N: usize> Tables<N> {
         value == address | PRESENT | WRITE | HUGE
             || (address == crate::paging::HPET_LEAF
                 && value == address | crate::paging::HPET_UC_FLAGS)
+            || (cfg!(k03_smp_user) && address == 0xfee0_0000
+                && value == address | crate::paging::HPET_UC_FLAGS)
     }
     fn hpet_slot(&self) -> Result<(usize, usize), Error> {
         if self.used == 0 { return Err(Error::Uninitialized); }
@@ -233,6 +235,22 @@ impl<const N: usize> Tables<N> {
         let (directory, slot) = self.hpet_slot()?;
         Ok(self.pages[directory].0[slot] & !(ACCESSED | DIRTY)
             == crate::paging::HPET_LEAF | crate::paging::HPET_UC_FLAGS)
+    }
+
+    /// Fixed SMP-user LAPIC leaf, finalized before AP release; no later mutation.
+    #[cfg(k03_smp_user)]
+    pub fn set_lapic_uncached(&mut self) -> Result<(), Error> {
+        if self.sealed { return Err(Error::SupervisorSealed); }
+        self.validate()?;
+        let address = 0xfee0_0000;
+        let pdpt = self.link(self.pages[0].0[0])?;
+        let directory = self.link(self.pages[pdpt].0[((address >> 30) & 511) as usize])?;
+        let leaf = &mut self.pages[directory].0[((address >> 21) & 511) as usize];
+        if *leaf & !(ACCESSED | DIRTY) != address | PRESENT | WRITE | HUGE {
+            return Err(Error::SupervisorInvalid);
+        }
+        *leaf = address | crate::paging::HPET_UC_FLAGS;
+        Ok(())
     }
 
     fn user_address(address: u64) -> Result<(), Error> {
@@ -339,6 +357,21 @@ impl<const N: usize> Tables<N> {
             table = self.link(entry)?;
         }
         Err(Error::Corrupt)
+    }
+    /// Bounded observer: never dereferences an encoded physical address. Each
+    /// child is validated inside this CPU's retained table array.
+    #[cfg(k03_smp_user)]
+    pub fn raw_walk(&self, address: u64) -> Result<([u64; 4], [u64; 4]), Error> {
+        if self.used == 0 || address >= CANONICAL_LIMIT { return Err(Error::NonCanonical); }
+        let mut tables = [0; 4]; let mut entries = [0; 4]; let mut table = 0;
+        for level in 0..4 {
+            tables[level] = self.base + table as u64 * PAGE_BYTES;
+            let slot = ((address >> (39 - level * 9)) & 511) as usize;
+            let entry = self.pages[table].0[slot]; entries[level] = entry;
+            if entry & PRESENT == 0 || level == 3 || (level == 2 && entry & HUGE != 0) { break; }
+            table = self.link(entry)?;
+        }
+        Ok((tables, entries))
     }
     pub fn translation(&self, address: u64) -> Option<u64> { self.translate(address).ok().map(|entry| entry.physical) }
     pub fn user_translation(&self, address: u64) -> Option<Translation> {

@@ -1,0 +1,37 @@
+{
+  "cases": [
+    [
+      "int3",
+      "img"
+    ],
+    [
+      "invalid_opcode",
+      "img"
+    ],
+    [
+      "normal",
+      "img"
+    ],
+    [
+      "normal",
+      "iso"
+    ],
+    [
+      "page_fault",
+      "img"
+    ],
+    [
+      "panic",
+      "img"
+    ],
+    [
+      "reboot",
+      "img"
+    ]
+  ],
+  "evaluator_sha256": "e91ac0e048303598bff3ff056f4d4557de2202b4fe639ced89e4add993dc53b9",
+  "format": "tessryn-k01-verification",
+  "manifest_sha256": "1ba0f9081638c3ace696c805bd2d903fe8c1e0180bf5c8e0f988edf89418c2e5",
+  "scope": "QEMU TCG q35/OVMF, original UEFI kernel; physical GPU Mart and GPU execution unqualified",
+  "status": "pass"
+}
