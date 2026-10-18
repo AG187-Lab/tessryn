@@ -12,6 +12,7 @@ from pathlib import Path
 import re
 import selectors
 import signal
+import stat
 import subprocess
 import sys
 import threading
@@ -131,6 +132,58 @@ def sanitize(data):
     return text.encode()[:len(data)].decode("utf8", errors="ignore").encode()
 
 
+def cleanup_host_intermediates(root, repeat):
+    """Remove only the four known compiler products after successful host tests.
+
+    All files are opened and validated before any removal. Directory-relative
+    unlink never follows an alias; retained descriptors also detect replacement
+    of a name between the last identity check and unlink. Logs, results and
+    unknown files are never candidates.
+    """
+    verify.require(type(repeat) is int and repeat in (1, 2), "invalid host cleanup repeat")
+    path = Path(root).absolute() / "preemption" / f"repeat-{repeat}" / "host"
+    verify.require(".." not in path.parts and hasattr(os, "O_NOFOLLOW") and hasattr(os, "O_NONBLOCK"),
+                   "secure host cleanup unavailable")
+    directory, opened = None, []
+    identity = lambda value: (value.st_dev, value.st_ino, value.st_mode, value.st_size,
+                              value.st_mtime_ns, value.st_ctime_ns, value.st_nlink, value.st_uid)
+    try:
+        directory = os.open(path.anchor, os.O_RDONLY | os.O_DIRECTORY)
+        for component in path.parts[1:]:
+            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory)
+            os.close(directory)
+            directory = child
+        parent = os.fstat(directory)
+        verify.require(parent.st_uid == os.getuid() and parent.st_mode & 0o022 == 0, "host cleanup directory not exclusively owned")
+        for name in verify.HOST_INTERMEDIATES:
+            fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+            opened.append((name, fd, None))
+            info = os.fstat(fd)
+            opened[-1] = (name, fd, info)
+            verify.require(stat.S_ISREG(info.st_mode) and info.st_uid == os.getuid() and info.st_nlink == 1
+                           and 0 < info.st_size <= verify.HOST_INTERMEDIATE_MAX_BYTES,
+                           "host intermediate is not a bounded owned unaliased regular file")
+        verify.require(len({(info.st_dev, info.st_ino) for _, _, info in opened}) == 4, "host intermediate identities alias")
+        for name, fd, before in opened:
+            verify.require(identity(os.fstat(fd)) == identity(before)
+                           == identity(os.stat(name, dir_fd=directory, follow_symlinks=False)),
+                           "host intermediate changed before cleanup")
+        for name, fd, before in opened:
+            verify.require(identity(os.fstat(fd)) == identity(before)
+                           == identity(os.stat(name, dir_fd=directory, follow_symlinks=False)),
+                           "host intermediate changed during cleanup")
+            os.unlink(name, dir_fd=directory)
+            verify.require(os.fstat(fd).st_nlink == 0, "host intermediate name replaced during cleanup")
+    except OSError as error:
+        raise ValueError("host intermediate cleanup rejected") from error
+    finally:
+        for _, fd, _ in opened:
+            os.close(fd)
+        if directory is not None:
+            os.close(directory)
+    return list(verify.HOST_INTERMEDIATES)
+
+
 def ensure_registered(root, registration, registered_bytes):
     verify.require(verify.read_regular(ROOT, "tools/run_runtime_benchmarks.py", 2 << 20) == LOADED_SOURCE,
                    "loaded runner changed")
@@ -202,8 +255,14 @@ def run(out: Path, *, allow_qemu=False):
             receipts["stages"].append({"id": plan["id"], "status": execution.status,
                                        "returncode": execution.returncode, "elapsed_seconds": execution.elapsed_seconds,
                                        **refs, "diagnostic_semantics": "sanitized_nonmeasurement",
-                                       "started_at_utc": stage_started, "completed_at_utc": stage_completed})
+                                       "started_at_utc": stage_started, "completed_at_utc": stage_completed,
+                                       "cleanup": {"policy": "not_completed", "removed": []}})
             verify.require(complete, "bounded runtime stage failed")
+            if plan["tool"] == "tools/check_k03_timer_host.py":
+                removed = cleanup_host_intermediates(out, int(plan["id"].split("-")[1]))
+                receipts["stages"][-1]["cleanup"] = {"policy": "fixed_owned_regular_files_after_success", "removed": removed}
+            else:
+                receipts["stages"][-1]["cleanup"] = {"policy": "none", "removed": []}
             ensure_registered(out, registration, registered_bytes)
         write_json(out / "stages.json", receipts)
         result["failure_stage"] = "combined-verification"
@@ -229,7 +288,8 @@ def run(out: Path, *, allow_qemu=False):
         write_json(out / "verification-receipt.json", {"id": "combined-verification", "status": execution.status,
                    "returncode": execution.returncode, "elapsed_seconds": execution.elapsed_seconds,
                    **refs, "diagnostic_semantics": "sanitized_nonmeasurement",
-                   "started_at_utc": stage_started, "completed_at_utc": stage_completed})
+                   "started_at_utc": stage_started, "completed_at_utc": stage_completed,
+                   "cleanup": {"policy": "none", "removed": []}})
         verify.require(complete, "bounded final verification failed")
         verified = verify.strict_json(execution.stdout)
         verify.require(verified["registration_sha256"] == result["registration_sha256"], "final registration differs")

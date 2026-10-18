@@ -25,6 +25,18 @@
     "counter": "bsp_hpet64",
     "pool_boots": false
   },
+  "host_intermediate_cleanup": {
+    "policy": "fixed_owned_regular_files_after_success",
+    "files": [
+      "libtessryn_scheduler.rlib",
+      "scheduler-tests",
+      "adapter-tests",
+      "driver-tests"
+    ],
+    "maximum_file_bytes": 67108864,
+    "require_single_link": true,
+    "unknown_files": "preserved_for_inventory_rejection"
+  },
   "limits": {
     "wall_seconds": 1800,
     "stage_cleanup_grace_seconds": 3.5,

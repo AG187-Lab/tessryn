@@ -21,6 +21,8 @@ from tools.verify_native_kernel_benchmarks import (read_regular, strict_json, sa
 PROFILE = "planning/runtime-benchmark-profile.json"
 SCOPE = "repeated_qemu_runtime_observations"
 TIMER_CASES = ("preemption", "budget", "deadline", "forged_irq")
+HOST_INTERMEDIATES = ("libtessryn_scheduler.rlib", "scheduler-tests", "adapter-tests", "driver-tests")
+HOST_INTERMEDIATE_MAX_BYTES = 64 << 20
 OWN_RUNTIME = ("tools/run_runtime_benchmarks.py", "tools/verify_runtime_benchmarks.py",
                "tools/verify_native_kernel_benchmarks.py", "tools/preemption_benchmark.py", PROFILE,
                "tools/build_native_kernel_benchmarks.py",
@@ -35,6 +37,9 @@ def expected_profile():
             "contention": {"profile": "planning/contention-benchmark-profile.json", "cases": 6,
                            "samples_per_case": 16, "warmup_per_case": 4, "iterations": 1024,
                            "counter": "bsp_hpet64", "pool_boots": False},
+            "host_intermediate_cleanup": {"policy": "fixed_owned_regular_files_after_success",
+                "files": list(HOST_INTERMEDIATES), "maximum_file_bytes": HOST_INTERMEDIATE_MAX_BYTES,
+                "require_single_link": True, "unknown_files": "preserved_for_inventory_rejection"},
             "limits": {"wall_seconds": 1800, "stage_cleanup_grace_seconds": 3.5, "stage_log_bytes": 1048576,
                        "public_bytes": 2147483648, "public_files": 2048},
             "comparison": {"identity": "exact_source_build_runtime_machine_clock_profile",
@@ -216,7 +221,7 @@ def verify_packet(directory, *, require_result=True, expected_registration_sha25
     total_elapsed, last_completed, by_stage = 0, created, {}
     for plan, receipt in zip(stage_plan(), receipts["stages"]):
         object_fields(receipt, {"id", "status", "returncode", "elapsed_seconds", "stdout", "stderr",
-                               "diagnostic_semantics", "started_at_utc", "completed_at_utc"}, "stage receipt")
+                               "diagnostic_semantics", "started_at_utc", "completed_at_utc", "cleanup"}, "stage receipt")
         require(receipt["id"] == plan["id"] and receipt["status"] == "completed"
                 and type(receipt["returncode"]) is int and receipt["returncode"] == 0
                 and receipt["diagnostic_semantics"] == "sanitized_nonmeasurement", "stage did not complete")
@@ -227,6 +232,9 @@ def verify_packet(directory, *, require_result=True, expected_registration_sha25
         require(last_completed <= utc(receipt["started_at_utc"]) <= utc(receipt["completed_at_utc"]), "stage chronology regressed")
         last_completed = utc(receipt["completed_at_utc"])
         by_stage[plan["id"]] = receipt
+        expected_cleanup = ({"policy": "fixed_owned_regular_files_after_success", "removed": list(HOST_INTERMEDIATES)}
+                            if plan["tool"] == "tools/check_k03_timer_host.py" else {"policy": "none", "removed": []})
+        require(same_json(receipt["cleanup"], expected_cleanup), "stage intermediate cleanup differs")
         for stream in ("stdout", "stderr"):
             ref = receipt[stream]
             require(ref["file"] == "stages/" + plan["id"] + "-" + stream + ".log", "stage log role differs")
@@ -277,10 +285,11 @@ def verify_packet(directory, *, require_result=True, expected_registration_sha25
     if require_result:
         verification = strict_json(read_regular(root, "verification-receipt.json", 2 << 20))
         object_fields(verification, {"id", "status", "returncode", "elapsed_seconds", "stdout", "stderr",
-                                   "diagnostic_semantics", "started_at_utc", "completed_at_utc"}, "verification receipt")
+                                   "diagnostic_semantics", "started_at_utc", "completed_at_utc", "cleanup"}, "verification receipt")
         require(verification["id"] == "combined-verification" and verification["status"] == "completed"
                 and type(verification["returncode"]) is int and verification["returncode"] == 0
                 and verification["diagnostic_semantics"] == "sanitized_nonmeasurement", "final verifier did not complete")
+        require(same_json(verification["cleanup"], {"policy": "none", "removed": []}), "final verifier cleanup differs")
         elapsed = verification["elapsed_seconds"]
         require(type(elapsed) in (int, float) and math.isfinite(elapsed) and 0 <= elapsed <= 306
                 and total_elapsed + elapsed <= 1800, "final verification exceeded bounded budget")

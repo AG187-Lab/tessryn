@@ -136,6 +136,118 @@ class InventoryTests(unittest.TestCase):
             verifier.validate_inventory(self.root, self.names)
 
 
+class HostIntermediateCleanupTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="tessryn-runtime-host-cleanup-")
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.host = self.root / "preemption/repeat-1/host"
+        self.host.mkdir(parents=True, mode=0o700)
+        self.names = tuple(verifier.HOST_INTERMEDIATES)
+        self.assertEqual(self.names, ("libtessryn_scheduler.rlib", "scheduler-tests", "adapter-tests", "driver-tests"))
+        for name in self.names:
+            (self.host / name).write_bytes(("owned " + name).encode())
+        (self.host / "stdout.log").write_bytes(b"host tests passed\n")
+        (self.host / "result.json").write_bytes(b"{}\n")
+
+    def reject_without_any_unlink(self, root=None, repeat=1):
+        original_unlink = os.unlink
+        with patch.object(runner.os, "unlink", wraps=original_unlink) as unlink:
+            with self.assertRaises(ValueError):
+                runner.cleanup_host_intermediates(self.root if root is None else root, repeat)
+        unlink.assert_not_called()
+        # Put the invalid entry last: every earlier valid descriptor must have
+        # been retained without removing a name when final validation fails.
+        for name in self.names[:-1]:
+            self.assertEqual((self.host / name).read_bytes(), ("owned " + name).encode())
+        self.assertEqual((self.host / "stdout.log").read_bytes(), b"host tests passed\n")
+        self.assertEqual((self.host / "result.json").read_bytes(), b"{}\n")
+
+    def test_exact_four_removed_and_all_unrelated_outputs_preserved(self):
+        extra = self.host / "unknown-intermediate.bin"
+        extra.write_bytes(b"never silently removed")
+        self.assertEqual(runner.cleanup_host_intermediates(self.root, 1), list(self.names))
+        self.assertTrue(all(not (self.host / name).exists() for name in self.names))
+        self.assertEqual((self.host / "stdout.log").read_bytes(), b"host tests passed\n")
+        self.assertEqual((self.host / "result.json").read_bytes(), b"{}\n")
+        self.assertEqual(extra.read_bytes(), b"never silently removed")
+        expected = {"preemption/repeat-1/host/stdout.log", "preemption/repeat-1/host/result.json"}
+        with self.assertRaises(ValueError):
+            verifier.validate_inventory(self.root, expected)
+        extra.unlink()
+        self.assertEqual(set(verifier.validate_inventory(self.root, expected)), expected)
+
+    def test_second_repeat_is_separately_scoped(self):
+        second = self.root / "preemption/repeat-2/host"
+        second.mkdir(parents=True, mode=0o700)
+        for name in self.names:
+            (second / name).write_bytes(b"repeat two")
+        self.assertEqual(runner.cleanup_host_intermediates(self.root, 2), list(self.names))
+        self.assertTrue(all(not (second / name).exists() for name in self.names))
+        self.assertTrue(all((self.host / name).exists() for name in self.names))
+
+    def test_repeat_bool_wrong_type_and_out_of_range_rejected(self):
+        for repeat in (True, False, 0, 3, -1, "1", 1.0, None):
+            with self.subTest(repeat=repeat):
+                self.reject_without_any_unlink(repeat=repeat)
+
+    def test_missing_or_empty_last_input_rejects_before_any_removal(self):
+        last = self.host / self.names[-1]
+        last.unlink()
+        self.reject_without_any_unlink()
+        last.write_bytes(b"")
+        self.reject_without_any_unlink()
+
+    def test_oversized_last_input_rejects_without_reading_or_removal(self):
+        with (self.host / self.names[-1]).open("wb") as sparse:
+            sparse.truncate(verifier.HOST_INTERMEDIATE_MAX_BYTES + 1)
+        self.reject_without_any_unlink()
+
+    def test_leaf_symlink_rejected_and_external_target_untouched(self):
+        last = self.host / self.names[-1]
+        last.unlink()
+        target = self.root / "external-target.bin"
+        target.write_bytes(b"not a compiler product")
+        last.symlink_to(target)
+        self.reject_without_any_unlink()
+        self.assertTrue(last.is_symlink())
+        self.assertEqual(target.read_bytes(), b"not a compiler product")
+
+    def test_ancestor_symlinks_rejected(self):
+        actual = self.host.with_name("retained-host")
+        self.host.rename(actual)
+        self.host.symlink_to(actual, target_is_directory=True)
+        self.reject_without_any_unlink()
+        self.host.unlink()
+        actual.rename(self.host)
+        alias = self.root / "alias"
+        alias.symlink_to(self.root, target_is_directory=True)
+        self.reject_without_any_unlink(root=alias)
+
+    @unittest.skipUnless(hasattr(os, "mkfifo"), "requires FIFO support")
+    def test_fifo_last_input_rejected_without_blocking_or_removal(self):
+        last = self.host / self.names[-1]
+        last.unlink()
+        os.mkfifo(last)
+        self.reject_without_any_unlink()
+
+    def test_hard_link_alias_rejected_and_both_names_retained(self):
+        last = self.host / self.names[-1]
+        alias = self.root / "hard-alias"
+        os.link(last, alias)
+        self.reject_without_any_unlink()
+        self.assertEqual(last.stat().st_nlink, 2)
+        self.assertEqual(alias.read_bytes(), last.read_bytes())
+
+    def test_shared_writable_or_foreign_owned_parent_rejected(self):
+        self.host.chmod(0o777)
+        self.reject_without_any_unlink()
+        self.host.chmod(0o700)
+        actual_uid = os.getuid()
+        with patch.object(runner.os, "getuid", return_value=actual_uid + 1):
+            self.reject_without_any_unlink()
+
+
 class StageProcessTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="tessryn-runtime-process-")
@@ -315,6 +427,47 @@ class RunnerPlumbingTests(unittest.TestCase):
                 self.assertLessEqual(len(redacted), len(data))
                 redacted.decode("utf-8")
                 self.assertNotIn(b"/tmp/", redacted)
+
+    def test_successful_host_stage_cleans_only_fixed_products_and_records_policy(self):
+        self.plan[0].update(id="preemption-1-host", tool="tools/check_k03_timer_host.py")
+        def child(command, cwd, timeout, max_log_bytes):
+            if "--recompute-only" in command:
+                registered_raw = (self.out / "registration.json").read_bytes()
+                return ProcessResult("completed", "mocked recomputation only", 0, .01,
+                    json.dumps({"registration_sha256": verifier.digest(registered_raw),
+                                "summary": {"fixture_only": True}, "files": []}).encode(), b"")
+            host = self.out / "preemption/repeat-1/host"
+            host.mkdir(parents=True, mode=0o700)
+            for name in verifier.HOST_INTERMEDIATES:
+                (host / name).write_bytes(b"mock compiler product")
+            (host / "result.json").write_bytes(b"{}\n")
+            return ProcessResult("completed", "mock host success", 0, .01, b"passed\n", b"")
+        with patch.object(runner, "run_stage", side_effect=child):
+            result = runner.run(self.out, allow_qemu=True)
+        self.assertTrue(result["valid"])
+        receipt = json.loads((self.out / "stages.json").read_bytes())["stages"][0]
+        self.assertEqual(receipt["cleanup"], {"policy": "fixed_owned_regular_files_after_success",
+                                            "removed": list(verifier.HOST_INTERMEDIATES)})
+        host = self.out / "preemption/repeat-1/host"
+        self.assertTrue(all(not (host / name).exists() for name in verifier.HOST_INTERMEDIATES))
+        self.assertTrue((host / "result.json").exists())
+
+    def test_failed_host_stage_never_deletes_intermediates(self):
+        self.plan[0].update(id="preemption-1-host", tool="tools/check_k03_timer_host.py")
+        host = self.out / "preemption/repeat-1/host"
+        def child(*args):
+            host.mkdir(parents=True, mode=0o700)
+            for name in verifier.HOST_INTERMEDIATES:
+                (host / name).write_bytes(b"failed mock compiler product")
+            return ProcessResult("completed", "mock host failure", 9, .01, b"failed\n", b"")
+        with patch.object(runner, "run_stage", side_effect=child), \
+                patch.object(runner, "cleanup_host_intermediates", wraps=runner.cleanup_host_intermediates) as cleanup:
+            result = runner.run(self.out, allow_qemu=True)
+        self.assertFalse(result["valid"])
+        cleanup.assert_not_called()
+        self.assertTrue(all((host / name).exists() for name in verifier.HOST_INTERMEDIATES))
+        receipt = json.loads((self.out / "stages.json").read_bytes())["stages"][0]
+        self.assertEqual(receipt["cleanup"], {"policy": "not_completed", "removed": []})
 
 
 if __name__ == "__main__":

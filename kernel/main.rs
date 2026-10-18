@@ -16,7 +16,7 @@ mod smp_acpi;
 #[cfg(smp_benchmarks)]
 mod contention_benchmarks;
 #[cfg(all(smp_benchmarks, any(not(k03_smp), not(k01_emulator), k01_aws,
-    k02_native, k02_matrix, k02_region_service, native_benchmarks, k03_timer,
+    k02_native, k02_matrix, k02_region_service, native_benchmarks, k03_timer, k03_smp_user,
     not(smp_case = "rendezvous"))))]
 compile_error!("contention benchmarks require the separate two-CPU rendezvous emulator image");
 #[cfg(all(k03_smp, any(not(k01_emulator), k01_aws, k02_native, native_benchmarks, k03_timer)))]

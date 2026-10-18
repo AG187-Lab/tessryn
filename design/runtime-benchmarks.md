@@ -130,6 +130,11 @@ the total experiment deadline prevent another stage from starting without its
 full declared budget. Failed attempts retain fixed failure metadata and private
 diagnostics, without an accepted timing summary.
 
+After each successful host-test stage, the runner removes only its four declared
+intermediate binaries. It validates all four as bounded, owned regular files
+with a single link before removing any. Test receipts, original output and
+unknown files stay present; an unknown file rejects the closed success inventory.
+
 For publication, `--list-files` prints only the independently verified successful
 artifact allowlist. The verifier rejects additional files, aliases and special
 files in the accepted packet. Original image directories remain declared inputs;
