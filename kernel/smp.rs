@@ -73,22 +73,22 @@ static FACTS: [AtomicU64; 9] = [const { AtomicU64::new(0) }; 9];
 static TRAP: [AtomicU64; 6] = [const { AtomicU64::new(0) }; 6];
 const _: () = { assert!(size_of::<Tss>() == 104); assert!(size_of::<Gate>() == 16); assert!(size_of::<Pointer>() == 10); };
 
-fn id() -> u64 { (__cpuid(1).ebx >> 24) as u64 }
-fn msr(index: u32) -> u64 {
+pub(crate) fn id() -> u64 { (__cpuid(1).ebx >> 24) as u64 }
+pub(crate) fn msr(index: u32) -> u64 {
     let (a, d): (u32, u32);
     unsafe { asm!("rdmsr", in("ecx") index, out("eax") a, out("edx") d, options(nostack)); }
     u64::from(a) | (u64::from(d) << 32)
 }
-unsafe fn set_msr(index: u32, value: u64) {
+pub(crate) unsafe fn set_msr(index: u32, value: u64) {
     unsafe { asm!("wrmsr", in("ecx") index, in("eax") value as u32, in("edx") (value >> 32) as u32, options(nostack)); }
 }
-fn read(base: u64, offset: u64) -> u32 { unsafe { ((base + offset) as *const u32).read_volatile() } }
-fn write(offset: u64, value: u32) { unsafe { ((LAPIC + offset) as *mut u32).write_volatile(value); } }
-fn clock() -> u64 { unsafe { ((HPET + 0xf0) as *const u64).read_volatile() } }
-fn elapsed(start: u64, now: u64) -> u64 {
+pub(crate) fn read(base: u64, offset: u64) -> u32 { unsafe { ((base + offset) as *const u32).read_volatile() } }
+pub(crate) fn write(offset: u64, value: u32) { unsafe { ((LAPIC + offset) as *mut u32).write_volatile(value); } }
+pub(crate) fn clock() -> u64 { unsafe { ((HPET + 0xf0) as *const u64).read_volatile() } }
+pub(crate) fn elapsed(start: u64, now: u64) -> u64 {
     now.checked_sub(start).and_then(|n| n.checked_mul(10)).unwrap_or_else(|| fail("smp-clock-regression"))
 }
-fn wait_ns(ns: u64) {
+pub(crate) fn wait_ns(ns: u64) {
     let start = clock();
     let mut polls = 0u64;
     while elapsed(start, clock()) < ns {
@@ -107,7 +107,7 @@ fn wait_for(value: &AtomicU64, expected: u64) -> bool {
     }
     fail("smp-clock-stalled")
 }
-fn send(destination: u64, command: u32) {
+pub(crate) fn send(destination: u64, command: u32) {
     let start = clock();
     let mut polls = 0u64;
     while read(LAPIC, 0x300) & (1 << 12) != 0 {
@@ -123,7 +123,7 @@ fn send(destination: u64, command: u32) {
         if elapsed(start, clock()) >= TIMEOUT_NS || polls > 200_000_000 { fail("smp-icr-timeout"); }
     }
 }
-fn ensure(ok: bool) { if !ok { panic_park_if_ap(); fail("smp-profile"); } }
+pub(crate) fn ensure(ok: bool) { if !ok { panic_park_if_ap(); fail("smp-profile"); } }
 fn enable_lapic() {
     let base = msr(0x1b);
     ensure(base & 0xffff_ffff_ffff_f000 == LAPIC && base & (1 << 10) == 0 && base & (1 << 11) != 0);
@@ -163,6 +163,7 @@ pub extern "sysv64" fn smp_ap_fail() -> ! {
     unsafe { asm!("2: cli", "hlt", "jmp 2b", options(noreturn)); }
 }
 #[unsafe(no_mangle)]
+#[cfg_attr(k03_smp_user, allow(unreachable_code))]
 pub extern "sysv64" fn smp_ap_entry() -> ! {
     if id() != EXPECTED_AP.load(Ordering::Acquire) { smp_ap_fail(); }
     let start = ptr::addr_of!(AP_STACK) as u64;
@@ -188,7 +189,11 @@ pub extern "sysv64" fn smp_ap_entry() -> ! {
     let f = facts(start, end);
     ensure(f[6] == ROOT.load(Ordering::Acquire));
     for i in 0..9 { FACTS[i].store(f[i], Ordering::Relaxed); }
+    #[cfg(k03_smp_user)]
+    crate::smp_user::install(1);
     READY.store(1, Ordering::Release);
+    #[cfg(k03_smp_user)]
+    crate::smp_user::ap_run();
     unsafe { asm!("sti", options(nostack)); }
     while GO.load(Ordering::Acquire) == 0 { core::hint::spin_loop(); }
     for _ in 0..ITERATIONS {
@@ -237,6 +242,7 @@ pub extern "sysv64" fn smp_interrupt(vector: u64, frame: *const u64) {
     }
     ACK.store(generation, Ordering::Release);
 }
+#[cfg_attr(k03_smp_user, allow(unreachable_code))]
 pub fn run(handoff: &crate::uefi::Handoff) -> ! {
     let topo = &handoff.smp.topology;
     let bsp = id();
@@ -273,6 +279,8 @@ pub fn run(handoff: &crate::uefi::Handoff) -> ! {
         let long = ptr::addr_of!(smp_trampoline_long) as usize - template as usize;
         ((low as usize + far) as *mut u32).write_unaligned((low as usize + long) as u32);
     }
+    #[cfg(k03_smp_user)]
+    crate::smp_user::prepare(handoff, bsp, ap);
     fence(Ordering::SeqCst);
     let case = if cfg!(smp_case = "missing_ap") { "missing_ap" } else { "rendezvous" };
     print(format_args!("TESSRYN_K03_SMP_BEGIN case={case} cpus=2 bsp={bsp} ap={ap} lapic={LAPIC:#x} trampoline={low:#x} cr3={:#x}\n", handoff.cr3));
@@ -301,6 +309,8 @@ pub fn run(handoff: &crate::uefi::Handoff) -> ! {
     ensure(!cfg!(smp_case = "missing_ap"));
     let apfacts = core::array::from_fn(|i| FACTS[i].load(Ordering::Relaxed));
     print_cpu(1, apfacts);
+    #[cfg(k03_smp_user)]
+    crate::smp_user::run(handoff);
     GO.store(1, Ordering::Release);
     for _ in 0..ITERATIONS { TOTAL.fetch_add(1, Ordering::SeqCst); BSP_WORK.fetch_add(1, Ordering::Relaxed); }
     ensure(wait_for(&AP_WORK, ITERATIONS));

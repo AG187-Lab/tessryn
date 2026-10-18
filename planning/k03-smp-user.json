@@ -1,0 +1,29 @@
+{
+  "schema": "tessryn-k03-smp-user/v1",
+  "scope": "bounded original-kernel two-CPU isolated CPL3 contexts and authenticated peer interrupts; shared budgets, local timers, migration, reclamation, physical clocks, devices and performance unqualified",
+  "cases": [
+    "rendezvous",
+    "peer_read",
+    "forged_ipi"
+  ],
+  "cpu_count": 2,
+  "topology": "one socket, two cores, one thread per core",
+  "accelerator": "tcg,thread=multi",
+  "lapic_address": 4276092928,
+  "hpet_address": 4275044352,
+  "hpet_period_fs": 10000000,
+  "user_code": 4294967296,
+  "user_stack": 4294975488,
+  "user_data": 4294983680,
+  "peer": 4297064448,
+  "user_ipi_vector": 66,
+  "yield_vector": 128,
+  "warmup_iterations": 65536,
+  "timeout_ns": 2000000000,
+  "window_ns": 20000000,
+  "descriptor_bytes": 112,
+  "program_bytes": 4096,
+  "retained": "all pages and contexts until VM exit",
+  "performance_gate": "native inference comparison pending; correctness preparation only",
+  "qualification": "emulated isolated CPL3 observations only"
+}
