@@ -1,6 +1,7 @@
 # Isolated CPL3 execution on two CPUs
 
-Status: implementation and original-kernel validation in progress.
+Status: bounded clean original-kernel emulator execution accepted;
+[retained evidence](../evidence/k03-smp-user/README.md).
 
 This bounded K03 step builds on the [two-CPU bootstrap](k03-smp-bootstrap.md)
 and the single-CPU protection and context-preservation references. It gives each
@@ -75,10 +76,15 @@ context continuity and post-fault peer progress.
 Release also requires the full Python suite, actual ACPI parser host checks and
 fresh regressions of K01, the native protection slice/matrix, cooperative region
 service, single-CPU timer/budgets, kernel benchmark and prior SMP bootstrap.
-Clean implementation identity, exact commands, receipts and retained raw results
-will be recorded after those checks pass. Failed or dirty diagnostics supply no
-acceptance evidence. Offline consistency replay does not independently
-authenticate the origin of a capture.
+Clean implementation `ef205654aa6b4e75afb77cc8c2affc1a927f7656` passed all
+three fresh cases, nine byte-identical EFI/object/disk twins, 26 parser checks,
+755 Python tests and all 57 earlier-profile regression commands. Independent
+replay checked the complete 149-file artifact. The original captures contain
+54 page walks, seven complete CPL3 trap/context images and continued peer progress
+after both protection faults. The [62-file packet](../evidence/k03-smp-user/README.md)
+retains exact source identities, commands, receipts and raw observations. Failed
+or dirty diagnostics supply no acceptance evidence. Offline consistency replay
+does not independently authenticate the origin of a capture.
 
 With the pinned local toolchain installed, use fresh output directories:
 

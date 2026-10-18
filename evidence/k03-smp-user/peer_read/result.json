@@ -1,0 +1,98 @@
+{
+  "capture_only": false,
+  "case": "peer_read",
+  "evaluator_sha256": "4d23867356240931ffe30cf28c19fcce3d52649ee6b7068b29db2f22d89f5da6",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,hpet=on",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+      "-m",
+      "256M",
+      "-smp",
+      "2,sockets=1,cores=2,threads=1,maxcpus=2",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 2.0208954580011778,
+    "max_log_bytes": 1048576,
+    "returncode": 33,
+    "status": "completed",
+    "timeout_seconds": 30
+  },
+  "format": "tessryn-k03-smp-user-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "39bd956cf356921f9ee62dbbd063b2eaa8b2ed9753c7edb5362de6f8bc397aba",
+      "size_bytes": 9803
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "2c53f118a37e73553042e4a43bfa3f62ac6c004df3e58994279f0e67d6886375",
+  "observations": {
+    "ap_heartbeat": 0,
+    "bsp_heartbeat": 24256,
+    "capture_authentication": "unverified_offline",
+    "case": "peer_read",
+    "cpus_online": 2,
+    "enabled_apic_ids": [
+      0,
+      1
+    ],
+    "ipi_acknowledgments": 1,
+    "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+    "overlap_window_ns": 636000,
+    "payload_checks": 4,
+    "post_fault_window_ns": 20029000,
+    "private_roots": [
+      234553344,
+      234622976
+    ],
+    "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+    "protection_fault": "page-fault",
+    "retained": "all",
+    "stop_window_ns": 20028000,
+    "user_traps": 2
+  },
+  "qualification": "not_established",
+  "reason": "source-bound original two-CPU isolated CPL3 protocol matched",
+  "registration_sha256": "3f33acbba8e7a918d309720bf219abb30d55db46dc03226011e4b5dd0e4ec57b",
+  "scope": "bounded original-kernel two-CPU isolated CPL3 contexts and authenticated peer interrupts; shared budgets, local timers, migration, reclamation, physical clocks, devices and performance unqualified",
+  "status": "pass"
+}

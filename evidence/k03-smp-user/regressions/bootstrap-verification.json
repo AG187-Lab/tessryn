@@ -1,0 +1,62 @@
+{
+  "capture_authentication": "unverified_offline",
+  "format": "tessryn-k03-smp-verification/v1",
+  "host_parser": {
+    "receipts": 2,
+    "result_sha256": "31050e6933e82a803a75cc96ebbfb098b420455058a2f21f72095cd6cd1abc03",
+    "source_files": 2,
+    "tests": 26
+  },
+  "observations": {
+    "missing_ap": {
+      "capture_authentication": "unverified_offline",
+      "case": "missing_ap",
+      "cpus_online": 1,
+      "elapsed_ns": 2010151000,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "expected_rejection": "ap-start-timeout",
+      "ipi_acknowledgments": 0,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb"
+    },
+    "rendezvous": {
+      "capture_authentication": "unverified_offline",
+      "case": "rendezvous",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "final_heartbeat": 23777,
+      "increments": [
+        4096,
+        4096
+      ],
+      "ipi_acknowledgments": 3,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "retained": "all",
+      "stop_generation": 4,
+      "stop_window_ns": 20032000,
+      "total": 8192,
+      "work_window_ns": 20024000
+    }
+  },
+  "provenance": {
+    "compiler_dependencies": 10,
+    "revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656",
+    "runtime_files": 24,
+    "tree_sha256": "f12ab9f4b71f56b142276a9b99556c0ed11d32a63fead8ace498d7a6a8e814af"
+  },
+  "qualification": "not_established",
+  "scope": "bounded original-kernel two-CPU xAPIC bootstrap and rendezvous; CPL3 SMP, scheduler contention, physical clocks, devices and performance unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "f12ab9f4b71f56b142276a9b99556c0ed11d32a63fead8ace498d7a6a8e814af"
+  },
+  "status": "pass",
+  "twin_artifacts": 6
+}

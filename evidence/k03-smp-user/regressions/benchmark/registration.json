@@ -1,0 +1,393 @@
+{
+  "build_manifest": {
+    "file": "build/manifest.json",
+    "sha256": "bc16936a35f8632233883347f3ddddc09578f5bcb024e1d0f58c88dfdd6cbf82",
+    "size": 15665
+  },
+  "capture_origin": "local_runner_claim_unverified_offline",
+  "command": [
+    "qemu-system-x86_64",
+    "-machine",
+    "q35,accel=tcg",
+    "-cpu",
+    "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off",
+    "-m",
+    "256M",
+    "-smp",
+    "1",
+    "-nodefaults",
+    "-no-user-config",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "null",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-device",
+    "VGA,romfile=",
+    "-global",
+    "apic.vapic=off",
+    "-drive",
+    "if=pflash,format=raw,readonly=on,file=code.fd",
+    "-drive",
+    "if=pflash,format=raw,file=vars.fd",
+    "-debugcon",
+    "stdio",
+    "-global",
+    "isa-debugcon.iobase=0xe9",
+    "-device",
+    "isa-debug-exit,iobase=0xf4,iosize=0x04",
+    "-drive",
+    "if=ide,format=raw,snapshot=on,file=boot.img",
+    "-boot",
+    "order=c"
+  ],
+  "config": {
+    "iterations": 128,
+    "samples": 16,
+    "seed": 1,
+    "warmup": 4
+  },
+  "created_at_utc": "2026-10-18T06:52:08.437238+00:00",
+  "evidence_scope": "qemu_guest_microbenchmark",
+  "files": [
+    {
+      "file": "build/BOOTX64.EFI",
+      "sha256": "69fac6bdf0f132cce6d37b852f223962a6f2f18ca29019c84d55b0f316ae3398",
+      "size": 66560
+    },
+    {
+      "file": "build/boot.img",
+      "sha256": "9ae316479e0f91e989573ebd25969f0cb5c1bf31032a12d033055b40b13c310f",
+      "size": 35651584
+    },
+    {
+      "file": "build/kernel-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "file": "build/kernel-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "file": "build/libtessryn_owned_memory.rlib",
+      "sha256": "20663aef8737ed04085feb30808669036fd03de81993d8dec64cd320f77d8c44",
+      "size": 558398
+    },
+    {
+      "file": "build/libtessryn_scheduler.rlib",
+      "sha256": "a337cd2058032e7838e11223d68f160a9dd3ac44e91ec640c1b0bd2a20290947",
+      "size": 180010
+    },
+    {
+      "file": "build/manifest.json",
+      "sha256": "bc16936a35f8632233883347f3ddddc09578f5bcb024e1d0f58c88dfdd6cbf82",
+      "size": 15665
+    },
+    {
+      "file": "build/memory-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "file": "build/memory-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "file": "build/notices/firmware-NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size": 42903
+    },
+    {
+      "file": "build/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size": 1571
+    },
+    {
+      "file": "build/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size": 9723
+    },
+    {
+      "file": "build/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size": 1068
+    },
+    {
+      "file": "build/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size": 11358
+    },
+    {
+      "file": "build/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size": 194
+    },
+    {
+      "file": "build/profile.json",
+      "sha256": "51424717527d62478670fb9af2e97101d6b6f6e3c05d981f25f8a27f31a221ab",
+      "size": 4196
+    },
+    {
+      "file": "build/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "file": "build/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "file": "build/sources/LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size": 11358
+    },
+    {
+      "file": "build/sources/NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size": 194
+    },
+    {
+      "file": "build/sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size": 1073
+    },
+    {
+      "file": "build/sources/interfaces/abi-v1/native.rs",
+      "sha256": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+      "size": 7626
+    },
+    {
+      "file": "build/sources/kernel/benchmark_clock.rs",
+      "sha256": "1b9f116563e9c2635f41b1c675187b8c967550b7d31f22c18fad04d94c85d318",
+      "size": 4165
+    },
+    {
+      "file": "build/sources/kernel/cpu.rs",
+      "sha256": "1ca24735152073170122a625fe13251b42e32102c29b8a4f86e2743e5f268cbc",
+      "size": 11508
+    },
+    {
+      "file": "build/sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size": 3005
+    },
+    {
+      "file": "build/sources/kernel/entry.S",
+      "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+      "size": 5558
+    },
+    {
+      "file": "build/sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size": 4436
+    },
+    {
+      "file": "build/sources/kernel/main.rs",
+      "sha256": "5bdd0241443c0a788c22a0eb985c49e8c9d3d3508cfb83f13ce8fe5f13681f22",
+      "size": 6381
+    },
+    {
+      "file": "build/sources/kernel/native_benchmarks.rs",
+      "sha256": "1087c33fae876ef1867644e06f9b634868fe8a076f6ad6151219af92fe1f7d07",
+      "size": 21988
+    },
+    {
+      "file": "build/sources/kernel/paging.rs",
+      "sha256": "463be88754ea0c2ab383bf5cfcfd3695c99407d1a9eb5cb907d386d61b784cc2",
+      "size": 8591
+    },
+    {
+      "file": "build/sources/kernel/uefi.rs",
+      "sha256": "c256b1942688154c40250f87a61981d37bae06e8f38f1ac31d088756ad251ff4",
+      "size": 28177
+    },
+    {
+      "file": "build/sources/kernel-core/boot_inventory.rs",
+      "sha256": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+      "size": 12946
+    },
+    {
+      "file": "build/sources/kernel-core/capabilities.rs",
+      "sha256": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+      "size": 26647
+    },
+    {
+      "file": "build/sources/kernel-core/frames.rs",
+      "sha256": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+      "size": 8061
+    },
+    {
+      "file": "build/sources/kernel-core/lib.rs",
+      "sha256": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+      "size": 1279
+    },
+    {
+      "file": "build/sources/planning/native-kernel-benchmark-profile.json",
+      "sha256": "51424717527d62478670fb9af2e97101d6b6f6e3c05d981f25f8a27f31a221ab",
+      "size": 4196
+    },
+    {
+      "file": "build/sources/scheduler-core/lib.rs",
+      "sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+      "size": 18365
+    },
+    {
+      "file": "build/sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size": 3748
+    },
+    {
+      "file": "build/sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size": 19816
+    },
+    {
+      "file": "build/sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size": 12867
+    },
+    {
+      "file": "build/sources/tools/build_native_kernel_benchmarks.py",
+      "sha256": "690d7da157b5714c4b4f963d14b5ac8611bd21948725b8d82681dc49fc4536ce",
+      "size": 17010
+    },
+    {
+      "file": "build/sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size": 6728
+    },
+    {
+      "file": "build/sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size": 10501
+    },
+    {
+      "file": "build/sources/tools/run_native_kernel_benchmarks.py",
+      "sha256": "b0e31f7f6b519c33b4bbb0948aa69c6c5ff58275548bab309a40f90982ac108c",
+      "size": 12367
+    },
+    {
+      "file": "build/sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size": 13199
+    },
+    {
+      "file": "build/sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size": 17457
+    },
+    {
+      "file": "build/sources/tools/verify_native_kernel_benchmarks.py",
+      "sha256": "5895a71aede11c319d8802932b959a8d17b142ba084a561087095cf8b8c96837",
+      "size": 37779
+    },
+    {
+      "file": "build/sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size": 3623
+    },
+    {
+      "file": "firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size": 3653632
+    },
+    {
+      "file": "firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size": 540672
+    }
+  ],
+  "kind": "native_kernel_benchmark_registration",
+  "limits": {
+    "max_log_bytes": 262144,
+    "timeout_seconds": 60
+  },
+  "native_qualification": false,
+  "profile_sha256": "51424717527d62478670fb9af2e97101d6b6f6e3c05d981f25f8a27f31a221ab",
+  "runtime": {
+    "emulator_sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80",
+    "setup": {
+      "base_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "base_setup_sha256": "07b95962e8537ee836abde3c27d68399b5348b2f63cd4de410e0a9da4ced192d",
+      "firmware": {
+        "code": {
+          "path": "firmware/edk2-x86_64-code.fd",
+          "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+          "size_bytes": 3653632
+        },
+        "descriptor": {
+          "path": "firmware/60-edk2-x86_64.json",
+          "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+          "size_bytes": 702
+        },
+        "notice": {
+          "path": "firmware/edk2-licenses.txt",
+          "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+          "size_bytes": 42903
+        },
+        "vars": {
+          "path": "firmware/edk2-i386-vars.fd",
+          "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+          "size_bytes": 540672
+        }
+      },
+      "firmware_archive": {
+        "hash_source": "toolchain.lock.json:qemu.sha256",
+        "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+        "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+        "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+        "version": "11.1.2"
+      },
+      "host": "aarch64-apple-darwin",
+      "lock_sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "rust_library_tree_sha256": "0a3d45acfac3e38b2c0bc30a3cd3830d0df93864a99d0bf87f20ea6dbd9f56d7",
+      "rust_notices": {
+        "COPYRIGHT": {
+          "path": "notices/rust/COPYRIGHT",
+          "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+          "size_bytes": 1571
+        },
+        "LICENSE-APACHE": {
+          "path": "notices/rust/LICENSE-APACHE",
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+          "size_bytes": 9723
+        },
+        "LICENSE-MIT": {
+          "path": "notices/rust/LICENSE-MIT",
+          "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+          "size_bytes": 1068
+        }
+      },
+      "rust_target_archive": {
+        "hash_source": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+        "hash_source_sha256": "9af50610e1d82699f78a40b985c9277ae1a2c5a0bec86ae430cfe58832038285",
+        "manifest_key": "pkg.rust-std.target.x86_64-unknown-uefi.xz_hash",
+        "sha256": "dd8d565f061389cef66f64aa65bbfabe01954e360ada0b39f1e0d637d588e4f6",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-uefi.tar.xz"
+      },
+      "rust_target_library_tree_sha256": "357151d2712e52bfe9424b55767d8f1bb58f7627ed2b4fadec76e573fc81f3b4",
+      "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+      "schema_version": 1,
+      "verified_tools": {
+        "qemu": {
+          "sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80"
+        },
+        "rust_lld": {
+          "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+        },
+        "rustc": {
+          "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+        }
+      }
+    }
+  },
+  "schema_version": 1
+}

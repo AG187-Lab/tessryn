@@ -1,0 +1,103 @@
+{
+  "capture_authentication": "unverified_offline",
+  "format": "tessryn-k03-smp-user-verification/v1",
+  "host_parser": {
+    "receipts": 2,
+    "result_sha256": "11f1f31114c0d759a4062b265337d8a80e44f0267568c27fd0f8c13f6bd778bf",
+    "source_files": 2,
+    "tests": 26
+  },
+  "observations": {
+    "forged_ipi": {
+      "ap_heartbeat": 0,
+      "bsp_heartbeat": 32727,
+      "capture_authentication": "unverified_offline",
+      "case": "forged_ipi",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "ipi_acknowledgments": 1,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_window_ns": 1330000,
+      "payload_checks": 4,
+      "post_fault_window_ns": 20044000,
+      "private_roots": [
+        234553344,
+        234622976
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "protection_fault": "general-protection",
+      "retained": "all",
+      "stop_window_ns": 20049000,
+      "user_traps": 2
+    },
+    "peer_read": {
+      "ap_heartbeat": 0,
+      "bsp_heartbeat": 24256,
+      "capture_authentication": "unverified_offline",
+      "case": "peer_read",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "ipi_acknowledgments": 1,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_window_ns": 636000,
+      "payload_checks": 4,
+      "post_fault_window_ns": 20029000,
+      "private_roots": [
+        234553344,
+        234622976
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "protection_fault": "page-fault",
+      "retained": "all",
+      "stop_window_ns": 20028000,
+      "user_traps": 2
+    },
+    "rendezvous": {
+      "ap_heartbeat": 90519,
+      "bsp_heartbeat": 73265,
+      "capture_authentication": "unverified_offline",
+      "case": "rendezvous",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "ipi_acknowledgments": 2,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_window_ns": 16358000,
+      "payload_checks": 4,
+      "post_fault_window_ns": null,
+      "private_roots": [
+        234553344,
+        234622976
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "protection_fault": null,
+      "retained": "all",
+      "stop_window_ns": 20034000,
+      "user_traps": 3
+    }
+  },
+  "provenance": {
+    "compiler_dependencies": 14,
+    "revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656",
+    "runtime_files": 26,
+    "tree_sha256": "f12ab9f4b71f56b142276a9b99556c0ed11d32a63fead8ace498d7a6a8e814af"
+  },
+  "qualification": "not_established",
+  "scope": "bounded original-kernel two-CPU isolated CPL3 contexts and authenticated peer interrupts; shared budgets, local timers, migration, reclamation, physical clocks, devices and performance unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "f12ab9f4b71f56b142276a9b99556c0ed11d32a63fead8ace498d7a6a8e814af"
+  },
+  "status": "pass",
+  "twin_artifacts": 9
+}

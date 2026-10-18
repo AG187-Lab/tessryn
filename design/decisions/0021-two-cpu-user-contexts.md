@@ -2,7 +2,8 @@
 
 Date: 2026-10-17
 
-Status: accepted implementation direction; execution validation pending.
+Status: accepted; bounded [clean emulator execution](../../evidence/k03-smp-user/README.md)
+and earlier-profile regressions passed.
 
 ## Context
 
@@ -49,9 +50,11 @@ a preregistered native complete-path performance comparison remains pending.
 
 Require independent matching builds, actual parser host tests, fresh original
 captures for all three cases, strict binary-bound raw replay, negative verifier
-tests, full Python checks and earlier-profile regressions. Record the clean
-implementation and observations after verification rather than claiming planned
-behavior as execution evidence.
+tests, full Python checks and earlier-profile regressions. The retained packet
+binds the clean implementation, original observations, 755 Python tests,
+26 parser checks, nine twin artifacts and all 57 earlier-profile commands.
+Its three fresh boots and independent 149-file artifact replay pass;
+diagnostic captures remain outside acceptance.
 
 Reconsider the fixed topology and immutable roots when adding shared scheduler
 ownership, per-CPU timer-driven leases, mutable mappings or resource reuse.

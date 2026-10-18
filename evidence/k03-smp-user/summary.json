@@ -1,0 +1,420 @@
+{
+  "benchmark": {
+    "cases": 13,
+    "manifest_sha256": "bc16936a35f8632233883347f3ddddc09578f5bcb024e1d0f58c88dfdd6cbf82",
+    "samples": 208,
+    "source_bindings": 30,
+    "source_revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656"
+  },
+  "copy_origins": {
+    "a/forged_ipi/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/a/forged_ipi/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "a/forged_ipi/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/a/forged_ipi/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "a/manifest.json": {
+      "path": "build/k03-smp-user-clean-v1/a/manifest.json",
+      "sha256": "2c53f118a37e73553042e4a43bfa3f62ac6c004df3e58994279f0e67d6886375",
+      "size_bytes": 29499
+    },
+    "a/notices/rust-COPYRIGHT": {
+      "path": "build/k03-smp-user-clean-v1/a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    "a/notices/rust-LICENSE-APACHE": {
+      "path": "build/k03-smp-user-clean-v1/a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    "a/notices/rust-LICENSE-MIT": {
+      "path": "build/k03-smp-user-clean-v1/a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    "a/notices/tessryn-LICENSE": {
+      "path": "build/k03-smp-user-clean-v1/a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    "a/notices/tessryn-NOTICE": {
+      "path": "build/k03-smp-user-clean-v1/a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    "a/peer_read/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/a/peer_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "a/peer_read/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/a/peer_read/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "a/rendezvous/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/a/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "a/rendezvous/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/a/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "b/forged_ipi/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/b/forged_ipi/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "b/forged_ipi/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/b/forged_ipi/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "b/manifest.json": {
+      "path": "build/k03-smp-user-clean-v1/b/manifest.json",
+      "sha256": "427a09585d2002d35a80da7dab2735c6d4e498ee35894f9b47a849bcf15d139a",
+      "size_bytes": 29499
+    },
+    "b/notices/rust-COPYRIGHT": {
+      "path": "build/k03-smp-user-clean-v1/b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    "b/notices/rust-LICENSE-APACHE": {
+      "path": "build/k03-smp-user-clean-v1/b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    "b/notices/rust-LICENSE-MIT": {
+      "path": "build/k03-smp-user-clean-v1/b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    "b/notices/tessryn-LICENSE": {
+      "path": "build/k03-smp-user-clean-v1/b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    "b/notices/tessryn-NOTICE": {
+      "path": "build/k03-smp-user-clean-v1/b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    "b/peer_read/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/b/peer_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "b/peer_read/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/b/peer_read/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "b/rendezvous/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/b/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "b/rendezvous/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/b/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "design.log": {
+      "path": "build/k03-smp-user-design-v1.log",
+      "sha256": "a9302ebcb32252a6376a8fa50ade3a50ade2e8fbbf0df6b33f814dc96340d7a8",
+      "size_bytes": 74
+    },
+    "forged_ipi/registration.json": {
+      "path": "build/k03-smp-user-clean-v1/forged_ipi/registration.json",
+      "sha256": "76ebf367f025ff7be955cdc60f39ccae2ca4de30d145d1f9577c46706a828bac",
+      "size_bytes": 2999
+    },
+    "forged_ipi/result.json": {
+      "path": "build/k03-smp-user-clean-v1/forged_ipi/result.json",
+      "sha256": "3f2dfd05242731a32e3fffd2af03242761251a8a21532ff8f49e3355407f05e7",
+      "size_bytes": 2926
+    },
+    "forged_ipi/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/forged_ipi/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "forged_ipi/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/forged_ipi/stdout.log",
+      "sha256": "c516dff32baccc8e44e296ed77f49ddd4a36eee0f942e40a5c08435f0c011eaf",
+      "size_bytes": 9800
+    },
+    "full-artifact-audit.json": {
+      "path": "build/k03-smp-user-clean-v1-audit.json",
+      "sha256": "a15a5a28b8cdb3e5d727df7ee05354dc4185929191735fd93d68a1774ed85c33",
+      "size_bytes": 28781
+    },
+    "host/build-stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/host/build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "host/build-stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/host/build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "host/result.json": {
+      "path": "build/k03-smp-user-clean-v1/host/result.json",
+      "sha256": "11f1f31114c0d759a4062b265337d8a80e44f0267568c27fd0f8c13f6bd778bf",
+      "size_bytes": 3414
+    },
+    "host/tests-stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "host/tests-stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/host/tests-stdout.log",
+      "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+      "size_bytes": 1986
+    },
+    "peer_read/registration.json": {
+      "path": "build/k03-smp-user-clean-v1/peer_read/registration.json",
+      "sha256": "3f33acbba8e7a918d309720bf219abb30d55db46dc03226011e4b5dd0e4ec57b",
+      "size_bytes": 2992
+    },
+    "peer_read/result.json": {
+      "path": "build/k03-smp-user-clean-v1/peer_read/result.json",
+      "sha256": "f2a4b13f7058e08bde38b3ce18aea5ee911ef399e6f66a21d2f3fe5e4790934e",
+      "size_bytes": 2915
+    },
+    "peer_read/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/peer_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "peer_read/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/peer_read/stdout.log",
+      "sha256": "39bd956cf356921f9ee62dbbd063b2eaa8b2ed9753c7edb5362de6f8bc397aba",
+      "size_bytes": 9803
+    },
+    "python-tests.log": {
+      "path": "build/k03-smp-user-python-v1.log",
+      "sha256": "0a71bc8043053fd9e446a58f3016eba21cd9060abcda9b7eb9c9982bc2bea27c",
+      "size_bytes": 129862
+    },
+    "regressions/benchmark/manifest.json": {
+      "path": "build/k03-smp-user-old-v1/benchmark-image/manifest.json",
+      "sha256": "bc16936a35f8632233883347f3ddddc09578f5bcb024e1d0f58c88dfdd6cbf82",
+      "size_bytes": 15665
+    },
+    "regressions/benchmark/registration.json": {
+      "path": "build/k03-smp-user-old-v1/benchmark-run/registration.json",
+      "sha256": "c1cdf5ff65ccd3bf5ae87632f9f2fb1b5263e4f57e21f0cd58582a8da82cc0ff",
+      "size_bytes": 13178
+    },
+    "regressions/benchmark/result.json": {
+      "path": "build/k03-smp-user-old-v1/benchmark-run/result.json",
+      "sha256": "8ce9fc285048edb68e4ec0add5f48e0be63d329442aab6d5b31dae217c3f3dea",
+      "size_bytes": 12346
+    },
+    "regressions/benchmark/run_receipts.json": {
+      "path": "build/k03-smp-user-old-v1/benchmark-run/run_receipts.json",
+      "sha256": "c954516237a2c3dcb6409f0c845d01835357724d6568a440e740db47725c33c1",
+      "size_bytes": 517
+    },
+    "regressions/bootstrap-verification.json": {
+      "path": "build/k03-smp-user-bootstrap-v1/verification.json",
+      "sha256": "97530a7c2cac6ad705a9cc574b078e6e6e2f99eabce4529419fe2360c8c8fe80",
+      "size_bytes": 1930
+    },
+    "regressions/k01-manifest.json": {
+      "path": "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+      "sha256": "1ba0f9081638c3ace696c805bd2d903fe8c1e0180bf5c8e0f988edf89418c2e5",
+      "size_bytes": 18839
+    },
+    "regressions/k01-verification.json": {
+      "path": "build/k03-smp-user-reg-v1-k01-verification.json",
+      "sha256": "5d23b320cd9e9363abb8d78f5d52d9c4922dfe4e2b620ef8ad62f5809d95f7ed",
+      "size_bytes": 658
+    },
+    "regressions/matrix-verification.json": {
+      "path": "build/k03-smp-user-reg-v1-matrix-verification.json",
+      "sha256": "7bb2e963c4203a749c1603449b4b937a68febe20b7c51175059df4bf091b40b7",
+      "size_bytes": 132432
+    },
+    "regressions/native-host-result.json": {
+      "path": "build/k03-smp-user-reg-v1-native-host/result.json",
+      "sha256": "2979bad39ac45eef42a30b299443fffd3fea7e798fa65622bd519c87755b7634",
+      "size_bytes": 8541
+    },
+    "regressions/region-verification.json": {
+      "path": "build/k03-smp-user-old-v1/region/verification.json",
+      "sha256": "d17d38a3665d9f0ae6d31868707d5f49babe992a6701c3c66245f0691014c4bd",
+      "size_bytes": 4980
+    },
+    "regressions/slice-manifest.json": {
+      "path": "build/k03-smp-user-reg-v1-slice-a/manifest.json",
+      "sha256": "ec6e9773b4d8f96fa277a5a79a388abd96e107e6ff820e0d264e9329e7e61a17",
+      "size_bytes": 23886
+    },
+    "regressions/slice-verification.json": {
+      "path": "build/k03-smp-user-reg-v1-slice-verification.json",
+      "sha256": "966bf5fad88379687ebf93c19738561a546d8a2e5d72f8a66584e0dd3b3cb3ae",
+      "size_bytes": 13392
+    },
+    "regressions/timer-verification.json": {
+      "path": "build/k03-smp-user-timer-v1/verification.json",
+      "sha256": "a5f4e0f612a67875dd2254dff70a3288bc0790d59a973ec4ca43377784c9658e",
+      "size_bytes": 7651
+    },
+    "rendezvous/registration.json": {
+      "path": "build/k03-smp-user-clean-v1/rendezvous/registration.json",
+      "sha256": "6534316b6bd9994a6fdd9a09a82faae7079ce6e21858180bcf9fbfbd553899f9",
+      "size_bytes": 2999
+    },
+    "rendezvous/result.json": {
+      "path": "build/k03-smp-user-clean-v1/rendezvous/result.json",
+      "sha256": "1e5823a9b5cf1d1021985e302cfbde83a39c32e0bb8270556d1a22c5fb1d688b",
+      "size_bytes": 2912
+    },
+    "rendezvous/stderr.log": {
+      "path": "build/k03-smp-user-clean-v1/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "rendezvous/stdout.log": {
+      "path": "build/k03-smp-user-clean-v1/rendezvous/stdout.log",
+      "sha256": "a7fa97b30f86884c2dc9e19a6585c65b6df79bc79f3bdc9e2c8ba114ba031f12",
+      "size_bytes": 11410
+    },
+    "verification.json": {
+      "path": "build/k03-smp-user-clean-v1/verification.json",
+      "sha256": "4deabf00ed662d5f255e90b6e381f08e65e35b6d196d3b031c712db191f69a42",
+      "size_bytes": 3309
+    }
+  },
+  "format": "tessryn-smp-user-public-packet/v1",
+  "full_artifact_audit_sha256": "a15a5a28b8cdb3e5d727df7ee05354dc4185929191735fd93d68a1774ed85c33",
+  "full_artifact_files": 149,
+  "host_parser_tests": 26,
+  "observations": {
+    "forged_ipi": {
+      "ap_heartbeat": 0,
+      "bsp_heartbeat": 32727,
+      "capture_authentication": "unverified_offline",
+      "case": "forged_ipi",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "ipi_acknowledgments": 1,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_window_ns": 1330000,
+      "payload_checks": 4,
+      "post_fault_window_ns": 20044000,
+      "private_roots": [
+        234553344,
+        234622976
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "protection_fault": "general-protection",
+      "retained": "all",
+      "stop_window_ns": 20049000,
+      "user_traps": 2
+    },
+    "peer_read": {
+      "ap_heartbeat": 0,
+      "bsp_heartbeat": 24256,
+      "capture_authentication": "unverified_offline",
+      "case": "peer_read",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "ipi_acknowledgments": 1,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_window_ns": 636000,
+      "payload_checks": 4,
+      "post_fault_window_ns": 20029000,
+      "private_roots": [
+        234553344,
+        234622976
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "protection_fault": "page-fault",
+      "retained": "all",
+      "stop_window_ns": 20028000,
+      "user_traps": 2
+    },
+    "rendezvous": {
+      "ap_heartbeat": 90519,
+      "bsp_heartbeat": 73265,
+      "capture_authentication": "unverified_offline",
+      "case": "rendezvous",
+      "cpus_online": 2,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "ipi_acknowledgments": 2,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_window_ns": 16358000,
+      "payload_checks": 4,
+      "post_fault_window_ns": null,
+      "private_roots": [
+        234553344,
+        234622976
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "protection_fault": null,
+      "retained": "all",
+      "stop_window_ns": 20034000,
+      "user_traps": 3
+    }
+  },
+  "omissions": "Full binaries, copied compiler/runtime sources and firmware remain in the separately audited artifact. Earlier-profile outer logs and media remain under their original private reproduction paths; this packet retains their source-bound verification receipts and portable command navigation.",
+  "prior_profile_commands": 57,
+  "python_tests": 755,
+  "qualification": "emulator correctness only; no physical/performance qualification",
+  "regressions": {
+    "bootstrap": {
+      "status": "pass",
+      "verification_sha256": "97530a7c2cac6ad705a9cc574b078e6e6e2f99eabce4529419fe2360c8c8fe80"
+    },
+    "k01": {
+      "status": "pass",
+      "verification_sha256": "5d23b320cd9e9363abb8d78f5d52d9c4922dfe4e2b620ef8ad62f5809d95f7ed"
+    },
+    "matrix": {
+      "status": "pass",
+      "verification_sha256": "7bb2e963c4203a749c1603449b4b937a68febe20b7c51175059df4bf091b40b7"
+    },
+    "region": {
+      "status": "pass",
+      "verification_sha256": "d17d38a3665d9f0ae6d31868707d5f49babe992a6701c3c66245f0691014c4bd"
+    },
+    "slice": {
+      "status": "pass",
+      "verification_sha256": "966bf5fad88379687ebf93c19738561a546d8a2e5d72f8a66584e0dd3b3cb3ae"
+    },
+    "timer": {
+      "status": "pass",
+      "verification_sha256": "a5f4e0f612a67875dd2254dff70a3288bc0790d59a973ec4ca43377784c9658e"
+    }
+  },
+  "source": {
+    "dirty": false,
+    "revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "f12ab9f4b71f56b142276a9b99556c0ed11d32a63fead8ace498d7a6a8e814af"
+  },
+  "status": "pass",
+  "twin_artifacts": 9
+}
