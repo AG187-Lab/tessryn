@@ -1,0 +1,463 @@
+{
+  "capture_authentication": "unverified_offline",
+  "combined_result_sha256": "c84291aba9bf6d1cf9793d4e763cc212358c590602b9d78574bce3b04bef94f2",
+  "contention": [
+    {
+      "cases": [
+        {
+          "case": "counter_pair",
+          "measurement_status": "resolution_limited",
+          "operations_per_sample": 0,
+          "quantile_population": "adjacent_counter_read_pairs",
+          "raw_elapsed_ticks": {
+            "max": 200,
+            "mean": 37.5,
+            "min": 0,
+            "p50": 0,
+            "p95": 200,
+            "p99": 200
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "counter_pair",
+          "ticks_per_operation": null,
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 11
+        },
+        {
+          "case": "local_atomic_reference",
+          "measurement_status": "observed",
+          "operations_per_sample": 1024,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 2200,
+            "mean": 1393.75,
+            "min": 900,
+            "p50": 1200,
+            "p95": 2200,
+            "p99": 2200
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 2.1484375,
+            "mean": 1.361083984375,
+            "min": 0.87890625,
+            "p50": 1.171875,
+            "p95": 2.1484375,
+            "p99": 2.1484375
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "separate_64b_lines",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 2300,
+            "mean": 1537.5,
+            "min": 900,
+            "p50": 1500,
+            "p95": 2300,
+            "p99": 2300
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 1.123046875,
+            "mean": 0.750732421875,
+            "min": 0.439453125,
+            "p50": 0.732421875,
+            "p95": 1.123046875,
+            "p99": 1.123046875
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "same_64b_line",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 7100,
+            "mean": 5668.75,
+            "min": 4800,
+            "p50": 5400,
+            "p95": 7100,
+            "p99": 7100
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 3.466796875,
+            "mean": 2.7679443359375,
+            "min": 2.34375,
+            "p50": 2.63671875,
+            "p95": 3.466796875,
+            "p99": 3.466796875
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "shared_atomic_counter",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 7500,
+            "mean": 6200.0,
+            "min": 5500,
+            "p50": 6100,
+            "p95": 7500,
+            "p99": 7500
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 3.662109375,
+            "mean": 3.02734375,
+            "min": 2.685546875,
+            "p50": 2.978515625,
+            "p95": 3.662109375,
+            "p99": 3.662109375
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "ping_pong_roundtrip",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_round_trip_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 236300,
+            "mean": 199550.0,
+            "min": 172100,
+            "p50": 196600,
+            "p95": 236300,
+            "p99": 236300
+          },
+          "round_trips_per_sample": 1024,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 115.380859375,
+            "mean": 97.4365234375,
+            "min": 84.033203125,
+            "p50": 95.99609375,
+            "p95": 115.380859375,
+            "p99": 115.380859375
+          },
+          "ticks_per_round_trip": {
+            "max": 230.76171875,
+            "mean": 194.873046875,
+            "min": 168.06640625,
+            "p50": 191.9921875,
+            "p95": 230.76171875,
+            "p99": 230.76171875
+          },
+          "zero_duration_samples": 0
+        }
+      ],
+      "clock": {
+        "cross_cpu_subtraction": false,
+        "name": "hpet",
+        "overhead_subtraction": false,
+        "owner": "bsp",
+        "period_fs": 10000000,
+        "unit": "raw_ticks"
+      },
+      "samples": 96,
+      "warmup_samples": 24
+    },
+    {
+      "cases": [
+        {
+          "case": "counter_pair",
+          "measurement_status": "resolution_limited",
+          "operations_per_sample": 0,
+          "quantile_population": "adjacent_counter_read_pairs",
+          "raw_elapsed_ticks": {
+            "max": 600,
+            "mean": 87.5,
+            "min": 0,
+            "p50": 0,
+            "p95": 600,
+            "p99": 600
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "counter_pair",
+          "ticks_per_operation": null,
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 10
+        },
+        {
+          "case": "local_atomic_reference",
+          "measurement_status": "observed",
+          "operations_per_sample": 1024,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 2500,
+            "mean": 1381.25,
+            "min": 900,
+            "p50": 1200,
+            "p95": 2500,
+            "p99": 2500
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 2.44140625,
+            "mean": 1.348876953125,
+            "min": 0.87890625,
+            "p50": 1.171875,
+            "p95": 2.44140625,
+            "p99": 2.44140625
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "separate_64b_lines",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 3200,
+            "mean": 1593.75,
+            "min": 900,
+            "p50": 1500,
+            "p95": 3200,
+            "p99": 3200
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 1.5625,
+            "mean": 0.7781982421875,
+            "min": 0.439453125,
+            "p50": 0.732421875,
+            "p95": 1.5625,
+            "p99": 1.5625
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "same_64b_line",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 6200,
+            "mean": 5556.25,
+            "min": 5100,
+            "p50": 5500,
+            "p95": 6200,
+            "p99": 6200
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 3.02734375,
+            "mean": 2.7130126953125,
+            "min": 2.490234375,
+            "p50": 2.685546875,
+            "p95": 3.02734375,
+            "p99": 3.02734375
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "shared_atomic_counter",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_coordinated_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 7800,
+            "mean": 6131.25,
+            "min": 5400,
+            "p50": 6000,
+            "p95": 7800,
+            "p99": 7800
+          },
+          "round_trips_per_sample": 0,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 3.80859375,
+            "mean": 2.9937744140625,
+            "min": 2.63671875,
+            "p50": 2.9296875,
+            "p95": 3.80859375,
+            "p99": 3.80859375
+          },
+          "ticks_per_round_trip": null,
+          "zero_duration_samples": 0
+        },
+        {
+          "case": "ping_pong_roundtrip",
+          "measurement_status": "observed",
+          "operations_per_sample": 2048,
+          "quantile_population": "amortized_round_trip_batch_averages",
+          "raw_elapsed_ticks": {
+            "max": 200900,
+            "mean": 144118.75,
+            "min": 108000,
+            "p50": 143300,
+            "p95": 200900,
+            "p99": 200900
+          },
+          "round_trips_per_sample": 1024,
+          "sample_count": 16,
+          "sample_unit": "coordinated_batch_completion",
+          "ticks_per_operation": {
+            "max": 98.095703125,
+            "mean": 70.3704833984375,
+            "min": 52.734375,
+            "p50": 69.970703125,
+            "p95": 98.095703125,
+            "p99": 98.095703125
+          },
+          "ticks_per_round_trip": {
+            "max": 196.19140625,
+            "mean": 140.740966796875,
+            "min": 105.46875,
+            "p50": 139.94140625,
+            "p95": 196.19140625,
+            "p99": 196.19140625
+          },
+          "zero_duration_samples": 0
+        }
+      ],
+      "clock": {
+        "cross_cpu_subtraction": false,
+        "name": "hpet",
+        "overhead_subtraction": false,
+        "owner": "bsp",
+        "period_fs": 10000000,
+        "unit": "raw_ticks"
+      },
+      "samples": 96,
+      "warmup_samples": 24
+    }
+  ],
+  "default_smp": {
+    "fresh_cases": [
+      "rendezvous",
+      "missing_ap"
+    ],
+    "host_tests": 26,
+    "status": "pass",
+    "twin_artifacts": 6
+  },
+  "design_documents": 90,
+  "format": "tessryn-runtime-observation-record/v1",
+  "hardware_qualified": false,
+  "implementation_commit": "a1ef56849d6c8a163de3d16a665445cdbf64ec9a",
+  "inference_qualified": false,
+  "kernel_baseline": "763a1d274de2ee61b07c22527160ba8ba8216f95",
+  "new_focused_python_tests": 67,
+  "previous_attempt": {
+    "failure_stage": "combined-verification",
+    "original_retained_privately": true,
+    "reason": "undeclared host intermediate compiler products",
+    "registration_sha256": "e808376b4ea7325874f61d728137bd0fa5da663cc84b7e6459f281de573280b2",
+    "source": "a79e7804b5dc57c234fd78812377bdc610537665",
+    "status": "rejected"
+  },
+  "python_tests": 822,
+  "registration_sha256": "4cfebed76892e6e265ff260c4897f31d40b31d849522b11c3fe7b52ec0566ae5",
+  "scope": "repeated_qemu_runtime_observations",
+  "timer": [
+    {
+      "budget": {
+        "irqs": 8,
+        "irqs_by_task": [
+          5,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 17
+      },
+      "deadline": {
+        "irqs": 6,
+        "irqs_by_task": [
+          3,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 15
+      },
+      "forged_irq": {
+        "irqs": 4,
+        "irqs_by_task": [
+          1,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 14
+      },
+      "preemption": {
+        "irqs": 10,
+        "irqs_by_task": [
+          7,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 24
+      }
+    },
+    {
+      "budget": {
+        "irqs": 8,
+        "irqs_by_task": [
+          5,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 17
+      },
+      "deadline": {
+        "irqs": 6,
+        "irqs_by_task": [
+          3,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 15
+      },
+      "forged_irq": {
+        "irqs": 4,
+        "irqs_by_task": [
+          1,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 14
+      },
+      "preemption": {
+        "irqs": 10,
+        "irqs_by_task": [
+          7,
+          3
+        ],
+        "missed_arms": 0,
+        "trusted_stops": 24
+      }
+    }
+  ]
+}

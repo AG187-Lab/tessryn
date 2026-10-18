@@ -1,0 +1,475 @@
+{
+  "format": "tessryn-runtime-benchmark-stages/v1",
+  "stages": [
+    {
+      "cleanup": {
+        "policy": "fixed_owned_regular_files_after_success",
+        "removed": [
+          "libtessryn_scheduler.rlib",
+          "scheduler-tests",
+          "adapter-tests",
+          "driver-tests"
+        ]
+      },
+      "completed_at_utc": "2026-10-18T07:16:00.148953+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.775980999998865,
+      "id": "preemption-1-host",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:15:55.372864+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-host-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-host-stdout.log",
+        "sha256": "4616e75c94389bfc3e90441b0c2e050ab9b8a1ab68c2516bf04bd887106c6869",
+        "size": 63
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:16:10.143286+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 9.774013832997298,
+      "id": "preemption-1-a",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:00.369115+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-a-stdout.log",
+        "sha256": "d9d3030e854c0b1f7e69e4505839432fe1844e03f54de54cf1306f7343208b75",
+        "size": 65
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:16:20.163440+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 9.807078874997387,
+      "id": "preemption-1-b",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:10.356207+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-b-stdout.log",
+        "sha256": "d9d3030e854c0b1f7e69e4505839432fe1844e03f54de54cf1306f7343208b75",
+        "size": 65
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:16:25.122222+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.748596249999537,
+      "id": "preemption-1-preemption",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:20.373528+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-preemption-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-preemption-stdout.log",
+        "sha256": "6cf8c5a3a4ba1a73d94466f53ab76694c6dee487409c8c6409e438662cb6519b",
+        "size": 156
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:16:30.040638+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.696474625001429,
+      "id": "preemption-1-budget",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:25.344057+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-budget-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-budget-stdout.log",
+        "sha256": "6092bbd09ddb6dbb155857009814ae7f06f40a596282c226afbdeb593726dea8",
+        "size": 152
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:16:34.930209+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.661078208999243,
+      "id": "preemption-1-deadline",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:30.269007+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-deadline-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-deadline-stdout.log",
+        "sha256": "10e6144559b4128c9f0daa617e7e98fb6df383dae57ac4e688c26b9a6d69fc71",
+        "size": 154
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:16:39.725832+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.58155191699916,
+      "id": "preemption-1-forged_irq",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:35.144177+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-forged_irq-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-forged_irq-stdout.log",
+        "sha256": "70c0af252ef1ac4e37ae419fca928aafb4a757975bee1c8b3e7237c401cb2974",
+        "size": 156
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:17:22.205022+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 42.26358191599866,
+      "id": "preemption-1-extract",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:16:39.941065+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-1-extract-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-1-extract-stdout.log",
+        "sha256": "99949642252e9e7fed01733ceddaaa9ddd05e5938d659f29d866bb0e570a0f37",
+        "size": 74
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:17:25.208426+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 2.7886192919977475,
+      "id": "contention-1-build",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:17:22.419720+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/contention-1-build-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/contention-1-build-stdout.log",
+        "sha256": "febb7b43cf6da02383cbfeceeee3f4b555bc2ca17ac3f93ed09612ffcd28b534",
+        "size": 79
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:02.715034+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 37.23645737500192,
+      "id": "contention-1-capture",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:17:25.478240+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/contention-1-capture-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/contention-1-capture-stdout.log",
+        "sha256": "43243d54f6a47e2642a70a446a1ed8af9c9508defd4d744778275c237bd29a0c",
+        "size": 176
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "fixed_owned_regular_files_after_success",
+        "removed": [
+          "libtessryn_scheduler.rlib",
+          "scheduler-tests",
+          "adapter-tests",
+          "driver-tests"
+        ]
+      },
+      "completed_at_utc": "2026-10-18T07:18:07.470965+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.540828999997757,
+      "id": "preemption-2-host",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:02.930053+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-host-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-host-stdout.log",
+        "sha256": "4616e75c94389bfc3e90441b0c2e050ab9b8a1ab68c2516bf04bd887106c6869",
+        "size": 63
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:17.432606+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 9.748813208003412,
+      "id": "preemption-2-a",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:07.683650+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-a-stdout.log",
+        "sha256": "d9d3030e854c0b1f7e69e4505839432fe1844e03f54de54cf1306f7343208b75",
+        "size": 65
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:27.591304+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 9.948117665997415,
+      "id": "preemption-2-b",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:17.643049+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-b-stdout.log",
+        "sha256": "d9d3030e854c0b1f7e69e4505839432fe1844e03f54de54cf1306f7343208b75",
+        "size": 65
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:32.515185+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.709383417000936,
+      "id": "preemption-2-preemption",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:27.805715+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-preemption-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-preemption-stdout.log",
+        "sha256": "6cf8c5a3a4ba1a73d94466f53ab76694c6dee487409c8c6409e438662cb6519b",
+        "size": 156
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:37.404029+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.657694792003895,
+      "id": "preemption-2-budget",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:32.746241+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-budget-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-budget-stdout.log",
+        "sha256": "6092bbd09ddb6dbb155857009814ae7f06f40a596282c226afbdeb593726dea8",
+        "size": 152
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:42.199671+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.579025832994375,
+      "id": "preemption-2-deadline",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:37.620534+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-deadline-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-deadline-stdout.log",
+        "sha256": "10e6144559b4128c9f0daa617e7e98fb6df383dae57ac4e688c26b9a6d69fc71",
+        "size": 154
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:18:46.997964+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 4.579413708001084,
+      "id": "preemption-2-forged_irq",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:42.418466+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-forged_irq-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-forged_irq-stdout.log",
+        "sha256": "70c0af252ef1ac4e37ae419fca928aafb4a757975bee1c8b3e7237c401cb2974",
+        "size": 156
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:19:30.065870+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 42.84124816600524,
+      "id": "preemption-2-extract",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:18:47.224251+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/preemption-2-extract-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/preemption-2-extract-stdout.log",
+        "sha256": "99949642252e9e7fed01733ceddaaa9ddd05e5938d659f29d866bb0e570a0f37",
+        "size": 74
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:19:33.037536+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 2.735071290997439,
+      "id": "contention-2-build",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:19:30.302393+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/contention-2-build-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/contention-2-build-stdout.log",
+        "sha256": "febb7b43cf6da02383cbfeceeee3f4b555bc2ca17ac3f93ed09612ffcd28b534",
+        "size": 79
+      }
+    },
+    {
+      "cleanup": {
+        "policy": "none",
+        "removed": []
+      },
+      "completed_at_utc": "2026-10-18T07:20:10.691274+00:00",
+      "diagnostic_semantics": "sanitized_nonmeasurement",
+      "elapsed_seconds": 37.43852983399847,
+      "id": "contention-2-capture",
+      "returncode": 0,
+      "started_at_utc": "2026-10-18T07:19:33.252414+00:00",
+      "status": "completed",
+      "stderr": {
+        "file": "stages/contention-2-capture-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stdout": {
+        "file": "stages/contention-2-capture-stdout.log",
+        "sha256": "43243d54f6a47e2642a70a446a1ed8af9c9508defd4d744778275c237bd29a0c",
+        "size": 176
+      }
+    }
+  ]
+}

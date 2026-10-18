@@ -202,6 +202,8 @@ pub extern "sysv64" fn smp_ap_entry() -> ! {
         // all preceding additions to the shared counter in the Rust model.
         AP_WORK.fetch_add(1, Ordering::Release);
     }
+    #[cfg(smp_benchmarks)]
+    crate::contention_benchmarks::ap_run(&ERROR);
     unsafe { smp_heartbeat_start(&AP_HEARTBEAT) }
 }
 #[unsafe(no_mangle)]
@@ -314,6 +316,8 @@ pub fn run(handoff: &crate::uefi::Handoff) -> ! {
     GO.store(1, Ordering::Release);
     for _ in 0..ITERATIONS { TOTAL.fetch_add(1, Ordering::SeqCst); BSP_WORK.fetch_add(1, Ordering::Relaxed); }
     ensure(wait_for(&AP_WORK, ITERATIONS));
+    #[cfg(smp_benchmarks)]
+    crate::contention_benchmarks::bsp_run(&ERROR);
     let hb_before = AP_HEARTBEAT.load(Ordering::Relaxed);
     let start = clock();
     let mut polls = 0u64;
@@ -353,6 +357,8 @@ pub fn run(handoff: &crate::uefi::Handoff) -> ! {
         ISR_BEFORE.load(Ordering::Relaxed), ISR_AFTER.load(Ordering::Relaxed)));
     print_trap();
     print(format_args!("TESSRYN_K03_SMP_PASS cpus=2 ipis=3 retained=all\n"));
+    #[cfg(smp_benchmarks)]
+    crate::contention_benchmarks::emit();
     finish(true)
 }
 fn print_trap() {
