@@ -1,0 +1,211 @@
+name: K03 two-CPU isolated CPL3 execution
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  k03-smp-user:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Check isolated user evidence boundaries
+        run: |
+          python3 -m unittest discover -s tests -p 'test_k03_smp_user*.py' -v
+          python3 tools/validate_design.py
+      - name: Install pinned compiler, host libraries and emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Execute the actual ACPI parser host tests
+        run: python3 tools/check_k03_smp_user_host.py --out build/k03-smp-user/host
+      - name: Build independent isolated user twins
+        run: |
+          python3 tools/build_k03_smp_user.py --out build/k03-smp-user/a
+          python3 tools/build_k03_smp_user.py --out build/k03-smp-user/b
+      - name: Capture simultaneous progress and actual protection faults
+        run: |
+          for case in rendezvous peer_read forged_ipi; do
+            python3 tools/run_k03_smp_user.py --manifest build/k03-smp-user/a/manifest.json --case "$case" --out "build/k03-smp-user/$case" --allow-qemu
+          done
+      - name: Verify source, twins, host receipts and original CPL3 traces
+        run: |
+          python3 tools/verify_k03_smp_user.py --first build/k03-smp-user/a/manifest.json --second build/k03-smp-user/b/manifest.json --host-result build/k03-smp-user/host/result.json \
+            --result build/k03-smp-user/rendezvous/result.json --result build/k03-smp-user/peer_read/result.json --result build/k03-smp-user/forged_ipi/result.json --out build/k03-smp-user/verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: k03-smp-user-evidence
+          include-hidden-files: true
+          path: |
+            build/k03-smp-user/a/manifest.json
+            build/k03-smp-user/a/rendezvous/BOOTX64.EFI
+            build/k03-smp-user/a/rendezvous/kernel.obj
+            build/k03-smp-user/a/rendezvous/boot.img
+            build/k03-smp-user/a/rendezvous/stdout.log
+            build/k03-smp-user/a/rendezvous/stderr.log
+            build/k03-smp-user/a/peer_read/BOOTX64.EFI
+            build/k03-smp-user/a/peer_read/kernel.obj
+            build/k03-smp-user/a/peer_read/boot.img
+            build/k03-smp-user/a/peer_read/stdout.log
+            build/k03-smp-user/a/peer_read/stderr.log
+            build/k03-smp-user/a/forged_ipi/BOOTX64.EFI
+            build/k03-smp-user/a/forged_ipi/kernel.obj
+            build/k03-smp-user/a/forged_ipi/boot.img
+            build/k03-smp-user/a/forged_ipi/stdout.log
+            build/k03-smp-user/a/forged_ipi/stderr.log
+            build/k03-smp-user/a/notices/tessryn-LICENSE
+            build/k03-smp-user/a/notices/tessryn-NOTICE
+            build/k03-smp-user/a/notices/rust-LICENSE-APACHE
+            build/k03-smp-user/a/notices/rust-LICENSE-MIT
+            build/k03-smp-user/a/notices/rust-COPYRIGHT
+            build/k03-smp-user/a/sources/.github/workflows/k03-smp-user.yml
+            build/k03-smp-user/a/sources/fixtures/rom.py
+            build/k03-smp-user/a/sources/kernel/cpu.rs
+            build/k03-smp-user/a/sources/kernel/diagnostics.rs
+            build/k03-smp-user/a/sources/kernel/entry.S
+            build/k03-smp-user/a/sources/kernel/framebuffer.rs
+            build/k03-smp-user/a/sources/kernel/k02_paging.rs
+            build/k03-smp-user/a/sources/kernel/k02_sha256.rs
+            build/k03-smp-user/a/sources/kernel/main.rs
+            build/k03-smp-user/a/sources/kernel/paging.rs
+            build/k03-smp-user/a/sources/kernel/smp.rs
+            build/k03-smp-user/a/sources/kernel/smp_acpi.rs
+            build/k03-smp-user/a/sources/kernel/smp_entry.S
+            build/k03-smp-user/a/sources/kernel/smp_user.rs
+            build/k03-smp-user/a/sources/kernel/smp_user_entry.S
+            build/k03-smp-user/a/sources/kernel/uefi.rs
+            build/k03-smp-user/a/sources/planning/k02-toolchain.lock.json
+            build/k03-smp-user/a/sources/planning/k03-smp-user.json
+            build/k03-smp-user/a/sources/tests/k03_smp_acpi.rs
+            build/k03-smp-user/a/sources/toolchain.lock.json
+            build/k03-smp-user/a/sources/tools/build_fixture.py
+            build/k03-smp-user/a/sources/tools/build_k03_smp_user.py
+            build/k03-smp-user/a/sources/tools/build_kernel.py
+            build/k03-smp-user/a/sources/tools/check_k03_smp_user_host.py
+            build/k03-smp-user/a/sources/tools/g03/__init__.py
+            build/k03-smp-user/a/sources/tools/g03/process.py
+            build/k03-smp-user/a/sources/tools/k01_media.py
+            build/k03-smp-user/a/sources/tools/k02_region_protocol.py
+            build/k03-smp-user/a/sources/tools/k03_smp_protocol.py
+            build/k03-smp-user/a/sources/tools/k03_smp_trace.py
+            build/k03-smp-user/a/sources/tools/k03_smp_user_protocol.py
+            build/k03-smp-user/a/sources/tools/k03_smp_user_provenance.py
+            build/k03-smp-user/a/sources/tools/k03_smp_user_trace.py
+            build/k03-smp-user/a/sources/tools/run_k03_smp_user.py
+            build/k03-smp-user/a/sources/tools/setup_k02_toolchain.py
+            build/k03-smp-user/a/sources/tools/setup_toolchain.py
+            build/k03-smp-user/a/sources/tools/setup_uefi.py
+            build/k03-smp-user/a/sources/tools/summarize_k03_smp_user_failure.py
+            build/k03-smp-user/a/sources/tools/verify_k03_smp_user.py
+            build/k03-smp-user/a/sources/uefi-toolchain.lock.json
+            build/k03-smp-user/b/manifest.json
+            build/k03-smp-user/b/rendezvous/BOOTX64.EFI
+            build/k03-smp-user/b/rendezvous/kernel.obj
+            build/k03-smp-user/b/rendezvous/boot.img
+            build/k03-smp-user/b/rendezvous/stdout.log
+            build/k03-smp-user/b/rendezvous/stderr.log
+            build/k03-smp-user/b/peer_read/BOOTX64.EFI
+            build/k03-smp-user/b/peer_read/kernel.obj
+            build/k03-smp-user/b/peer_read/boot.img
+            build/k03-smp-user/b/peer_read/stdout.log
+            build/k03-smp-user/b/peer_read/stderr.log
+            build/k03-smp-user/b/forged_ipi/BOOTX64.EFI
+            build/k03-smp-user/b/forged_ipi/kernel.obj
+            build/k03-smp-user/b/forged_ipi/boot.img
+            build/k03-smp-user/b/forged_ipi/stdout.log
+            build/k03-smp-user/b/forged_ipi/stderr.log
+            build/k03-smp-user/b/notices/tessryn-LICENSE
+            build/k03-smp-user/b/notices/tessryn-NOTICE
+            build/k03-smp-user/b/notices/rust-LICENSE-APACHE
+            build/k03-smp-user/b/notices/rust-LICENSE-MIT
+            build/k03-smp-user/b/notices/rust-COPYRIGHT
+            build/k03-smp-user/b/sources/.github/workflows/k03-smp-user.yml
+            build/k03-smp-user/b/sources/fixtures/rom.py
+            build/k03-smp-user/b/sources/kernel/cpu.rs
+            build/k03-smp-user/b/sources/kernel/diagnostics.rs
+            build/k03-smp-user/b/sources/kernel/entry.S
+            build/k03-smp-user/b/sources/kernel/framebuffer.rs
+            build/k03-smp-user/b/sources/kernel/k02_paging.rs
+            build/k03-smp-user/b/sources/kernel/k02_sha256.rs
+            build/k03-smp-user/b/sources/kernel/main.rs
+            build/k03-smp-user/b/sources/kernel/paging.rs
+            build/k03-smp-user/b/sources/kernel/smp.rs
+            build/k03-smp-user/b/sources/kernel/smp_acpi.rs
+            build/k03-smp-user/b/sources/kernel/smp_entry.S
+            build/k03-smp-user/b/sources/kernel/smp_user.rs
+            build/k03-smp-user/b/sources/kernel/smp_user_entry.S
+            build/k03-smp-user/b/sources/kernel/uefi.rs
+            build/k03-smp-user/b/sources/planning/k02-toolchain.lock.json
+            build/k03-smp-user/b/sources/planning/k03-smp-user.json
+            build/k03-smp-user/b/sources/tests/k03_smp_acpi.rs
+            build/k03-smp-user/b/sources/toolchain.lock.json
+            build/k03-smp-user/b/sources/tools/build_fixture.py
+            build/k03-smp-user/b/sources/tools/build_k03_smp_user.py
+            build/k03-smp-user/b/sources/tools/build_kernel.py
+            build/k03-smp-user/b/sources/tools/check_k03_smp_user_host.py
+            build/k03-smp-user/b/sources/tools/g03/__init__.py
+            build/k03-smp-user/b/sources/tools/g03/process.py
+            build/k03-smp-user/b/sources/tools/k01_media.py
+            build/k03-smp-user/b/sources/tools/k02_region_protocol.py
+            build/k03-smp-user/b/sources/tools/k03_smp_protocol.py
+            build/k03-smp-user/b/sources/tools/k03_smp_trace.py
+            build/k03-smp-user/b/sources/tools/k03_smp_user_protocol.py
+            build/k03-smp-user/b/sources/tools/k03_smp_user_provenance.py
+            build/k03-smp-user/b/sources/tools/k03_smp_user_trace.py
+            build/k03-smp-user/b/sources/tools/run_k03_smp_user.py
+            build/k03-smp-user/b/sources/tools/setup_k02_toolchain.py
+            build/k03-smp-user/b/sources/tools/setup_toolchain.py
+            build/k03-smp-user/b/sources/tools/setup_uefi.py
+            build/k03-smp-user/b/sources/tools/summarize_k03_smp_user_failure.py
+            build/k03-smp-user/b/sources/tools/verify_k03_smp_user.py
+            build/k03-smp-user/b/sources/uefi-toolchain.lock.json
+            build/k03-smp-user/rendezvous/result.json
+            build/k03-smp-user/rendezvous/registration.json
+            build/k03-smp-user/rendezvous/stdout.log
+            build/k03-smp-user/rendezvous/stderr.log
+            build/k03-smp-user/rendezvous/firmware/code.fd
+            build/k03-smp-user/rendezvous/firmware/vars.fd
+            build/k03-smp-user/rendezvous/firmware/NOTICE
+            build/k03-smp-user/peer_read/result.json
+            build/k03-smp-user/peer_read/registration.json
+            build/k03-smp-user/peer_read/stdout.log
+            build/k03-smp-user/peer_read/stderr.log
+            build/k03-smp-user/peer_read/firmware/code.fd
+            build/k03-smp-user/peer_read/firmware/vars.fd
+            build/k03-smp-user/peer_read/firmware/NOTICE
+            build/k03-smp-user/forged_ipi/result.json
+            build/k03-smp-user/forged_ipi/registration.json
+            build/k03-smp-user/forged_ipi/stdout.log
+            build/k03-smp-user/forged_ipi/stderr.log
+            build/k03-smp-user/forged_ipi/firmware/code.fd
+            build/k03-smp-user/forged_ipi/firmware/vars.fd
+            build/k03-smp-user/forged_ipi/firmware/NOTICE
+            build/k03-smp-user/host/result.json
+            build/k03-smp-user/host/build-stdout.log
+            build/k03-smp-user/host/build-stderr.log
+            build/k03-smp-user/host/tests-stdout.log
+            build/k03-smp-user/host/tests-stderr.log
+            build/k03-smp-user/verification.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain portable failure metadata
+        if: failure()
+        run: python3 tools/summarize_k03_smp_user_failure.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: k03-smp-user-failure-metadata
+          path: build/k03-smp-user/failure-summary.json
+          if-no-files-found: warn
+          retention-days: 14

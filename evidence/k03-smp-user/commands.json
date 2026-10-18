@@ -1,0 +1,1492 @@
+{
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "tools/check_k02_native_host.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-native-host"
+      ],
+      "elapsed_seconds": 6.170251083000039,
+      "name": "native-host",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/native-host-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/native-host-stdout.log",
+        "sha256": "ce672dde79c3c862ee76c12bb67abbff20f7772a323879dab7eac2b488598fcc",
+        "size_bytes": 103
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k02_native.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-a"
+      ],
+      "elapsed_seconds": 6.89973779200227,
+      "name": "slice-build-a",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-build-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-build-a-stdout.log",
+        "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+        "size_bytes": 222
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k02_native.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-b"
+      ],
+      "elapsed_seconds": 6.516959291002422,
+      "name": "slice-build-b",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-build-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-build-b-stdout.log",
+        "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+        "size_bytes": 222
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-slice-a/manifest.json",
+        "--case",
+        "foreign_read",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-foreign_read"
+      ],
+      "elapsed_seconds": 2.7933549999943352,
+      "name": "slice-run-foreign_read",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-foreign_read-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-foreign_read-stdout.log",
+        "sha256": "524e8470be27adbe2e0ed3081a0b110db7cc12aa17dc23c5d0678175daf9008f",
+        "size_bytes": 258
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-slice-a/manifest.json",
+        "--case",
+        "kernel_read",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-kernel_read"
+      ],
+      "elapsed_seconds": 2.7345240419963375,
+      "name": "slice-run-kernel_read",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-kernel_read-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-kernel_read-stdout.log",
+        "sha256": "c052b8e2fb22c8c9dde333c65e8a826e5d8f450f1ed233a3096a449782192248",
+        "size_bytes": 257
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-slice-a/manifest.json",
+        "--case",
+        "own_page",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-own_page"
+      ],
+      "elapsed_seconds": 2.7374720420048106,
+      "name": "slice-run-own_page",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-own_page-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-own_page-stdout.log",
+        "sha256": "ba4ce5edf7f3e7d0187676a695a2b180263a715bfb6141fa8ee6ae45a6a59193",
+        "size_bytes": 254
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-slice-a/manifest.json",
+        "--case",
+        "readonly_write",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-readonly_write"
+      ],
+      "elapsed_seconds": 2.7283597079949686,
+      "name": "slice-run-readonly_write",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-readonly_write-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-run-readonly_write-stdout.log",
+        "sha256": "1d3d3dfb15bdbd0a8dada382c659bb89a7f55606922ec7fa051610c7990ac3c5",
+        "size_bytes": 260
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_k02_native.py",
+        "--first",
+        "build/k03-smp-user-reg-v1-slice-a/manifest.json",
+        "--second",
+        "build/k03-smp-user-reg-v1-slice-b/manifest.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-slice-own_page/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-slice-foreign_read/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-slice-kernel_read/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-slice-readonly_write/result.json",
+        "--out",
+        "build/k03-smp-user-reg-v1-slice-verification.json"
+      ],
+      "elapsed_seconds": 0.4754948330009938,
+      "name": "slice-verify",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-verify-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/slice-verify-stdout.log",
+        "sha256": "43da62d345370ddaf56a7b88a5de874994e5145f103ad781c0e57dc9649c99ef",
+        "size_bytes": 149
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_kernel.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-a"
+      ],
+      "elapsed_seconds": 5.27795045899984,
+      "name": "k01-build-a",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-build-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-build-a-stdout.log",
+        "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+        "size_bytes": 37
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_kernel.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-b"
+      ],
+      "elapsed_seconds": 4.905108291000943,
+      "name": "k01-build-b",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-build-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-build-b-stdout.log",
+        "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+        "size_bytes": 37
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "int3",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-int3"
+      ],
+      "elapsed_seconds": 2.7339061250022496,
+      "name": "k01-run-int3",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-int3-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-int3-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "invalid_opcode",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-invalid_opcode"
+      ],
+      "elapsed_seconds": 3.0336502919963095,
+      "name": "k01-run-invalid_opcode",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-invalid_opcode-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-invalid_opcode-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "normal",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-iso",
+        "--media",
+        "iso"
+      ],
+      "elapsed_seconds": 2.7918938750008238,
+      "name": "k01-run-iso",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-iso-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-iso-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "normal",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-normal"
+      ],
+      "elapsed_seconds": 2.797388583996508,
+      "name": "k01-run-normal",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-normal-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-normal-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "page_fault",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-page_fault"
+      ],
+      "elapsed_seconds": 2.7859712499994203,
+      "name": "k01-run-page_fault",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-page_fault-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-page_fault-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "panic",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-panic"
+      ],
+      "elapsed_seconds": 2.7522753750017728,
+      "name": "k01-run-panic",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-panic-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-panic-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--case",
+        "reboot",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-reboot"
+      ],
+      "elapsed_seconds": 2.738853333001316,
+      "name": "k01-run-reboot",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-reboot-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-run-reboot-stdout.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_kernel.py",
+        "--first",
+        "build/k03-smp-user-reg-v1-k01-a/manifest.json",
+        "--second",
+        "build/k03-smp-user-reg-v1-k01-b/manifest.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-normal/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-int3/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-invalid_opcode/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-page_fault/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-panic/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-reboot/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-k01-iso/result.json",
+        "--out",
+        "build/k03-smp-user-reg-v1-k01-verification.json"
+      ],
+      "elapsed_seconds": 2.6859196669975063,
+      "name": "k01-verify",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-verify-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/k01-verify-stdout.log",
+        "sha256": "e3a48e5e6f0ac0be3a2da5c97b867388e4b51e73383f9ee69e8cc9dddc6122fd",
+        "size_bytes": 486
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k02_matrix.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-a"
+      ],
+      "elapsed_seconds": 15.674023874998966,
+      "name": "matrix-build-a",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-build-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-build-a-stdout.log",
+        "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+        "size_bytes": 290
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k02_matrix.py",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-b"
+      ],
+      "elapsed_seconds": 15.468149542000901,
+      "name": "matrix-build-b",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-build-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-build-b-stdout.log",
+        "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+        "size_bytes": 290
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "caller_forgery",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-caller_forgery"
+      ],
+      "elapsed_seconds": 2.73686849999649,
+      "name": "matrix-run-caller_forgery",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-caller_forgery-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-caller_forgery-stdout.log",
+        "sha256": "964bde3d10c30f60860da00185b7b83062279ccce2bdcd220b7d3725eb3b3033",
+        "size_bytes": 275
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "data_nx",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-data_nx"
+      ],
+      "elapsed_seconds": 2.7274747080009547,
+      "name": "matrix-run-data_nx",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-data_nx-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-data_nx-stdout.log",
+        "sha256": "9b7041e8c11a7f6615a7b827f25b00fc29c8a68677f83d29126483c3da1577f8",
+        "size_bytes": 268
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "exact_bounds",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-exact_bounds"
+      ],
+      "elapsed_seconds": 2.693136499998218,
+      "name": "matrix-run-exact_bounds",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-exact_bounds-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-exact_bounds-stdout.log",
+        "sha256": "2ae2e998bcd4f58c1ab8611a77767d0602a04428bc97b19789439402d6ec7103",
+        "size_bytes": 273
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "kernel_isolation",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-kernel_isolation"
+      ],
+      "elapsed_seconds": 2.7684778749971883,
+      "name": "matrix-run-kernel_isolation",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-kernel_isolation-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-kernel_isolation-stdout.log",
+        "sha256": "9fea561839a9206da8ca520a39a55ab6aa337efa6215e0e72d4b9cf1f06c66a1",
+        "size_bytes": 277
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "read_only_sharing",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-read_only_sharing"
+      ],
+      "elapsed_seconds": 2.6796690420014784,
+      "name": "matrix-run-read_only_sharing",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-read_only_sharing-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-read_only_sharing-stdout.log",
+        "sha256": "643e3329d709b96038829df5eafb53d528e646a785a7e7da338fedb7492fbd6a",
+        "size_bytes": 278
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "recursive_revocation",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-recursive_revocation"
+      ],
+      "elapsed_seconds": 2.701181208001799,
+      "name": "matrix-run-recursive_revocation",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-recursive_revocation-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-recursive_revocation-stdout.log",
+        "sha256": "3acafa5e2f175830ce0a41ff974ba69cd17bcee9226b1825ae263ce609f6d367",
+        "size_bytes": 281
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "stale_identities",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-stale_identities"
+      ],
+      "elapsed_seconds": 3.2827706250027404,
+      "name": "matrix-run-stale_identities",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-stale_identities-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-stale_identities-stdout.log",
+        "sha256": "6799d32352168e8933ac0326e15af3162fb401ff0b25cf717c3669e302f6cfbd",
+        "size_bytes": 277
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "trusted_operation_forgery",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-trusted_operation_forgery"
+      ],
+      "elapsed_seconds": 2.7565212920017075,
+      "name": "matrix-run-trusted_operation_forgery",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-trusted_operation_forgery-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-trusted_operation_forgery-stdout.log",
+        "sha256": "ed831baa2344c2473b93d88ffc1556a5cb83fd55554e1daa7659d9e6fe2816fa",
+        "size_bytes": 286
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "unauthorized_read",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-unauthorized_read"
+      ],
+      "elapsed_seconds": 2.776739583001472,
+      "name": "matrix-run-unauthorized_read",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-unauthorized_read-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-unauthorized_read-stdout.log",
+        "sha256": "a0d82c1ee2335dd9186d8091a4a875d14236f04d70fda6d23c1788128d5e2f3e",
+        "size_bytes": 278
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--case",
+        "writable_reuse",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-writable_reuse"
+      ],
+      "elapsed_seconds": 2.8755030409956817,
+      "name": "matrix-run-writable_reuse",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-writable_reuse-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-run-writable_reuse-stdout.log",
+        "sha256": "bdda992ae05691511eabd36e388a5ac4d55f304dfb9140726c4cc17d032db915",
+        "size_bytes": 275
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_k02_matrix.py",
+        "--first",
+        "build/k03-smp-user-reg-v1-matrix-a/manifest.json",
+        "--second",
+        "build/k03-smp-user-reg-v1-matrix-b/manifest.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-caller_forgery/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-trusted_operation_forgery/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-unauthorized_read/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-read_only_sharing/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-exact_bounds/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-kernel_isolation/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-data_nx/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-recursive_revocation/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-writable_reuse/result.json",
+        "--result",
+        "build/k03-smp-user-reg-v1-matrix-stale_identities/result.json",
+        "--out",
+        "build/k03-smp-user-reg-v1-matrix-verification.json"
+      ],
+      "elapsed_seconds": 13.957772624999052,
+      "name": "matrix-verify",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-verify-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/matrix-verify-stdout.log",
+        "sha256": "2ecab4980cc939d3cbab53f4d11f88d11decf444acf0710b8d622b466e01be86",
+        "size_bytes": 127
+      }
+    },
+    {
+      "command": [
+        "tessryn/build/toolchain/bin/rustc",
+        "kernel/benchmark_clock.rs",
+        "--test",
+        "--edition=2024",
+        "-Dwarnings",
+        "-o",
+        "tessryn/build/k03-smp-user-old-v1/benchmark-clock-tests"
+      ],
+      "elapsed_seconds": 0.10234570800093934,
+      "name": "older-0",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-0-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-0-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "command": [
+        "tessryn/build/k03-smp-user-old-v1/benchmark-clock-tests",
+        "--test-threads=1"
+      ],
+      "elapsed_seconds": 0.22145050000108313,
+      "name": "older-1",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-1-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-1-stdout.log",
+        "sha256": "801565b5ae1084fb29612c9831d7d9b4f3f77815511d49d88fbe32e808e314e9",
+        "size_bytes": 263
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_native_kernel_benchmarks.py",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/benchmark-image",
+        "--scheduler-source",
+        "tessryn/build/k03-smp-user-old-v1/inputs/scheduler-core.rs"
+      ],
+      "elapsed_seconds": 3.2148079999969923,
+      "name": "older-2",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-2-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-2-stdout.log",
+        "sha256": "5f1af46f81da1bfa93d4cba72eb0a9197f0d710967b43c4e81febc8e54c59ed6",
+        "size_bytes": 131
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_native_kernel_benchmarks.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-old-v1/benchmark-image/manifest.json",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/benchmark-run",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.466502082999796,
+      "name": "older-3",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-3-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-3-stdout.log",
+        "sha256": "dc8afc7130ae1f2c1727d8d0ba06c4eb3b077cc6c278a69c6bfeb56880cd56f0",
+        "size_bytes": 186
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_native_kernel_benchmarks.py",
+        "tessryn/build/k03-smp-user-old-v1/benchmark-run"
+      ],
+      "elapsed_seconds": 0.13597374999517342,
+      "name": "older-4",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-4-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-4-stdout.log",
+        "sha256": "b84936ae24579a33160fecb953717f3fc622aa2abe2f8cff30c89bcfc3b08a47",
+        "size_bytes": 8582
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_k02_region_host.py",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/host"
+      ],
+      "elapsed_seconds": 3.4093980839970754,
+      "name": "older-5",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-5-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-5-stdout.log",
+        "sha256": "d894be4b5f54a8694a6fd8f3099e954a9a71ee31257cd5b9bf255821513d76e6",
+        "size_bytes": 60
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k02_region_service.py",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/a"
+      ],
+      "elapsed_seconds": 6.940706291003153,
+      "name": "older-6",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-6-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-6-stdout.log",
+        "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+        "size_bytes": 62
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k02_region_service.py",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/b"
+      ],
+      "elapsed_seconds": 6.903162624999823,
+      "name": "older-7",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-7-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-7-stdout.log",
+        "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+        "size_bytes": 62
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_region_service.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-old-v1/region/a/manifest.json",
+        "--case",
+        "sharing",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/sharing",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.804003459001251,
+      "name": "older-8",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-8-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-8-stdout.log",
+        "sha256": "fab69376ee7563a534c9fe38b476667197b15d0755e9c3e26f4c79609e280f90",
+        "size_bytes": 155
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_region_service.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-old-v1/region/a/manifest.json",
+        "--case",
+        "revocation",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/revocation",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.806315750000067,
+      "name": "older-9",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-9-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-9-stdout.log",
+        "sha256": "53d91fb811c81cbefefa9dd090c9a358d668f1632c49204b2c5d4b42fe155e22",
+        "size_bytes": 158
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k02_region_service.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-old-v1/region/a/manifest.json",
+        "--case",
+        "authority",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/authority",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.9927151249939925,
+      "name": "older-10",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-10-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-10-stdout.log",
+        "sha256": "51734578f7f7cb1815cea1c2bc2a0cae3b6c51e435de30bf84bfd30de376ff6f",
+        "size_bytes": 157
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_k02_region_service.py",
+        "--first",
+        "tessryn/build/k03-smp-user-old-v1/region/a/manifest.json",
+        "--second",
+        "tessryn/build/k03-smp-user-old-v1/region/b/manifest.json",
+        "--host-result",
+        "tessryn/build/k03-smp-user-old-v1/region/host/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-old-v1/region/sharing/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-old-v1/region/revocation/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-old-v1/region/authority/result.json",
+        "--out",
+        "tessryn/build/k03-smp-user-old-v1/region/verification.json"
+      ],
+      "elapsed_seconds": 51.04328174999682,
+      "name": "older-11",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-11-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/older-11-stdout.log",
+        "sha256": "19e6c40206d9358db6cda94ab2730365762d44f5a38d0151853f971c289c5562",
+        "size_bytes": 98
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_k03_timer_host.py",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/host"
+      ],
+      "elapsed_seconds": 5.562004250001337,
+      "name": "timer-host",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-host-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-host-stdout.log",
+        "sha256": "4616e75c94389bfc3e90441b0c2e050ab9b8a1ab68c2516bf04bd887106c6869",
+        "size_bytes": 63
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k03_timer.py",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/a"
+      ],
+      "elapsed_seconds": 10.594332125001529,
+      "name": "timer-build-a",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-build-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-build-a-stdout.log",
+        "sha256": "d9d3030e854c0b1f7e69e4505839432fe1844e03f54de54cf1306f7343208b75",
+        "size_bytes": 65
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k03_timer.py",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/b"
+      ],
+      "elapsed_seconds": 11.200922458003333,
+      "name": "timer-build-b",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-build-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-build-b-stdout.log",
+        "sha256": "d9d3030e854c0b1f7e69e4505839432fe1844e03f54de54cf1306f7343208b75",
+        "size_bytes": 65
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k03_timer.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-timer-v1/a/manifest.json",
+        "--case",
+        "preemption",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/preemption",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 5.179619374997856,
+      "name": "timer-run-preemption",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-preemption-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-preemption-stdout.log",
+        "sha256": "6cf8c5a3a4ba1a73d94466f53ab76694c6dee487409c8c6409e438662cb6519b",
+        "size_bytes": 156
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k03_timer.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-timer-v1/a/manifest.json",
+        "--case",
+        "budget",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/budget",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.961701207997976,
+      "name": "timer-run-budget",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-budget-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-budget-stdout.log",
+        "sha256": "6092bbd09ddb6dbb155857009814ae7f06f40a596282c226afbdeb593726dea8",
+        "size_bytes": 152
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k03_timer.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-timer-v1/a/manifest.json",
+        "--case",
+        "deadline",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/deadline",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.942306291995919,
+      "name": "timer-run-deadline",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-deadline-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-deadline-stdout.log",
+        "sha256": "10e6144559b4128c9f0daa617e7e98fb6df383dae57ac4e688c26b9a6d69fc71",
+        "size_bytes": 154
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k03_timer.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-timer-v1/a/manifest.json",
+        "--case",
+        "forged_irq",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/forged_irq",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.867061957993428,
+      "name": "timer-run-forged_irq",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-forged_irq-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-run-forged_irq-stdout.log",
+        "sha256": "70c0af252ef1ac4e37ae419fca928aafb4a757975bee1c8b3e7237c401cb2974",
+        "size_bytes": 156
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_k03_timer.py",
+        "--first",
+        "tessryn/build/k03-smp-user-timer-v1/a/manifest.json",
+        "--second",
+        "tessryn/build/k03-smp-user-timer-v1/b/manifest.json",
+        "--host-result",
+        "tessryn/build/k03-smp-user-timer-v1/host/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-timer-v1/preemption/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-timer-v1/budget/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-timer-v1/deadline/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-timer-v1/forged_irq/result.json",
+        "--out",
+        "tessryn/build/k03-smp-user-timer-v1/verification.json"
+      ],
+      "elapsed_seconds": 51.57667916700302,
+      "name": "timer-verify",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-verify-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/timer-verify-stdout.log",
+        "sha256": "09fb3aa929aa05a82e2e0d07b8afb9458dec4a770b909c76ad02bdb7a86c2570",
+        "size_bytes": 99
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_k03_smp_host.py",
+        "--out",
+        "tessryn/build/k03-smp-user-bootstrap-v1/host"
+      ],
+      "elapsed_seconds": 2.5251822500067647,
+      "name": "bootstrap-host",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-host-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-host-stdout.log",
+        "sha256": "32485fb1e01a6649584325f585f70732dc513c467f4446bfe7e536bc8b37438b",
+        "size_bytes": 28
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k03_smp.py",
+        "--out",
+        "tessryn/build/k03-smp-user-bootstrap-v1/a"
+      ],
+      "elapsed_seconds": 3.3531787079991773,
+      "name": "bootstrap-build-a",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-build-a-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-build-a-stdout.log",
+        "sha256": "5671a054a4de21e8a4590672743c23dc07b7f6592f3768fec40a36756b97ee70",
+        "size_bytes": 57
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/build_k03_smp.py",
+        "--out",
+        "tessryn/build/k03-smp-user-bootstrap-v1/b"
+      ],
+      "elapsed_seconds": 3.369797250001284,
+      "name": "bootstrap-build-b",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-build-b-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-build-b-stdout.log",
+        "sha256": "5671a054a4de21e8a4590672743c23dc07b7f6592f3768fec40a36756b97ee70",
+        "size_bytes": 57
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k03_smp.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-bootstrap-v1/a/manifest.json",
+        "--case",
+        "rendezvous",
+        "--out",
+        "tessryn/build/k03-smp-user-bootstrap-v1/rendezvous",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 4.849667750000663,
+      "name": "bootstrap-run-rendezvous",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-run-rendezvous-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-run-rendezvous-stdout.log",
+        "sha256": "88d2b26bfccb00dbed60af568045b40dbfc893435881227adce29302217a9f82",
+        "size_bytes": 140
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/run_k03_smp.py",
+        "--manifest",
+        "tessryn/build/k03-smp-user-bootstrap-v1/a/manifest.json",
+        "--case",
+        "missing_ap",
+        "--out",
+        "tessryn/build/k03-smp-user-bootstrap-v1/missing_ap",
+        "--allow-qemu"
+      ],
+      "elapsed_seconds": 6.892598207996343,
+      "name": "bootstrap-run-missing_ap",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-run-missing_ap-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-run-missing_ap-stdout.log",
+        "sha256": "ff755244c6e46d71ee1ad184c3cf027b280121538fe35f2afef0b6d058d6c7d9",
+        "size_bytes": 140
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/verify_k03_smp.py",
+        "--first",
+        "tessryn/build/k03-smp-user-bootstrap-v1/a/manifest.json",
+        "--second",
+        "tessryn/build/k03-smp-user-bootstrap-v1/b/manifest.json",
+        "--host-result",
+        "tessryn/build/k03-smp-user-bootstrap-v1/host/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-bootstrap-v1/rendezvous/result.json",
+        "--result",
+        "tessryn/build/k03-smp-user-bootstrap-v1/missing_ap/result.json",
+        "--out",
+        "tessryn/build/k03-smp-user-bootstrap-v1/verification.json"
+      ],
+      "elapsed_seconds": 49.85672637500102,
+      "name": "bootstrap-verify",
+      "returncode": 0,
+      "status": "completed",
+      "stderr": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-verify-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "build/k03-smp-user-reg-v1-logs/bootstrap-verify-stdout.log",
+        "sha256": "aefd4b9a9a4b8f174e8753d7cb3c33e8e3e8f423d82e1c56c4be4fecc7a822e8",
+        "size_bytes": 108
+      }
+    }
+  ],
+  "derived_navigation_only": true,
+  "format": "tessryn-smp-user-portable-commands/v1",
+  "source": {
+    "dirty": false,
+    "revision": "ef205654aa6b4e75afb77cc8c2affc1a927f7656",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "f12ab9f4b71f56b142276a9b99556c0ed11d32a63fead8ace498d7a6a8e814af"
+  }
+}

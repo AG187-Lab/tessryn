@@ -38,7 +38,7 @@ The [single-CPU timer integration](k03-timer-preemption.md) now implements HPET
 preemption and actual-time budget/deadline enforcement for the two image-bound
 programs. Its [clean evidence](../evidence/k03-timer/README.md) records four accepted boots,
 69 actual traps, matching 14-artifact twins, 90 focused host checks, 697 Python
-tests and passing regressions. Physical clocks, native SMP, contention and general
+tests and passing regressions. Physical clocks, shared SMP scheduling, contention and general
 idle/wakeup remain separate gates. [Issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
 remains open and dependent on K02. The [host benchmark harness](kernel-benchmarks.md)
 is merged. The separate [in-kernel benchmark experiment](native-kernel-benchmarks.md)
@@ -46,6 +46,15 @@ executes 13 fixed cases and 208 raw-counter samples under single-CPU QEMU;
 [PR #63](https://github.com/AG187-Lab/tessryn/pull/63) records its implementation
 and source-bound review evidence. Hardware latency, native scheduling and
 inference performance remain unqualified.
+
+The [two-CPU bootstrap](k03-smp-bootstrap.md) supplies original INIT/SIPI and
+private AP supervisor state. The separate [two-CPU CPL3 profile](k03-smp-user.md)
+now adds immutable private address spaces and user contexts, protected peer IPI
+stops and fault containment. Its [clean evidence](../evidence/k03-smp-user/README.md)
+records three accepted boots, nine twin artifacts, 755 Python tests, 26 parser
+checks and all 57 earlier-profile commands. Shared scheduler ownership,
+aggregate budgets/accounting, per-CPU timers and safe reuse remain later gates;
+all memory in the new profile stays retained.
 
 [Physical hardware requirements](hardware-intake.md) are ready through
 [PR #64](https://github.com/AG187-Lab/tessryn/pull/64). No server has been rented or

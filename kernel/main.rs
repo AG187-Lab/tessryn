@@ -19,6 +19,10 @@ mod contention_benchmarks;
     k02_native, k02_matrix, k02_region_service, native_benchmarks, k03_timer, k03_smp_user,
     not(smp_case = "rendezvous"))))]
 compile_error!("contention benchmarks require the separate two-CPU rendezvous emulator image");
+#[cfg(k03_smp_user)]
+mod smp_user;
+#[cfg(all(k03_smp_user, not(k03_smp)))]
+compile_error!("SMP user execution requires the separate SMP emulator profile");
 #[cfg(all(k03_smp, any(not(k01_emulator), k01_aws, k02_native, native_benchmarks, k03_timer)))]
 compile_error!("SMP bootstrap is a separate emulator-only image");
 #[cfg(all(native_benchmarks, any(k02_native, k02_matrix, k02_region_service)))]
@@ -45,7 +49,8 @@ mod k02;
 mod k02_cpu;
 #[cfg(k02_native)]
 mod k02_memory;
-#[cfg(k02_native)]
+#[cfg(any(k02_native, k03_smp_user))]
+#[cfg_attr(k03_smp_user, allow(dead_code))]
 mod k02_paging;
 #[cfg(k02_matrix)]
 mod k02_matrix;
@@ -59,7 +64,7 @@ compile_error!("the first region service profile requires K02 native emulator on
 mod region_service;
 #[cfg(k02_region_service)]
 mod region_runtime;
-#[cfg(all(k02_region_service, not(k02_matrix)))]
+#[cfg(any(all(k02_region_service, not(k02_matrix)), k03_smp_user))]
 mod k02_sha256;
 
 #[cfg(not(any(native_benchmarks, k03_smp)))]
