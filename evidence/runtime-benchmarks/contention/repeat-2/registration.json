@@ -1,0 +1,437 @@
+{
+  "capture_origin": "local_runner_claim_unverified_offline",
+  "command": [
+    "qemu-system-x86_64",
+    "-machine",
+    "q35,hpet=on",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+    "-m",
+    "256M",
+    "-smp",
+    "2,sockets=1,cores=2,threads=1,maxcpus=2",
+    "-nodefaults",
+    "-no-user-config",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "null",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-device",
+    "VGA,romfile=",
+    "-global",
+    "apic.vapic=off",
+    "-drive",
+    "if=pflash,format=raw,readonly=on,file=code.fd",
+    "-drive",
+    "if=pflash,format=raw,file=vars.fd",
+    "-debugcon",
+    "stdio",
+    "-global",
+    "isa-debugcon.iobase=0xe9",
+    "-device",
+    "isa-debug-exit,iobase=0xf4,iosize=0x04",
+    "-drive",
+    "if=ide,format=raw,snapshot=on,file=boot.img",
+    "-boot",
+    "order=c"
+  ],
+  "created_at_utc": "2026-10-18T07:19:56.835067Z",
+  "emulator_sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80",
+  "files": [
+    {
+      "path": "build/BOOTX64.EFI",
+      "sha256": "2deafd097b893aaa289bebbb56f78c19c77ab2e0d5c8a0246d1745800a13c2c8",
+      "size_bytes": 47104
+    },
+    {
+      "path": "build/boot.img",
+      "sha256": "47067982909b871c01b1507463509bcf631db30a1f70c6b96879842930fa5729",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "build/kernel.obj",
+      "sha256": "77bdcdde8500f7d81adb48f79f6f0586ccf0d4d28cf765d54435e3aff2eca234",
+      "size_bytes": 503519
+    },
+    {
+      "path": "build/manifest.json",
+      "sha256": "201e8c9c33c9092b0ed51339ae0b37a61764492443c166ccce89a4d35339a3d3",
+      "size_bytes": 19237
+    },
+    {
+      "path": "build/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/profile.json",
+      "sha256": "1c9a39f7d1a275603555c0e9c9bdaf10533247a133ccbc00d932082a0dcc96e7",
+      "size_bytes": 2989
+    },
+    {
+      "path": "build/sources/.github/workflows/k03-smp.yml",
+      "sha256": "6fb6007df72db7c76bcfc2fa494e513075478a913594896f87cea647c97b7bab",
+      "size_bytes": 9174
+    },
+    {
+      "path": "build/sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size_bytes": 1073
+    },
+    {
+      "path": "build/sources/kernel/contention_benchmarks.rs",
+      "sha256": "1149e24276f0cefbc1f945a34eaf336630c2cf5796e2ee6ae7ddd16af860614e",
+      "size_bytes": 9418
+    },
+    {
+      "path": "build/sources/kernel/cpu.rs",
+      "sha256": "1ca24735152073170122a625fe13251b42e32102c29b8a4f86e2743e5f268cbc",
+      "size_bytes": 11508
+    },
+    {
+      "path": "build/sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size_bytes": 3005
+    },
+    {
+      "path": "build/sources/kernel/entry.S",
+      "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+      "size_bytes": 5558
+    },
+    {
+      "path": "build/sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size_bytes": 4436
+    },
+    {
+      "path": "build/sources/kernel/main.rs",
+      "sha256": "5f607ca517d2c88b78aca6572426eb550adf378e7b5fa3eb0cb7967b41771c69",
+      "size_bytes": 6728
+    },
+    {
+      "path": "build/sources/kernel/paging.rs",
+      "sha256": "463be88754ea0c2ab383bf5cfcfd3695c99407d1a9eb5cb907d386d61b784cc2",
+      "size_bytes": 8591
+    },
+    {
+      "path": "build/sources/kernel/smp.rs",
+      "sha256": "5736d82dbd9430b387cfee9318c1441014afa0cc935b3637e5f9722d768fa84d",
+      "size_bytes": 19063
+    },
+    {
+      "path": "build/sources/kernel/smp_acpi.rs",
+      "sha256": "51e2093927b69c40c0d9aea8ada69c85cd3ec55071132f499d9fae7d9bd542a9",
+      "size_bytes": 8475
+    },
+    {
+      "path": "build/sources/kernel/smp_entry.S",
+      "sha256": "8436370a733ed43b03cea5011735ea1a2e008197ba4cefd0e80a8c8f4ce597c3",
+      "size_bytes": 3044
+    },
+    {
+      "path": "build/sources/kernel/uefi.rs",
+      "sha256": "c256b1942688154c40250f87a61981d37bae06e8f38f1ac31d088756ad251ff4",
+      "size_bytes": 28177
+    },
+    {
+      "path": "build/sources/planning/contention-benchmark-profile.json",
+      "sha256": "1c9a39f7d1a275603555c0e9c9bdaf10533247a133ccbc00d932082a0dcc96e7",
+      "size_bytes": 2989
+    },
+    {
+      "path": "build/sources/planning/k02-toolchain.lock.json",
+      "sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+      "size_bytes": 883
+    },
+    {
+      "path": "build/sources/planning/k03-smp.json",
+      "sha256": "96a64f7498086c533d7b5ef8d30662f6960bb2fb2dba0e6cfe209985b49bff09",
+      "size_bytes": 697
+    },
+    {
+      "path": "build/sources/tests/k03_smp_acpi.rs",
+      "sha256": "f29b4381c453923c47e1e903937dc1311378500f1c49cc30a646db2f5feb6377",
+      "size_bytes": 12949
+    },
+    {
+      "path": "build/sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size_bytes": 3748
+    },
+    {
+      "path": "build/sources/tools/build_contention_benchmarks.py",
+      "sha256": "51fd88201f7233ad5a013ccf3510a24cf9dc7398f811e2e7f4323c4b7d9feb80",
+      "size_bytes": 6623
+    },
+    {
+      "path": "build/sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size_bytes": 19816
+    },
+    {
+      "path": "build/sources/tools/build_k03_smp.py",
+      "sha256": "eff9644c7770d1152d3214b714b812987c7200e9d3682ab77de9035b91da3a80",
+      "size_bytes": 11714
+    },
+    {
+      "path": "build/sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size_bytes": 12867
+    },
+    {
+      "path": "build/sources/tools/check_k03_smp_host.py",
+      "sha256": "5daf2db7f35bf606daf3ba049238b1eb3e25dc83aa5d0e716ece417874090896",
+      "size_bytes": 4325
+    },
+    {
+      "path": "build/sources/tools/contention_benchmark_protocol.py",
+      "sha256": "81757c8087467f68f05e04f6fe6ae9511caf2511747ea6cbd545230ae78c75dc",
+      "size_bytes": 7328
+    },
+    {
+      "path": "build/sources/tools/g03/__init__.py",
+      "sha256": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+      "size_bytes": 71
+    },
+    {
+      "path": "build/sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size_bytes": 6728
+    },
+    {
+      "path": "build/sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size_bytes": 10501
+    },
+    {
+      "path": "build/sources/tools/k02_region_protocol.py",
+      "sha256": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+      "size_bytes": 8099
+    },
+    {
+      "path": "build/sources/tools/k03_smp_protocol.py",
+      "sha256": "787a480c811c657b44218c26f4bb51827834ddcdea9e8330ed12724a96d9dffd",
+      "size_bytes": 1672
+    },
+    {
+      "path": "build/sources/tools/k03_smp_provenance.py",
+      "sha256": "1c5f419ea4940a29a435cfbf24342f77fe6ef173b0118ac68166e0fc20141c67",
+      "size_bytes": 6109
+    },
+    {
+      "path": "build/sources/tools/k03_smp_trace.py",
+      "sha256": "1f3616305b17b1839d318affa40b711c56cf848d63b54f59db46a1392b6fc6d6",
+      "size_bytes": 17070
+    },
+    {
+      "path": "build/sources/tools/run_contention_benchmarks.py",
+      "sha256": "16d5d3001d9de071dc3a74a91fffa94444752684ce6520636835470a4e3f10e9",
+      "size_bytes": 8020
+    },
+    {
+      "path": "build/sources/tools/run_k03_smp.py",
+      "sha256": "b29a06a0b1d34b185a7724c4907745b591afcd14566a841e9d29b71594736fff",
+      "size_bytes": 8205
+    },
+    {
+      "path": "build/sources/tools/setup_k02_toolchain.py",
+      "sha256": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+      "size_bytes": 13215
+    },
+    {
+      "path": "build/sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size_bytes": 13199
+    },
+    {
+      "path": "build/sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size_bytes": 17457
+    },
+    {
+      "path": "build/sources/tools/summarize_k03_smp_failure.py",
+      "sha256": "a9d1d73b3ddfd8f906b60b5f9f67f7c6b9803a8a06d33de617081d78831cae86",
+      "size_bytes": 2811
+    },
+    {
+      "path": "build/sources/tools/verify_contention_benchmarks.py",
+      "sha256": "69028325a3a1b3eef45ae9b57e88aa665d946987ea51d0dfbd8bf3946c0309f3",
+      "size_bytes": 19766
+    },
+    {
+      "path": "build/sources/tools/verify_k03_smp.py",
+      "sha256": "750f4133deda953b40c6d27122e3c75351f77917a9cb6f48d5cdf125639ac4b5",
+      "size_bytes": 15029
+    },
+    {
+      "path": "build/sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size_bytes": 3623
+    },
+    {
+      "path": "build/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    }
+  ],
+  "format": "tessryn-contention-registration/v1",
+  "hardware_qualified": false,
+  "inference_qualified": false,
+  "launcher_sha256": "6e506aec3c0cff703ac1e66cedc6f1945354ad41339a38db4425c7c88227128f",
+  "manifest_sha256": "201e8c9c33c9092b0ed51339ae0b37a61764492443c166ccce89a4d35339a3d3",
+  "max_log_bytes": 1048576,
+  "runtime_files": {
+    ".github/workflows/k03-smp.yml": "6fb6007df72db7c76bcfc2fa494e513075478a913594896f87cea647c97b7bab",
+    "fixtures/rom.py": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+    "planning/contention-benchmark-profile.json": "1c9a39f7d1a275603555c0e9c9bdaf10533247a133ccbc00d932082a0dcc96e7",
+    "planning/k02-toolchain.lock.json": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "planning/k03-smp.json": "96a64f7498086c533d7b5ef8d30662f6960bb2fb2dba0e6cfe209985b49bff09",
+    "tests/k03_smp_acpi.rs": "f29b4381c453923c47e1e903937dc1311378500f1c49cc30a646db2f5feb6377",
+    "toolchain.lock.json": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "tools/build_contention_benchmarks.py": "51fd88201f7233ad5a013ccf3510a24cf9dc7398f811e2e7f4323c4b7d9feb80",
+    "tools/build_fixture.py": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+    "tools/build_k03_smp.py": "eff9644c7770d1152d3214b714b812987c7200e9d3682ab77de9035b91da3a80",
+    "tools/build_kernel.py": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+    "tools/check_k03_smp_host.py": "5daf2db7f35bf606daf3ba049238b1eb3e25dc83aa5d0e716ece417874090896",
+    "tools/contention_benchmark_protocol.py": "81757c8087467f68f05e04f6fe6ae9511caf2511747ea6cbd545230ae78c75dc",
+    "tools/g03/__init__.py": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+    "tools/g03/process.py": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+    "tools/k01_media.py": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+    "tools/k02_region_protocol.py": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+    "tools/k03_smp_protocol.py": "787a480c811c657b44218c26f4bb51827834ddcdea9e8330ed12724a96d9dffd",
+    "tools/k03_smp_provenance.py": "1c5f419ea4940a29a435cfbf24342f77fe6ef173b0118ac68166e0fc20141c67",
+    "tools/k03_smp_trace.py": "1f3616305b17b1839d318affa40b711c56cf848d63b54f59db46a1392b6fc6d6",
+    "tools/run_contention_benchmarks.py": "16d5d3001d9de071dc3a74a91fffa94444752684ce6520636835470a4e3f10e9",
+    "tools/run_k03_smp.py": "b29a06a0b1d34b185a7724c4907745b591afcd14566a841e9d29b71594736fff",
+    "tools/setup_k02_toolchain.py": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+    "tools/setup_toolchain.py": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+    "tools/setup_uefi.py": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+    "tools/summarize_k03_smp_failure.py": "a9d1d73b3ddfd8f906b60b5f9f67f7c6b9803a8a06d33de617081d78831cae86",
+    "tools/verify_contention_benchmarks.py": "69028325a3a1b3eef45ae9b57e88aa665d946987ea51d0dfbd8bf3946c0309f3",
+    "tools/verify_k03_smp.py": "750f4133deda953b40c6d27122e3c75351f77917a9cb6f48d5cdf125639ac4b5",
+    "uefi-toolchain.lock.json": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450"
+  },
+  "scope": "two_cpu_qemu_contention",
+  "setup": {
+    "base_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "base_setup_sha256": "07b95962e8537ee836abde3c27d68399b5348b2f63cd4de410e0a9da4ced192d",
+    "firmware": {
+      "code": {
+        "path": "firmware/edk2-x86_64-code.fd",
+        "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "size_bytes": 3653632
+      },
+      "descriptor": {
+        "path": "firmware/60-edk2-x86_64.json",
+        "sha256": "6f8a1e4463b44625e604c420213b6c40705ce9587662a674f31230999471e1b9",
+        "size_bytes": 702
+      },
+      "notice": {
+        "path": "firmware/edk2-licenses.txt",
+        "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+        "size_bytes": 42903
+      },
+      "vars": {
+        "path": "firmware/edk2-i386-vars.fd",
+        "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+        "size_bytes": 540672
+      }
+    },
+    "firmware_archive": {
+      "hash_source": "toolchain.lock.json:qemu.sha256",
+      "revision": "4fc49f46dc95d4a27de2509e7fceb2931e91faeb",
+      "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+      "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+      "version": "11.1.2"
+    },
+    "host": "aarch64-apple-darwin",
+    "lock_sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+    "rust_library_tree_sha256": "0a3d45acfac3e38b2c0bc30a3cd3830d0df93864a99d0bf87f20ea6dbd9f56d7",
+    "rust_notices": {
+      "COPYRIGHT": {
+        "path": "notices/rust/COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "LICENSE-APACHE": {
+        "path": "notices/rust/LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "LICENSE-MIT": {
+        "path": "notices/rust/LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      }
+    },
+    "rust_target_archive": {
+      "hash_source": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+      "hash_source_sha256": "9af50610e1d82699f78a40b985c9277ae1a2c5a0bec86ae430cfe58832038285",
+      "manifest_key": "pkg.rust-std.target.x86_64-unknown-uefi.xz_hash",
+      "sha256": "dd8d565f061389cef66f64aa65bbfabe01954e360ada0b39f1e0d637d588e4f6",
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-x86_64-unknown-uefi.tar.xz"
+    },
+    "rust_target_library_tree_sha256": "357151d2712e52bfe9424b55767d8f1bb58f7627ed2b4fadec76e573fc81f3b4",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "schema_version": 1,
+    "verified_tools": {
+      "qemu": {
+        "sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80"
+      },
+      "rust_lld": {
+        "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+      },
+      "rustc": {
+        "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+      }
+    }
+  },
+  "timeout_seconds": 60.0
+}

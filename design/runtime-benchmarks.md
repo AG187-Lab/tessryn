@@ -1,16 +1,19 @@
 # Runtime preemption and cross-core benchmark experiments
 
-Status: implemented on an isolated branch from the committed K03 kernel
-baseline; accepted execution evidence is pending. Original-kernel execution and independent verification must
-complete before any observation is accepted. These experiments measure emulator
-behavior; physical latency and inference performance remain unqualified.
+Status: original-kernel QEMU execution and independent packet verification passed
+on implementation `a1ef56849d6c8a163de3d16a665445cdbf64ec9a`, integrating the
+merged PR #68 kernel baseline. The [accepted text evidence](../evidence/runtime-benchmarks/README.md)
+records ten fresh captures. These experiments measure emulator behavior; physical
+latency and inference performance remain unqualified.
 
 ## Ownership and objective
 
 The kernel session owns isolated multicore CPL3 contexts and runtime correctness.
-This experiment uses the committed single-CPU timer runtime and two-CPU kernel
-bootstrap, with separate opt-in contention hooks. It does not introduce a second
-scheduler or share the kernel session's unfinished runtime changes.
+This experiment integrates the merged two-CPU user-runtime baseline
+`763a1d274de2ee61b07c22527160ba8ba8216f95`. It uses the existing single-CPU
+timer profile and separate opt-in contention hooks in the two-CPU kernel
+bootstrap. Contention fixtures and user-SMP execution have mutually exclusive
+configurations; the kernel session continues to own multicore task correctness.
 
 The objective is to expose the costs that can delay decode work: a timer deadline
 reaching a trusted stop, cache-line sharing, atomic updates and cross-core
@@ -143,7 +146,8 @@ packet. They do not silently become additional measurements.
 
 The next hardware comparison must register the exact CPU/topology, firmware,
 clock ordering/frequency, placement, power conditions, offered workload, sample
-counts, SLO/regression margins and uncertainty method before measuring candidates.
+counts, baseline/candidate interleaving, SLO/regression margins and uncertainty
+method before measuring candidates.
 Test low load, bursts and contention with cancellation/control progress preserved.
 Physical preemption/wakeup and cross-core accounting need their trusted runtime
 and clock qualification; GPU/device and numerical-quality evidence remain

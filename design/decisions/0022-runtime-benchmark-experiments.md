@@ -1,6 +1,6 @@
 # ADR 0022: Measure runtime preemption and bounded cross-core fixtures
 
-- Status: accepted direction; original-kernel execution evidence pending
+- Status: accepted; original-kernel QEMU observations verified, physical measurements pending
 - Date: 2026-10-17
 
 ## Context
@@ -37,4 +37,7 @@ measurement costs remain visible in their interval definitions.
 Physical-clock/hardware comparisons and model-shaped inference qualification are
 explicit pending gates. Future runtime or queue benchmarks require their own
 registered endpoints and correctness evidence; these results cannot be relabeled.
-See [the experiment contract](../runtime-benchmarks.md).
+The [accepted execution record](../../evidence/runtime-benchmarks/README.md)
+retains ten fresh captures from the integrated PR #68 baseline, with descriptive
+statistics and no performance promotion. See
+[the experiment contract](../runtime-benchmarks.md).
