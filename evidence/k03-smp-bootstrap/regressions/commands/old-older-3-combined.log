@@ -1,0 +1,1 @@
+{"status": "observed", "valid": true, "evidence_scope": "qemu_guest_microbenchmark", "reason": "captured original kernel completed fixed raw-counter protocol in pinned single-CPU QEMU"}

@@ -1,0 +1,36 @@
+
+running 31 tests
+test bad_readback_and_failed_pending_drain_remain_fatal ... ok
+test both_private_roots_keep_hpet_supervisor_nx_uc_and_seal_after_user_install ... ok
+test cancellation_drains_irq_pending_while_kernel_if_is_zero ... ok
+test cancellation_rejects_unknown_pending_or_acknowledged_pic_owners ... ok
+test conversion_is_exact_floor_and_comparator_ceil_without_wrapping ... ok
+test cpu_pat_and_if_admission_happen_before_mmio_or_route_enable ... ok
+test early_unarmed_and_forged_irqs_never_acknowledge_or_resume ... ok
+test if_violation_blocks_resume_and_shutdown_masks_the_source ... ok
+test initialization_admits_exact_profile_masks_routes_and_disables_lapic ... ok
+test k02_paging::tests::all_mapping_budget_and_collision_failures_are_atomic ... ok
+test k02_paging::tests::domains_have_distinct_roots_and_foreign_page_is_absent ... ok
+test k02_paging::tests::every_parent_and_leaf_user_bit_is_required_and_corruption_is_refused ... ok
+test k02_paging::tests::exact_readonly_and_writable_nx_with_supervisor_ancestors ... ok
+test k02_paging::tests::hardware_accessed_dirty_bits_do_not_change_authority ... ok
+test k02_paging::tests::mandatory_low_map_and_high_pool_coverage_before_user_installation ... ok
+test k02_paging::tests::preserves_sparse_high_supervisor_ranges_and_rejects_late_seeding ... ok
+test k02_paging::tests::rejects_alignment_width_guard_and_whole_table_object_aliases ... ok
+test k02_paging::tests::rejects_retargeted_supervisor_hidden_user_leaf_and_not_present_huge_leaf ... ok
+test k02_paging::tests::sparse_user_paths_capacity_and_record_limits_fail_without_exposure ... ok
+test k02_paging::tests::supervisor_table_capacity_and_guard_fail_atomically ... ok
+test k02_paging::tests::trusted_code_is_readonly_executable_and_data_cannot_gain_exec ... ok
+test k02_paging::tests::unmap_removes_only_exact_leaf_and_does_not_recycle_page_tables ... ok
+test k02_paging::tests::virtual_address_and_physical_width_are_independent ... ok
+test kernel_uc_change_preserves_identity_counts_and_other_leaves ... ok
+test malformed_hpet_capabilities_period_or_feature_never_admit ... ok
+test missed_soft_time_before_programming_consumes_grant_without_blocking_peer ... ok
+test missed_soft_time_during_programming_drains_source_and_next_owner_runs ... ok
+test observed_clock_regression_and_overflow_stickily_block ... ok
+test pending_observation_retains_arm_without_acknowledgement_or_cancellation ... ok
+test real_irq_requires_exact_arm_expiry_and_pic_in_service_acknowledgement ... ok
+test stale_zero_and_simultaneous_arm_generations_fail_closed ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

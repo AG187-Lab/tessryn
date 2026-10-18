@@ -1,0 +1,140 @@
+{
+  "capture_only": false,
+  "case": "deadline",
+  "evaluator_sha256": "0c2a9d2526017201c7101d47f84544cef0c9aced2a8cfc9c18d6bcac85684e21",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,accel=tcg,hpet=on",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off",
+      "-m",
+      "256M",
+      "-smp",
+      "1",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 1.7637744579988066,
+    "max_log_bytes": 1048576,
+    "returncode": 33,
+    "status": "completed",
+    "timeout_seconds": 45
+  },
+  "format": "tessryn-k03-timer-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "8f834f6bd7cee5398667f54fb89348bdf97cb0edd12479fbaeb489927227263a",
+      "size_bytes": 56114
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "256fa85819bc51ee3946d16dc33c56c7a700cce178569f719057776787f38a79",
+  "observations": {
+    "b_read_confirmed": true,
+    "case": "deadline",
+    "clock": {
+      "end_ns": 173128000,
+      "end_raw": 17316400,
+      "epoch_raw": 3600,
+      "kernel_ns": 41073000,
+      "period_fs": 10000000,
+      "tenant_ns": 132055000
+    },
+    "context_switches": 7,
+    "dispatches": 15,
+    "final_allocated_pages": 0,
+    "final_cpu_leases": 0,
+    "final_mappings": 0,
+    "irqs": [
+      3,
+      3
+    ],
+    "missed_arms": 0,
+    "pending_irq_probe": false,
+    "policy": [
+      {
+        "consumed_ns": 63263000,
+        "deadline_ns": 110716000,
+        "domain": 1,
+        "halted": true,
+        "limit_ns": 2000000000,
+        "reserved_ns": 0,
+        "state": "failed"
+      },
+      {
+        "consumed_ns": 68792000,
+        "deadline_ns": 0,
+        "domain": 2,
+        "halted": false,
+        "limit_ns": 2000000000,
+        "reserved_ns": 0,
+        "state": "completed"
+      }
+    ],
+    "requests": 9,
+    "service_records": 266,
+    "spin_irqs": [
+      3,
+      3
+    ],
+    "stages": [
+      "a:map",
+      "a:writable_unmap",
+      "a:readonly_remap",
+      "a:delegate",
+      "b:map",
+      "b:read_confirmed",
+      "b:resumed_accounting",
+      "b:stale_unmap",
+      "b:exit"
+    ],
+    "task_fp_sha256": [
+      "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+      "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+    ],
+    "task_resumes": [
+      7,
+      8
+    ],
+    "traps": 15
+  },
+  "qualification": "not_established",
+  "reason": "bound CPL3 IRQ preemption and complete K03 timer budget protocol matched",
+  "registration_sha256": "bf0422cef995929842144a07e4da71fd74ed97cdd7e0f2e4833462675d0b08a1",
+  "scope": "bounded original-kernel single-CPU HPET timer and K03 budget integration; physical clocks, arbitrary-program isolation, SMP and DMA unqualified",
+  "status": "pass"
+}

@@ -1,0 +1,93 @@
+{
+  "format": "tessryn-k03-smp-host/v1",
+  "receipts": [
+    {
+      "command": [
+        "rust-toolchain/bin/rustc",
+        "--edition=2024",
+        "-Dwarnings",
+        "--test",
+        "tests/k03_smp_acpi.rs",
+        "--remap-path-prefix=smp-host=smp-host",
+        "--remap-path-prefix=tessryn=tessryn",
+        "-o",
+        "smp-host/tests"
+      ],
+      "elapsed_seconds": 0.18731641699923784,
+      "returncode": 0,
+      "role": "build",
+      "status": "completed",
+      "stderr": {
+        "path": "build-stderr.log",
+        "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+        "size_bytes": 203
+      },
+      "stdout": {
+        "path": "build-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "command": [
+        "smp-host/tests",
+        "--test-threads=1"
+      ],
+      "elapsed_seconds": 0.28522112499922514,
+      "returncode": 0,
+      "role": "tests",
+      "status": "completed",
+      "stderr": {
+        "path": "tests-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "stdout": {
+        "path": "tests-stdout.log",
+        "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+        "size_bytes": 1986
+      }
+    }
+  ],
+  "scope": "host ACPI parser checks; AP startup and interrupt execution require original guest evidence",
+  "source": {
+    "dirty": false,
+    "revision": "f3f39b8e333b5e6fcb96a829dddaa480a5858ee1",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "09e6e214e0ae5216a6ee12b8912bd282269ebe874b5a186a63ec27f80bbd1fed"
+  },
+  "sources": {
+    "kernel/smp_acpi.rs": "51e2093927b69c40c0d9aea8ada69c85cd3ec55071132f499d9fae7d9bd542a9",
+    "tests/k03_smp_acpi.rs": "f29b4381c453923c47e1e903937dc1311378500f1c49cc30a646db2f5feb6377"
+  },
+  "status": "pass",
+  "tests": 26,
+  "toolchain": {
+    "g03_lock_sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+    "g03_record_sha256": "07b95962e8537ee836abde3c27d68399b5348b2f63cd4de410e0a9da4ced192d",
+    "host": "aarch64-apple-darwin",
+    "host_library": {
+      "sha256": "439c4f71060b913e00db3a2e01340b2da0aa49978b843e36871f3250267c63f8",
+      "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-aarch64-apple-darwin.tar.xz"
+    },
+    "kind": "k02_host_test_toolchain",
+    "profile_sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+    "rust_host_library_tree_sha256": "d0f8b9308cb4d641851bab30dab235490d55ac22f2787b02268e961aae811c9c",
+    "rust_library_tree_sha256": "4845accb64c5ffb452df45c83e015ffa2d9fe908668bae029e1b1d268af1f30f",
+    "rust_revision": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "rust_target_library_tree_sha256": "04087044f06c8af97a6e1ae6e1035e696d7beff59ba0a2ef2e603bf6e7a7d760",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "schema_version": 1,
+    "verified_tools": {
+      "qemu": {
+        "sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80"
+      },
+      "rust_lld": {
+        "sha256": "613eb4a0b9a297e3efb58e5ddf311091c7ab606bc846584f2ea27125f4e97063"
+      },
+      "rustc": {
+        "sha256": "c5922366bfe3d6d028a65d626f4e629b3adad066995cf0b60c8a4b617bba5ffe"
+      }
+    }
+  }
+}

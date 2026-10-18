@@ -1,0 +1,31 @@
+
+running 26 tests
+test hpet_matches_actual_qemu_table_and_explicit_64_bit_gas ... ok
+test hpet_rejects_unknown_block_or_reserved_profile_metadata ... ok
+test hpet_rejects_wrong_signature_size_checksum_and_capability_metadata ... ok
+test hpet_requires_system_memory_fixed_base_and_zero_gas_offset ... ok
+test madt_disabled_and_online_capable_processors_are_not_boot_targets ... ok
+test madt_duplicate_ids_cross_legacy_and_disabled_x2apic_entries ... ok
+test madt_enabled_x2apic_is_explicitly_unsupported ... ok
+test madt_every_subtable_must_advance_and_fit_the_declared_table ... ok
+test madt_fixed_cpu_structure_lengths_and_table_header_are_enforced ... ok
+test madt_header_lapic_flags_and_broadcast_target_are_bounded ... ok
+test madt_processor_tracking_has_a_fixed_nonallocating_bound ... ok
+test madt_rejects_all_lapic_overrides_even_to_the_same_address ... ok
+test madt_rejects_duplicate_ids_even_when_disabled_or_after_two_valid_targets ... ok
+test madt_rejects_reserved_processor_flags_and_x2apic_reserved_bytes ... ok
+test madt_rejects_zero_one_or_three_enabled_processors ... ok
+test madt_returns_exactly_two_sorted_enabled_xapic_ids ... ok
+test madt_well_framed_unneeded_structures_are_skipped_without_authority ... ok
+test rsdp_declared_length_reserved_and_pointer_overflow_are_rejected ... ok
+test rsdp_requires_exact_36_byte_layout_and_returns_owned_address_value ... ok
+test rsdp_signature_revision_and_both_checksums_are_independent ... ok
+test sdt_exact_header_and_64_kib_limit_accept_owned_unaligned_bytes ... ok
+test sdt_rejects_truncation_trailing_or_self_inconsistent_lengths ... ok
+test sdt_signature_revision_and_checksum_cannot_be_self_asserted ... ok
+test xsdt_rejects_empty_partial_zero_and_overflowing_entries ... ok
+test xsdt_validates_entire_table_before_publishing_any_iterator ... ok
+test xsdt_walks_little_endian_u64_entries_with_exact_remaining_count ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

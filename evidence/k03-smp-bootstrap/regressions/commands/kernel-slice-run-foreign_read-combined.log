@@ -1,0 +1,1 @@
+{"status": "pass", "case": "foreign_read", "reason": "fresh pinned emulator, exact CPL3 probe and owned trap evidence matched", "scope": "four original-kernel single-CPU QEMU enforcement cases; full K02 protocol, physical hardware, SMP and DMA unqualified"}

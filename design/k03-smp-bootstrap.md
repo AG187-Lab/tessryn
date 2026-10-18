@@ -1,6 +1,6 @@
 # Two-CPU kernel bootstrap and interrupt ownership
 
-Status: implementation contract; clean original-kernel execution acceptance pending.
+Status: bounded clean emulator execution accepted; [original evidence](../evidence/k03-smp-bootstrap/README.md).
 This bounded step advances [K03 issue #6](https://github.com/AG187-Lab/tessryn/issues/6)
 from the [single-CPU timer baseline](k03-timer-preemption.md) into original-kernel
 AP startup and cross-CPU interrupt ownership. [ADR 0020](decisions/0020-two-cpu-bootstrap.md)
@@ -100,7 +100,7 @@ acknowledge DMA or device quiescence.
 
 ## Acceptance and reproduction
 
-Clean acceptance remains pending. Require a committed clean source snapshot,
+Clean implementation `f3f39b8e333b5e6fcb96a829dddaa480a5858ee1` passed both fresh scenarios, six byte-identical twin artifacts, all 26 parser checks and 725 Python tests. The [packet](../evidence/k03-smp-bootstrap/README.md) keeps prior-profile regression source identities separate and proves their shared inputs unchanged. Release requires a committed clean source snapshot,
 pinned compiler/emulator/firmware, independent matching builds of both cases,
 all 26 parser host tests and fresh original-kernel captures of both scenarios.
 The independent verifier must bind the source/toolchain/descriptor/trampoline/heartbeat loop,

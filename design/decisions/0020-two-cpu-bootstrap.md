@@ -1,7 +1,7 @@
 # ADR 0020: Establish bounded two-CPU kernel ownership before SMP task execution
 
 Date: 2026-10-17.
-Status: accepted implementation decision; clean emulator acceptance pending.
+Status: accepted implementation decision; [clean emulator evidence accepted](../../evidence/k03-smp-bootstrap/README.md).
 
 ## Context
 
@@ -57,8 +57,8 @@ The broader K03 acceptance remains open.
 The [detailed contract](../k03-smp-bootstrap.md) requires the 26 copied-table host
 checks, clean source/toolchain bindings, matching twin artifacts, both fresh
 guest scenarios, independent topology/frame/clock/ownership replay and passing
-historical execution regressions. Clean execution acceptance is pending; host
-parser tests and dirty diagnostics do not complete that gate.
+historical execution regressions. Clean execution evidence now passes both scenarios, matching twins and all 26
+parser checks; the [packet](../../evidence/k03-smp-bootstrap/README.md) records source identities, regressions and limits. Dirty diagnostics remain outside acceptance.
 
 Keep the simple correctness reference under the
 [inference performance contract](../inference-performance.md). A preregistered

@@ -1,0 +1,1 @@
+{"status": "pass", "case": "data_nx", "reason": "compiled matrix request, ordered policy and actual CPL3 evidence matched", "qualification": "not_established", "scope": "ten-case original-kernel single-CPU emulated matrix; physical hardware, SMP and DMA unqualified"}

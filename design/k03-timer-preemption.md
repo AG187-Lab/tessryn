@@ -183,7 +183,7 @@ boots, 69 actual traps, matching 14-artifact twins, 90 focused host checks,
 stops in that packet are strict late Failed states with full charge and sticky
 domain halt; exact-cap Exhausted and inclusive DeadlineExpired have separate host
 coverage. ARM_MISSED has host-model and synthetic-parser coverage, with no native
-observation claimed by that packet.
+observation claimed by that packet. The later [bootstrap regression packet](../evidence/k03-smp-bootstrap/README.md#earlier-profile-regressions) records one actual ARM_MISSED no-entry stop: its full 1.472ms charge exceeds the remaining 63µs grant, A stays failed/halted and B completes. That emulator observation retains its own source identity and timing scope.
 
 The [inference performance contract](inference-performance.md) keeps this work in
 correctness preparation. Qualified physical clocks, native SMP/contended
