@@ -71,8 +71,9 @@ runtime's global saved context or trap stack.
 Targeted INIT is followed by at least 10 milliseconds and a SIPI carrying the
 reserved page vector. After at least 200 microseconds, a second SIPI is allowed
 only if readiness has not arrived. ICR delivery completion is checked before
-and after each command; it is not AP readiness. BSP waits use checked actual HPET
-differences, a two-second bound and a finite poll limit. Clock regression,
+and after each command; it is not AP readiness. BSP readiness and ICR waits use
+checked HPET differences and a two-second guest-time timeout. Fixed-delay and
+heartbeat waits check their requested interval and a finite poll limit. Clock regression,
 overflow, stall, an unexpected AP fault or an invalid interrupt source fails
 instead of manufacturing progress.
 
