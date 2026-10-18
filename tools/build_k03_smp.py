@@ -136,8 +136,8 @@ def build(out):
                 directory = out / case; directory.mkdir()
                 efi, obj, dep = (directory / name for name in ("BOOTX64.EFI", "kernel.obj", "kernel.d"))
                 args = ["kernel/main.rs", *profile["toolchain"]["rust_flags"], "-Dwarnings", *case_flags(case),
-                    f"--emit=link,obj={obj},dep-info={dep}", f"--remap-path-prefix={snapshot}=tessryn",
-                    f"--remap-path-prefix={prefix}=rust-toolchain", f"--remap-path-prefix={out}=smp-build",
+                    f"--emit=link,obj={obj},dep-info={dep}", f"--remap-path-prefix={prefix}=rust-toolchain",
+                    f"--remap-path-prefix={out}=smp-build", f"--remap-path-prefix={snapshot}=tessryn",
                     "-Clinker=" + str(profile["linker"]), "-o", str(efi)]
                 execution = run_bounded([str(profile["compiler"]), *args], snapshot, 90, 1 << 20)
                 row = {"role": case, "status": execution.status, "returncode": execution.returncode, "elapsed_seconds": execution.elapsed_seconds}

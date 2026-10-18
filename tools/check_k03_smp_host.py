@@ -20,7 +20,7 @@ SCOPE = "host ACPI parser checks; AP startup and interrupt execution require ori
 
 def commands(compiler, snapshot, out):
     return {"build": [str(compiler), "--edition=2024", "-Dwarnings", "--test", "tests/k03_smp_acpi.rs",
-        "--remap-path-prefix=" + str(snapshot) + "=tessryn", "--remap-path-prefix=" + str(out) + "=smp-host", "-o", str(Path(out) / "tests")],
+        "--remap-path-prefix=" + str(out) + "=smp-host", "--remap-path-prefix=" + str(snapshot) + "=tessryn", "-o", str(Path(out) / "tests")],
         "tests": [str(Path(out) / "tests"), "--test-threads=1"]}
 
 

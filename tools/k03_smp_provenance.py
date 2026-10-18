@@ -90,8 +90,8 @@ def expected_commands(profile):
     require(linker.is_relative_to(prefix), "SMP linker outside pinned toolchain")
     return {case: ["kernel/main.rs", *profile["toolchain"]["rust_flags"], "-Dwarnings", *case_flags(case),
         f"--emit=link,obj=smp-build/{case}/kernel.obj,dep-info=smp-build/{case}/kernel.d",
-        "--remap-path-prefix=tessryn=tessryn", "--remap-path-prefix=rust-toolchain=rust-toolchain",
-        "--remap-path-prefix=smp-build=smp-build", "-Clinker=rust-toolchain/" + linker.relative_to(prefix).as_posix(),
+        "--remap-path-prefix=rust-toolchain=rust-toolchain", "--remap-path-prefix=smp-build=smp-build",
+        "--remap-path-prefix=tessryn=tessryn", "-Clinker=rust-toolchain/" + linker.relative_to(prefix).as_posix(),
         "-o", f"smp-build/{case}/BOOTX64.EFI"] for case in CASES}
 
 
