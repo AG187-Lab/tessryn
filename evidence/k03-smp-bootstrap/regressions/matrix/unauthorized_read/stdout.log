@@ -1,0 +1,41 @@
+TESSRYN_K01_ENTRY
+TESSRYN ORIGINAL KERNEL
+TESSRYN_K01_FRAMEBUFFER status=ready width=1280 height=800 stride=1280 base=0x80000000 format=bgrx selection=firmware-console
+TESSRYN_K01_LIVE_RANGES image_start=0xdfa7000 image_end=0xe0bb000 stack_start=0xe0f6000 stack_end=0xe116000 map_start=0xe0e6000 map_end=0xe0f6000 scratch=0x100000 runtime_high=0 gop_start=0x80000000 gop_end=0x803e8000
+TESSRYN_K01_PAGING_READY cr3=0xe02f000 tables=6 leaves=2048 physical_bits=48 guard=0x7fffffe00000 free_scope=low-conventional
+TESSRYN_K01_RESET_POINTER address=0xfad3522 method=uefi-runtime
+TESSRYN_K01_MEMORY_MAP_VALID descriptors=118 stride=48 free_pages=53284 attempt=1
+TESSRYN_K01_EXIT_BOOT_SERVICES_OK
+TESSRYN_K01_CPU_OWNED cr3=0xe02f000 rsp=0xe115f20 rip=0xdfb36aa gdt=owned idt=owned tss=owned
+TESSRYN_K02_PROFILE physical_bits=48 cpu_count=1 paging_levels=4 nx_supported=1 nx_enabled=1 pcid_enabled=0 global_translations=0 la57_enabled=0 cr4=0x668 efer_low=0xd00
+TESSRYN_K02_MATRIX_CPU cr0=0x80010033 wp_enabled=1 pke_enabled=0 pks_enabled=0 cet_enabled=0 sgx_supported=0 osxsave_enabled=0 fxsave_mxcsr_mask=0xffff
+TESSRYN_K02_MATRIX_ROOT domain=1 root=0xdfbf000 pool_end=0xdfd0000
+TESSRYN_K02_MATRIX_ROOT domain=2 root=0xdfd0000 pool_end=0xdfe1000
+TESSRYN_K02_MATRIX_ROOT domain=3 root=0xdfe1000 pool_end=0xdff2000
+TESSRYN_K02_MATRIX_ROOT domain=4 root=0xdff2000 pool_end=0xe003000
+TESSRYN_K02_MATRIX_INVENTORY case=unauthorized_read descriptors=118 available_pages=53282 protected_state=0xe024000 baseline_pages=12 source=final_successful_handoff
+TESSRYN_K02_MATRIX_USER_ENTER probe=boundary_snapshot domain=2 root=0xdfd0000 instruction=0x10000008d probe_rip=0x100000103 target=0x10000f000 stack_start=0x100002000 stack_end=0x100003000 trap_start=0xe0b00e0 trap_end=0xe0b80e0 code_physical=0xdfa9000
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x100000103 cs=0x33 rflags=0x2 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K02_MATRIX_TRAP probe=boundary_snapshot domain=2 root=0xdfd0000 vector=128 error=0x0 rip=0x100000103 cs=0x33 ss=0x2b rflags=0x2 rsp=0x100002ff0 cr2=0x0 frame=0xe0b8030 rax=0x0
+TESSRYN_K02_MATRIX_EVENT sequence=0 event=boundary_sanitized domain=2 root=0xdfd0000 page=0x10000f000 physical_frame=0x6000 length=640 gpr_words=16 gpr_zeroed=1 fp_bytes=512 fcw=895 mxcsr=8064 mxcsr_mask=0xffff fp_sha256=3ab03a5a5ca4cbf464dc0327f798890b2cc43c64f925dd841de16f3796d63902 osxsave_enabled=0 kernel_fp_restored=1
+TESSRYN_K02_MATRIX_EVENT sequence=1 event=fresh_boot case=unauthorized_read reset=original_kernel_entry untrusted_state_retained=0
+TESSRYN_K02_MATRIX_EVENT sequence=2 event=backing_owned capability_slot=3 capability_generation=1 capability_domain=1 physical_frame=0xd000 length=4096 charge_owner=1 committed_pages=1 reserved_pages=0 charged_pages=1 domain_charged_pages=4 baseline_pages=3
+TESSRYN_K02_MATRIX_EVENT sequence=3 event=mapping_installed domain=1 root=0xdfbf000 page=0x100003000 physical_frame=0xd000 length=4096 readable=1 writable=0 executable=0 lease_slot=12 lease_generation=1 charge_retained=1
+TESSRYN_K02_MATRIX_USER_ENTER probe=protection_read domain=1 root=0xdfbf000 instruction=0x100000020 probe_rip=0x100000025 target=0x100003000 stack_start=0x100002000 stack_end=0x100003000 trap_start=0xe0b00e0 trap_end=0xe0b80e0 code_physical=0xdfa9000
+TESSRYN_K01_EXCEPTION vector=128 error=0x0 rip=0x100000025 cs=0x33 rflags=0x2 rsp=0x100002ff0 cr2=0x0
+TESSRYN_K02_MATRIX_TRAP probe=protection_read domain=1 root=0xdfbf000 vector=128 error=0x0 rip=0x100000025 cs=0x33 ss=0x2b rflags=0x2 rsp=0x100002ff0 cr2=0x0 frame=0xe0b8030 rax=0x5445535356494354
+TESSRYN_K02_MATRIX_EVENT sequence=4 event=read_observed domain=1 page=0x100003000 sha256=faec5f8bb865555d81bfc735387c91cb48ee21d4070febbf38e2d61eb100ec89
+TESSRYN_K02_MATRIX_USER_ENTER probe=unauthorized_read domain=2 root=0xdfd0000 instruction=0x100000032 probe_rip=0x100000032 target=0x100003000 stack_start=0x100002000 stack_end=0x100003000 trap_start=0xe0b00e0 trap_end=0xe0b80e0 code_physical=0xdfa9000
+TESSRYN_K01_EXCEPTION vector=14 error=0x4 rip=0x100000032 cs=0x33 rflags=0x10002 rsp=0x100002ff0 cr2=0x100003000
+TESSRYN_K02_MATRIX_TRAP probe=unauthorized_read domain=2 root=0xdfd0000 vector=14 error=0x4 rip=0x100000032 cs=0x33 ss=0x2b rflags=0x10002 rsp=0x100002ff0 cr2=0x100003000 frame=0xe0b8030 rax=0x0
+TESSRYN_K02_MATRIX_EVENT sequence=5 event=page_fault probe=unauthorized_read domain=2 root=0xdfd0000 vector=14 cs=0x33 rip=0x100000032 cr2=0x100003000 error_code=4 recovered=1
+TESSRYN_K02_MATRIX_EVENT sequence=6 event=fence domain=1 root=0xdfbf000 page=0x100003000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1
+TESSRYN_K02_MATRIX_EVENT sequence=7 event=clear_pte domain=1 root=0xdfbf000 page=0x100003000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1
+TESSRYN_K02_MATRIX_EVENT sequence=8 event=invalidate domain=1 root=0xdfbf000 page=0x100003000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1 method=cr3_reload
+TESSRYN_K02_MATRIX_EVENT sequence=9 event=quiesce domain=1 root=0xdfbf000 page=0x100003000 physical_frame=0xd000 lease_slot=12 lease_generation=1 charge_retained=1 trusted=1
+TESSRYN_K02_MATRIX_CASE_COMPLETE case=unauthorized_read allocated_pages=12
+TESSRYN_K02_MATRIX_ACCOUNTING domain=1 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_ACCOUNTING domain=2 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_ACCOUNTING domain=3 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_ACCOUNTING domain=4 charged_pages=0 committed_pages=0 reserved_pages=0
+TESSRYN_K02_MATRIX_PASS case=unauthorized_read owned_pages_after=0 scope=single_cpu_emulated_matrix_case

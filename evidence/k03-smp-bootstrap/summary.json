@@ -1,0 +1,3444 @@
+{
+  "capture_authentication": "unverified_offline",
+  "command_records": 43,
+  "copy_origins": [
+    {
+      "path": "build/k03-smp-clean-v3/a/manifest.json",
+      "retained_path": "a/manifest.json",
+      "sha256": "e3a0d0eddaacf0a6c368015ac46544a081d462bd392768f00d40b1d0653e2034",
+      "size_bytes": 20966
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/stderr.log",
+      "retained_path": "a/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/stdout.log",
+      "retained_path": "a/missing_ap/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/rust-COPYRIGHT",
+      "retained_path": "a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/rust-LICENSE-APACHE",
+      "retained_path": "a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/rust-LICENSE-MIT",
+      "retained_path": "a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/tessryn-LICENSE",
+      "retained_path": "a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/tessryn-NOTICE",
+      "retained_path": "a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/stderr.log",
+      "retained_path": "a/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/stdout.log",
+      "retained_path": "a/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/manifest.json",
+      "retained_path": "b/manifest.json",
+      "sha256": "4a0480b413795a6935f9495a38c109021e6feb020a2bdb01b0a5931fa2d8c7bf",
+      "size_bytes": 20966
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/stderr.log",
+      "retained_path": "b/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/stdout.log",
+      "retained_path": "b/missing_ap/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/rust-COPYRIGHT",
+      "retained_path": "b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/rust-LICENSE-APACHE",
+      "retained_path": "b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/rust-LICENSE-MIT",
+      "retained_path": "b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/tessryn-LICENSE",
+      "retained_path": "b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/tessryn-NOTICE",
+      "retained_path": "b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/stderr.log",
+      "retained_path": "b/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/stdout.log",
+      "retained_path": "b/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-design-v3.log",
+      "retained_path": "design.log",
+      "sha256": "bdf7530401ed04401593aae7d11e211785f7a28af2ff5197b320b334ea6e1d1b",
+      "size_bytes": 74
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/build-stderr.log",
+      "retained_path": "host/build-stderr.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/build-stdout.log",
+      "retained_path": "host/build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/result.json",
+      "retained_path": "host/result.json",
+      "sha256": "c62dd62dff9f8d066947eb0c2854e1467aec20c6146ab6b2a1651cf56d2b1872",
+      "size_bytes": 3391
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/tests-stderr.log",
+      "retained_path": "host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/tests-stdout.log",
+      "retained_path": "host/tests-stdout.log",
+      "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+      "size_bytes": 1986
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/registration.json",
+      "retained_path": "missing_ap/registration.json",
+      "sha256": "25cd5b0c99d9bd85ec3a396c38dd1f03551314677d2475c10a0415ed8b29ef79",
+      "size_bytes": 2945
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/result.json",
+      "retained_path": "missing_ap/result.json",
+      "sha256": "7af5b79ceb16a3813f0b301cc5803b643e35f820da24a63ca0664622be936a63",
+      "size_bytes": 2521
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/stderr.log",
+      "retained_path": "missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/stdout.log",
+      "retained_path": "missing_ap/stdout.log",
+      "sha256": "2ef533e22da86eea426328c6e4a15d99fe73de3caa8e8476e6deb3c3edd3e4cc",
+      "size_bytes": 1500
+    },
+    {
+      "path": "build/k03-smp-timer-v2/preemption/firmware/NOTICE",
+      "retained_path": "notices/OVMF-NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "build/k03-smp-python-v3.log",
+      "retained_path": "python-tests.log",
+      "sha256": "ab72752be775fe80f89349e42e0aac70d9630107583cc7029546427d48c215ce",
+      "size_bytes": 124252
+    },
+    {
+      "path": "build/k03-smp-old-v2/benchmark-image/manifest.json",
+      "retained_path": "regressions/benchmark/manifest.json",
+      "sha256": "88e32f89a77784902c074686b747564bcf2667ed4dd92d5b1068b1ba07f3b771",
+      "size_bytes": 15667
+    },
+    {
+      "path": "build/k03-smp-old-v2/benchmark-run/qemu-stderr.log",
+      "retained_path": "regressions/benchmark/qemu-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/benchmark-run/qemu-stdout.log",
+      "retained_path": "regressions/benchmark/qemu-stdout.log",
+      "sha256": "7eabef3fd13f171e0f72ca01f0b1081dd8485d3b94b44e9f1fa2372277170cb3",
+      "size_bytes": 61574
+    },
+    {
+      "path": "build/k03-smp-old-v2/benchmark-run/registration.json",
+      "retained_path": "regressions/benchmark/registration.json",
+      "sha256": "4654ff523cddbd8575a1950ada66785542d1d33476985a2b79f0de4bbac1fe39",
+      "size_bytes": 13178
+    },
+    {
+      "path": "build/k03-smp-old-v2/benchmark-run/result.json",
+      "retained_path": "regressions/benchmark/result.json",
+      "sha256": "31824aee5fd0a3230f81b9bf161e6b883c100a6984b3997fcfebccacc35cd0e2",
+      "size_bytes": 12513
+    },
+    {
+      "path": "build/k03-smp-old-v2/benchmark-run/run_receipts.json",
+      "retained_path": "regressions/benchmark/run_receipts.json",
+      "sha256": "a34c63688dc214bf3bf9d4ea6debdfb643d5a72119b3c2c6b617980196955374",
+      "size_bytes": 518
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-build-a.log",
+      "retained_path": "regressions/commands/kernel-k01-build-a-combined.log",
+      "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+      "size_bytes": 37
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-build-b.log",
+      "retained_path": "regressions/commands/kernel-k01-build-b-combined.log",
+      "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+      "size_bytes": 37
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-int3.log",
+      "retained_path": "regressions/commands/kernel-k01-run-int3-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-invalid_opcode.log",
+      "retained_path": "regressions/commands/kernel-k01-run-invalid_opcode-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-iso.log",
+      "retained_path": "regressions/commands/kernel-k01-run-iso-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-normal.log",
+      "retained_path": "regressions/commands/kernel-k01-run-normal-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-page_fault.log",
+      "retained_path": "regressions/commands/kernel-k01-run-page_fault-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-panic.log",
+      "retained_path": "regressions/commands/kernel-k01-run-panic-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-run-reboot.log",
+      "retained_path": "regressions/commands/kernel-k01-run-reboot-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/k01-verify.log",
+      "retained_path": "regressions/commands/kernel-k01-verify-combined.log",
+      "sha256": "14fcea0020644433db86c89524304828153ec0888ccc8845b5c72013766d35fe",
+      "size_bytes": 486
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-build-a.log",
+      "retained_path": "regressions/commands/kernel-matrix-build-a-combined.log",
+      "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+      "size_bytes": 290
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-build-b.log",
+      "retained_path": "regressions/commands/kernel-matrix-build-b-combined.log",
+      "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+      "size_bytes": 290
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-caller_forgery.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-caller_forgery-combined.log",
+      "sha256": "964bde3d10c30f60860da00185b7b83062279ccce2bdcd220b7d3725eb3b3033",
+      "size_bytes": 275
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-data_nx.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-data_nx-combined.log",
+      "sha256": "9b7041e8c11a7f6615a7b827f25b00fc29c8a68677f83d29126483c3da1577f8",
+      "size_bytes": 268
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-exact_bounds.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-exact_bounds-combined.log",
+      "sha256": "2ae2e998bcd4f58c1ab8611a77767d0602a04428bc97b19789439402d6ec7103",
+      "size_bytes": 273
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-kernel_isolation.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-kernel_isolation-combined.log",
+      "sha256": "9fea561839a9206da8ca520a39a55ab6aa337efa6215e0e72d4b9cf1f06c66a1",
+      "size_bytes": 277
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-read_only_sharing.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-read_only_sharing-combined.log",
+      "sha256": "643e3329d709b96038829df5eafb53d528e646a785a7e7da338fedb7492fbd6a",
+      "size_bytes": 278
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-recursive_revocation.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-recursive_revocation-combined.log",
+      "sha256": "3acafa5e2f175830ce0a41ff974ba69cd17bcee9226b1825ae263ce609f6d367",
+      "size_bytes": 281
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-stale_identities.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-stale_identities-combined.log",
+      "sha256": "6799d32352168e8933ac0326e15af3162fb401ff0b25cf717c3669e302f6cfbd",
+      "size_bytes": 277
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-trusted_operation_forgery.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-trusted_operation_forgery-combined.log",
+      "sha256": "ed831baa2344c2473b93d88ffc1556a5cb83fd55554e1daa7659d9e6fe2816fa",
+      "size_bytes": 286
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-unauthorized_read.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-unauthorized_read-combined.log",
+      "sha256": "a0d82c1ee2335dd9186d8091a4a875d14236f04d70fda6d23c1788128d5e2f3e",
+      "size_bytes": 278
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-run-writable_reuse.log",
+      "retained_path": "regressions/commands/kernel-matrix-run-writable_reuse-combined.log",
+      "sha256": "bdda992ae05691511eabd36e388a5ac4d55f304dfb9140726c4cc17d032db915",
+      "size_bytes": 275
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/matrix-verify.log",
+      "retained_path": "regressions/commands/kernel-matrix-verify-combined.log",
+      "sha256": "2ecab4980cc939d3cbab53f4d11f88d11decf444acf0710b8d622b466e01be86",
+      "size_bytes": 127
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/native-host.log",
+      "retained_path": "regressions/commands/kernel-native-host-combined.log",
+      "sha256": "ce672dde79c3c862ee76c12bb67abbff20f7772a323879dab7eac2b488598fcc",
+      "size_bytes": 103
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-build-a.log",
+      "retained_path": "regressions/commands/kernel-slice-build-a-combined.log",
+      "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+      "size_bytes": 222
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-build-b.log",
+      "retained_path": "regressions/commands/kernel-slice-build-b-combined.log",
+      "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+      "size_bytes": 222
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-run-foreign_read.log",
+      "retained_path": "regressions/commands/kernel-slice-run-foreign_read-combined.log",
+      "sha256": "524e8470be27adbe2e0ed3081a0b110db7cc12aa17dc23c5d0678175daf9008f",
+      "size_bytes": 258
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-run-kernel_read.log",
+      "retained_path": "regressions/commands/kernel-slice-run-kernel_read-combined.log",
+      "sha256": "c052b8e2fb22c8c9dde333c65e8a826e5d8f450f1ed233a3096a449782192248",
+      "size_bytes": 257
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-run-own_page.log",
+      "retained_path": "regressions/commands/kernel-slice-run-own_page-combined.log",
+      "sha256": "ba4ce5edf7f3e7d0187676a695a2b180263a715bfb6141fa8ee6ae45a6a59193",
+      "size_bytes": 254
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-run-readonly_write.log",
+      "retained_path": "regressions/commands/kernel-slice-run-readonly_write-combined.log",
+      "sha256": "1d3d3dfb15bdbd0a8dada382c659bb89a7f55606922ec7fa051610c7990ac3c5",
+      "size_bytes": 260
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/slice-verify.log",
+      "retained_path": "regressions/commands/kernel-slice-verify-combined.log",
+      "sha256": "43da62d345370ddaf56a7b88a5de874994e5145f103ad781c0e57dc9649c99ef",
+      "size_bytes": 149
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-0.log",
+      "retained_path": "regressions/commands/old-older-0-combined.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-1.log",
+      "retained_path": "regressions/commands/old-older-1-combined.log",
+      "sha256": "801565b5ae1084fb29612c9831d7d9b4f3f77815511d49d88fbe32e808e314e9",
+      "size_bytes": 263
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-10.log",
+      "retained_path": "regressions/commands/old-older-10-combined.log",
+      "sha256": "51734578f7f7cb1815cea1c2bc2a0cae3b6c51e435de30bf84bfd30de376ff6f",
+      "size_bytes": 157
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-11.log",
+      "retained_path": "regressions/commands/old-older-11-combined.log",
+      "sha256": "19e6c40206d9358db6cda94ab2730365762d44f5a38d0151853f971c289c5562",
+      "size_bytes": 98
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-2.log",
+      "retained_path": "regressions/commands/old-older-2-combined.log",
+      "sha256": "5f1af46f81da1bfa93d4cba72eb0a9197f0d710967b43c4e81febc8e54c59ed6",
+      "size_bytes": 131
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-3.log",
+      "retained_path": "regressions/commands/old-older-3-combined.log",
+      "sha256": "dc8afc7130ae1f2c1727d8d0ba06c4eb3b077cc6c278a69c6bfeb56880cd56f0",
+      "size_bytes": 186
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-4.log",
+      "retained_path": "regressions/commands/old-older-4-combined.log",
+      "sha256": "e1eedc8690e401acd9d02b2f9decd8ea339b83605c7f1b94419d0157d671fb03",
+      "size_bytes": 8679
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-5.log",
+      "retained_path": "regressions/commands/old-older-5-combined.log",
+      "sha256": "d894be4b5f54a8694a6fd8f3099e954a9a71ee31257cd5b9bf255821513d76e6",
+      "size_bytes": 60
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-6.log",
+      "retained_path": "regressions/commands/old-older-6-combined.log",
+      "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+      "size_bytes": 62
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-7.log",
+      "retained_path": "regressions/commands/old-older-7-combined.log",
+      "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+      "size_bytes": 62
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-8.log",
+      "retained_path": "regressions/commands/old-older-8-combined.log",
+      "sha256": "fab69376ee7563a534c9fe38b476667197b15d0755e9c3e26f4c79609e280f90",
+      "size_bytes": 155
+    },
+    {
+      "path": "build/k03-smp-reg-v2-logs/older-9.log",
+      "retained_path": "regressions/commands/old-older-9-combined.log",
+      "sha256": "53d91fb811c81cbefefa9dd090c9a358d668f1632c49204b2c5d4b42fe155e22",
+      "size_bytes": 158
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-a/manifest.json",
+      "retained_path": "regressions/k01/a/manifest.json",
+      "sha256": "90f8dd788b538e880732df78c31ae6bdd584251fbb23ed7eacc2f9c77b147ee2",
+      "size_bytes": 18839
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-b/manifest.json",
+      "retained_path": "regressions/k01/b/manifest.json",
+      "sha256": "90f8dd788b538e880732df78c31ae6bdd584251fbb23ed7eacc2f9c77b147ee2",
+      "size_bytes": 18839
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-int3/result.json",
+      "retained_path": "regressions/k01/int3/result.json",
+      "sha256": "d027e865dc327cce40057b1bb0485ac424802ddd4fc78afb089cfc02f6f24ea8",
+      "size_bytes": 2704
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-int3/stderr.log",
+      "retained_path": "regressions/k01/int3/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-int3/stdout.log",
+      "retained_path": "regressions/k01/int3/stdout.log",
+      "sha256": "c069a92885b099305b5a94d117e3fe83a81780947520febebf99bfd428326662",
+      "size_bytes": 1064
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-invalid_opcode/result.json",
+      "retained_path": "regressions/k01/invalid_opcode/result.json",
+      "sha256": "ce6533e941a69d1ed75eaabf658819deaab115a62cd03867e565987529a8a462",
+      "size_bytes": 2714
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-invalid_opcode/stderr.log",
+      "retained_path": "regressions/k01/invalid_opcode/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-invalid_opcode/stdout.log",
+      "retained_path": "regressions/k01/invalid_opcode/stdout.log",
+      "sha256": "15a4b43d6ecbbb99c74e04b8958f64f12362244b633f846e3f99c9f594a3c6df",
+      "size_bytes": 1032
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-iso/result.json",
+      "retained_path": "regressions/k01/iso/result.json",
+      "sha256": "0922ed6b5327176fa16e82a43b32f2b1d7ffb981a5513ab2256146bd1df4ec2f",
+      "size_bytes": 2706
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-iso/stderr.log",
+      "retained_path": "regressions/k01/iso/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-iso/stdout.log",
+      "retained_path": "regressions/k01/iso/stdout.log",
+      "sha256": "553edbd2a4e50ed535f99b0230196480d154efe4f256dd5f9a62a00e96172173",
+      "size_bytes": 923
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-normal/result.json",
+      "retained_path": "regressions/k01/normal/result.json",
+      "sha256": "0915a9eff3ff2f342ee99c5f7025d87b34db90d7027cc06e71e7ef9433d5f080",
+      "size_bytes": 2705
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-normal/stderr.log",
+      "retained_path": "regressions/k01/normal/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-normal/stdout.log",
+      "retained_path": "regressions/k01/normal/stdout.log",
+      "sha256": "eb99d5ecdf3e65401af1a4e55259e77d69404bf86de88858d78f69f7feb5557e",
+      "size_bytes": 923
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-page_fault/result.json",
+      "retained_path": "regressions/k01/page_fault/result.json",
+      "sha256": "109722770eae3aec91194a407b38476e6f53818b30f8aecf5711fd0e1879076f",
+      "size_bytes": 2709
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-page_fault/stderr.log",
+      "retained_path": "regressions/k01/page_fault/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-page_fault/stdout.log",
+      "retained_path": "regressions/k01/page_fault/stdout.log",
+      "sha256": "3588c9d48b9204817895a04ea39c824a053ad26d326c31ade0057b3c51b378f1",
+      "size_bytes": 1044
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-panic/result.json",
+      "retained_path": "regressions/k01/panic/result.json",
+      "sha256": "ac3c249a634835d01f67efa8a24f2042d18e1072e0d83197ad88193a21e3905c",
+      "size_bytes": 2704
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-panic/stderr.log",
+      "retained_path": "regressions/k01/panic/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-panic/stdout.log",
+      "retained_path": "regressions/k01/panic/stdout.log",
+      "sha256": "9005e0fb70ffed67159b3460c1249259db501c9837ab7b3c5e2647495e768592",
+      "size_bytes": 980
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-reboot/result.json",
+      "retained_path": "regressions/k01/reboot/result.json",
+      "sha256": "b5f416e33e6709704e99690fa8d722cd68ea1845bd9922dfcf4b9aea682e40d0",
+      "size_bytes": 2738
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-reboot/stderr.log",
+      "retained_path": "regressions/k01/reboot/stderr.log",
+      "sha256": "713f86321eaa5fe4d34db522a8233fb12482d713833f8dd8aa34a92d455f6dee",
+      "size_bytes": 2700
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-reboot/stdout.log",
+      "retained_path": "regressions/k01/reboot/stdout.log",
+      "sha256": "9870f9b64b490e1efbe51c71f7075261d2e54a8b83df8825af2e954b6c80fc00",
+      "size_bytes": 964
+    },
+    {
+      "path": "build/k03-smp-reg-v2-k01-verification.json",
+      "retained_path": "regressions/k01/verification.json",
+      "sha256": "113750e2fed513e80d5ebc918f77106a05d735b7c5af67f1c8959c1803e9ecb7",
+      "size_bytes": 658
+    },
+    {
+      "path": "build/k03-smp-reg-v2-commands.json",
+      "retained_path": "regressions/kernel-commands.json",
+      "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+      "size_bytes": 18152
+    },
+    {
+      "path": "build/k03-smp-reg-v2-summary.json",
+      "retained_path": "regressions/kernel-summary.json",
+      "sha256": "47cfc3a2c91072d7bac141c5ebe7d0d39f6e7e4ba9bc1eb2014fec951ea00b91",
+      "size_bytes": 15220
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-a/manifest.json",
+      "retained_path": "regressions/matrix/a/manifest.json",
+      "sha256": "f6f5bedf233ac074eb13ee039efccc2962d836c30a878701eb4fb9945e660c10",
+      "size_bytes": 151772
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-b/manifest.json",
+      "retained_path": "regressions/matrix/b/manifest.json",
+      "sha256": "f6f5bedf233ac074eb13ee039efccc2962d836c30a878701eb4fb9945e660c10",
+      "size_bytes": 151772
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-caller_forgery/stderr.log",
+      "retained_path": "regressions/matrix/caller_forgery/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-caller_forgery/stdout.log",
+      "retained_path": "regressions/matrix/caller_forgery/stdout.log",
+      "sha256": "ab72cc4758654bf9f69b36c8425755163a4c9319b4cb83d04a35c48dfd47ad81",
+      "size_bytes": 4448
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-data_nx/stderr.log",
+      "retained_path": "regressions/matrix/data_nx/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-data_nx/stdout.log",
+      "retained_path": "regressions/matrix/data_nx/stdout.log",
+      "sha256": "a9edea3fcd10e4cd86a78147ddc1b2a0ea42f2c8f139c2eaae908c87f8413e63",
+      "size_bytes": 5717
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-exact_bounds/stderr.log",
+      "retained_path": "regressions/matrix/exact_bounds/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-exact_bounds/stdout.log",
+      "retained_path": "regressions/matrix/exact_bounds/stdout.log",
+      "sha256": "b09def5fbed5556e5bd2804b5a8fb6641d9bf2e67e3091a0f35fa2cba30ccfab",
+      "size_bytes": 8837
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-kernel_isolation/stderr.log",
+      "retained_path": "regressions/matrix/kernel_isolation/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-kernel_isolation/stdout.log",
+      "retained_path": "regressions/matrix/kernel_isolation/stdout.log",
+      "sha256": "13aaa9d12347ad3bdf666f6c1374c162a82880b697f467c4289b38f4fd33b090",
+      "size_bytes": 8624
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-read_only_sharing/stderr.log",
+      "retained_path": "regressions/matrix/read_only_sharing/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-read_only_sharing/stdout.log",
+      "retained_path": "regressions/matrix/read_only_sharing/stdout.log",
+      "sha256": "d170efe2d27a616df91e2ae7f99e46c7110b159543c9b482f9595caece534d9b",
+      "size_bytes": 6091
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-recursive_revocation/stderr.log",
+      "retained_path": "regressions/matrix/recursive_revocation/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-recursive_revocation/stdout.log",
+      "retained_path": "regressions/matrix/recursive_revocation/stdout.log",
+      "sha256": "6653ef86b81d3c9873e905d67b9da1504b477f59925eacc7646db984a74b71a2",
+      "size_bytes": 13182
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-stale_identities/stderr.log",
+      "retained_path": "regressions/matrix/stale_identities/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-stale_identities/stdout.log",
+      "retained_path": "regressions/matrix/stale_identities/stdout.log",
+      "sha256": "cc815161f56f91508af6af58d3f041202e19e37989d3b3a9f1408985085bb01d",
+      "size_bytes": 11433
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-trusted_operation_forgery/stderr.log",
+      "retained_path": "regressions/matrix/trusted_operation_forgery/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-trusted_operation_forgery/stdout.log",
+      "retained_path": "regressions/matrix/trusted_operation_forgery/stdout.log",
+      "sha256": "8cd1f663e8da820a5c40d589ef0ddaceb3df5bb10b8951933811d78e7b288077",
+      "size_bytes": 11512
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-unauthorized_read/stderr.log",
+      "retained_path": "regressions/matrix/unauthorized_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-unauthorized_read/stdout.log",
+      "retained_path": "regressions/matrix/unauthorized_read/stdout.log",
+      "sha256": "7443d551738ee2ad86a6bb13abc2afd89b4fd27b438fe14e0efed8745c99ff83",
+      "size_bytes": 5684
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-verification.json",
+      "retained_path": "regressions/matrix/verification.json",
+      "sha256": "0db1179713b8eec5fc5c1772facc4644176af9378c7156dd5db72c3a7e282ca3",
+      "size_bytes": 132432
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-writable_reuse/stderr.log",
+      "retained_path": "regressions/matrix/writable_reuse/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-matrix-writable_reuse/stdout.log",
+      "retained_path": "regressions/matrix/writable_reuse/stdout.log",
+      "sha256": "101805171987bd7ac42e6b97c210082b82ec2948ae48644f0c6d957f916e4357",
+      "size_bytes": 9473
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/adapter-build.log",
+      "retained_path": "regressions/native-host/adapter-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/adapter-tests.log",
+      "retained_path": "regressions/native-host/adapter-tests.log",
+      "sha256": "a067d8ca78206d9c7d1410d321f89d4422de9841eb0f6271c96b7eec3fe9d11d",
+      "size_bytes": 1669
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/core-build.log",
+      "retained_path": "regressions/native-host/core-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/core-tests.log",
+      "retained_path": "regressions/native-host/core-tests.log",
+      "sha256": "2b959cd7c6062f07ef028e5cbe0b4b03b2dfbdd90593a9f25b31bddb2b1386cc",
+      "size_bytes": 5988
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/library-build.log",
+      "retained_path": "regressions/native-host/library-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/paging-build.log",
+      "retained_path": "regressions/native-host/paging-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/paging-tests.log",
+      "retained_path": "regressions/native-host/paging-tests.log",
+      "sha256": "e90f32054d82e12cd1de964074499c0051a6756a9d8c6d27ad1f4e5cf231d636",
+      "size_bytes": 1396
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/result.json",
+      "retained_path": "regressions/native-host/result.json",
+      "sha256": "318c1dfed278fff34faa74423128db6d123989b7441d2aee8a10d6e8db478dc0",
+      "size_bytes": 8541
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/sha256-build.log",
+      "retained_path": "regressions/native-host/sha256-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-native-host/sha256-tests.log",
+      "retained_path": "regressions/native-host/sha256-tests.log",
+      "sha256": "2bfcc4d5de659f8b11ace176473690263b185834104144954f002e283e4eb6de",
+      "size_bytes": 545
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/authority/authority-stderr.log",
+      "retained_path": "regressions/region/a/authority/authority-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/authority/authority-stdout.log",
+      "retained_path": "regressions/region/a/authority/authority-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/core-stderr.log",
+      "retained_path": "regressions/region/a/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/core-stdout.log",
+      "retained_path": "regressions/region/a/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/manifest.json",
+      "retained_path": "regressions/region/a/manifest.json",
+      "sha256": "6d06e0313fd3be1a5cfbc54363e5820e9ceaca74332f05509278e068ee31a824",
+      "size_bytes": 48189
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/notices/rust-COPYRIGHT",
+      "retained_path": "regressions/region/a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/notices/rust-LICENSE-APACHE",
+      "retained_path": "regressions/region/a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/notices/rust-LICENSE-MIT",
+      "retained_path": "regressions/region/a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/notices/tessryn-LICENSE",
+      "retained_path": "regressions/region/a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/notices/tessryn-NOTICE",
+      "retained_path": "regressions/region/a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/revocation/revocation-stderr.log",
+      "retained_path": "regressions/region/a/revocation/revocation-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/revocation/revocation-stdout.log",
+      "retained_path": "regressions/region/a/revocation/revocation-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/sharing/sharing-stderr.log",
+      "retained_path": "regressions/region/a/sharing/sharing-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/a/sharing/sharing-stdout.log",
+      "retained_path": "regressions/region/a/sharing/sharing-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/authority/registration.json",
+      "retained_path": "regressions/region/authority/registration.json",
+      "sha256": "6890a33d8120db438c2510a7f3ea015cb831ab80428c669f1bc8e4d984f578ee",
+      "size_bytes": 2926
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/authority/result.json",
+      "retained_path": "regressions/region/authority/result.json",
+      "sha256": "54fc5140f91320d23a9f4ccaf3b36218c1b4348a1b05b66206c45009e68f0421",
+      "size_bytes": 3635
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/authority/stderr.log",
+      "retained_path": "regressions/region/authority/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/authority/stdout.log",
+      "retained_path": "regressions/region/authority/stdout.log",
+      "sha256": "c4e713ec1693fdc11b3ac02017b45884f85a6425382c9717d4e8dedf270647c7",
+      "size_bytes": 64023
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/authority/authority-stderr.log",
+      "retained_path": "regressions/region/b/authority/authority-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/authority/authority-stdout.log",
+      "retained_path": "regressions/region/b/authority/authority-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/core-stderr.log",
+      "retained_path": "regressions/region/b/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/core-stdout.log",
+      "retained_path": "regressions/region/b/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/manifest.json",
+      "retained_path": "regressions/region/b/manifest.json",
+      "sha256": "30fe7b0da836da050a872d42e6d474b5c65c720d2a74c2768d2fdb39c8bd9ba6",
+      "size_bytes": 48190
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/notices/rust-COPYRIGHT",
+      "retained_path": "regressions/region/b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/notices/rust-LICENSE-APACHE",
+      "retained_path": "regressions/region/b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/notices/rust-LICENSE-MIT",
+      "retained_path": "regressions/region/b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/notices/tessryn-LICENSE",
+      "retained_path": "regressions/region/b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/notices/tessryn-NOTICE",
+      "retained_path": "regressions/region/b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/revocation/revocation-stderr.log",
+      "retained_path": "regressions/region/b/revocation/revocation-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/revocation/revocation-stdout.log",
+      "retained_path": "regressions/region/b/revocation/revocation-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/sharing/sharing-stderr.log",
+      "retained_path": "regressions/region/b/sharing/sharing-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/b/sharing/sharing-stdout.log",
+      "retained_path": "regressions/region/b/sharing/sharing-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/library-stderr.log",
+      "retained_path": "regressions/region/host/library-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/library-stdout.log",
+      "retained_path": "regressions/region/host/library-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/result.json",
+      "retained_path": "regressions/region/host/result.json",
+      "sha256": "0d86f14408f92dd70d6fb60b281cade371dc4d9e8f1711ca5849984244729cc6",
+      "size_bytes": 4929
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/test-build-stderr.log",
+      "retained_path": "regressions/region/host/test-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/test-build-stdout.log",
+      "retained_path": "regressions/region/host/test-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/tests-stderr.log",
+      "retained_path": "regressions/region/host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/host/tests-stdout.log",
+      "retained_path": "regressions/region/host/tests-stdout.log",
+      "sha256": "79aa6418d09b58c18f30ac963cc82d424d9db6971f09e56195e41a2d7472d1ac",
+      "size_bytes": 1769
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/revocation/registration.json",
+      "retained_path": "regressions/region/revocation/registration.json",
+      "sha256": "43b333f5ef06080256a0c024545b955a68e41717a613ad4e696ed16077867748",
+      "size_bytes": 2933
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/revocation/result.json",
+      "retained_path": "regressions/region/revocation/result.json",
+      "sha256": "469eac2e6e1d6d3adc631e4b3c29be7c0e1d5b21820d59f8028199c9dcc34a76",
+      "size_bytes": 3120
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/revocation/stderr.log",
+      "retained_path": "regressions/region/revocation/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/revocation/stdout.log",
+      "retained_path": "regressions/region/revocation/stdout.log",
+      "sha256": "4b025e4c5eb480d6e4a55977dd426a975590e10423eb7fc5dffd3006c7074720",
+      "size_bytes": 28869
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/sharing/registration.json",
+      "retained_path": "regressions/region/sharing/registration.json",
+      "sha256": "dbe1ec19798fceb3839b279f75b1baad0e0e379c7e78e7a37c607f38229550f4",
+      "size_bytes": 2912
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/sharing/result.json",
+      "retained_path": "regressions/region/sharing/result.json",
+      "sha256": "1b793c1ad37d9e987297bb53d355b2af473cb1cf7434e02d11e7938e2e91c06e",
+      "size_bytes": 3110
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/sharing/stderr.log",
+      "retained_path": "regressions/region/sharing/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/sharing/stdout.log",
+      "retained_path": "regressions/region/sharing/stdout.log",
+      "sha256": "b39e0e0bca5b0a7963557e6fb53ea161c9c766666f8a53a374ebe57b5df074dd",
+      "size_bytes": 28965
+    },
+    {
+      "path": "build/k03-smp-old-v2/region/verification.json",
+      "retained_path": "regressions/region/verification.json",
+      "sha256": "b296866c78a8f899ae5768139b4e2bb384096b56450fdf882caeed1d00039ec6",
+      "size_bytes": 4980
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-a/manifest.json",
+      "retained_path": "regressions/slice/a/manifest.json",
+      "sha256": "cb787a3c2e65f42346fea2372717d8cee15f3d1aaf70d27191b32e3b465fa7a7",
+      "size_bytes": 23886
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-b/manifest.json",
+      "retained_path": "regressions/slice/b/manifest.json",
+      "sha256": "cb787a3c2e65f42346fea2372717d8cee15f3d1aaf70d27191b32e3b465fa7a7",
+      "size_bytes": 23886
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-foreign_read/stderr.log",
+      "retained_path": "regressions/slice/foreign_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-foreign_read/stdout.log",
+      "retained_path": "regressions/slice/foreign_read/stdout.log",
+      "sha256": "5dacfb156bc4443a2607870bf3b0fd742e69b5bdc54d870dccb3904cf9c92cee",
+      "size_bytes": 2706
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-kernel_read/stderr.log",
+      "retained_path": "regressions/slice/kernel_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-kernel_read/stdout.log",
+      "retained_path": "regressions/slice/kernel_read/stdout.log",
+      "sha256": "ae99bb9152badf2bb651efc185e9f651f1e96f330455b5424a5cadaafc3e63a4",
+      "size_bytes": 2697
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-own_page/stderr.log",
+      "retained_path": "regressions/slice/own_page/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-own_page/stdout.log",
+      "retained_path": "regressions/slice/own_page/stdout.log",
+      "sha256": "f39ff20fd27b3de6f373909fba181ac3a13a734898311ac738eb4542db1395e1",
+      "size_bytes": 2670
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-readonly_write/stderr.log",
+      "retained_path": "regressions/slice/readonly_write/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-readonly_write/stdout.log",
+      "retained_path": "regressions/slice/readonly_write/stdout.log",
+      "sha256": "84c2b7e8eb789c07697ae3426c61e22c042e2b20fc5973bc97227e164e7105fb",
+      "size_bytes": 2712
+    },
+    {
+      "path": "build/k03-smp-reg-v2-slice-verification.json",
+      "retained_path": "regressions/slice/verification.json",
+      "sha256": "8c82d49e325d45a4616448945c9ced38f3436881785896fcf8ed031f0d54b2aa",
+      "size_bytes": 13392
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/budget/budget-stderr.log",
+      "retained_path": "regressions/timer/a/budget/budget-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/budget/budget-stdout.log",
+      "retained_path": "regressions/timer/a/budget/budget-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/core-stderr.log",
+      "retained_path": "regressions/timer/a/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/core-stdout.log",
+      "retained_path": "regressions/timer/a/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/deadline/deadline-stderr.log",
+      "retained_path": "regressions/timer/a/deadline/deadline-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/deadline/deadline-stdout.log",
+      "retained_path": "regressions/timer/a/deadline/deadline-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/forged_irq/forged_irq-stderr.log",
+      "retained_path": "regressions/timer/a/forged_irq/forged_irq-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/forged_irq/forged_irq-stdout.log",
+      "retained_path": "regressions/timer/a/forged_irq/forged_irq-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/manifest.json",
+      "retained_path": "regressions/timer/a/manifest.json",
+      "sha256": "256fa85819bc51ee3946d16dc33c56c7a700cce178569f719057776787f38a79",
+      "size_bytes": 47622
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/notices/rust-COPYRIGHT",
+      "retained_path": "regressions/timer/a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/notices/rust-LICENSE-APACHE",
+      "retained_path": "regressions/timer/a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/notices/rust-LICENSE-MIT",
+      "retained_path": "regressions/timer/a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/notices/tessryn-LICENSE",
+      "retained_path": "regressions/timer/a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/notices/tessryn-NOTICE",
+      "retained_path": "regressions/timer/a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/preemption/preemption-stderr.log",
+      "retained_path": "regressions/timer/a/preemption/preemption-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/preemption/preemption-stdout.log",
+      "retained_path": "regressions/timer/a/preemption/preemption-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/scheduler-stderr.log",
+      "retained_path": "regressions/timer/a/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/a/scheduler-stdout.log",
+      "retained_path": "regressions/timer/a/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/budget/budget-stderr.log",
+      "retained_path": "regressions/timer/b/budget/budget-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/budget/budget-stdout.log",
+      "retained_path": "regressions/timer/b/budget/budget-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/core-stderr.log",
+      "retained_path": "regressions/timer/b/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/core-stdout.log",
+      "retained_path": "regressions/timer/b/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/deadline/deadline-stderr.log",
+      "retained_path": "regressions/timer/b/deadline/deadline-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/deadline/deadline-stdout.log",
+      "retained_path": "regressions/timer/b/deadline/deadline-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/forged_irq/forged_irq-stderr.log",
+      "retained_path": "regressions/timer/b/forged_irq/forged_irq-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/forged_irq/forged_irq-stdout.log",
+      "retained_path": "regressions/timer/b/forged_irq/forged_irq-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/manifest.json",
+      "retained_path": "regressions/timer/b/manifest.json",
+      "sha256": "09ca9b9e178b0420f61b33f2ff703207407cd0fbec6385b5537653594c6012ab",
+      "size_bytes": 47620
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/notices/rust-COPYRIGHT",
+      "retained_path": "regressions/timer/b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/notices/rust-LICENSE-APACHE",
+      "retained_path": "regressions/timer/b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/notices/rust-LICENSE-MIT",
+      "retained_path": "regressions/timer/b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/notices/tessryn-LICENSE",
+      "retained_path": "regressions/timer/b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/notices/tessryn-NOTICE",
+      "retained_path": "regressions/timer/b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/preemption/preemption-stderr.log",
+      "retained_path": "regressions/timer/b/preemption/preemption-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/preemption/preemption-stdout.log",
+      "retained_path": "regressions/timer/b/preemption/preemption-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/scheduler-stderr.log",
+      "retained_path": "regressions/timer/b/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/b/scheduler-stdout.log",
+      "retained_path": "regressions/timer/b/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/budget/registration.json",
+      "retained_path": "regressions/timer/budget/registration.json",
+      "sha256": "73fbd3de22b331e4e48370bd1d4289a44639c49f3dec1674e6ca1f1bec536062",
+      "size_bytes": 2933
+    },
+    {
+      "path": "build/k03-smp-timer-v2/budget/result.json",
+      "retained_path": "regressions/timer/budget/result.json",
+      "sha256": "d225153c179edc200517755f5eaa27b60c652944eae110a152068d484dbb0fb5",
+      "size_bytes": 3557
+    },
+    {
+      "path": "build/k03-smp-timer-v2/budget/stderr.log",
+      "retained_path": "regressions/timer/budget/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/budget/stdout.log",
+      "retained_path": "regressions/timer/budget/stdout.log",
+      "sha256": "8546d8d9d14694fe7d12327a4e4a4d12843cb7c566088aff0546449b2976aadc",
+      "size_bytes": 59900
+    },
+    {
+      "path": "build/k03-smp-timer-v2/deadline/registration.json",
+      "retained_path": "regressions/timer/deadline/registration.json",
+      "sha256": "bf0422cef995929842144a07e4da71fd74ed97cdd7e0f2e4833462675d0b08a1",
+      "size_bytes": 2947
+    },
+    {
+      "path": "build/k03-smp-timer-v2/deadline/result.json",
+      "retained_path": "regressions/timer/deadline/result.json",
+      "sha256": "d38d877ca68943e5095d6ed11a09b79f784504771a2bc72dd6f71baa93d173bb",
+      "size_bytes": 3571
+    },
+    {
+      "path": "build/k03-smp-timer-v2/deadline/stderr.log",
+      "retained_path": "regressions/timer/deadline/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/deadline/stdout.log",
+      "retained_path": "regressions/timer/deadline/stdout.log",
+      "sha256": "8f834f6bd7cee5398667f54fb89348bdf97cb0edd12479fbaeb489927227263a",
+      "size_bytes": 56114
+    },
+    {
+      "path": "build/k03-smp-timer-v2/forged_irq/registration.json",
+      "retained_path": "regressions/timer/forged_irq/registration.json",
+      "sha256": "fd95dd1a163608d352572c45a5f50a9bf3f985d3249a643b6cc8843afebb9685",
+      "size_bytes": 2961
+    },
+    {
+      "path": "build/k03-smp-timer-v2/forged_irq/result.json",
+      "retained_path": "regressions/timer/forged_irq/result.json",
+      "sha256": "260bddb075371b55f6b5cb13b631c9b4e48db8439c7e8884d05d1b503f518f11",
+      "size_bytes": 3568
+    },
+    {
+      "path": "build/k03-smp-timer-v2/forged_irq/stderr.log",
+      "retained_path": "regressions/timer/forged_irq/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/forged_irq/stdout.log",
+      "retained_path": "regressions/timer/forged_irq/stdout.log",
+      "sha256": "ac04b4208bb4996726cf80cc22a7d9745475ac7e2d0c961986c3585624dbfc2e",
+      "size_bytes": 53410
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/adapter-build-stderr.log",
+      "retained_path": "regressions/timer/host/adapter-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/adapter-build-stdout.log",
+      "retained_path": "regressions/timer/host/adapter-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/adapter-tests-stderr.log",
+      "retained_path": "regressions/timer/host/adapter-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/adapter-tests-stdout.log",
+      "retained_path": "regressions/timer/host/adapter-tests-stdout.log",
+      "sha256": "1af8d48558ea53382b03c8036a2cdaae001954076f1266c577767540d546ebeb",
+      "size_bytes": 1362
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/driver-build-stderr.log",
+      "retained_path": "regressions/timer/host/driver-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/driver-build-stdout.log",
+      "retained_path": "regressions/timer/host/driver-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/driver-tests-stderr.log",
+      "retained_path": "regressions/timer/host/driver-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/driver-tests-stdout.log",
+      "retained_path": "regressions/timer/host/driver-tests-stdout.log",
+      "sha256": "4c58ed439a1fb7db7ec23a0521b80e4f834e28ee1a5e78bda04f7d5474fdbd5f",
+      "size_bytes": 2664
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/result.json",
+      "retained_path": "regressions/timer/host/result.json",
+      "sha256": "4355aedc92a2b9b69a0d2a72d8a61837c46c8089bdb2886877b9bfe926e308aa",
+      "size_bytes": 8164
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/scheduler-build-stderr.log",
+      "retained_path": "regressions/timer/host/scheduler-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/scheduler-build-stdout.log",
+      "retained_path": "regressions/timer/host/scheduler-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/scheduler-library-stderr.log",
+      "retained_path": "regressions/timer/host/scheduler-library-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/scheduler-library-stdout.log",
+      "retained_path": "regressions/timer/host/scheduler-library-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/scheduler-tests-stderr.log",
+      "retained_path": "regressions/timer/host/scheduler-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/host/scheduler-tests-stdout.log",
+      "retained_path": "regressions/timer/host/scheduler-tests-stdout.log",
+      "sha256": "7c0b7add37a115dd6c4bc0957d871370805b96c309d3a43c65e32eb485cb52b4",
+      "size_bytes": 3578
+    },
+    {
+      "path": "build/k03-smp-timer-v2/preemption/registration.json",
+      "retained_path": "regressions/timer/preemption/registration.json",
+      "sha256": "2d5c0aea17e4f6aa528c98d59400a4e2a24ce0da64f3e314659ef6549c3f7c17",
+      "size_bytes": 2961
+    },
+    {
+      "path": "build/k03-smp-timer-v2/preemption/result.json",
+      "retained_path": "regressions/timer/preemption/result.json",
+      "sha256": "5355608eb183cf4130f87dfc3daa2f91ba0f6dc4cdabc576b6ff91f294fedfe3",
+      "size_bytes": 3678
+    },
+    {
+      "path": "build/k03-smp-timer-v2/preemption/stderr.log",
+      "retained_path": "regressions/timer/preemption/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-timer-v2/preemption/stdout.log",
+      "retained_path": "regressions/timer/preemption/stdout.log",
+      "sha256": "d97c4dd38a2a9b0d972c99c29879cf6fe6f2666889bf4108ea9053c68faa725f",
+      "size_bytes": 82790
+    },
+    {
+      "path": "build/k03-smp-timer-v2/verification.json",
+      "retained_path": "regressions/timer/verification.json",
+      "sha256": "334c307c0a4f3a31d3caef7f72c4bf1f73827a2e8f54df890911e7fa01d05d60",
+      "size_bytes": 7647
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/registration.json",
+      "retained_path": "rendezvous/registration.json",
+      "sha256": "92d13267adabe4d2f790610283bb698e68a5e19d59e5ddc7de57faa76a10422f",
+      "size_bytes": 2945
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/result.json",
+      "retained_path": "rendezvous/result.json",
+      "sha256": "ca8ae020962d832a31301714d7280120503aa0231e7b430e3ec531e7117f531e",
+      "size_bytes": 2658
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/stderr.log",
+      "retained_path": "rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/stdout.log",
+      "retained_path": "rendezvous/stdout.log",
+      "sha256": "a534b5e9e51b2ee43540b32d5c6454c744179d396a47b176c0c84b7de0404fd5",
+      "size_bytes": 2503
+    },
+    {
+      "path": "build/k03-smp-clean-v3/verification.json",
+      "retained_path": "verification.json",
+      "sha256": "53970d347a843bdef38a61bf6b8b4fa53411a8edc966456564c182ac6bcd65ad",
+      "size_bytes": 1930
+    }
+  ],
+  "derived_navigation_only": true,
+  "design": {
+    "documents": 84,
+    "milestones": 10,
+    "work_items": 49
+  },
+  "format": "tessryn-k03-smp-public-summary/v1",
+  "full_success_packet_bytes": 153568990,
+  "full_success_packet_paths": 120,
+  "omitted_original_records": [
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-slice-foreign_read/result.json",
+        "sha256": "60ada1f47b2f164ca82df9eada8875700bc3e4628cc62f00762ecf87635b62fb",
+        "size_bytes": 7055
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-slice-kernel_read/result.json",
+        "sha256": "3a3641822a4e7e6f026f06c0bd8f4fde010ebe73c15000d8d13a2173b2ab1627",
+        "size_bytes": 7047
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-slice-own_page/result.json",
+        "sha256": "0c5775f52826fc4a133365be2c969da9057531ebcd5151137077545853451498",
+        "size_bytes": 7025
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-slice-readonly_write/result.json",
+        "sha256": "dc3a3e0b35b710bf9fd0041f6692c03530d3d5b711767a6dcb29b9506f8d2df7",
+        "size_bytes": 7062
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-caller_forgery/result.json",
+        "sha256": "ecf79548427c482041e07721ef727d9c629da0794129087e7b6b44aad3a05019",
+        "size_bytes": 9812
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-data_nx/result.json",
+        "sha256": "f85fba2cb9780b52e608726290259103c39fc9233c1d3f8a0dc8fa377f3e1c55",
+        "size_bytes": 11934
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-exact_bounds/result.json",
+        "sha256": "834a3b4d69abcce6444f745aae98b32bc700d45db77df6c93799f6a2b139fb3c",
+        "size_bytes": 17204
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-kernel_isolation/result.json",
+        "sha256": "3027b147e53af3b27de6984598604accd9a53d40ea4459b4d06ba35acad6e791",
+        "size_bytes": 16184
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-read_only_sharing/result.json",
+        "sha256": "c8fc607bbccdd34cc5b3ca8e713ee780b02de98a75f7ad815b745f4a17c14329",
+        "size_bytes": 12394
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-recursive_revocation/result.json",
+        "sha256": "5d78bff2e68dd119b2761a37cc7bc03db54b99c4e5870d93f0b4458fb651f6e0",
+        "size_bytes": 24235
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-stale_identities/result.json",
+        "sha256": "786372454178c0e0e3e7ee2116a7b316fabd1ff57a82de13a8704bfc611e5e03",
+        "size_bytes": 21217
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-trusted_operation_forgery/result.json",
+        "sha256": "9a9618c48a72b9d2c1160e53b85cea37efda97df4d42da902d64f207efb8348b",
+        "size_bytes": 21590
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-unauthorized_read/result.json",
+        "sha256": "322029a7bc79cfc7f6ae029a050e107cd27bc78e1366efddd98048bb66161af9",
+        "size_bytes": 11781
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-reg-v2-matrix-writable_reuse/result.json",
+        "sha256": "e1e9ae69c68b1479f1b52983bba5b50b787f53fe9e9691fa7aeb56cb6055aee3",
+        "size_bytes": 17877
+      },
+      "reason": "known legacy slice/matrix result includes local launch paths; original retained privately without alteration"
+    }
+  ],
+  "physical_qualification": false,
+  "private_navigation_inputs": [
+    {
+      "origin": {
+        "path": "build/k03-smp-old-v2/summary.json",
+        "sha256": "85dc8cabdae8691a245733e68775fbf3a0ada18b2ca4c03f79e841f08c002b12",
+        "size_bytes": 14035
+      },
+      "scope": "private wrapper metadata; public navigation is derived"
+    },
+    {
+      "origin": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "scope": "private wrapper commands; portable argument vectors are derived"
+    }
+  ],
+  "python_tests": 725,
+  "regression_source": {
+    "dirty": false,
+    "revision": "febcb2ff53a512daa7ba8bac6f6156c9cbc3a6e4",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "ad7256e9bcea614799b57e63855030b9e6702f020a10fe07f5c645b877d93298"
+  },
+  "regressions": {
+    "benchmark": {
+      "cases": 13,
+      "native_qualification": false,
+      "original_wrapper_summary": {
+        "cases": 13,
+        "clock_tests": 2,
+        "native_qualification": false,
+        "packet_files": 55,
+        "pinned_scheduler_sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+        "registration_sha256": "4654ff523cddbd8575a1950ada66785542d1d33476985a2b79f0de4bbac1fe39",
+        "samples": 208
+      },
+      "samples": 208
+    },
+    "k01": {
+      "boots": 7,
+      "raw_traps": 3,
+      "twins_byte_identical": true
+    },
+    "matrix": {
+      "boots": 10,
+      "raw_traps": 52,
+      "twins_byte_identical": true
+    },
+    "native_host": {
+      "result": {
+        "path": "build/k03-smp-reg-v2-native-host/result.json",
+        "sha256": "318c1dfed278fff34faa74423128db6d123989b7441d2aee8a10d6e8db478dc0",
+        "size_bytes": 8541
+      },
+      "suites": {
+        "adapter": {
+          "failed": 0,
+          "ignored": 0,
+          "log": "adapter-tests.log",
+          "passed": 16
+        },
+        "core": {
+          "failed": 0,
+          "ignored": 0,
+          "log": "core-tests.log",
+          "passed": 57
+        },
+        "paging": {
+          "failed": 0,
+          "ignored": 0,
+          "log": "paging-tests.log",
+          "passed": 14
+        },
+        "sha256": {
+          "failed": 0,
+          "ignored": 0,
+          "log": "sha256-tests.log",
+          "passed": 10
+        }
+      },
+      "tests": 97
+    },
+    "region": {
+      "boots": 3,
+      "cases": {
+        "authority": {
+          "case": "authority",
+          "context_switches": 4,
+          "domains": [
+            {
+              "charged": 0,
+              "committed": 0,
+              "domain": 1,
+              "leaves": 0,
+              "reserved": 0
+            },
+            {
+              "charged": 0,
+              "committed": 0,
+              "domain": 2,
+              "leaves": 0,
+              "reserved": 0
+            }
+          ],
+          "final_allocated_pages": 0,
+          "final_mappings": 0,
+          "requests": 38,
+          "service_records": 209,
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "a:first_yield",
+            "b:map",
+            "b:read_confirmed",
+            "b:first_yield",
+            "a:cross_page",
+            "a:unmapped_buffer",
+            "a:overflow_buffer",
+            "a:short_buffer",
+            "a:bad_magic",
+            "a:bad_version",
+            "a:bad_operation",
+            "a:private_stack",
+            "a:private_request",
+            "a:stale_mapping",
+            "a:foreign",
+            "a:stale",
+            "a:collision",
+            "a:busy_release",
+            "a:authority_yield",
+            "b:foreign_mapping",
+            "b:foreign",
+            "b:write_authority",
+            "b:unmap",
+            "b:busy_release",
+            "b:exit",
+            "a:authority_unmap",
+            "a:release",
+            "a:allocate",
+            "a:old_cap",
+            "a:remap",
+            "a:reunmap",
+            "a:rerelease",
+            "a:final_accounting",
+            "a:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            29,
+            9
+          ],
+          "traps": 38
+        },
+        "revocation": {
+          "case": "revocation",
+          "context_switches": 4,
+          "domains": [
+            {
+              "charged": 0,
+              "committed": 0,
+              "domain": 1,
+              "leaves": 0,
+              "reserved": 0
+            },
+            {
+              "charged": 0,
+              "committed": 0,
+              "domain": 2,
+              "leaves": 0,
+              "reserved": 0
+            }
+          ],
+          "final_allocated_pages": 0,
+          "final_mappings": 0,
+          "requests": 14,
+          "service_records": 104,
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "a:first_yield",
+            "b:map",
+            "b:read_confirmed",
+            "b:first_yield",
+            "a:revoke",
+            "a:second_yield",
+            "b:stale_fault",
+            "a:revoked_mapping",
+            "a:release",
+            "a:final_accounting",
+            "a:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            11,
+            4
+          ],
+          "traps": 15
+        },
+        "sharing": {
+          "case": "sharing",
+          "context_switches": 4,
+          "domains": [
+            {
+              "charged": 0,
+              "committed": 0,
+              "domain": 1,
+              "leaves": 0,
+              "reserved": 0
+            },
+            {
+              "charged": 0,
+              "committed": 0,
+              "domain": 2,
+              "leaves": 0,
+              "reserved": 0
+            }
+          ],
+          "final_allocated_pages": 0,
+          "final_mappings": 0,
+          "requests": 14,
+          "service_records": 105,
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "a:first_yield",
+            "b:map",
+            "b:read_confirmed",
+            "b:first_yield",
+            "a:accounting",
+            "a:second_yield",
+            "b:write_fault",
+            "a:unmap",
+            "a:release",
+            "a:final_accounting",
+            "a:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            11,
+            4
+          ],
+          "traps": 15
+        }
+      },
+      "compiler_dependencies": 22,
+      "host": {
+        "result": {
+          "path": "build/k03-smp-old-v2/region/host/result.json",
+          "sha256": "0d86f14408f92dd70d6fb60b281cade371dc4d9e8f1711ca5849984244729cc6",
+          "size_bytes": 4929
+        },
+        "suites": 21,
+        "tests": 21
+      },
+      "retained_sources_per_twin": 49,
+      "runtime_files": 27,
+      "twin_artifacts": 10
+    },
+    "slice": {
+      "boots": 4,
+      "raw_traps": 4,
+      "twins_byte_identical": true
+    },
+    "timer": {
+      "boots": 4,
+      "cases": {
+        "budget": {
+          "b_read_confirmed": true,
+          "case": "budget",
+          "clock": {
+            "end_ns": 191177000,
+            "end_raw": 19123300,
+            "epoch_raw": 5600,
+            "kernel_ns": 42989000,
+            "period_fs": 10000000,
+            "tenant_ns": 148188000
+          },
+          "context_switches": 9,
+          "dispatches": 17,
+          "final_allocated_pages": 0,
+          "final_cpu_leases": 0,
+          "final_mappings": 0,
+          "irqs": [
+            4,
+            3
+          ],
+          "missed_arms": 1,
+          "pending_irq_probe": false,
+          "policy": [
+            {
+              "consumed_ns": 81409000,
+              "deadline_ns": 0,
+              "domain": 1,
+              "halted": true,
+              "limit_ns": 80000000,
+              "reserved_ns": 0,
+              "state": "failed"
+            },
+            {
+              "consumed_ns": 66779000,
+              "deadline_ns": 0,
+              "domain": 2,
+              "halted": false,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "completed"
+            }
+          ],
+          "requests": 9,
+          "service_records": 283,
+          "spin_irqs": [
+            4,
+            3
+          ],
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "b:map",
+            "b:read_confirmed",
+            "b:resumed_accounting",
+            "b:stale_unmap",
+            "b:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            8,
+            8
+          ],
+          "traps": 16
+        },
+        "deadline": {
+          "b_read_confirmed": true,
+          "case": "deadline",
+          "clock": {
+            "end_ns": 173128000,
+            "end_raw": 17316400,
+            "epoch_raw": 3600,
+            "kernel_ns": 41073000,
+            "period_fs": 10000000,
+            "tenant_ns": 132055000
+          },
+          "context_switches": 7,
+          "dispatches": 15,
+          "final_allocated_pages": 0,
+          "final_cpu_leases": 0,
+          "final_mappings": 0,
+          "irqs": [
+            3,
+            3
+          ],
+          "missed_arms": 0,
+          "pending_irq_probe": false,
+          "policy": [
+            {
+              "consumed_ns": 63263000,
+              "deadline_ns": 110716000,
+              "domain": 1,
+              "halted": true,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "failed"
+            },
+            {
+              "consumed_ns": 68792000,
+              "deadline_ns": 0,
+              "domain": 2,
+              "halted": false,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "completed"
+            }
+          ],
+          "requests": 9,
+          "service_records": 266,
+          "spin_irqs": [
+            3,
+            3
+          ],
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "b:map",
+            "b:read_confirmed",
+            "b:resumed_accounting",
+            "b:stale_unmap",
+            "b:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            7,
+            8
+          ],
+          "traps": 15
+        },
+        "forged_irq": {
+          "b_read_confirmed": true,
+          "case": "forged_irq",
+          "clock": {
+            "end_ns": 142865000,
+            "end_raw": 14289000,
+            "epoch_raw": 2500,
+            "kernel_ns": 36529000,
+            "period_fs": 10000000,
+            "tenant_ns": 106336000
+          },
+          "context_switches": 5,
+          "dispatches": 14,
+          "final_allocated_pages": 0,
+          "final_cpu_leases": 0,
+          "final_mappings": 0,
+          "irqs": [
+            1,
+            3
+          ],
+          "missed_arms": 0,
+          "pending_irq_probe": false,
+          "policy": [
+            {
+              "consumed_ns": 37941000,
+              "deadline_ns": 0,
+              "domain": 1,
+              "halted": false,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "failed"
+            },
+            {
+              "consumed_ns": 68395000,
+              "deadline_ns": 0,
+              "domain": 2,
+              "halted": false,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "completed"
+            }
+          ],
+          "requests": 9,
+          "service_records": 256,
+          "spin_irqs": [
+            0,
+            3
+          ],
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "b:map",
+            "b:read_confirmed",
+            "b:resumed_accounting",
+            "b:stale_unmap",
+            "b:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            6,
+            8
+          ],
+          "traps": 14
+        },
+        "preemption": {
+          "b_read_confirmed": true,
+          "case": "preemption",
+          "clock": {
+            "end_ns": 272061000,
+            "end_raw": 27209000,
+            "epoch_raw": 2900,
+            "kernel_ns": 50919000,
+            "period_fs": 10000000,
+            "tenant_ns": 221142000
+          },
+          "context_switches": 16,
+          "dispatches": 24,
+          "final_allocated_pages": 0,
+          "final_cpu_leases": 0,
+          "final_mappings": 0,
+          "irqs": [
+            7,
+            3
+          ],
+          "missed_arms": 0,
+          "pending_irq_probe": true,
+          "policy": [
+            {
+              "consumed_ns": 157681000,
+              "deadline_ns": 0,
+              "domain": 1,
+              "halted": false,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "completed"
+            },
+            {
+              "consumed_ns": 63461000,
+              "deadline_ns": 0,
+              "domain": 2,
+              "halted": false,
+              "limit_ns": 2000000000,
+              "reserved_ns": 0,
+              "state": "completed"
+            }
+          ],
+          "requests": 14,
+          "service_records": 375,
+          "spin_irqs": [
+            7,
+            3
+          ],
+          "stages": [
+            "a:map",
+            "a:writable_unmap",
+            "a:readonly_remap",
+            "a:delegate",
+            "b:map",
+            "b:read_confirmed",
+            "b:resumed_accounting",
+            "b:unmap",
+            "b:exit",
+            "a:resumed_accounting",
+            "a:unmap",
+            "a:release",
+            "a:final_accounting",
+            "a:exit"
+          ],
+          "task_fp_sha256": [
+            "c7ac85b7381c079a546cc47e4e6079386e5aeb3a3fb1b748636d709f66fe178c",
+            "ca5224c961c89f17ef9a95ff34bf812b368360824a45b12651fa337b1f4f1bb9"
+          ],
+          "task_resumes": [
+            16,
+            8
+          ],
+          "traps": 24
+        }
+      },
+      "compiler_dependencies": 26,
+      "host": {
+        "result": {
+          "path": "build/k03-smp-timer-v2/host/result.json",
+          "sha256": "4355aedc92a2b9b69a0d2a72d8a61837c46c8089bdb2886877b9bfe926e308aa",
+          "size_bytes": 8164
+        },
+        "suites": {
+          "adapter": 17,
+          "driver": 31,
+          "scheduler": 42
+        },
+        "tests": 90
+      },
+      "retained_sources_per_twin": 54,
+      "runtime_files": 28,
+      "twin_artifacts": 14
+    }
+  },
+  "shared_input_equivalence": {
+    "derived_navigation_only": true,
+    "execution_scope": "Regression executions retain their actual older source identity; this equivalence bridge is not a rerun at the SMP source",
+    "format": "tessryn-k03-smp-shared-input-equivalence/v1",
+    "historical_k01_limit": "K01 manifests bind a clean source revision without a per-file dependency map; all non-SMP-helper Git blobs are unchanged between these two commits",
+    "inputs": [
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": ".github/workflows/k02-native.yml",
+        "sha256": "55fafb8b227f3449212e3776ebcc0843236b2438c2d2d9059a062fc4fc5abc59",
+        "size_bytes": 17076
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": ".github/workflows/k02-region-service.yml",
+        "sha256": "219fceabf90b032751ad90d930aa270ab188c2e0a84b405801c0cb6e9f17feee",
+        "size_bytes": 14690
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": ".github/workflows/k03-timer.yml",
+        "sha256": "da320f5c2abc4cc0beba0dd67e6946907c6cd277e5758b9095021c3d754975a3",
+        "size_bytes": 15212
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "fixtures/rom.py",
+        "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+        "size_bytes": 1073
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-old-v2/region/host/result.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "interfaces/abi-v1/native.rs",
+        "sha256": "eb22a4d1ddcdcb8cb459eddc76c0813addaa007bfa1e6fbd4c3f74a09e19b642",
+        "size_bytes": 7626
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-old-v2/region/host/result.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel-core/boot_inventory.rs",
+        "sha256": "00de4b39228877f9e74af13fedc28382f1670f3bdac8ae99cd43269ca108f071",
+        "size_bytes": 12946
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel-core/boot_inventory_tests.rs",
+        "sha256": "d38b23c2558cf0bdc98e320a8c4cd52ed89e2f8bdeb2e4d689700fb701996f57",
+        "size_bytes": 20304
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-old-v2/region/host/result.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel-core/capabilities.rs",
+        "sha256": "d86270447e22e66f0fcd1891a9f2941cac7bccdaadfbdd9d497c8d1cd8fbd198",
+        "size_bytes": 26647
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-old-v2/region/host/result.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel-core/frames.rs",
+        "sha256": "571ceb417ce5cfd2f8745f0fcb5d2e36cf9709fb32b703ef827beca8ed7a9cbc",
+        "size_bytes": 8061
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-old-v2/region/host/result.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel-core/lib.rs",
+        "sha256": "8f75edd872d93399282043ed129a106ad42cc4427de255f26b5e0fd1ac4a8e5c",
+        "size_bytes": 1279
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel-core/tests.rs",
+        "sha256": "400ef2358cdb7f5ca7269ced153a519c4435910c855252dd27089deb619a4187",
+        "size_bytes": 42142
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/benchmark_clock.rs",
+        "sha256": "1b9f116563e9c2635f41b1c675187b8c967550b7d31f22c18fad04d94c85d318",
+        "size_bytes": 4165
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/cpu.rs",
+        "sha256": "1ca24735152073170122a625fe13251b42e32102c29b8a4f86e2743e5f268cbc",
+        "size_bytes": 11508
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/diagnostics.rs",
+        "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+        "size_bytes": 3005
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/entry.S",
+        "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+        "size_bytes": 5558
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/framebuffer.rs",
+        "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+        "size_bytes": 4436
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "kernel/k02.rs",
+        "sha256": "75ecb48581aecec25fe4f6aeaf78ae36fafda2df2ba183553d12627ea8ea4191",
+        "size_bytes": 14242
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "kernel/k02_cpu.rs",
+        "sha256": "566af73ae191d4653c4a985faad0047919f4c2047c64f57606bb9fa9e6cf240b",
+        "size_bytes": 10687
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "kernel/k02_entry.S",
+        "sha256": "026d506941c6e01a4700596a49b83796c094eef2abd68ed49fad0e89b4a4afdb",
+        "size_bytes": 7886
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "kernel/k02_matrix.rs",
+        "sha256": "8bb14f328f9313a1da6a44d9532b05954f68d55c319497f18223b601a5bf7ace",
+        "size_bytes": 24862
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "kernel/k02_matrix_protection.rs",
+        "sha256": "da4c187b8cd9871e90a262f1b2e263b1b4e8fa1fba94245a33646692c05203e6",
+        "size_bytes": 7154
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "kernel/k02_matrix_requests.rs",
+        "sha256": "eb1dede4ad90dbe590f63267873c5bca821bbab76e0d65a8669443b1f5e02150",
+        "size_bytes": 15018
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel/k02_memory.rs",
+        "sha256": "c44d39ac5263959b5b65bd98fb8ec244d98520978e1d315fb6d82651c06c7fe1",
+        "size_bytes": 18116
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel/k02_memory_host_tests.rs",
+        "sha256": "0cc4439c52b4f4d7672ab69d25c178108f4a06435e99f7f545a1dec239a63a32",
+        "size_bytes": 1290
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel/k02_memory_tests.rs",
+        "sha256": "5e3c977e402bb8090bc562060f14f8862b747f879859e9de40b29bc5a7ac50e2",
+        "size_bytes": 22397
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-timer-v2/host/result.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel/k02_paging.rs",
+        "sha256": "be28a0fd1a3137c01de79626176e0c6bd38756149607751e5be74a6f38cf7aa1",
+        "size_bytes": 22512
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/host/result.json",
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel/k02_paging_tests.rs",
+        "sha256": "618c512ec52555a25497c10b6755f06d42a88b10401c6cf1f8a9c538567deddb",
+        "size_bytes": 13937
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "kernel/k02_sha256.rs",
+        "sha256": "dc7a7af2973538c7700eb04eec49de6b61f2ae190c8b2c3e9e6c37f11f345f28",
+        "size_bytes": 3980
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/main.rs",
+        "sha256": "095e5fca845e29b9e33a2132f6de5fd65fb475e8cacb28464a7b9653aba8576f",
+        "size_bytes": 6143
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/native_benchmarks.rs",
+        "sha256": "1087c33fae876ef1867644e06f9b634868fe8a076f6ad6151219af92fe1f7d07",
+        "size_bytes": 21988
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-timer-v2/host/result.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/paging.rs",
+        "sha256": "463be88754ea0c2ab383bf5cfcfd3695c99407d1a9eb5cb907d386d61b784cc2",
+        "size_bytes": 8591
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-timer-v2/host/result.json"
+        ],
+        "path": "kernel/preempt_policy.rs",
+        "sha256": "585d445f4cd963a2f9ec680a55332410148cc128997b9399a2d275a913779b78",
+        "size_bytes": 6050
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-timer-v2/host/result.json"
+        ],
+        "path": "kernel/preempt_timer.rs",
+        "sha256": "c1719731cd0fc02689403022a31490aae0efa20ab89ee5fb74944ac0921bf413",
+        "size_bytes": 16710
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "kernel/region_entry.S",
+        "sha256": "869e0ea76d213a608b1609c7d18e47dc218cff96b6ee4a0f62e293a6eb051ee0",
+        "size_bytes": 1279
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "kernel/region_programs.S",
+        "sha256": "052ce145aba9d04c9a8c16ddfecf707caec059c04c81a4fc4370751434140f1f",
+        "size_bytes": 9183
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "kernel/region_runtime.rs",
+        "sha256": "762e38bced3989a020f03c955e9f64fe4477aaca027050d75306f67d16f9ce62",
+        "size_bytes": 34074
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-old-v2/region/host/result.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "kernel/region_service.rs",
+        "sha256": "b82edbc0a71ec90fe3d53b695595b0bac7bff0b9c7895e1dbbb14f658d6a9b2f",
+        "size_bytes": 22787
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "kernel/timer_programs.S",
+        "sha256": "9c05714e565fec292d835507d80f5eec48ba097317f1a38cd5ed8930ff604831",
+        "size_bytes": 7271
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "kernel/timer_runtime.rs",
+        "sha256": "04a37a2def875fd66b64dbb32ebc1428ed953893bab3366e64a929b8dff53c79",
+        "size_bytes": 31848
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-slice-a/manifest.json",
+          "build/k03-smp-reg-v2-slice-b/manifest.json",
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "kernel/uefi.rs",
+        "sha256": "c256b1942688154c40250f87a61981d37bae06e8f38f1ac31d088756ad251ff4",
+        "size_bytes": 28177
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "planning/k02-native-cases.json",
+        "sha256": "186e17fc7c100419c9a070b3044505b95ab1033da05b1671fb42b6edd10576bf",
+        "size_bytes": 2045
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "planning/k02-region-service.json",
+        "sha256": "db3984d0ae0b0c5d28950cba9364f2682598f4e11a9206f08ebdbbc17ac12eef",
+        "size_bytes": 1775
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "planning/k02-toolchain.lock.json",
+        "sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+        "size_bytes": 883
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "planning/k03-timer.json",
+        "sha256": "0d8b0bd3e28bde5e8296d237c1b2d4caeca4ad2791e6653650700f600423a339",
+        "size_bytes": 1082
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "planning/native-kernel-benchmark-profile.json",
+        "sha256": "51424717527d62478670fb9af2e97101d6b6f6e3c05d981f25f8a27f31a221ab",
+        "size_bytes": 4196
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-timer-v2/host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "scheduler-core/lib.rs",
+        "sha256": "db4a54a871d0a853ebdbacf13a672b19738d0b0e525cdcd87f9953ff9d5c996d",
+        "size_bytes": 18365
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/host/result.json"
+        ],
+        "path": "scheduler-core/tests.rs",
+        "sha256": "ecc06172f4a149dc9eb4f6444ded397382642ca4383f3db7b4ad4a4aa62808b7",
+        "size_bytes": 37060
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "tests/k02_paging_host.rs",
+        "sha256": "9a470455889f31eecbd3e3832db06b846ae5dedf0f4ca96c413daca8a059129f",
+        "size_bytes": 263
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "tests/k02_sha256_host.rs",
+        "sha256": "952cac4164cc237a2a046738a970dee9801f40b2b21cefb25faebe80c97f1f85",
+        "size_bytes": 4070
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/host/result.json"
+        ],
+        "path": "tests/preempt_policy_host.rs",
+        "sha256": "1f1eb5513f06661ad39d5be709fbe5e5f1fcda57906ec3337321fa16882dd0d6",
+        "size_bytes": 12139
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/host/result.json"
+        ],
+        "path": "tests/preempt_timer_host.rs",
+        "sha256": "251904dc9e997bee198788d784f36fda9d04bb4bb3fca8e0154ae785938f8d01",
+        "size_bytes": 15071
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/host/result.json"
+        ],
+        "path": "tests/region_service_host.rs",
+        "sha256": "b8942225c51456541f5224e37efb377aa8112fd16cdb58bdc23a6c40d2f47de9",
+        "size_bytes": 25854
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "toolchain.lock.json",
+        "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+        "size_bytes": 3748
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/build_fixture.py",
+        "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+        "size_bytes": 19816
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/build_k02_native.py",
+        "sha256": "ffcfbb8c30fa0e40073fa73557b3947fad827ac07669531d4ae3eeeacedf0720",
+        "size_bytes": 12135
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/build_k02_region_service.py",
+        "sha256": "937dc0be4ffa6e861d212b42aa14940cb377239e4783f61a61313599feae6869",
+        "size_bytes": 14474
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/build_k03_timer.py",
+        "sha256": "12d68f8a99882e932c5d49ec799af885c7f99dbfe17c3b7727e5b5c09ef5ae43",
+        "size_bytes": 15325
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/build_kernel.py",
+        "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+        "size_bytes": 12867
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/build_native_kernel_benchmarks.py",
+        "sha256": "690d7da157b5714c4b4f963d14b5ac8611bd21948725b8d82681dc49fc4536ce",
+        "size_bytes": 17010
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "tools/check_k02_core.py",
+        "sha256": "ad6f36043a27e8300d722844c70f77acf45c7f086eaabedb36795a5e5739a6cb",
+        "size_bytes": 7587
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "tools/check_k02_native_host.py",
+        "sha256": "e450448d837fd862254e83b01b6c9864055068936b3cc434472cf28b97a36842",
+        "size_bytes": 5670
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/check_k02_region_host.py",
+        "sha256": "0aa737e8d943b05c5e3a687340a5711299e31c7a96b283413f332c783bdddfe4",
+        "size_bytes": 4963
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/check_k03_timer_host.py",
+        "sha256": "9ceaefbe4e81785acb1e741aca2a02e3452e658cefe9aaa74268f8f359df2a5d",
+        "size_bytes": 5819
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/g03/__init__.py",
+        "sha256": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+        "size_bytes": 71
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/g03/evidence.py",
+        "sha256": "a26425ffc225a6e640670838cfdc35e94f01cf13174797b9802ad80bff85ebf8",
+        "size_bytes": 43470
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/g03/process.py",
+        "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+        "size_bytes": 6728
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/k01_media.py",
+        "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+        "size_bytes": 10501
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-reg-v2-matrix-a/manifest.json",
+          "build/k03-smp-reg-v2-matrix-b/manifest.json"
+        ],
+        "path": "tools/k02_native_protocol.py",
+        "sha256": "8f38771e0de59b1df9ffe69aec0c2c8d7c2418be517aedfbb1a42e77397b2200",
+        "size_bytes": 24960
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/k02_region_protocol.py",
+        "sha256": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+        "size_bytes": 8099
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/k02_region_provenance.py",
+        "sha256": "fa63e6ca71069a309c7e07d29dc3d2816a562ab9c546516f19235f61e3bed007",
+        "size_bytes": 8106
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/k02_region_trace.py",
+        "sha256": "e7e67115d4599fc685f4e68960eafbd5ab84cbc1936c7aae055d488ae20444d5",
+        "size_bytes": 27884
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/k03_timer_protocol.py",
+        "sha256": "9f825ba9143f7ff0e99c494486cd8fc22049bb943124f30d374581ea82fbd5bf",
+        "size_bytes": 2315
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/k03_timer_provenance.py",
+        "sha256": "46d64fb561f9285e548bbdc1be58ce17ed1099fcfe5ca16be3bc0dab4f09a896",
+        "size_bytes": 8793
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/k03_timer_trace.py",
+        "sha256": "62b2a831ac8ad99782322e61418a7e97165d63bcfec81c94b97e65b898c1ddba",
+        "size_bytes": 45729
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/run_k02_native.py",
+        "sha256": "aa2487eeda7ec0371280613eda182a7956c92c2cdae6e395fbc8c17920f9cc1d",
+        "size_bytes": 8433
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/run_k02_region_service.py",
+        "sha256": "1d99aedb37239a40d8b3e4b67b80055675b96b983f61573558c0cd870b0f0e1b",
+        "size_bytes": 8930
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/run_k03_timer.py",
+        "sha256": "be7230d187452b9bebacace3c7a9d023041eacf9351b66275ecd709301f2292c",
+        "size_bytes": 8919
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/run_kernel.py",
+        "sha256": "deef0fcf1c040a82e15b3f135cb1f20cb448ee62bac96e7958478b10912ccd6f",
+        "size_bytes": 11228
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/run_native_kernel_benchmarks.py",
+        "sha256": "b0e31f7f6b519c33b4bbb0948aa69c6c5ff58275548bab309a40f90982ac108c",
+        "size_bytes": 12367
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json"
+        ],
+        "path": "tools/setup_k02_toolchain.py",
+        "sha256": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+        "size_bytes": 13215
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-reg-v2-native-host/result.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/setup_toolchain.py",
+        "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+        "size_bytes": 13199
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/setup_uefi.py",
+        "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+        "size_bytes": 17457
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/summarize_k02_region_failure.py",
+        "sha256": "ab47999c588d8b683855b7e8bee3a50aecaa72bdb66fcab91031d9a60e094f94",
+        "size_bytes": 3635
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/summarize_k03_timer_failure.py",
+        "sha256": "0e0f3ab9ea86afbc33f1b4c48b6a7acc782f59de846bda3f514c8c9182c712b8",
+        "size_bytes": 3708
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/verify_k02_native.py",
+        "sha256": "e6b3a7e8688c981ea884da80c577e281d3cabc83c727cb9af3826e88b8ca98a8",
+        "size_bytes": 19704
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json"
+        ],
+        "path": "tools/verify_k02_region_service.py",
+        "sha256": "0b78bc4ad49d24356e1b3b4f5e291bfba4347876671d46af2c31235b0c2a91bd",
+        "size_bytes": 19326
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json"
+        ],
+        "path": "tools/verify_k03_timer.py",
+        "sha256": "2c239d9e692dd40efcadc6ad7da6a1fd4d6893df450549ad52ca976dbc203aa4",
+        "size_bytes": 18893
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "tools/verify_native_kernel_benchmarks.py",
+        "sha256": "5895a71aede11c319d8802932b959a8d17b142ba084a561087095cf8b8c96837",
+        "size_bytes": 37779
+      },
+      {
+        "binding_origins": [
+          "build/k03-smp-old-v2/region/a/manifest.json",
+          "build/k03-smp-old-v2/region/b/manifest.json",
+          "build/k03-smp-timer-v2/a/manifest.json",
+          "build/k03-smp-timer-v2/b/manifest.json",
+          "build/k03-smp-old-v2/benchmark-image/manifest.json"
+        ],
+        "path": "uefi-toolchain.lock.json",
+        "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+        "size_bytes": 3623
+      }
+    ],
+    "regression_source": {
+      "dirty": false,
+      "revision": "febcb2ff53a512daa7ba8bac6f6156c9cbc3a6e4",
+      "snapshot_algorithm": "git-worktree-v2",
+      "tree_sha256": "ad7256e9bcea614799b57e63855030b9e6702f020a10fe07f5c645b877d93298"
+    },
+    "scope": "Every declared retained regression compiler/runtime/host input equals both reviewed commits and current bytes; the complete Git delta is restricted to three new SMP build helpers",
+    "smp_source": {
+      "dirty": false,
+      "revision": "f3f39b8e333b5e6fcb96a829dddaa480a5858ee1",
+      "snapshot_algorithm": "git-worktree-v2",
+      "tree_sha256": "09e6e214e0ae5216a6ee12b8912bd282269ebe874b5a186a63ec27f80bbd1fed"
+    },
+    "source_delta": [
+      {
+        "path": "tools/build_k03_smp.py",
+        "regression_sha256": "c29a298a70bf4654a011d7a08566e34c30228c9ab9e79af84232c1d4fec1a552",
+        "smp_sha256": "eff9644c7770d1152d3214b714b812987c7200e9d3682ab77de9035b91da3a80"
+      },
+      {
+        "path": "tools/check_k03_smp_host.py",
+        "regression_sha256": "a90a7c266c3f7f999b01aa1f51e698ae0c693c250f4a39aedb6c49f5dfa1fc5b",
+        "smp_sha256": "5daf2db7f35bf606daf3ba049238b1eb3e25dc83aa5d0e716ece417874090896"
+      },
+      {
+        "path": "tools/k03_smp_provenance.py",
+        "regression_sha256": "2c892a6454aca9962792e6f41f551f9e62536272b231b7300215cbb1248947c8",
+        "smp_sha256": "1c5f419ea4940a29a435cfbf24342f77fe6ef173b0118ac68166e0fc20141c67"
+      }
+    ],
+    "status": "pass",
+    "unchanged_input_count": 91
+  },
+  "smp": {
+    "boots": 2,
+    "cases": {
+      "missing_ap": {
+        "capture_authentication": "unverified_offline",
+        "case": "missing_ap",
+        "cpus_online": 1,
+        "elapsed_ns": 2010147000,
+        "enabled_apic_ids": [
+          0,
+          1
+        ],
+        "expected_rejection": "ap-start-timeout",
+        "ipi_acknowledgments": 0,
+        "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb"
+      },
+      "rendezvous": {
+        "capture_authentication": "unverified_offline",
+        "case": "rendezvous",
+        "cpus_online": 2,
+        "enabled_apic_ids": [
+          0,
+          1
+        ],
+        "final_heartbeat": 21241,
+        "increments": [
+          4096,
+          4096
+        ],
+        "ipi_acknowledgments": 3,
+        "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+        "retained": "all",
+        "stop_generation": 4,
+        "stop_window_ns": 20018000,
+        "total": 8192,
+        "work_window_ns": 20009000
+      }
+    },
+    "compiler_dependencies": 10,
+    "host": {
+      "result": {
+        "path": "build/k03-smp-clean-v3/host/result.json",
+        "sha256": "c62dd62dff9f8d066947eb0c2854e1467aec20c6146ab6b2a1651cf56d2b1872",
+        "size_bytes": 3391
+      },
+      "suites": 26,
+      "tests": 26
+    },
+    "retained_sources_per_twin": 34,
+    "runtime_files": 24,
+    "twin_artifacts": 6
+  },
+  "source": {
+    "dirty": false,
+    "revision": "f3f39b8e333b5e6fcb96a829dddaa480a5858ee1",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "09e6e214e0ae5216a6ee12b8912bd282269ebe874b5a186a63ec27f80bbd1fed"
+  },
+  "status": "pass",
+  "verification": {
+    "path": "build/k03-smp-clean-v3/verification.json",
+    "sha256": "53970d347a843bdef38a61bf6b8b4fa53411a8edc966456564c182ac6bcd65ad",
+    "size_bytes": 1930
+  }
+}

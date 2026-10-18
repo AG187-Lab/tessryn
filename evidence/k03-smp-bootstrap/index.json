@@ -1,0 +1,2762 @@
+{
+  "binary_artifacts_included": false,
+  "files": [
+    {
+      "derived_navigation_or_parent_readme": true,
+      "path": "README.md",
+      "sha256": "4c9510c8778128475243f6dfd056493178f6836f44d4325eb94202b7e3afb40a",
+      "size_bytes": 5850
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/manifest.json",
+        "sha256": "e3a0d0eddaacf0a6c368015ac46544a081d462bd392768f00d40b1d0653e2034",
+        "size_bytes": 20966
+      },
+      "path": "a/manifest.json",
+      "sha256": "e3a0d0eddaacf0a6c368015ac46544a081d462bd392768f00d40b1d0653e2034",
+      "size_bytes": 20966
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/missing_ap/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "a/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/missing_ap/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "a/missing_ap/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/notices/rust-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "path": "a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/notices/rust-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "path": "a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/notices/rust-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "path": "a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/notices/tessryn-LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      "path": "a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/notices/tessryn-NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      "path": "a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/rendezvous/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "a/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/a/rendezvous/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "a/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/manifest.json",
+        "sha256": "4a0480b413795a6935f9495a38c109021e6feb020a2bdb01b0a5931fa2d8c7bf",
+        "size_bytes": 20966
+      },
+      "path": "b/manifest.json",
+      "sha256": "4a0480b413795a6935f9495a38c109021e6feb020a2bdb01b0a5931fa2d8c7bf",
+      "size_bytes": 20966
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/missing_ap/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "b/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/missing_ap/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "b/missing_ap/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/notices/rust-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "path": "b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/notices/rust-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "path": "b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/notices/rust-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "path": "b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/notices/tessryn-LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      "path": "b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/notices/tessryn-NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      "path": "b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/rendezvous/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "b/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/b/rendezvous/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "b/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "derived_navigation_or_parent_readme": true,
+      "path": "commands.json",
+      "sha256": "38df8c9cd882df74c4684cbd83d5426ff3bce1128c3a037c1f1c67c0bffcec56",
+      "size_bytes": 43170
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-design-v3.log",
+        "sha256": "bdf7530401ed04401593aae7d11e211785f7a28af2ff5197b320b334ea6e1d1b",
+        "size_bytes": 74
+      },
+      "path": "design.log",
+      "sha256": "bdf7530401ed04401593aae7d11e211785f7a28af2ff5197b320b334ea6e1d1b",
+      "size_bytes": 74
+    },
+    {
+      "derived_navigation_or_parent_readme": true,
+      "path": "full-artifact-audit.json",
+      "sha256": "d291d8455f87ad7838f248f924ab314cd9190f58e4a222b1f006148addc94ec5",
+      "size_bytes": 23604
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/host/build-stderr.log",
+        "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+        "size_bytes": 203
+      },
+      "path": "host/build-stderr.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/host/build-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "host/build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/host/result.json",
+        "sha256": "c62dd62dff9f8d066947eb0c2854e1467aec20c6146ab6b2a1651cf56d2b1872",
+        "size_bytes": 3391
+      },
+      "path": "host/result.json",
+      "sha256": "c62dd62dff9f8d066947eb0c2854e1467aec20c6146ab6b2a1651cf56d2b1872",
+      "size_bytes": 3391
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/host/tests-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/host/tests-stdout.log",
+        "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+        "size_bytes": 1986
+      },
+      "path": "host/tests-stdout.log",
+      "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+      "size_bytes": 1986
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/missing_ap/registration.json",
+        "sha256": "25cd5b0c99d9bd85ec3a396c38dd1f03551314677d2475c10a0415ed8b29ef79",
+        "size_bytes": 2945
+      },
+      "path": "missing_ap/registration.json",
+      "sha256": "25cd5b0c99d9bd85ec3a396c38dd1f03551314677d2475c10a0415ed8b29ef79",
+      "size_bytes": 2945
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/missing_ap/result.json",
+        "sha256": "7af5b79ceb16a3813f0b301cc5803b643e35f820da24a63ca0664622be936a63",
+        "size_bytes": 2521
+      },
+      "path": "missing_ap/result.json",
+      "sha256": "7af5b79ceb16a3813f0b301cc5803b643e35f820da24a63ca0664622be936a63",
+      "size_bytes": 2521
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/missing_ap/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/missing_ap/stdout.log",
+        "sha256": "2ef533e22da86eea426328c6e4a15d99fe73de3caa8e8476e6deb3c3edd3e4cc",
+        "size_bytes": 1500
+      },
+      "path": "missing_ap/stdout.log",
+      "sha256": "2ef533e22da86eea426328c6e4a15d99fe73de3caa8e8476e6deb3c3edd3e4cc",
+      "size_bytes": 1500
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/preemption/firmware/NOTICE",
+        "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+        "size_bytes": 42903
+      },
+      "path": "notices/OVMF-NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-python-v3.log",
+        "sha256": "ab72752be775fe80f89349e42e0aac70d9630107583cc7029546427d48c215ce",
+        "size_bytes": 124252
+      },
+      "path": "python-tests.log",
+      "sha256": "ab72752be775fe80f89349e42e0aac70d9630107583cc7029546427d48c215ce",
+      "size_bytes": 124252
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/benchmark-image/manifest.json",
+        "sha256": "88e32f89a77784902c074686b747564bcf2667ed4dd92d5b1068b1ba07f3b771",
+        "size_bytes": 15667
+      },
+      "path": "regressions/benchmark/manifest.json",
+      "sha256": "88e32f89a77784902c074686b747564bcf2667ed4dd92d5b1068b1ba07f3b771",
+      "size_bytes": 15667
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/benchmark-run/qemu-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/benchmark/qemu-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/benchmark-run/qemu-stdout.log",
+        "sha256": "7eabef3fd13f171e0f72ca01f0b1081dd8485d3b94b44e9f1fa2372277170cb3",
+        "size_bytes": 61574
+      },
+      "path": "regressions/benchmark/qemu-stdout.log",
+      "sha256": "7eabef3fd13f171e0f72ca01f0b1081dd8485d3b94b44e9f1fa2372277170cb3",
+      "size_bytes": 61574
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/benchmark-run/registration.json",
+        "sha256": "4654ff523cddbd8575a1950ada66785542d1d33476985a2b79f0de4bbac1fe39",
+        "size_bytes": 13178
+      },
+      "path": "regressions/benchmark/registration.json",
+      "sha256": "4654ff523cddbd8575a1950ada66785542d1d33476985a2b79f0de4bbac1fe39",
+      "size_bytes": 13178
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/benchmark-run/result.json",
+        "sha256": "31824aee5fd0a3230f81b9bf161e6b883c100a6984b3997fcfebccacc35cd0e2",
+        "size_bytes": 12513
+      },
+      "path": "regressions/benchmark/result.json",
+      "sha256": "31824aee5fd0a3230f81b9bf161e6b883c100a6984b3997fcfebccacc35cd0e2",
+      "size_bytes": 12513
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/benchmark-run/run_receipts.json",
+        "sha256": "a34c63688dc214bf3bf9d4ea6debdfb643d5a72119b3c2c6b617980196955374",
+        "size_bytes": 518
+      },
+      "path": "regressions/benchmark/run_receipts.json",
+      "sha256": "a34c63688dc214bf3bf9d4ea6debdfb643d5a72119b3c2c6b617980196955374",
+      "size_bytes": 518
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-build-a.log",
+        "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+        "size_bytes": 37
+      },
+      "path": "regressions/commands/kernel-k01-build-a-combined.log",
+      "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+      "size_bytes": 37
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-build-b.log",
+        "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+        "size_bytes": 37
+      },
+      "path": "regressions/commands/kernel-k01-build-b-combined.log",
+      "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+      "size_bytes": 37
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-int3.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-int3-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-invalid_opcode.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-invalid_opcode-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-iso.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-iso-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-normal.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-normal-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-page_fault.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-page_fault-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-panic.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-panic-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-run-reboot.log",
+        "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+        "size_bytes": 96
+      },
+      "path": "regressions/commands/kernel-k01-run-reboot-combined.log",
+      "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+      "size_bytes": 96
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/k01-verify.log",
+        "sha256": "14fcea0020644433db86c89524304828153ec0888ccc8845b5c72013766d35fe",
+        "size_bytes": 486
+      },
+      "path": "regressions/commands/kernel-k01-verify-combined.log",
+      "sha256": "14fcea0020644433db86c89524304828153ec0888ccc8845b5c72013766d35fe",
+      "size_bytes": 486
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-build-a.log",
+        "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+        "size_bytes": 290
+      },
+      "path": "regressions/commands/kernel-matrix-build-a-combined.log",
+      "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+      "size_bytes": 290
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-build-b.log",
+        "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+        "size_bytes": 290
+      },
+      "path": "regressions/commands/kernel-matrix-build-b-combined.log",
+      "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+      "size_bytes": 290
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-caller_forgery.log",
+        "sha256": "964bde3d10c30f60860da00185b7b83062279ccce2bdcd220b7d3725eb3b3033",
+        "size_bytes": 275
+      },
+      "path": "regressions/commands/kernel-matrix-run-caller_forgery-combined.log",
+      "sha256": "964bde3d10c30f60860da00185b7b83062279ccce2bdcd220b7d3725eb3b3033",
+      "size_bytes": 275
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-data_nx.log",
+        "sha256": "9b7041e8c11a7f6615a7b827f25b00fc29c8a68677f83d29126483c3da1577f8",
+        "size_bytes": 268
+      },
+      "path": "regressions/commands/kernel-matrix-run-data_nx-combined.log",
+      "sha256": "9b7041e8c11a7f6615a7b827f25b00fc29c8a68677f83d29126483c3da1577f8",
+      "size_bytes": 268
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-exact_bounds.log",
+        "sha256": "2ae2e998bcd4f58c1ab8611a77767d0602a04428bc97b19789439402d6ec7103",
+        "size_bytes": 273
+      },
+      "path": "regressions/commands/kernel-matrix-run-exact_bounds-combined.log",
+      "sha256": "2ae2e998bcd4f58c1ab8611a77767d0602a04428bc97b19789439402d6ec7103",
+      "size_bytes": 273
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-kernel_isolation.log",
+        "sha256": "9fea561839a9206da8ca520a39a55ab6aa337efa6215e0e72d4b9cf1f06c66a1",
+        "size_bytes": 277
+      },
+      "path": "regressions/commands/kernel-matrix-run-kernel_isolation-combined.log",
+      "sha256": "9fea561839a9206da8ca520a39a55ab6aa337efa6215e0e72d4b9cf1f06c66a1",
+      "size_bytes": 277
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-read_only_sharing.log",
+        "sha256": "643e3329d709b96038829df5eafb53d528e646a785a7e7da338fedb7492fbd6a",
+        "size_bytes": 278
+      },
+      "path": "regressions/commands/kernel-matrix-run-read_only_sharing-combined.log",
+      "sha256": "643e3329d709b96038829df5eafb53d528e646a785a7e7da338fedb7492fbd6a",
+      "size_bytes": 278
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-recursive_revocation.log",
+        "sha256": "3acafa5e2f175830ce0a41ff974ba69cd17bcee9226b1825ae263ce609f6d367",
+        "size_bytes": 281
+      },
+      "path": "regressions/commands/kernel-matrix-run-recursive_revocation-combined.log",
+      "sha256": "3acafa5e2f175830ce0a41ff974ba69cd17bcee9226b1825ae263ce609f6d367",
+      "size_bytes": 281
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-stale_identities.log",
+        "sha256": "6799d32352168e8933ac0326e15af3162fb401ff0b25cf717c3669e302f6cfbd",
+        "size_bytes": 277
+      },
+      "path": "regressions/commands/kernel-matrix-run-stale_identities-combined.log",
+      "sha256": "6799d32352168e8933ac0326e15af3162fb401ff0b25cf717c3669e302f6cfbd",
+      "size_bytes": 277
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-trusted_operation_forgery.log",
+        "sha256": "ed831baa2344c2473b93d88ffc1556a5cb83fd55554e1daa7659d9e6fe2816fa",
+        "size_bytes": 286
+      },
+      "path": "regressions/commands/kernel-matrix-run-trusted_operation_forgery-combined.log",
+      "sha256": "ed831baa2344c2473b93d88ffc1556a5cb83fd55554e1daa7659d9e6fe2816fa",
+      "size_bytes": 286
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-unauthorized_read.log",
+        "sha256": "a0d82c1ee2335dd9186d8091a4a875d14236f04d70fda6d23c1788128d5e2f3e",
+        "size_bytes": 278
+      },
+      "path": "regressions/commands/kernel-matrix-run-unauthorized_read-combined.log",
+      "sha256": "a0d82c1ee2335dd9186d8091a4a875d14236f04d70fda6d23c1788128d5e2f3e",
+      "size_bytes": 278
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-run-writable_reuse.log",
+        "sha256": "bdda992ae05691511eabd36e388a5ac4d55f304dfb9140726c4cc17d032db915",
+        "size_bytes": 275
+      },
+      "path": "regressions/commands/kernel-matrix-run-writable_reuse-combined.log",
+      "sha256": "bdda992ae05691511eabd36e388a5ac4d55f304dfb9140726c4cc17d032db915",
+      "size_bytes": 275
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/matrix-verify.log",
+        "sha256": "2ecab4980cc939d3cbab53f4d11f88d11decf444acf0710b8d622b466e01be86",
+        "size_bytes": 127
+      },
+      "path": "regressions/commands/kernel-matrix-verify-combined.log",
+      "sha256": "2ecab4980cc939d3cbab53f4d11f88d11decf444acf0710b8d622b466e01be86",
+      "size_bytes": 127
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/native-host.log",
+        "sha256": "ce672dde79c3c862ee76c12bb67abbff20f7772a323879dab7eac2b488598fcc",
+        "size_bytes": 103
+      },
+      "path": "regressions/commands/kernel-native-host-combined.log",
+      "sha256": "ce672dde79c3c862ee76c12bb67abbff20f7772a323879dab7eac2b488598fcc",
+      "size_bytes": 103
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-build-a.log",
+        "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+        "size_bytes": 222
+      },
+      "path": "regressions/commands/kernel-slice-build-a-combined.log",
+      "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+      "size_bytes": 222
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-build-b.log",
+        "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+        "size_bytes": 222
+      },
+      "path": "regressions/commands/kernel-slice-build-b-combined.log",
+      "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+      "size_bytes": 222
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-run-foreign_read.log",
+        "sha256": "524e8470be27adbe2e0ed3081a0b110db7cc12aa17dc23c5d0678175daf9008f",
+        "size_bytes": 258
+      },
+      "path": "regressions/commands/kernel-slice-run-foreign_read-combined.log",
+      "sha256": "524e8470be27adbe2e0ed3081a0b110db7cc12aa17dc23c5d0678175daf9008f",
+      "size_bytes": 258
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-run-kernel_read.log",
+        "sha256": "c052b8e2fb22c8c9dde333c65e8a826e5d8f450f1ed233a3096a449782192248",
+        "size_bytes": 257
+      },
+      "path": "regressions/commands/kernel-slice-run-kernel_read-combined.log",
+      "sha256": "c052b8e2fb22c8c9dde333c65e8a826e5d8f450f1ed233a3096a449782192248",
+      "size_bytes": 257
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-run-own_page.log",
+        "sha256": "ba4ce5edf7f3e7d0187676a695a2b180263a715bfb6141fa8ee6ae45a6a59193",
+        "size_bytes": 254
+      },
+      "path": "regressions/commands/kernel-slice-run-own_page-combined.log",
+      "sha256": "ba4ce5edf7f3e7d0187676a695a2b180263a715bfb6141fa8ee6ae45a6a59193",
+      "size_bytes": 254
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-run-readonly_write.log",
+        "sha256": "1d3d3dfb15bdbd0a8dada382c659bb89a7f55606922ec7fa051610c7990ac3c5",
+        "size_bytes": 260
+      },
+      "path": "regressions/commands/kernel-slice-run-readonly_write-combined.log",
+      "sha256": "1d3d3dfb15bdbd0a8dada382c659bb89a7f55606922ec7fa051610c7990ac3c5",
+      "size_bytes": 260
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/slice-verify.log",
+        "sha256": "43da62d345370ddaf56a7b88a5de874994e5145f103ad781c0e57dc9649c99ef",
+        "size_bytes": 149
+      },
+      "path": "regressions/commands/kernel-slice-verify-combined.log",
+      "sha256": "43da62d345370ddaf56a7b88a5de874994e5145f103ad781c0e57dc9649c99ef",
+      "size_bytes": 149
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-0.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/commands/old-older-0-combined.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-1.log",
+        "sha256": "801565b5ae1084fb29612c9831d7d9b4f3f77815511d49d88fbe32e808e314e9",
+        "size_bytes": 263
+      },
+      "path": "regressions/commands/old-older-1-combined.log",
+      "sha256": "801565b5ae1084fb29612c9831d7d9b4f3f77815511d49d88fbe32e808e314e9",
+      "size_bytes": 263
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-10.log",
+        "sha256": "51734578f7f7cb1815cea1c2bc2a0cae3b6c51e435de30bf84bfd30de376ff6f",
+        "size_bytes": 157
+      },
+      "path": "regressions/commands/old-older-10-combined.log",
+      "sha256": "51734578f7f7cb1815cea1c2bc2a0cae3b6c51e435de30bf84bfd30de376ff6f",
+      "size_bytes": 157
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-11.log",
+        "sha256": "19e6c40206d9358db6cda94ab2730365762d44f5a38d0151853f971c289c5562",
+        "size_bytes": 98
+      },
+      "path": "regressions/commands/old-older-11-combined.log",
+      "sha256": "19e6c40206d9358db6cda94ab2730365762d44f5a38d0151853f971c289c5562",
+      "size_bytes": 98
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-2.log",
+        "sha256": "5f1af46f81da1bfa93d4cba72eb0a9197f0d710967b43c4e81febc8e54c59ed6",
+        "size_bytes": 131
+      },
+      "path": "regressions/commands/old-older-2-combined.log",
+      "sha256": "5f1af46f81da1bfa93d4cba72eb0a9197f0d710967b43c4e81febc8e54c59ed6",
+      "size_bytes": 131
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-3.log",
+        "sha256": "dc8afc7130ae1f2c1727d8d0ba06c4eb3b077cc6c278a69c6bfeb56880cd56f0",
+        "size_bytes": 186
+      },
+      "path": "regressions/commands/old-older-3-combined.log",
+      "sha256": "dc8afc7130ae1f2c1727d8d0ba06c4eb3b077cc6c278a69c6bfeb56880cd56f0",
+      "size_bytes": 186
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-4.log",
+        "sha256": "e1eedc8690e401acd9d02b2f9decd8ea339b83605c7f1b94419d0157d671fb03",
+        "size_bytes": 8679
+      },
+      "path": "regressions/commands/old-older-4-combined.log",
+      "sha256": "e1eedc8690e401acd9d02b2f9decd8ea339b83605c7f1b94419d0157d671fb03",
+      "size_bytes": 8679
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-5.log",
+        "sha256": "d894be4b5f54a8694a6fd8f3099e954a9a71ee31257cd5b9bf255821513d76e6",
+        "size_bytes": 60
+      },
+      "path": "regressions/commands/old-older-5-combined.log",
+      "sha256": "d894be4b5f54a8694a6fd8f3099e954a9a71ee31257cd5b9bf255821513d76e6",
+      "size_bytes": 60
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-6.log",
+        "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+        "size_bytes": 62
+      },
+      "path": "regressions/commands/old-older-6-combined.log",
+      "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+      "size_bytes": 62
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-7.log",
+        "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+        "size_bytes": 62
+      },
+      "path": "regressions/commands/old-older-7-combined.log",
+      "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+      "size_bytes": 62
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-8.log",
+        "sha256": "fab69376ee7563a534c9fe38b476667197b15d0755e9c3e26f4c79609e280f90",
+        "size_bytes": 155
+      },
+      "path": "regressions/commands/old-older-8-combined.log",
+      "sha256": "fab69376ee7563a534c9fe38b476667197b15d0755e9c3e26f4c79609e280f90",
+      "size_bytes": 155
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-logs/older-9.log",
+        "sha256": "53d91fb811c81cbefefa9dd090c9a358d668f1632c49204b2c5d4b42fe155e22",
+        "size_bytes": 158
+      },
+      "path": "regressions/commands/old-older-9-combined.log",
+      "sha256": "53d91fb811c81cbefefa9dd090c9a358d668f1632c49204b2c5d4b42fe155e22",
+      "size_bytes": 158
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "sha256": "90f8dd788b538e880732df78c31ae6bdd584251fbb23ed7eacc2f9c77b147ee2",
+        "size_bytes": 18839
+      },
+      "path": "regressions/k01/a/manifest.json",
+      "sha256": "90f8dd788b538e880732df78c31ae6bdd584251fbb23ed7eacc2f9c77b147ee2",
+      "size_bytes": 18839
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-b/manifest.json",
+        "sha256": "90f8dd788b538e880732df78c31ae6bdd584251fbb23ed7eacc2f9c77b147ee2",
+        "size_bytes": 18839
+      },
+      "path": "regressions/k01/b/manifest.json",
+      "sha256": "90f8dd788b538e880732df78c31ae6bdd584251fbb23ed7eacc2f9c77b147ee2",
+      "size_bytes": 18839
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-int3/result.json",
+        "sha256": "d027e865dc327cce40057b1bb0485ac424802ddd4fc78afb089cfc02f6f24ea8",
+        "size_bytes": 2704
+      },
+      "path": "regressions/k01/int3/result.json",
+      "sha256": "d027e865dc327cce40057b1bb0485ac424802ddd4fc78afb089cfc02f6f24ea8",
+      "size_bytes": 2704
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-int3/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/k01/int3/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-int3/stdout.log",
+        "sha256": "c069a92885b099305b5a94d117e3fe83a81780947520febebf99bfd428326662",
+        "size_bytes": 1064
+      },
+      "path": "regressions/k01/int3/stdout.log",
+      "sha256": "c069a92885b099305b5a94d117e3fe83a81780947520febebf99bfd428326662",
+      "size_bytes": 1064
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-invalid_opcode/result.json",
+        "sha256": "ce6533e941a69d1ed75eaabf658819deaab115a62cd03867e565987529a8a462",
+        "size_bytes": 2714
+      },
+      "path": "regressions/k01/invalid_opcode/result.json",
+      "sha256": "ce6533e941a69d1ed75eaabf658819deaab115a62cd03867e565987529a8a462",
+      "size_bytes": 2714
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-invalid_opcode/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/k01/invalid_opcode/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-invalid_opcode/stdout.log",
+        "sha256": "15a4b43d6ecbbb99c74e04b8958f64f12362244b633f846e3f99c9f594a3c6df",
+        "size_bytes": 1032
+      },
+      "path": "regressions/k01/invalid_opcode/stdout.log",
+      "sha256": "15a4b43d6ecbbb99c74e04b8958f64f12362244b633f846e3f99c9f594a3c6df",
+      "size_bytes": 1032
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-iso/result.json",
+        "sha256": "0922ed6b5327176fa16e82a43b32f2b1d7ffb981a5513ab2256146bd1df4ec2f",
+        "size_bytes": 2706
+      },
+      "path": "regressions/k01/iso/result.json",
+      "sha256": "0922ed6b5327176fa16e82a43b32f2b1d7ffb981a5513ab2256146bd1df4ec2f",
+      "size_bytes": 2706
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-iso/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/k01/iso/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-iso/stdout.log",
+        "sha256": "553edbd2a4e50ed535f99b0230196480d154efe4f256dd5f9a62a00e96172173",
+        "size_bytes": 923
+      },
+      "path": "regressions/k01/iso/stdout.log",
+      "sha256": "553edbd2a4e50ed535f99b0230196480d154efe4f256dd5f9a62a00e96172173",
+      "size_bytes": 923
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-normal/result.json",
+        "sha256": "0915a9eff3ff2f342ee99c5f7025d87b34db90d7027cc06e71e7ef9433d5f080",
+        "size_bytes": 2705
+      },
+      "path": "regressions/k01/normal/result.json",
+      "sha256": "0915a9eff3ff2f342ee99c5f7025d87b34db90d7027cc06e71e7ef9433d5f080",
+      "size_bytes": 2705
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-normal/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/k01/normal/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-normal/stdout.log",
+        "sha256": "eb99d5ecdf3e65401af1a4e55259e77d69404bf86de88858d78f69f7feb5557e",
+        "size_bytes": 923
+      },
+      "path": "regressions/k01/normal/stdout.log",
+      "sha256": "eb99d5ecdf3e65401af1a4e55259e77d69404bf86de88858d78f69f7feb5557e",
+      "size_bytes": 923
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-page_fault/result.json",
+        "sha256": "109722770eae3aec91194a407b38476e6f53818b30f8aecf5711fd0e1879076f",
+        "size_bytes": 2709
+      },
+      "path": "regressions/k01/page_fault/result.json",
+      "sha256": "109722770eae3aec91194a407b38476e6f53818b30f8aecf5711fd0e1879076f",
+      "size_bytes": 2709
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-page_fault/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/k01/page_fault/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-page_fault/stdout.log",
+        "sha256": "3588c9d48b9204817895a04ea39c824a053ad26d326c31ade0057b3c51b378f1",
+        "size_bytes": 1044
+      },
+      "path": "regressions/k01/page_fault/stdout.log",
+      "sha256": "3588c9d48b9204817895a04ea39c824a053ad26d326c31ade0057b3c51b378f1",
+      "size_bytes": 1044
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-panic/result.json",
+        "sha256": "ac3c249a634835d01f67efa8a24f2042d18e1072e0d83197ad88193a21e3905c",
+        "size_bytes": 2704
+      },
+      "path": "regressions/k01/panic/result.json",
+      "sha256": "ac3c249a634835d01f67efa8a24f2042d18e1072e0d83197ad88193a21e3905c",
+      "size_bytes": 2704
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-panic/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/k01/panic/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-panic/stdout.log",
+        "sha256": "9005e0fb70ffed67159b3460c1249259db501c9837ab7b3c5e2647495e768592",
+        "size_bytes": 980
+      },
+      "path": "regressions/k01/panic/stdout.log",
+      "sha256": "9005e0fb70ffed67159b3460c1249259db501c9837ab7b3c5e2647495e768592",
+      "size_bytes": 980
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-reboot/result.json",
+        "sha256": "b5f416e33e6709704e99690fa8d722cd68ea1845bd9922dfcf4b9aea682e40d0",
+        "size_bytes": 2738
+      },
+      "path": "regressions/k01/reboot/result.json",
+      "sha256": "b5f416e33e6709704e99690fa8d722cd68ea1845bd9922dfcf4b9aea682e40d0",
+      "size_bytes": 2738
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-reboot/stderr.log",
+        "sha256": "713f86321eaa5fe4d34db522a8233fb12482d713833f8dd8aa34a92d455f6dee",
+        "size_bytes": 2700
+      },
+      "path": "regressions/k01/reboot/stderr.log",
+      "sha256": "713f86321eaa5fe4d34db522a8233fb12482d713833f8dd8aa34a92d455f6dee",
+      "size_bytes": 2700
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-reboot/stdout.log",
+        "sha256": "9870f9b64b490e1efbe51c71f7075261d2e54a8b83df8825af2e954b6c80fc00",
+        "size_bytes": 964
+      },
+      "path": "regressions/k01/reboot/stdout.log",
+      "sha256": "9870f9b64b490e1efbe51c71f7075261d2e54a8b83df8825af2e954b6c80fc00",
+      "size_bytes": 964
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-k01-verification.json",
+        "sha256": "113750e2fed513e80d5ebc918f77106a05d735b7c5af67f1c8959c1803e9ecb7",
+        "size_bytes": 658
+      },
+      "path": "regressions/k01/verification.json",
+      "sha256": "113750e2fed513e80d5ebc918f77106a05d735b7c5af67f1c8959c1803e9ecb7",
+      "size_bytes": 658
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "path": "regressions/kernel-commands.json",
+      "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+      "size_bytes": 18152
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-summary.json",
+        "sha256": "47cfc3a2c91072d7bac141c5ebe7d0d39f6e7e4ba9bc1eb2014fec951ea00b91",
+        "size_bytes": 15220
+      },
+      "path": "regressions/kernel-summary.json",
+      "sha256": "47cfc3a2c91072d7bac141c5ebe7d0d39f6e7e4ba9bc1eb2014fec951ea00b91",
+      "size_bytes": 15220
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "sha256": "f6f5bedf233ac074eb13ee039efccc2962d836c30a878701eb4fb9945e660c10",
+        "size_bytes": 151772
+      },
+      "path": "regressions/matrix/a/manifest.json",
+      "sha256": "f6f5bedf233ac074eb13ee039efccc2962d836c30a878701eb4fb9945e660c10",
+      "size_bytes": 151772
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-b/manifest.json",
+        "sha256": "f6f5bedf233ac074eb13ee039efccc2962d836c30a878701eb4fb9945e660c10",
+        "size_bytes": 151772
+      },
+      "path": "regressions/matrix/b/manifest.json",
+      "sha256": "f6f5bedf233ac074eb13ee039efccc2962d836c30a878701eb4fb9945e660c10",
+      "size_bytes": 151772
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-caller_forgery/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/caller_forgery/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-caller_forgery/stdout.log",
+        "sha256": "ab72cc4758654bf9f69b36c8425755163a4c9319b4cb83d04a35c48dfd47ad81",
+        "size_bytes": 4448
+      },
+      "path": "regressions/matrix/caller_forgery/stdout.log",
+      "sha256": "ab72cc4758654bf9f69b36c8425755163a4c9319b4cb83d04a35c48dfd47ad81",
+      "size_bytes": 4448
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-data_nx/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/data_nx/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-data_nx/stdout.log",
+        "sha256": "a9edea3fcd10e4cd86a78147ddc1b2a0ea42f2c8f139c2eaae908c87f8413e63",
+        "size_bytes": 5717
+      },
+      "path": "regressions/matrix/data_nx/stdout.log",
+      "sha256": "a9edea3fcd10e4cd86a78147ddc1b2a0ea42f2c8f139c2eaae908c87f8413e63",
+      "size_bytes": 5717
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-exact_bounds/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/exact_bounds/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-exact_bounds/stdout.log",
+        "sha256": "b09def5fbed5556e5bd2804b5a8fb6641d9bf2e67e3091a0f35fa2cba30ccfab",
+        "size_bytes": 8837
+      },
+      "path": "regressions/matrix/exact_bounds/stdout.log",
+      "sha256": "b09def5fbed5556e5bd2804b5a8fb6641d9bf2e67e3091a0f35fa2cba30ccfab",
+      "size_bytes": 8837
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-kernel_isolation/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/kernel_isolation/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-kernel_isolation/stdout.log",
+        "sha256": "13aaa9d12347ad3bdf666f6c1374c162a82880b697f467c4289b38f4fd33b090",
+        "size_bytes": 8624
+      },
+      "path": "regressions/matrix/kernel_isolation/stdout.log",
+      "sha256": "13aaa9d12347ad3bdf666f6c1374c162a82880b697f467c4289b38f4fd33b090",
+      "size_bytes": 8624
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-read_only_sharing/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/read_only_sharing/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-read_only_sharing/stdout.log",
+        "sha256": "d170efe2d27a616df91e2ae7f99e46c7110b159543c9b482f9595caece534d9b",
+        "size_bytes": 6091
+      },
+      "path": "regressions/matrix/read_only_sharing/stdout.log",
+      "sha256": "d170efe2d27a616df91e2ae7f99e46c7110b159543c9b482f9595caece534d9b",
+      "size_bytes": 6091
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-recursive_revocation/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/recursive_revocation/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-recursive_revocation/stdout.log",
+        "sha256": "6653ef86b81d3c9873e905d67b9da1504b477f59925eacc7646db984a74b71a2",
+        "size_bytes": 13182
+      },
+      "path": "regressions/matrix/recursive_revocation/stdout.log",
+      "sha256": "6653ef86b81d3c9873e905d67b9da1504b477f59925eacc7646db984a74b71a2",
+      "size_bytes": 13182
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-stale_identities/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/stale_identities/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-stale_identities/stdout.log",
+        "sha256": "cc815161f56f91508af6af58d3f041202e19e37989d3b3a9f1408985085bb01d",
+        "size_bytes": 11433
+      },
+      "path": "regressions/matrix/stale_identities/stdout.log",
+      "sha256": "cc815161f56f91508af6af58d3f041202e19e37989d3b3a9f1408985085bb01d",
+      "size_bytes": 11433
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-trusted_operation_forgery/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/trusted_operation_forgery/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-trusted_operation_forgery/stdout.log",
+        "sha256": "8cd1f663e8da820a5c40d589ef0ddaceb3df5bb10b8951933811d78e7b288077",
+        "size_bytes": 11512
+      },
+      "path": "regressions/matrix/trusted_operation_forgery/stdout.log",
+      "sha256": "8cd1f663e8da820a5c40d589ef0ddaceb3df5bb10b8951933811d78e7b288077",
+      "size_bytes": 11512
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-unauthorized_read/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/unauthorized_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-unauthorized_read/stdout.log",
+        "sha256": "7443d551738ee2ad86a6bb13abc2afd89b4fd27b438fe14e0efed8745c99ff83",
+        "size_bytes": 5684
+      },
+      "path": "regressions/matrix/unauthorized_read/stdout.log",
+      "sha256": "7443d551738ee2ad86a6bb13abc2afd89b4fd27b438fe14e0efed8745c99ff83",
+      "size_bytes": 5684
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-verification.json",
+        "sha256": "0db1179713b8eec5fc5c1772facc4644176af9378c7156dd5db72c3a7e282ca3",
+        "size_bytes": 132432
+      },
+      "path": "regressions/matrix/verification.json",
+      "sha256": "0db1179713b8eec5fc5c1772facc4644176af9378c7156dd5db72c3a7e282ca3",
+      "size_bytes": 132432
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-writable_reuse/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/matrix/writable_reuse/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-matrix-writable_reuse/stdout.log",
+        "sha256": "101805171987bd7ac42e6b97c210082b82ec2948ae48644f0c6d957f916e4357",
+        "size_bytes": 9473
+      },
+      "path": "regressions/matrix/writable_reuse/stdout.log",
+      "sha256": "101805171987bd7ac42e6b97c210082b82ec2948ae48644f0c6d957f916e4357",
+      "size_bytes": 9473
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/adapter-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/native-host/adapter-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/adapter-tests.log",
+        "sha256": "a067d8ca78206d9c7d1410d321f89d4422de9841eb0f6271c96b7eec3fe9d11d",
+        "size_bytes": 1669
+      },
+      "path": "regressions/native-host/adapter-tests.log",
+      "sha256": "a067d8ca78206d9c7d1410d321f89d4422de9841eb0f6271c96b7eec3fe9d11d",
+      "size_bytes": 1669
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/core-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/native-host/core-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/core-tests.log",
+        "sha256": "2b959cd7c6062f07ef028e5cbe0b4b03b2dfbdd90593a9f25b31bddb2b1386cc",
+        "size_bytes": 5988
+      },
+      "path": "regressions/native-host/core-tests.log",
+      "sha256": "2b959cd7c6062f07ef028e5cbe0b4b03b2dfbdd90593a9f25b31bddb2b1386cc",
+      "size_bytes": 5988
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/library-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/native-host/library-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/paging-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/native-host/paging-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/paging-tests.log",
+        "sha256": "e90f32054d82e12cd1de964074499c0051a6756a9d8c6d27ad1f4e5cf231d636",
+        "size_bytes": 1396
+      },
+      "path": "regressions/native-host/paging-tests.log",
+      "sha256": "e90f32054d82e12cd1de964074499c0051a6756a9d8c6d27ad1f4e5cf231d636",
+      "size_bytes": 1396
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/result.json",
+        "sha256": "318c1dfed278fff34faa74423128db6d123989b7441d2aee8a10d6e8db478dc0",
+        "size_bytes": 8541
+      },
+      "path": "regressions/native-host/result.json",
+      "sha256": "318c1dfed278fff34faa74423128db6d123989b7441d2aee8a10d6e8db478dc0",
+      "size_bytes": 8541
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/sha256-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/native-host/sha256-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-native-host/sha256-tests.log",
+        "sha256": "2bfcc4d5de659f8b11ace176473690263b185834104144954f002e283e4eb6de",
+        "size_bytes": 545
+      },
+      "path": "regressions/native-host/sha256-tests.log",
+      "sha256": "2bfcc4d5de659f8b11ace176473690263b185834104144954f002e283e4eb6de",
+      "size_bytes": 545
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/authority/authority-stderr.log",
+        "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+        "size_bytes": 17025
+      },
+      "path": "regressions/region/a/authority/authority-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/authority/authority-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/a/authority/authority-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/core-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/a/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/core-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/a/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/manifest.json",
+        "sha256": "6d06e0313fd3be1a5cfbc54363e5820e9ceaca74332f05509278e068ee31a824",
+        "size_bytes": 48189
+      },
+      "path": "regressions/region/a/manifest.json",
+      "sha256": "6d06e0313fd3be1a5cfbc54363e5820e9ceaca74332f05509278e068ee31a824",
+      "size_bytes": 48189
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/notices/rust-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "path": "regressions/region/a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/notices/rust-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "path": "regressions/region/a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/notices/rust-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "path": "regressions/region/a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/notices/tessryn-LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      "path": "regressions/region/a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/notices/tessryn-NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      "path": "regressions/region/a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/revocation/revocation-stderr.log",
+        "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+        "size_bytes": 17025
+      },
+      "path": "regressions/region/a/revocation/revocation-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/revocation/revocation-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/a/revocation/revocation-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/sharing/sharing-stderr.log",
+        "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+        "size_bytes": 17025
+      },
+      "path": "regressions/region/a/sharing/sharing-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/a/sharing/sharing-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/a/sharing/sharing-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/authority/registration.json",
+        "sha256": "6890a33d8120db438c2510a7f3ea015cb831ab80428c669f1bc8e4d984f578ee",
+        "size_bytes": 2926
+      },
+      "path": "regressions/region/authority/registration.json",
+      "sha256": "6890a33d8120db438c2510a7f3ea015cb831ab80428c669f1bc8e4d984f578ee",
+      "size_bytes": 2926
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/authority/result.json",
+        "sha256": "54fc5140f91320d23a9f4ccaf3b36218c1b4348a1b05b66206c45009e68f0421",
+        "size_bytes": 3635
+      },
+      "path": "regressions/region/authority/result.json",
+      "sha256": "54fc5140f91320d23a9f4ccaf3b36218c1b4348a1b05b66206c45009e68f0421",
+      "size_bytes": 3635
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/authority/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/authority/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/authority/stdout.log",
+        "sha256": "c4e713ec1693fdc11b3ac02017b45884f85a6425382c9717d4e8dedf270647c7",
+        "size_bytes": 64023
+      },
+      "path": "regressions/region/authority/stdout.log",
+      "sha256": "c4e713ec1693fdc11b3ac02017b45884f85a6425382c9717d4e8dedf270647c7",
+      "size_bytes": 64023
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/authority/authority-stderr.log",
+        "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+        "size_bytes": 17025
+      },
+      "path": "regressions/region/b/authority/authority-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/authority/authority-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/b/authority/authority-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/core-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/b/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/core-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/b/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/manifest.json",
+        "sha256": "30fe7b0da836da050a872d42e6d474b5c65c720d2a74c2768d2fdb39c8bd9ba6",
+        "size_bytes": 48190
+      },
+      "path": "regressions/region/b/manifest.json",
+      "sha256": "30fe7b0da836da050a872d42e6d474b5c65c720d2a74c2768d2fdb39c8bd9ba6",
+      "size_bytes": 48190
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/notices/rust-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "path": "regressions/region/b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/notices/rust-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "path": "regressions/region/b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/notices/rust-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "path": "regressions/region/b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/notices/tessryn-LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      "path": "regressions/region/b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/notices/tessryn-NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      "path": "regressions/region/b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/revocation/revocation-stderr.log",
+        "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+        "size_bytes": 17025
+      },
+      "path": "regressions/region/b/revocation/revocation-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/revocation/revocation-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/b/revocation/revocation-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/sharing/sharing-stderr.log",
+        "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+        "size_bytes": 17025
+      },
+      "path": "regressions/region/b/sharing/sharing-stderr.log",
+      "sha256": "574733c3dc6f2ab8093756b8998deae9ad6c4ff5ca7a0ee994e5af980ed9a6d4",
+      "size_bytes": 17025
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/b/sharing/sharing-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/b/sharing/sharing-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/library-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/host/library-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/library-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/host/library-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/result.json",
+        "sha256": "0d86f14408f92dd70d6fb60b281cade371dc4d9e8f1711ca5849984244729cc6",
+        "size_bytes": 4929
+      },
+      "path": "regressions/region/host/result.json",
+      "sha256": "0d86f14408f92dd70d6fb60b281cade371dc4d9e8f1711ca5849984244729cc6",
+      "size_bytes": 4929
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/test-build-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/host/test-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/test-build-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/host/test-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/tests-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/host/tests-stdout.log",
+        "sha256": "79aa6418d09b58c18f30ac963cc82d424d9db6971f09e56195e41a2d7472d1ac",
+        "size_bytes": 1769
+      },
+      "path": "regressions/region/host/tests-stdout.log",
+      "sha256": "79aa6418d09b58c18f30ac963cc82d424d9db6971f09e56195e41a2d7472d1ac",
+      "size_bytes": 1769
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/revocation/registration.json",
+        "sha256": "43b333f5ef06080256a0c024545b955a68e41717a613ad4e696ed16077867748",
+        "size_bytes": 2933
+      },
+      "path": "regressions/region/revocation/registration.json",
+      "sha256": "43b333f5ef06080256a0c024545b955a68e41717a613ad4e696ed16077867748",
+      "size_bytes": 2933
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/revocation/result.json",
+        "sha256": "469eac2e6e1d6d3adc631e4b3c29be7c0e1d5b21820d59f8028199c9dcc34a76",
+        "size_bytes": 3120
+      },
+      "path": "regressions/region/revocation/result.json",
+      "sha256": "469eac2e6e1d6d3adc631e4b3c29be7c0e1d5b21820d59f8028199c9dcc34a76",
+      "size_bytes": 3120
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/revocation/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/revocation/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/revocation/stdout.log",
+        "sha256": "4b025e4c5eb480d6e4a55977dd426a975590e10423eb7fc5dffd3006c7074720",
+        "size_bytes": 28869
+      },
+      "path": "regressions/region/revocation/stdout.log",
+      "sha256": "4b025e4c5eb480d6e4a55977dd426a975590e10423eb7fc5dffd3006c7074720",
+      "size_bytes": 28869
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/sharing/registration.json",
+        "sha256": "dbe1ec19798fceb3839b279f75b1baad0e0e379c7e78e7a37c607f38229550f4",
+        "size_bytes": 2912
+      },
+      "path": "regressions/region/sharing/registration.json",
+      "sha256": "dbe1ec19798fceb3839b279f75b1baad0e0e379c7e78e7a37c607f38229550f4",
+      "size_bytes": 2912
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/sharing/result.json",
+        "sha256": "1b793c1ad37d9e987297bb53d355b2af473cb1cf7434e02d11e7938e2e91c06e",
+        "size_bytes": 3110
+      },
+      "path": "regressions/region/sharing/result.json",
+      "sha256": "1b793c1ad37d9e987297bb53d355b2af473cb1cf7434e02d11e7938e2e91c06e",
+      "size_bytes": 3110
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/sharing/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/region/sharing/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/sharing/stdout.log",
+        "sha256": "b39e0e0bca5b0a7963557e6fb53ea161c9c766666f8a53a374ebe57b5df074dd",
+        "size_bytes": 28965
+      },
+      "path": "regressions/region/sharing/stdout.log",
+      "sha256": "b39e0e0bca5b0a7963557e6fb53ea161c9c766666f8a53a374ebe57b5df074dd",
+      "size_bytes": 28965
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-old-v2/region/verification.json",
+        "sha256": "b296866c78a8f899ae5768139b4e2bb384096b56450fdf882caeed1d00039ec6",
+        "size_bytes": 4980
+      },
+      "path": "regressions/region/verification.json",
+      "sha256": "b296866c78a8f899ae5768139b4e2bb384096b56450fdf882caeed1d00039ec6",
+      "size_bytes": 4980
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-a/manifest.json",
+        "sha256": "cb787a3c2e65f42346fea2372717d8cee15f3d1aaf70d27191b32e3b465fa7a7",
+        "size_bytes": 23886
+      },
+      "path": "regressions/slice/a/manifest.json",
+      "sha256": "cb787a3c2e65f42346fea2372717d8cee15f3d1aaf70d27191b32e3b465fa7a7",
+      "size_bytes": 23886
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-b/manifest.json",
+        "sha256": "cb787a3c2e65f42346fea2372717d8cee15f3d1aaf70d27191b32e3b465fa7a7",
+        "size_bytes": 23886
+      },
+      "path": "regressions/slice/b/manifest.json",
+      "sha256": "cb787a3c2e65f42346fea2372717d8cee15f3d1aaf70d27191b32e3b465fa7a7",
+      "size_bytes": 23886
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-foreign_read/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/slice/foreign_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-foreign_read/stdout.log",
+        "sha256": "5dacfb156bc4443a2607870bf3b0fd742e69b5bdc54d870dccb3904cf9c92cee",
+        "size_bytes": 2706
+      },
+      "path": "regressions/slice/foreign_read/stdout.log",
+      "sha256": "5dacfb156bc4443a2607870bf3b0fd742e69b5bdc54d870dccb3904cf9c92cee",
+      "size_bytes": 2706
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-kernel_read/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/slice/kernel_read/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-kernel_read/stdout.log",
+        "sha256": "ae99bb9152badf2bb651efc185e9f651f1e96f330455b5424a5cadaafc3e63a4",
+        "size_bytes": 2697
+      },
+      "path": "regressions/slice/kernel_read/stdout.log",
+      "sha256": "ae99bb9152badf2bb651efc185e9f651f1e96f330455b5424a5cadaafc3e63a4",
+      "size_bytes": 2697
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-own_page/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/slice/own_page/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-own_page/stdout.log",
+        "sha256": "f39ff20fd27b3de6f373909fba181ac3a13a734898311ac738eb4542db1395e1",
+        "size_bytes": 2670
+      },
+      "path": "regressions/slice/own_page/stdout.log",
+      "sha256": "f39ff20fd27b3de6f373909fba181ac3a13a734898311ac738eb4542db1395e1",
+      "size_bytes": 2670
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-readonly_write/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/slice/readonly_write/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-readonly_write/stdout.log",
+        "sha256": "84c2b7e8eb789c07697ae3426c61e22c042e2b20fc5973bc97227e164e7105fb",
+        "size_bytes": 2712
+      },
+      "path": "regressions/slice/readonly_write/stdout.log",
+      "sha256": "84c2b7e8eb789c07697ae3426c61e22c042e2b20fc5973bc97227e164e7105fb",
+      "size_bytes": 2712
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-reg-v2-slice-verification.json",
+        "sha256": "8c82d49e325d45a4616448945c9ced38f3436881785896fcf8ed031f0d54b2aa",
+        "size_bytes": 13392
+      },
+      "path": "regressions/slice/verification.json",
+      "sha256": "8c82d49e325d45a4616448945c9ced38f3436881785896fcf8ed031f0d54b2aa",
+      "size_bytes": 13392
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/budget/budget-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/a/budget/budget-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/budget/budget-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/budget/budget-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/core-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/core-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/deadline/deadline-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/a/deadline/deadline-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/deadline/deadline-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/deadline/deadline-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/forged_irq/forged_irq-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/a/forged_irq/forged_irq-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/forged_irq/forged_irq-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/forged_irq/forged_irq-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/manifest.json",
+        "sha256": "256fa85819bc51ee3946d16dc33c56c7a700cce178569f719057776787f38a79",
+        "size_bytes": 47622
+      },
+      "path": "regressions/timer/a/manifest.json",
+      "sha256": "256fa85819bc51ee3946d16dc33c56c7a700cce178569f719057776787f38a79",
+      "size_bytes": 47622
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/notices/rust-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "path": "regressions/timer/a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/notices/rust-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "path": "regressions/timer/a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/notices/rust-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "path": "regressions/timer/a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/notices/tessryn-LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      "path": "regressions/timer/a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/notices/tessryn-NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      "path": "regressions/timer/a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/preemption/preemption-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/a/preemption/preemption-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/preemption/preemption-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/preemption/preemption-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/scheduler-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/a/scheduler-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/a/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/budget/budget-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/b/budget/budget-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/budget/budget-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/budget/budget-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/core-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/core-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/core-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/core-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/deadline/deadline-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/b/deadline/deadline-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/deadline/deadline-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/deadline/deadline-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/forged_irq/forged_irq-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/b/forged_irq/forged_irq-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/forged_irq/forged_irq-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/forged_irq/forged_irq-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/manifest.json",
+        "sha256": "09ca9b9e178b0420f61b33f2ff703207407cd0fbec6385b5537653594c6012ab",
+        "size_bytes": 47620
+      },
+      "path": "regressions/timer/b/manifest.json",
+      "sha256": "09ca9b9e178b0420f61b33f2ff703207407cd0fbec6385b5537653594c6012ab",
+      "size_bytes": 47620
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/notices/rust-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+        "size_bytes": 1571
+      },
+      "path": "regressions/timer/b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/notices/rust-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "size_bytes": 9723
+      },
+      "path": "regressions/timer/b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/notices/rust-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+        "size_bytes": 1068
+      },
+      "path": "regressions/timer/b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/notices/tessryn-LICENSE",
+        "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+        "size_bytes": 11358
+      },
+      "path": "regressions/timer/b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/notices/tessryn-NOTICE",
+        "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+        "size_bytes": 194
+      },
+      "path": "regressions/timer/b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/preemption/preemption-stderr.log",
+        "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+        "size_bytes": 18015
+      },
+      "path": "regressions/timer/b/preemption/preemption-stderr.log",
+      "sha256": "8e3db49cd97f35a42ee96a36672e8476296ea2018fbff4246bafb76cdea6cb9d",
+      "size_bytes": 18015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/preemption/preemption-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/preemption/preemption-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/scheduler-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/scheduler-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/b/scheduler-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/b/scheduler-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/budget/registration.json",
+        "sha256": "73fbd3de22b331e4e48370bd1d4289a44639c49f3dec1674e6ca1f1bec536062",
+        "size_bytes": 2933
+      },
+      "path": "regressions/timer/budget/registration.json",
+      "sha256": "73fbd3de22b331e4e48370bd1d4289a44639c49f3dec1674e6ca1f1bec536062",
+      "size_bytes": 2933
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/budget/result.json",
+        "sha256": "d225153c179edc200517755f5eaa27b60c652944eae110a152068d484dbb0fb5",
+        "size_bytes": 3557
+      },
+      "path": "regressions/timer/budget/result.json",
+      "sha256": "d225153c179edc200517755f5eaa27b60c652944eae110a152068d484dbb0fb5",
+      "size_bytes": 3557
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/budget/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/budget/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/budget/stdout.log",
+        "sha256": "8546d8d9d14694fe7d12327a4e4a4d12843cb7c566088aff0546449b2976aadc",
+        "size_bytes": 59900
+      },
+      "path": "regressions/timer/budget/stdout.log",
+      "sha256": "8546d8d9d14694fe7d12327a4e4a4d12843cb7c566088aff0546449b2976aadc",
+      "size_bytes": 59900
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/deadline/registration.json",
+        "sha256": "bf0422cef995929842144a07e4da71fd74ed97cdd7e0f2e4833462675d0b08a1",
+        "size_bytes": 2947
+      },
+      "path": "regressions/timer/deadline/registration.json",
+      "sha256": "bf0422cef995929842144a07e4da71fd74ed97cdd7e0f2e4833462675d0b08a1",
+      "size_bytes": 2947
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/deadline/result.json",
+        "sha256": "d38d877ca68943e5095d6ed11a09b79f784504771a2bc72dd6f71baa93d173bb",
+        "size_bytes": 3571
+      },
+      "path": "regressions/timer/deadline/result.json",
+      "sha256": "d38d877ca68943e5095d6ed11a09b79f784504771a2bc72dd6f71baa93d173bb",
+      "size_bytes": 3571
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/deadline/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/deadline/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/deadline/stdout.log",
+        "sha256": "8f834f6bd7cee5398667f54fb89348bdf97cb0edd12479fbaeb489927227263a",
+        "size_bytes": 56114
+      },
+      "path": "regressions/timer/deadline/stdout.log",
+      "sha256": "8f834f6bd7cee5398667f54fb89348bdf97cb0edd12479fbaeb489927227263a",
+      "size_bytes": 56114
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/forged_irq/registration.json",
+        "sha256": "fd95dd1a163608d352572c45a5f50a9bf3f985d3249a643b6cc8843afebb9685",
+        "size_bytes": 2961
+      },
+      "path": "regressions/timer/forged_irq/registration.json",
+      "sha256": "fd95dd1a163608d352572c45a5f50a9bf3f985d3249a643b6cc8843afebb9685",
+      "size_bytes": 2961
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/forged_irq/result.json",
+        "sha256": "260bddb075371b55f6b5cb13b631c9b4e48db8439c7e8884d05d1b503f518f11",
+        "size_bytes": 3568
+      },
+      "path": "regressions/timer/forged_irq/result.json",
+      "sha256": "260bddb075371b55f6b5cb13b631c9b4e48db8439c7e8884d05d1b503f518f11",
+      "size_bytes": 3568
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/forged_irq/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/forged_irq/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/forged_irq/stdout.log",
+        "sha256": "ac04b4208bb4996726cf80cc22a7d9745475ac7e2d0c961986c3585624dbfc2e",
+        "size_bytes": 53410
+      },
+      "path": "regressions/timer/forged_irq/stdout.log",
+      "sha256": "ac04b4208bb4996726cf80cc22a7d9745475ac7e2d0c961986c3585624dbfc2e",
+      "size_bytes": 53410
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/adapter-build-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/adapter-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/adapter-build-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/adapter-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/adapter-tests-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/adapter-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/adapter-tests-stdout.log",
+        "sha256": "1af8d48558ea53382b03c8036a2cdaae001954076f1266c577767540d546ebeb",
+        "size_bytes": 1362
+      },
+      "path": "regressions/timer/host/adapter-tests-stdout.log",
+      "sha256": "1af8d48558ea53382b03c8036a2cdaae001954076f1266c577767540d546ebeb",
+      "size_bytes": 1362
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/driver-build-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/driver-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/driver-build-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/driver-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/driver-tests-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/driver-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/driver-tests-stdout.log",
+        "sha256": "4c58ed439a1fb7db7ec23a0521b80e4f834e28ee1a5e78bda04f7d5474fdbd5f",
+        "size_bytes": 2664
+      },
+      "path": "regressions/timer/host/driver-tests-stdout.log",
+      "sha256": "4c58ed439a1fb7db7ec23a0521b80e4f834e28ee1a5e78bda04f7d5474fdbd5f",
+      "size_bytes": 2664
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/result.json",
+        "sha256": "4355aedc92a2b9b69a0d2a72d8a61837c46c8089bdb2886877b9bfe926e308aa",
+        "size_bytes": 8164
+      },
+      "path": "regressions/timer/host/result.json",
+      "sha256": "4355aedc92a2b9b69a0d2a72d8a61837c46c8089bdb2886877b9bfe926e308aa",
+      "size_bytes": 8164
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/scheduler-build-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/scheduler-build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/scheduler-build-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/scheduler-build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/scheduler-library-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/scheduler-library-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/scheduler-library-stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/scheduler-library-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/scheduler-tests-stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/host/scheduler-tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/host/scheduler-tests-stdout.log",
+        "sha256": "7c0b7add37a115dd6c4bc0957d871370805b96c309d3a43c65e32eb485cb52b4",
+        "size_bytes": 3578
+      },
+      "path": "regressions/timer/host/scheduler-tests-stdout.log",
+      "sha256": "7c0b7add37a115dd6c4bc0957d871370805b96c309d3a43c65e32eb485cb52b4",
+      "size_bytes": 3578
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/preemption/registration.json",
+        "sha256": "2d5c0aea17e4f6aa528c98d59400a4e2a24ce0da64f3e314659ef6549c3f7c17",
+        "size_bytes": 2961
+      },
+      "path": "regressions/timer/preemption/registration.json",
+      "sha256": "2d5c0aea17e4f6aa528c98d59400a4e2a24ce0da64f3e314659ef6549c3f7c17",
+      "size_bytes": 2961
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/preemption/result.json",
+        "sha256": "5355608eb183cf4130f87dfc3daa2f91ba0f6dc4cdabc576b6ff91f294fedfe3",
+        "size_bytes": 3678
+      },
+      "path": "regressions/timer/preemption/result.json",
+      "sha256": "5355608eb183cf4130f87dfc3daa2f91ba0f6dc4cdabc576b6ff91f294fedfe3",
+      "size_bytes": 3678
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/preemption/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "regressions/timer/preemption/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/preemption/stdout.log",
+        "sha256": "d97c4dd38a2a9b0d972c99c29879cf6fe6f2666889bf4108ea9053c68faa725f",
+        "size_bytes": 82790
+      },
+      "path": "regressions/timer/preemption/stdout.log",
+      "sha256": "d97c4dd38a2a9b0d972c99c29879cf6fe6f2666889bf4108ea9053c68faa725f",
+      "size_bytes": 82790
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-timer-v2/verification.json",
+        "sha256": "334c307c0a4f3a31d3caef7f72c4bf1f73827a2e8f54df890911e7fa01d05d60",
+        "size_bytes": 7647
+      },
+      "path": "regressions/timer/verification.json",
+      "sha256": "334c307c0a4f3a31d3caef7f72c4bf1f73827a2e8f54df890911e7fa01d05d60",
+      "size_bytes": 7647
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/rendezvous/registration.json",
+        "sha256": "92d13267adabe4d2f790610283bb698e68a5e19d59e5ddc7de57faa76a10422f",
+        "size_bytes": 2945
+      },
+      "path": "rendezvous/registration.json",
+      "sha256": "92d13267adabe4d2f790610283bb698e68a5e19d59e5ddc7de57faa76a10422f",
+      "size_bytes": 2945
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/rendezvous/result.json",
+        "sha256": "ca8ae020962d832a31301714d7280120503aa0231e7b430e3ec531e7117f531e",
+        "size_bytes": 2658
+      },
+      "path": "rendezvous/result.json",
+      "sha256": "ca8ae020962d832a31301714d7280120503aa0231e7b430e3ec531e7117f531e",
+      "size_bytes": 2658
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/rendezvous/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "path": "rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/rendezvous/stdout.log",
+        "sha256": "a534b5e9e51b2ee43540b32d5c6454c744179d396a47b176c0c84b7de0404fd5",
+        "size_bytes": 2503
+      },
+      "path": "rendezvous/stdout.log",
+      "sha256": "a534b5e9e51b2ee43540b32d5c6454c744179d396a47b176c0c84b7de0404fd5",
+      "size_bytes": 2503
+    },
+    {
+      "derived_navigation_or_parent_readme": true,
+      "path": "summary.json",
+      "sha256": "bbb932c11d7eee6087a4d034ff9e39c643029e75bb0e76cc3c9cbb8543dc396d",
+      "size_bytes": 134015
+    },
+    {
+      "copy_origin": {
+        "path": "build/k03-smp-clean-v3/verification.json",
+        "sha256": "53970d347a843bdef38a61bf6b8b4fa53411a8edc966456564c182ac6bcd65ad",
+        "size_bytes": 1930
+      },
+      "path": "verification.json",
+      "sha256": "53970d347a843bdef38a61bf6b8b4fa53411a8edc966456564c182ac6bcd65ad",
+      "size_bytes": 1930
+    }
+  ],
+  "format": "tessryn-k03-smp-public-text-index/v1",
+  "regression_executed_source": {
+    "dirty": false,
+    "revision": "febcb2ff53a512daa7ba8bac6f6156c9cbc3a6e4",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "ad7256e9bcea614799b57e63855030b9e6702f020a10fe07f5c645b877d93298"
+  },
+  "smp_executed_source": {
+    "dirty": false,
+    "revision": "f3f39b8e333b5e6fcb96a829dddaa480a5858ee1",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "09e6e214e0ae5216a6ee12b8912bd282269ebe874b5a186a63ec27f80bbd1fed"
+  }
+}

@@ -1,0 +1,1 @@
+{"status": "pass", "scope": "four original-kernel single-CPU QEMU enforcement cases; full K02 protocol, physical hardware, SMP and DMA unqualified"}

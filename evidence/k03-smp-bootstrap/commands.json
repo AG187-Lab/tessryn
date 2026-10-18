@@ -1,0 +1,1351 @@
+{
+  "commands": [
+    {
+      "derived_navigation_only": true,
+      "name": "k01-build-a",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_kernel.py",
+        "--out",
+        "build/k03-smp-reg-v2-k01-a"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-build-a.log",
+            "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+            "size_bytes": 37
+          },
+          "retained_path": "regressions/commands/kernel-k01-build-a-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-build-b",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_kernel.py",
+        "--out",
+        "build/k03-smp-reg-v2-k01-b"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-build-b.log",
+            "sha256": "0e54626402d6434d9e36174645da5e3bf8ffb8bc5d5206577fb5a8b198a1544b",
+            "size_bytes": 37
+          },
+          "retained_path": "regressions/commands/kernel-k01-build-b-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-int3",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "int3",
+        "--out",
+        "build/k03-smp-reg-v2-k01-int3"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-int3.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-int3-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-invalid_opcode",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "invalid_opcode",
+        "--out",
+        "build/k03-smp-reg-v2-k01-invalid_opcode"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-invalid_opcode.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-invalid_opcode-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-iso",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "normal",
+        "--out",
+        "build/k03-smp-reg-v2-k01-iso",
+        "--media",
+        "iso"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-iso.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-iso-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-normal",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "normal",
+        "--out",
+        "build/k03-smp-reg-v2-k01-normal"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-normal.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-normal-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-page_fault",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "page_fault",
+        "--out",
+        "build/k03-smp-reg-v2-k01-page_fault"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-page_fault.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-page_fault-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-panic",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "panic",
+        "--out",
+        "build/k03-smp-reg-v2-k01-panic"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-panic.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-panic-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-run-reboot",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_kernel.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--case",
+        "reboot",
+        "--out",
+        "build/k03-smp-reg-v2-k01-reboot"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-run-reboot.log",
+            "sha256": "0abd613f5bcaf9b7858687d1fe1d8b552a236b497649c7a507305727d0f04740",
+            "size_bytes": 96
+          },
+          "retained_path": "regressions/commands/kernel-k01-run-reboot-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "k01-verify",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/verify_kernel.py",
+        "--first",
+        "build/k03-smp-reg-v2-k01-a/manifest.json",
+        "--second",
+        "build/k03-smp-reg-v2-k01-b/manifest.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-normal/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-int3/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-invalid_opcode/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-page_fault/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-panic/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-reboot/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-k01-iso/result.json",
+        "--out",
+        "build/k03-smp-reg-v2-k01-verification.json"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/k01-verify.log",
+            "sha256": "14fcea0020644433db86c89524304828153ec0888ccc8845b5c72013766d35fe",
+            "size_bytes": 486
+          },
+          "retained_path": "regressions/commands/kernel-k01-verify-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-build-a",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_k02_matrix.py",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-a"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-build-a.log",
+            "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+            "size_bytes": 290
+          },
+          "retained_path": "regressions/commands/kernel-matrix-build-a-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-build-b",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_k02_matrix.py",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-b"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-build-b.log",
+            "sha256": "4c5d4a6db8c25937269e68ec1a3c1a3139ff9d9b7017bbcc2d7ba0b52dd87a19",
+            "size_bytes": 290
+          },
+          "retained_path": "regressions/commands/kernel-matrix-build-b-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-caller_forgery",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "caller_forgery",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-caller_forgery"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-caller_forgery.log",
+            "sha256": "964bde3d10c30f60860da00185b7b83062279ccce2bdcd220b7d3725eb3b3033",
+            "size_bytes": 275
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-caller_forgery-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-data_nx",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "data_nx",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-data_nx"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-data_nx.log",
+            "sha256": "9b7041e8c11a7f6615a7b827f25b00fc29c8a68677f83d29126483c3da1577f8",
+            "size_bytes": 268
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-data_nx-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-exact_bounds",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "exact_bounds",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-exact_bounds"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-exact_bounds.log",
+            "sha256": "2ae2e998bcd4f58c1ab8611a77767d0602a04428bc97b19789439402d6ec7103",
+            "size_bytes": 273
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-exact_bounds-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-kernel_isolation",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "kernel_isolation",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-kernel_isolation"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-kernel_isolation.log",
+            "sha256": "9fea561839a9206da8ca520a39a55ab6aa337efa6215e0e72d4b9cf1f06c66a1",
+            "size_bytes": 277
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-kernel_isolation-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-read_only_sharing",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "read_only_sharing",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-read_only_sharing"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-read_only_sharing.log",
+            "sha256": "643e3329d709b96038829df5eafb53d528e646a785a7e7da338fedb7492fbd6a",
+            "size_bytes": 278
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-read_only_sharing-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-recursive_revocation",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "recursive_revocation",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-recursive_revocation"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-recursive_revocation.log",
+            "sha256": "3acafa5e2f175830ce0a41ff974ba69cd17bcee9226b1825ae263ce609f6d367",
+            "size_bytes": 281
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-recursive_revocation-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-stale_identities",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "stale_identities",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-stale_identities"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-stale_identities.log",
+            "sha256": "6799d32352168e8933ac0326e15af3162fb401ff0b25cf717c3669e302f6cfbd",
+            "size_bytes": 277
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-stale_identities-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-trusted_operation_forgery",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "trusted_operation_forgery",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-trusted_operation_forgery"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-trusted_operation_forgery.log",
+            "sha256": "ed831baa2344c2473b93d88ffc1556a5cb83fd55554e1daa7659d9e6fe2816fa",
+            "size_bytes": 286
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-trusted_operation_forgery-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-unauthorized_read",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "unauthorized_read",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-unauthorized_read"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-unauthorized_read.log",
+            "sha256": "a0d82c1ee2335dd9186d8091a4a875d14236f04d70fda6d23c1788128d5e2f3e",
+            "size_bytes": 278
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-unauthorized_read-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-run-writable_reuse",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_matrix.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--case",
+        "writable_reuse",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-writable_reuse"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-run-writable_reuse.log",
+            "sha256": "bdda992ae05691511eabd36e388a5ac4d55f304dfb9140726c4cc17d032db915",
+            "size_bytes": 275
+          },
+          "retained_path": "regressions/commands/kernel-matrix-run-writable_reuse-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "matrix-verify",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/verify_k02_matrix.py",
+        "--first",
+        "build/k03-smp-reg-v2-matrix-a/manifest.json",
+        "--second",
+        "build/k03-smp-reg-v2-matrix-b/manifest.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-caller_forgery/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-trusted_operation_forgery/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-unauthorized_read/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-read_only_sharing/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-exact_bounds/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-kernel_isolation/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-data_nx/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-recursive_revocation/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-writable_reuse/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-matrix-stale_identities/result.json",
+        "--out",
+        "build/k03-smp-reg-v2-matrix-verification.json"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/matrix-verify.log",
+            "sha256": "2ecab4980cc939d3cbab53f4d11f88d11decf444acf0710b8d622b466e01be86",
+            "size_bytes": 127
+          },
+          "retained_path": "regressions/commands/kernel-matrix-verify-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-build-a",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_k02_native.py",
+        "--out",
+        "build/k03-smp-reg-v2-slice-a"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-build-a.log",
+            "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+            "size_bytes": 222
+          },
+          "retained_path": "regressions/commands/kernel-slice-build-a-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-build-b",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_k02_native.py",
+        "--out",
+        "build/k03-smp-reg-v2-slice-b"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-build-b.log",
+            "sha256": "625bc982da69d2a559ea52b35a56322df18d31bc42c41659c62b8ef489bb7287",
+            "size_bytes": 222
+          },
+          "retained_path": "regressions/commands/kernel-slice-build-b-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-run-foreign_read",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-slice-a/manifest.json",
+        "--case",
+        "foreign_read",
+        "--out",
+        "build/k03-smp-reg-v2-slice-foreign_read"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-run-foreign_read.log",
+            "sha256": "524e8470be27adbe2e0ed3081a0b110db7cc12aa17dc23c5d0678175daf9008f",
+            "size_bytes": 258
+          },
+          "retained_path": "regressions/commands/kernel-slice-run-foreign_read-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-run-kernel_read",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-slice-a/manifest.json",
+        "--case",
+        "kernel_read",
+        "--out",
+        "build/k03-smp-reg-v2-slice-kernel_read"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-run-kernel_read.log",
+            "sha256": "c052b8e2fb22c8c9dde333c65e8a826e5d8f450f1ed233a3096a449782192248",
+            "size_bytes": 257
+          },
+          "retained_path": "regressions/commands/kernel-slice-run-kernel_read-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-run-own_page",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-slice-a/manifest.json",
+        "--case",
+        "own_page",
+        "--out",
+        "build/k03-smp-reg-v2-slice-own_page"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-run-own_page.log",
+            "sha256": "ba4ce5edf7f3e7d0187676a695a2b180263a715bfb6141fa8ee6ae45a6a59193",
+            "size_bytes": 254
+          },
+          "retained_path": "regressions/commands/kernel-slice-run-own_page-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-run-readonly_write",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_native.py",
+        "--manifest",
+        "build/k03-smp-reg-v2-slice-a/manifest.json",
+        "--case",
+        "readonly_write",
+        "--out",
+        "build/k03-smp-reg-v2-slice-readonly_write"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-run-readonly_write.log",
+            "sha256": "1d3d3dfb15bdbd0a8dada382c659bb89a7f55606922ec7fa051610c7990ac3c5",
+            "size_bytes": 260
+          },
+          "retained_path": "regressions/commands/kernel-slice-run-readonly_write-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "slice-verify",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/verify_k02_native.py",
+        "--first",
+        "build/k03-smp-reg-v2-slice-a/manifest.json",
+        "--second",
+        "build/k03-smp-reg-v2-slice-b/manifest.json",
+        "--result",
+        "build/k03-smp-reg-v2-slice-own_page/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-slice-foreign_read/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-slice-kernel_read/result.json",
+        "--result",
+        "build/k03-smp-reg-v2-slice-readonly_write/result.json",
+        "--out",
+        "build/k03-smp-reg-v2-slice-verification.json"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/slice-verify.log",
+            "sha256": "43da62d345370ddaf56a7b88a5de874994e5145f103ad781c0e57dc9649c99ef",
+            "size_bytes": 149
+          },
+          "retained_path": "regressions/commands/kernel-slice-verify-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "native-host",
+      "origin_index": {
+        "path": "build/k03-smp-reg-v2-commands.json",
+        "sha256": "147b523cecf3ce19b8b0ac836c1128df5ccbd734a16cf1a1f72dac7db4c5912f",
+        "size_bytes": 18152
+      },
+      "portable_command": [
+        "python3",
+        "tools/check_k02_native_host.py",
+        "--out",
+        "build/k03-smp-reg-v2-native-host"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/native-host.log",
+            "sha256": "ce672dde79c3c862ee76c12bb67abbff20f7772a323879dab7eac2b488598fcc",
+            "size_bytes": 103
+          },
+          "retained_path": "regressions/commands/kernel-native-host-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-0",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "build/toolchain/bin/rustc",
+        "kernel/benchmark_clock.rs",
+        "--test",
+        "--edition=2024",
+        "-Dwarnings",
+        "-o",
+        "build/k03-smp-old-v2/benchmark-clock-tests"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-0.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          },
+          "retained_path": "regressions/commands/old-older-0-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-1",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "build/k03-smp-old-v2/benchmark-clock-tests",
+        "--test-threads=1"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-1.log",
+            "sha256": "801565b5ae1084fb29612c9831d7d9b4f3f77815511d49d88fbe32e808e314e9",
+            "size_bytes": 263
+          },
+          "retained_path": "regressions/commands/old-older-1-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-2",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_native_kernel_benchmarks.py",
+        "--out",
+        "build/k03-smp-old-v2/benchmark-image",
+        "--scheduler-source",
+        "build/k03-smp-old-v2/inputs/scheduler-core.rs"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-2.log",
+            "sha256": "5f1af46f81da1bfa93d4cba72eb0a9197f0d710967b43c4e81febc8e54c59ed6",
+            "size_bytes": 131
+          },
+          "retained_path": "regressions/commands/old-older-2-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-3",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_native_kernel_benchmarks.py",
+        "--manifest",
+        "build/k03-smp-old-v2/benchmark-image/manifest.json",
+        "--out",
+        "build/k03-smp-old-v2/benchmark-run",
+        "--allow-qemu"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-3.log",
+            "sha256": "dc8afc7130ae1f2c1727d8d0ba06c4eb3b077cc6c278a69c6bfeb56880cd56f0",
+            "size_bytes": 186
+          },
+          "retained_path": "regressions/commands/old-older-3-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-4",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/verify_native_kernel_benchmarks.py",
+        "build/k03-smp-old-v2/benchmark-run"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-4.log",
+            "sha256": "e1eedc8690e401acd9d02b2f9decd8ea339b83605c7f1b94419d0157d671fb03",
+            "size_bytes": 8679
+          },
+          "retained_path": "regressions/commands/old-older-4-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-5",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/check_k02_region_host.py",
+        "--out",
+        "build/k03-smp-old-v2/region/host"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-5.log",
+            "sha256": "d894be4b5f54a8694a6fd8f3099e954a9a71ee31257cd5b9bf255821513d76e6",
+            "size_bytes": 60
+          },
+          "retained_path": "regressions/commands/old-older-5-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-6",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_k02_region_service.py",
+        "--out",
+        "build/k03-smp-old-v2/region/a"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-6.log",
+            "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+            "size_bytes": 62
+          },
+          "retained_path": "regressions/commands/old-older-6-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-7",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/build_k02_region_service.py",
+        "--out",
+        "build/k03-smp-old-v2/region/b"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-7.log",
+            "sha256": "a97446c16acdb6199a823c36156ebc4e599a21e2d822a5659e569c0bb7c077ec",
+            "size_bytes": 62
+          },
+          "retained_path": "regressions/commands/old-older-7-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-8",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_region_service.py",
+        "--manifest",
+        "build/k03-smp-old-v2/region/a/manifest.json",
+        "--case",
+        "sharing",
+        "--out",
+        "build/k03-smp-old-v2/region/sharing",
+        "--allow-qemu"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-8.log",
+            "sha256": "fab69376ee7563a534c9fe38b476667197b15d0755e9c3e26f4c79609e280f90",
+            "size_bytes": 155
+          },
+          "retained_path": "regressions/commands/old-older-8-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-9",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_region_service.py",
+        "--manifest",
+        "build/k03-smp-old-v2/region/a/manifest.json",
+        "--case",
+        "revocation",
+        "--out",
+        "build/k03-smp-old-v2/region/revocation",
+        "--allow-qemu"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-9.log",
+            "sha256": "53d91fb811c81cbefefa9dd090c9a358d668f1632c49204b2c5d4b42fe155e22",
+            "size_bytes": 158
+          },
+          "retained_path": "regressions/commands/old-older-9-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-10",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/run_k02_region_service.py",
+        "--manifest",
+        "build/k03-smp-old-v2/region/a/manifest.json",
+        "--case",
+        "authority",
+        "--out",
+        "build/k03-smp-old-v2/region/authority",
+        "--allow-qemu"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-10.log",
+            "sha256": "51734578f7f7cb1815cea1c2bc2a0cae3b6c51e435de30bf84bfd30de376ff6f",
+            "size_bytes": 157
+          },
+          "retained_path": "regressions/commands/old-older-10-combined.log",
+          "stream": "combined"
+        }
+      ]
+    },
+    {
+      "derived_navigation_only": true,
+      "name": "older-11",
+      "origin_index": {
+        "path": "build/k03-smp-old-v2/commands.json",
+        "sha256": "c63e3708687334e8ec5aa64eecce7d640f125ec38449bffa7360c6d5fb6194ef",
+        "size_bytes": 7513
+      },
+      "portable_command": [
+        "python3",
+        "tools/verify_k02_region_service.py",
+        "--first",
+        "build/k03-smp-old-v2/region/a/manifest.json",
+        "--second",
+        "build/k03-smp-old-v2/region/b/manifest.json",
+        "--host-result",
+        "build/k03-smp-old-v2/region/host/result.json",
+        "--result",
+        "build/k03-smp-old-v2/region/sharing/result.json",
+        "--result",
+        "build/k03-smp-old-v2/region/revocation/result.json",
+        "--result",
+        "build/k03-smp-old-v2/region/authority/result.json",
+        "--out",
+        "build/k03-smp-old-v2/region/verification.json"
+      ],
+      "returncode": 0,
+      "streams": [
+        {
+          "origin": {
+            "path": "build/k03-smp-reg-v2-logs/older-11.log",
+            "sha256": "19e6c40206d9358db6cda94ab2730365762d44f5a38d0151853f971c289c5562",
+            "size_bytes": 98
+          },
+          "retained_path": "regressions/commands/old-older-11-combined.log",
+          "stream": "combined"
+        }
+      ]
+    }
+  ],
+  "derived_navigation_only": true,
+  "format": "tessryn-k03-smp-public-commands/v1",
+  "smp_source": {
+    "dirty": false,
+    "revision": "f3f39b8e333b5e6fcb96a829dddaa480a5858ee1",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "09e6e214e0ae5216a6ee12b8912bd282269ebe874b5a186a63ec27f80bbd1fed"
+  },
+  "source": {
+    "dirty": false,
+    "revision": "febcb2ff53a512daa7ba8bac6f6156c9cbc3a6e4",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "ad7256e9bcea614799b57e63855030b9e6702f020a10fe07f5c645b877d93298"
+  }
+}

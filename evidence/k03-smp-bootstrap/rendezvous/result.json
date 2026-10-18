@@ -1,0 +1,94 @@
+{
+  "capture_only": false,
+  "case": "rendezvous",
+  "evaluator_sha256": "00a1a252d9a32b62cdcb1887d47e146806cc7c25b7aecf6124c826afdc0641a1",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,hpet=on",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+      "-m",
+      "256M",
+      "-smp",
+      "2,sockets=1,cores=2,threads=1,maxcpus=2",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 1.7101579999980459,
+    "max_log_bytes": 1048576,
+    "returncode": 33,
+    "status": "completed",
+    "timeout_seconds": 30
+  },
+  "format": "tessryn-k03-smp-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "a534b5e9e51b2ee43540b32d5c6454c744179d396a47b176c0c84b7de0404fd5",
+      "size_bytes": 2503
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "e3a0d0eddaacf0a6c368015ac46544a081d462bd392768f00d40b1d0653e2034",
+  "observations": {
+    "capture_authentication": "unverified_offline",
+    "case": "rendezvous",
+    "cpus_online": 2,
+    "enabled_apic_ids": [
+      0,
+      1
+    ],
+    "final_heartbeat": 21241,
+    "increments": [
+      4096,
+      4096
+    ],
+    "ipi_acknowledgments": 3,
+    "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+    "retained": "all",
+    "stop_generation": 4,
+    "stop_window_ns": 20018000,
+    "total": 8192,
+    "work_window_ns": 20009000
+  },
+  "qualification": "not_established",
+  "reason": "source-bound original two-CPU bootstrap protocol matched",
+  "registration_sha256": "92d13267adabe4d2f790610283bb698e68a5e19d59e5ddc7de57faa76a10422f",
+  "scope": "bounded original-kernel two-CPU xAPIC bootstrap and rendezvous; CPL3 SMP, scheduler contention, physical clocks, devices and performance unqualified",
+  "status": "pass"
+}

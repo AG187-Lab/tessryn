@@ -1,0 +1,621 @@
+{
+  "derived_navigation_only": true,
+  "format": "tessryn-k03-smp-local-artifact-audit/v1",
+  "inventory": [
+    {
+      "path": "build/k03-smp-clean-v3/a/manifest.json",
+      "sha256": "e3a0d0eddaacf0a6c368015ac46544a081d462bd392768f00d40b1d0653e2034",
+      "size_bytes": 20966
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/BOOTX64.EFI",
+      "sha256": "fa64bec5338b0b4b3749e736029915c5ad4329a15eda4be89db938a3ddc798bc",
+      "size_bytes": 45568
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/kernel.obj",
+      "sha256": "84b831ef718748953a6370f442a52f82dafe91d822bcd92f773ce12f594a5b26",
+      "size_bytes": 420140
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/boot.img",
+      "sha256": "4e937fc542ffa2bbcb5f7e51e3695bf0ee49dee56fe033d0e184c6bd23931b09",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/BOOTX64.EFI",
+      "sha256": "c418e9099cb7c87d5d739654b125368e975a85d30b9366fa71efefa6a2c3176c",
+      "size_bytes": 40960
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/kernel.obj",
+      "sha256": "985c8f9348e95cb4924bc7f44587479e8dd1b3ba2d351e9823d18b05383b6881",
+      "size_bytes": 382929
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/boot.img",
+      "sha256": "decf633f0b804ef0686bde491041c240c2dc179d0cd4691301558e8ac152df6a",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/.github/workflows/k03-smp.yml",
+      "sha256": "6fb6007df72db7c76bcfc2fa494e513075478a913594896f87cea647c97b7bab",
+      "size_bytes": 9174
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size_bytes": 1073
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/cpu.rs",
+      "sha256": "1ca24735152073170122a625fe13251b42e32102c29b8a4f86e2743e5f268cbc",
+      "size_bytes": 11508
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size_bytes": 3005
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/entry.S",
+      "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+      "size_bytes": 5558
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size_bytes": 4436
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/main.rs",
+      "sha256": "095e5fca845e29b9e33a2132f6de5fd65fb475e8cacb28464a7b9653aba8576f",
+      "size_bytes": 6143
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/paging.rs",
+      "sha256": "463be88754ea0c2ab383bf5cfcfd3695c99407d1a9eb5cb907d386d61b784cc2",
+      "size_bytes": 8591
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/smp.rs",
+      "sha256": "ba02f5c18ab37d31585f707b2c8e1ace318dd29e2d5318d475e1d6ffd71de679",
+      "size_bytes": 18380
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/smp_acpi.rs",
+      "sha256": "51e2093927b69c40c0d9aea8ada69c85cd3ec55071132f499d9fae7d9bd542a9",
+      "size_bytes": 8475
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/smp_entry.S",
+      "sha256": "8436370a733ed43b03cea5011735ea1a2e008197ba4cefd0e80a8c8f4ce597c3",
+      "size_bytes": 3044
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/kernel/uefi.rs",
+      "sha256": "c256b1942688154c40250f87a61981d37bae06e8f38f1ac31d088756ad251ff4",
+      "size_bytes": 28177
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/planning/k02-toolchain.lock.json",
+      "sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+      "size_bytes": 883
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/planning/k03-smp.json",
+      "sha256": "96a64f7498086c533d7b5ef8d30662f6960bb2fb2dba0e6cfe209985b49bff09",
+      "size_bytes": 697
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tests/k03_smp_acpi.rs",
+      "sha256": "f29b4381c453923c47e1e903937dc1311378500f1c49cc30a646db2f5feb6377",
+      "size_bytes": 12949
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size_bytes": 3748
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size_bytes": 19816
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/build_k03_smp.py",
+      "sha256": "eff9644c7770d1152d3214b714b812987c7200e9d3682ab77de9035b91da3a80",
+      "size_bytes": 11714
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size_bytes": 12867
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/check_k03_smp_host.py",
+      "sha256": "5daf2db7f35bf606daf3ba049238b1eb3e25dc83aa5d0e716ece417874090896",
+      "size_bytes": 4325
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/g03/__init__.py",
+      "sha256": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+      "size_bytes": 71
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size_bytes": 6728
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size_bytes": 10501
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/k02_region_protocol.py",
+      "sha256": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+      "size_bytes": 8099
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/k03_smp_protocol.py",
+      "sha256": "787a480c811c657b44218c26f4bb51827834ddcdea9e8330ed12724a96d9dffd",
+      "size_bytes": 1672
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/k03_smp_provenance.py",
+      "sha256": "1c5f419ea4940a29a435cfbf24342f77fe6ef173b0118ac68166e0fc20141c67",
+      "size_bytes": 6109
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/k03_smp_trace.py",
+      "sha256": "1f3616305b17b1839d318affa40b711c56cf848d63b54f59db46a1392b6fc6d6",
+      "size_bytes": 17070
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/run_k03_smp.py",
+      "sha256": "b29a06a0b1d34b185a7724c4907745b591afcd14566a841e9d29b71594736fff",
+      "size_bytes": 8205
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/setup_k02_toolchain.py",
+      "sha256": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+      "size_bytes": 13215
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size_bytes": 13199
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size_bytes": 17457
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/summarize_k03_smp_failure.py",
+      "sha256": "a9d1d73b3ddfd8f906b60b5f9f67f7c6b9803a8a06d33de617081d78831cae86",
+      "size_bytes": 2811
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/tools/verify_k03_smp.py",
+      "sha256": "750f4133deda953b40c6d27122e3c75351f77917a9cb6f48d5cdf125639ac4b5",
+      "size_bytes": 15029
+    },
+    {
+      "path": "build/k03-smp-clean-v3/a/sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size_bytes": 3623
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/manifest.json",
+      "sha256": "4a0480b413795a6935f9495a38c109021e6feb020a2bdb01b0a5931fa2d8c7bf",
+      "size_bytes": 20966
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/BOOTX64.EFI",
+      "sha256": "fa64bec5338b0b4b3749e736029915c5ad4329a15eda4be89db938a3ddc798bc",
+      "size_bytes": 45568
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/kernel.obj",
+      "sha256": "84b831ef718748953a6370f442a52f82dafe91d822bcd92f773ce12f594a5b26",
+      "size_bytes": 420140
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/boot.img",
+      "sha256": "4e937fc542ffa2bbcb5f7e51e3695bf0ee49dee56fe033d0e184c6bd23931b09",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/BOOTX64.EFI",
+      "sha256": "c418e9099cb7c87d5d739654b125368e975a85d30b9366fa71efefa6a2c3176c",
+      "size_bytes": 40960
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/kernel.obj",
+      "sha256": "985c8f9348e95cb4924bc7f44587479e8dd1b3ba2d351e9823d18b05383b6881",
+      "size_bytes": 382929
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/boot.img",
+      "sha256": "decf633f0b804ef0686bde491041c240c2dc179d0cd4691301558e8ac152df6a",
+      "size_bytes": 35651584
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/.github/workflows/k03-smp.yml",
+      "sha256": "6fb6007df72db7c76bcfc2fa494e513075478a913594896f87cea647c97b7bab",
+      "size_bytes": 9174
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/fixtures/rom.py",
+      "sha256": "ebb411b04b5f17cde8d653c0ca95fe14c05a824fe3c1dd63ccafa23cdcab69e2",
+      "size_bytes": 1073
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/cpu.rs",
+      "sha256": "1ca24735152073170122a625fe13251b42e32102c29b8a4f86e2743e5f268cbc",
+      "size_bytes": 11508
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/diagnostics.rs",
+      "sha256": "3e50758c80f331aee533c9b303b2b255127ef66831ccf140c383bc995e49c139",
+      "size_bytes": 3005
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/entry.S",
+      "sha256": "1bfce874b1817588a4e968564bda2a3458842306c709467b081b2ca3f7a387e8",
+      "size_bytes": 5558
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/framebuffer.rs",
+      "sha256": "f0aa3ee0d27ec21dc681ea5fe8ca4cd941d7b6130ebec0a2529cdb9f9a349d22",
+      "size_bytes": 4436
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/main.rs",
+      "sha256": "095e5fca845e29b9e33a2132f6de5fd65fb475e8cacb28464a7b9653aba8576f",
+      "size_bytes": 6143
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/paging.rs",
+      "sha256": "463be88754ea0c2ab383bf5cfcfd3695c99407d1a9eb5cb907d386d61b784cc2",
+      "size_bytes": 8591
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/smp.rs",
+      "sha256": "ba02f5c18ab37d31585f707b2c8e1ace318dd29e2d5318d475e1d6ffd71de679",
+      "size_bytes": 18380
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/smp_acpi.rs",
+      "sha256": "51e2093927b69c40c0d9aea8ada69c85cd3ec55071132f499d9fae7d9bd542a9",
+      "size_bytes": 8475
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/smp_entry.S",
+      "sha256": "8436370a733ed43b03cea5011735ea1a2e008197ba4cefd0e80a8c8f4ce597c3",
+      "size_bytes": 3044
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/kernel/uefi.rs",
+      "sha256": "c256b1942688154c40250f87a61981d37bae06e8f38f1ac31d088756ad251ff4",
+      "size_bytes": 28177
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/planning/k02-toolchain.lock.json",
+      "sha256": "8111fa51fd30e8d4233b05ef393d51027bcb642123b8d473706fb431e475beeb",
+      "size_bytes": 883
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/planning/k03-smp.json",
+      "sha256": "96a64f7498086c533d7b5ef8d30662f6960bb2fb2dba0e6cfe209985b49bff09",
+      "size_bytes": 697
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tests/k03_smp_acpi.rs",
+      "sha256": "f29b4381c453923c47e1e903937dc1311378500f1c49cc30a646db2f5feb6377",
+      "size_bytes": 12949
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/toolchain.lock.json",
+      "sha256": "17d24a3a45ca248e68ad473bc8a79c9ea77afa109875c52379035ff03d420127",
+      "size_bytes": 3748
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/build_fixture.py",
+      "sha256": "81f89bd62d78bf4671ec3cb9641ec966c7321a7431166458be093bae49e216c1",
+      "size_bytes": 19816
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/build_k03_smp.py",
+      "sha256": "eff9644c7770d1152d3214b714b812987c7200e9d3682ab77de9035b91da3a80",
+      "size_bytes": 11714
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/build_kernel.py",
+      "sha256": "80ae3df5372105391fe47ae296518e1d01f45cf6c1db3623402c4ba2ceb6df91",
+      "size_bytes": 12867
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/check_k03_smp_host.py",
+      "sha256": "5daf2db7f35bf606daf3ba049238b1eb3e25dc83aa5d0e716ece417874090896",
+      "size_bytes": 4325
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/g03/__init__.py",
+      "sha256": "6700f18cf4d0aec4d44af49f60b122b568aa1f8ede6d25bffbfc5c566cb48c3c",
+      "size_bytes": 71
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/g03/process.py",
+      "sha256": "871588efaff38443156ec6a5bc3e9a2af51aed5580bf65e5abaa2a4929b0c333",
+      "size_bytes": 6728
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/k01_media.py",
+      "sha256": "eccccf1a8da64ee122c79639db29737f32632d6196b59357f6d0c6195b9f54e3",
+      "size_bytes": 10501
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/k02_region_protocol.py",
+      "sha256": "0d37bec2b4e92bbf37abf9523fb9c5e6f6d120048841c317e8309e619c51b785",
+      "size_bytes": 8099
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/k03_smp_protocol.py",
+      "sha256": "787a480c811c657b44218c26f4bb51827834ddcdea9e8330ed12724a96d9dffd",
+      "size_bytes": 1672
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/k03_smp_provenance.py",
+      "sha256": "1c5f419ea4940a29a435cfbf24342f77fe6ef173b0118ac68166e0fc20141c67",
+      "size_bytes": 6109
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/k03_smp_trace.py",
+      "sha256": "1f3616305b17b1839d318affa40b711c56cf848d63b54f59db46a1392b6fc6d6",
+      "size_bytes": 17070
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/run_k03_smp.py",
+      "sha256": "b29a06a0b1d34b185a7724c4907745b591afcd14566a841e9d29b71594736fff",
+      "size_bytes": 8205
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/setup_k02_toolchain.py",
+      "sha256": "68fcc30e5d24cdfa43d5bb97bf35dba184ce914541b58e65915e61902cdb2a94",
+      "size_bytes": 13215
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/setup_toolchain.py",
+      "sha256": "ffb68dc5279e8d60f34a1bcd0754b705bfb6ad8b041f769c703bd69c96e409f0",
+      "size_bytes": 13199
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/setup_uefi.py",
+      "sha256": "6ff2224f2616017d6f01f93528538bfbdf43ccc4d851936dce48d0ad85891f57",
+      "size_bytes": 17457
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/summarize_k03_smp_failure.py",
+      "sha256": "a9d1d73b3ddfd8f906b60b5f9f67f7c6b9803a8a06d33de617081d78831cae86",
+      "size_bytes": 2811
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/tools/verify_k03_smp.py",
+      "sha256": "750f4133deda953b40c6d27122e3c75351f77917a9cb6f48d5cdf125639ac4b5",
+      "size_bytes": 15029
+    },
+    {
+      "path": "build/k03-smp-clean-v3/b/sources/uefi-toolchain.lock.json",
+      "sha256": "3db7cc2e4a3ef5e492ff69baf28f3679b06000d489855c7a5ab732bc8f645450",
+      "size_bytes": 3623
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/result.json",
+      "sha256": "ca8ae020962d832a31301714d7280120503aa0231e7b430e3ec531e7117f531e",
+      "size_bytes": 2658
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/registration.json",
+      "sha256": "92d13267adabe4d2f790610283bb698e68a5e19d59e5ddc7de57faa76a10422f",
+      "size_bytes": 2945
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/stdout.log",
+      "sha256": "a534b5e9e51b2ee43540b32d5c6454c744179d396a47b176c0c84b7de0404fd5",
+      "size_bytes": 2503
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "build/k03-smp-clean-v3/rendezvous/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/result.json",
+      "sha256": "7af5b79ceb16a3813f0b301cc5803b643e35f820da24a63ca0664622be936a63",
+      "size_bytes": 2521
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/registration.json",
+      "sha256": "25cd5b0c99d9bd85ec3a396c38dd1f03551314677d2475c10a0415ed8b29ef79",
+      "size_bytes": 2945
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/stdout.log",
+      "sha256": "2ef533e22da86eea426328c6e4a15d99fe73de3caa8e8476e6deb3c3edd3e4cc",
+      "size_bytes": 1500
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "build/k03-smp-clean-v3/missing_ap/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/result.json",
+      "sha256": "c62dd62dff9f8d066947eb0c2854e1467aec20c6146ab6b2a1651cf56d2b1872",
+      "size_bytes": 3391
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/build-stderr.log",
+      "sha256": "a3333db6e10c0541b5fe17193693588dfd3e58585fdfbbe266ac6532d8820ec7",
+      "size_bytes": 203
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/tests-stdout.log",
+      "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+      "size_bytes": 1986
+    },
+    {
+      "path": "build/k03-smp-clean-v3/host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "build/k03-smp-clean-v3/verification.json",
+      "sha256": "53970d347a843bdef38a61bf6b8b4fa53411a8edc966456564c182ac6bcd65ad",
+      "size_bytes": 1930
+    }
+  ],
+  "paths": 120,
+  "privacy_scope": "all selected public text is scanned; binary/retained-source bytes are hashed and omitted",
+  "source": {
+    "dirty": false,
+    "revision": "f3f39b8e333b5e6fcb96a829dddaa480a5858ee1",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "09e6e214e0ae5216a6ee12b8912bd282269ebe874b5a186a63ec27f80bbd1fed"
+  },
+  "status": "pass",
+  "total_bytes": 153568990,
+  "workflow": {
+    "path": ".github/workflows/k03-smp.yml",
+    "sha256": "6fb6007df72db7c76bcfc2fa494e513075478a913594896f87cea647c97b7bab",
+    "size_bytes": 9174
+  }
+}

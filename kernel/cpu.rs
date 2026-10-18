@@ -204,6 +204,16 @@ pub unsafe fn prepare_timer_mmio() {
     unsafe { asm!("wbinvd", "mov cr3, {}", in(reg) tables.root(), options(nostack)); }
 }
 
+/// Sole BSP mutation, before SIPI. The common root is immutable afterward.
+#[cfg(k03_smp)]
+pub unsafe fn prepare_smp_mmio() {
+    let tables = unsafe { &mut *ptr::addr_of_mut!(TABLES) };
+    tables.set_hpet_uncached().unwrap_or_else(|_| fail("smp-hpet-map"));
+    tables.set_lapic_uncached().unwrap_or_else(|_| fail("smp-lapic-map"));
+    if !tables.hpet_uncached().unwrap_or(false) { fail("smp-mmio-flags"); }
+    unsafe { asm!("wbinvd", "mov cr3, {}", in(reg) tables.root(), options(nostack)); }
+}
+
 #[unsafe(no_mangle)]
 pub extern "sysv64" fn exception_handler(frame: &ExceptionFrame, _fp: *const u8) {
     let cr2: u64;
