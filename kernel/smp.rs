@@ -209,7 +209,9 @@ pub extern "sysv64" fn smp_interrupt(vector: u64, frame: *const u64) {
     let rip = unsafe { frame.add(16).read() };
     let flags = unsafe { frame.add(18).read() };
     let rsp = unsafe { frame.add(19).read() };
-    ensure(rip >= smp_heartbeat_start as *const () as u64 && rip < ptr::addr_of!(smp_heartbeat_end) as u64);
+    let heartbeat = smp_heartbeat_start as *const () as u64;
+    ensure(rip < ptr::addr_of!(smp_heartbeat_end) as u64
+        && rip.checked_sub(heartbeat).is_some_and(|offset| matches!(offset, 0 | 4 | 6)));
     ensure(f[6] == ROOT.load(Ordering::Acquire) && cs == 8 && flags & 0x200 != 0 && rsp >= f[7] && rsp < f[8]);
     ensure(frame as u64 + 168 == rsp & !15 && (frame as u64 & !15).checked_sub(512).is_some_and(|fp| fp >= f[7]));
     let generation = REQUEST.load(Ordering::Acquire);

@@ -218,7 +218,8 @@ def parse_transcript(case, data, returncode, stderr, binding):
 
     def raw_ipi(row):
         ap = cpus[1]
-        require(all(type(row[k]) is int for k in ("rip", "cs", "rflags", "rsp", "frame", "cr3")) and live["image_start"] + binding["heartbeat"]["efi_rva"] <= row["rip"] < live["image_start"] + binding["heartbeat"]["efi_rva"] + 8
+        require(all(type(row[k]) is int for k in ("rip", "cs", "rflags", "rsp", "frame", "cr3"))
+            and row["rip"] - live["image_start"] - binding["heartbeat"]["efi_rva"] in (0, 4, 6)
             and row["cs"] == 8 and row["rflags"] & 0x202 == 0x202 and row["rflags"] & ~0x10ad7 == 0 and row["cr3"] == root
             and ap["stack_start"] <= row["rsp"] < ap["stack_end"] and row["rsp"] % 8 == 0
             and ap["stack_start"] <= row["frame"] and row["frame"] + 168 <= ap["stack_end"] and row["frame"] % 8 == 0

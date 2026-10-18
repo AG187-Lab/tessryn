@@ -166,6 +166,13 @@ class SmpTraceTests(unittest.TestCase):
 
     def test_exact_heartbeat_code_and_mandatory_delays_are_bound(self):
         self.reject(changed(TRACES['rendezvous'],'TESSRYN_K03_SMP_IPI','rip',hex(0xe038000+0x1000)))
+        base=0xe038000+BINDINGS['rendezvous']['heartbeat']['efi_rva']
+        for marker in ('TESSRYN_K03_SMP_IPI','TESSRYN_K03_SMP_STOP'):
+            for offset in range(8):
+                data=changed(TRACES['rendezvous'],marker,'rip',hex(base+offset))
+                with self.subTest(marker=marker,offset=offset):
+                    if offset in (0,4,6):self.parse(data)
+                    else:self.reject(data)
         work=next(row for row in TRACES['rendezvous'].decode().splitlines() if row.startswith('TESSRYN_K03_SMP_WORK '))
         end=int(re.search(r' end=(\d+)',work)[1]);data=changed(TRACES['rendezvous'],'TESSRYN_K03_SMP_STOP','start',end)
         self.reject(changed(data,'TESSRYN_K03_SMP_STOP','end',end+2_000_000))
