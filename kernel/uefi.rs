@@ -73,6 +73,7 @@ struct RuntimeServices {
 }
 
 #[repr(C)]
+#[derive(PartialEq, Eq)]
 struct Guid { a: u32, b: u16, c: u16, d: [u8; 8] }
 const LOADED_IMAGE: Guid = Guid {
     a: 0x5b1b31a1, b: 0x9562, c: 0x11d2,
@@ -227,6 +228,16 @@ pub struct Handoff {
     pub cr3: u64,
     pub free_pages: u64,
     pub scratch: u64,
+    #[cfg(k03_smp)]
+    pub smp: SmpHandoff,
+}
+
+#[cfg(k03_smp)]
+pub struct SmpHandoff {
+    pub topology: crate::smp_acpi::Topology,
+    pub trampoline: Range,
+    pub madt: [u8; 512],
+    pub madt_len: usize,
 }
 
 impl Handoff {
@@ -295,6 +306,15 @@ impl Handoff {
         }
         if self.image.overlaps(self.stack) || self.image.overlaps(self.map_allocation)
             || self.stack.overlaps(self.map_allocation) { fail("live-loader-range-overlap"); }
+        #[cfg(k03_smp)]
+        {
+            let low = self.smp.trampoline;
+            if low.start < PAGE || low.start % PAGE != 0 || low.end > 0x10_0000
+                || low.end - low.start != PAGE || !self.range_has_kind(low, &[2])
+                || low.overlaps(self.image) || low.overlaps(self.stack) || low.overlaps(self.map_allocation) {
+                fail("smp-trampoline-ownership");
+            }
+        }
         let reset = self.reset as usize as u64;
         let reset_range = Range::new(reset, 1);
         if !self.range_has_kind(reset_range, &[5]) { fail("runtime-reset-ownership"); }
@@ -325,6 +345,94 @@ unsafe fn allocate(boot: &BootServices, pages: usize) -> Range {
     let status = unsafe { (boot.allocate_pages)(1, 2, pages, &mut address) };
     if status != 0 { fail("allocate-loader-pages"); }
     Range::new(address, pages as u64 * PAGE)
+}
+
+#[cfg(k03_smp)]
+unsafe fn prepare_smp(boot: &BootServices, system: &SystemTable) -> SmpHandoff {
+    // Firmware reserves the SIPI page as loader data. It is never returned to
+    // the allocator, even after the AP parks. No assumed/free low-RAM address.
+    let mut low = 0x000f_ffff;
+    if unsafe { (boot.allocate_pages)(1, 2, 1, &mut low) } != 0 { fail("smp-low-allocation"); }
+    let trampoline = Range::new(low, PAGE);
+    if low < PAGE || low % PAGE != 0 || trampoline.end > 0x10_0000 { fail("smp-low-allocation-range"); }
+    let mut length = MAP_PAGES * PAGE as usize;
+    let (mut key, mut stride, mut version) = (0, 0, 0);
+    let map = ptr::addr_of_mut!(EARLY_MAP).cast::<u8>();
+    if unsafe { (boot.get_memory_map)(&mut length, map, &mut key, &mut stride, &mut version) } != 0
+        || length > MAP_PAGES * PAGE as usize || stride < size_of::<Descriptor>()
+        || stride % 8 != 0 || length == 0 || length % stride != 0 || version != 1 {
+        fail("smp-acpi-map");
+    }
+    // Tables are accepted only in firmware ACPI memory below the identity
+    // mapping limit. Check the complete span before constructing any slice.
+    let span = |address: u64, bytes: usize, allowed: &[u32]| {
+        let end = address.checked_add(bytes as u64).unwrap_or_else(|| fail("smp-acpi-overflow"));
+        if address == 0 || bytes == 0 || bytes > 65536 || end > LIMIT { fail("smp-acpi-range"); }
+        let mut cursor = address;
+        while cursor < end {
+            let mut next = cursor;
+            for i in 0..length / stride {
+                let d = unsafe { ptr::read_unaligned(map.add(i * stride).cast::<Descriptor>()) };
+                let de = d.pages.checked_mul(PAGE).and_then(|n| d.start.checked_add(n))
+                    .unwrap_or_else(|| fail("smp-acpi-descriptor"));
+                if allowed.contains(&d.kind) && d.start <= cursor && cursor < de {
+                    next = core::cmp::min(end, de);
+                    break;
+                }
+            }
+            if next == cursor { fail("smp-acpi-memory-kind"); }
+            cursor = next;
+        }
+    };
+    let table = |address: u64, bytes: usize| -> &[u8] {
+        span(address, bytes, &[9, 10]);
+        unsafe { core::slice::from_raw_parts(address as *const u8, bytes) }
+    };
+    #[repr(C)]
+    struct Configuration { guid: Guid, address: u64 }
+    let acpi2 = Guid { a: 0x8868_e871, b: 0xe4f1, c: 0x11d3, d: [0xbc, 0x22, 0, 0x80, 0xc7, 0x3c, 0x88, 0x81] };
+    if system.configuration_count == 0 || system.configuration_count > 256 || system.configuration == 0 {
+        fail("smp-configuration-table");
+    }
+    span(system.configuration as u64, system.configuration_count * size_of::<Configuration>(), &[1, 2, 3, 4, 5, 6, 7, 9, 10]);
+    let mut rsdp_address = 0;
+    for i in 0..system.configuration_count {
+        let entry = unsafe { ptr::read_unaligned((system.configuration as *const Configuration).add(i)) };
+        if entry.guid == acpi2 {
+            if rsdp_address != 0 { fail("smp-acpi-duplicate-root"); }
+            rsdp_address = entry.address;
+        }
+    }
+    let rsdp = crate::smp_acpi::parse_rsdp(table(rsdp_address, 36)).unwrap_or_else(|_| fail("smp-rsdp"));
+    let sdt = |address: u64| -> &[u8] {
+        let header = table(address, 36);
+        let size = u32::from_le_bytes(header[4..8].try_into().unwrap()) as usize;
+        if !(36..=65536).contains(&size) { fail("smp-sdt-length"); }
+        table(address, size)
+    };
+    let xsdt = sdt(rsdp.xsdt);
+    let entries = crate::smp_acpi::xsdt_entries(xsdt).unwrap_or_else(|_| fail("smp-xsdt"));
+    let (mut madt, mut hpet) = (None, None);
+    for address in entries {
+        let bytes = sdt(address);
+        // Validate every referenced table, not just a signature prefix.
+        let signature: [u8; 4] = bytes[..4].try_into().unwrap();
+        crate::smp_acpi::validate_sdt(bytes, signature).unwrap_or_else(|_| fail("smp-sdt-checksum"));
+        if signature == *b"APIC" {
+            if madt.is_some() || bytes.len() > 512 { fail("smp-madt-cardinality"); }
+            madt = Some(bytes);
+        } else if signature == *b"HPET" {
+            if hpet.is_some() { fail("smp-hpet-cardinality"); }
+            hpet = Some(bytes);
+        }
+    }
+    let bytes = madt.unwrap_or_else(|| fail("smp-madt-missing"));
+    let topology = crate::smp_acpi::parse_madt(bytes).unwrap_or_else(|_| fail("smp-madt-profile"));
+    crate::smp_acpi::parse_hpet(hpet.unwrap_or_else(|| fail("smp-hpet-missing")))
+        .unwrap_or_else(|_| fail("smp-hpet-profile"));
+    let mut copied = [0; 512];
+    copied[..bytes.len()].copy_from_slice(bytes);
+    SmpHandoff { topology, trampoline, madt: copied, madt_len: bytes.len() }
 }
 
 unsafe fn allocate_high(boot: &BootServices, pages: usize, physical_bits: u8) -> Range {
@@ -408,6 +516,8 @@ pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Resul
         Some(unsafe { allocate_high(boot, 1, physical_bits) })
     } else { None };
     if cfg!(k01_high_handoff) && !cfg!(k01_emulator) { fail("high-handoff-emulator-only"); }
+    #[cfg(k03_smp)]
+    let smp = unsafe { prepare_smp(boot, system) };
     // Watchdog disabling is best effort; success also disables it at handoff.
     let _ = unsafe { (boot.set_watchdog)(0, 0, 0, ptr::null()) };
     let reset = runtime.reset_system;
@@ -415,6 +525,8 @@ pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Resul
         map: map_allocation.start as *const u8, map_length: 0,
         descriptor_size: 0, stack, map_allocation, image: image_range,
         framebuffer, high_scratch, reset, physical_bits, cr3: 0, free_pages: 0, scratch: 0,
+        #[cfg(k03_smp)]
+        smp,
     };
     // A failed exit may partially shut down firmware: only GetMemoryMap and
     // ExitBootServices are used on retries, without allocations or protocols.

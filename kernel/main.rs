@@ -3,12 +3,18 @@
 #![no_main]
 #![deny(unsafe_op_in_unsafe_fn)]
 
-#[cfg_attr(native_benchmarks, allow(dead_code))]
+#[cfg_attr(any(native_benchmarks, k03_smp), allow(dead_code))]
 mod cpu;
 mod diagnostics;
 mod framebuffer;
 mod paging;
 mod uefi;
+#[cfg(k03_smp)]
+mod smp;
+#[cfg(k03_smp)]
+mod smp_acpi;
+#[cfg(all(k03_smp, any(not(k01_emulator), k01_aws, k02_native, native_benchmarks, k03_timer)))]
+compile_error!("SMP bootstrap is a separate emulator-only image");
 #[cfg(all(native_benchmarks, any(k02_native, k02_matrix, k02_region_service)))]
 compile_error!("native_benchmarks and k02_native are separate opt-in images");
 #[cfg(all(native_benchmarks, any(k01_aws, not(k01_emulator))))]
@@ -50,12 +56,12 @@ mod region_runtime;
 #[cfg(all(k02_region_service, not(k02_matrix)))]
 mod k02_sha256;
 
-#[cfg(not(native_benchmarks))]
+#[cfg(not(any(native_benchmarks, k03_smp)))]
 use core::arch::asm;
 use core::mem::MaybeUninit;
 use core::panic::PanicInfo;
 use core::ptr;
-#[cfg(not(native_benchmarks))]
+#[cfg(not(any(native_benchmarks, k03_smp)))]
 use diagnostics::fail;
 use diagnostics::{finish, print};
 
@@ -85,9 +91,11 @@ pub unsafe extern "efiapi" fn efi_main(image: uefi::Handle, system: *const uefi:
 pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     // SAFETY: firmware has exited; kernel owns its loaded image and stack.
     unsafe { cpu::take_ownership(handoff) };
+    #[cfg(k03_smp)]
+    smp::run(handoff);
     #[cfg(native_benchmarks)]
     native_benchmarks::run(handoff);
-    #[cfg(not(native_benchmarks))]
+    #[cfg(not(any(native_benchmarks, k03_smp)))]
     {
     #[cfg(k02_matrix)]
     k02_matrix::run(handoff);
@@ -137,6 +145,8 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
 
 #[panic_handler]
 fn panic(info: &PanicInfo<'_>) -> ! {
+    #[cfg(k03_smp)]
+    smp::panic_park_if_ap();
     // No allocator, locks, firmware console or stack unwinding on this path.
     print(format_args!("TESSRYN_K01_PANIC {info}\n"));
     finish(cfg!(k01_case = "panic"))

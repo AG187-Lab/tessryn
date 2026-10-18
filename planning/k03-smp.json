@@ -1,0 +1,19 @@
+{
+  "schema": "tessryn-k03-smp/v1",
+  "scope": "two-CPU kernel bootstrap only; CPL3 SMP, scheduler contention and physical timing unqualified",
+  "cases": ["rendezvous", "missing_ap"],
+  "cpu_count": 2,
+  "topology": "one socket, two cores, one thread per core",
+  "accelerator": "tcg,thread=multi",
+  "lapic_address": 4276092928,
+  "hpet_address": 4275044352,
+  "hpet_period_fs": 10000000,
+  "ipi_vector": 64,
+  "stop_vector": 65,
+  "increments_per_cpu": 4096,
+  "timeout_ns": 2000000000,
+  "descriptor_bytes": 96,
+  "trampoline_bytes": 4096,
+  "missing_ap": "deliberately omit SIPI; bounded expected rejection with controlled exit33",
+  "qualification": "emulated bootstrap observations only"
+}

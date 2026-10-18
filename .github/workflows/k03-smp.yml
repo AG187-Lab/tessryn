@@ -1,0 +1,182 @@
+name: K03 two-CPU kernel bootstrap
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  k03-smp:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Check bootstrap evidence boundaries
+        run: |
+          python3 -m unittest discover -s tests -p 'test_k03_smp*.py' -v
+          python3 tools/validate_design.py
+      - name: Install pinned compiler, host libraries and emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Execute the actual ACPI parser host tests
+        run: python3 tools/check_k03_smp_host.py --out build/k03-smp/host
+      - name: Build independent bootstrap twins
+        run: |
+          python3 tools/build_k03_smp.py --out build/k03-smp/a
+          python3 tools/build_k03_smp.py --out build/k03-smp/b
+      - name: Capture AP rendezvous and deliberately missing SIPI
+        run: |
+          for case in rendezvous missing_ap; do
+            python3 tools/run_k03_smp.py --manifest build/k03-smp/a/manifest.json --case "$case" --out "build/k03-smp/$case" --allow-qemu
+          done
+      - name: Verify source, twins, host receipts and original bootstrap traces
+        run: |
+          python3 tools/verify_k03_smp.py --first build/k03-smp/a/manifest.json --second build/k03-smp/b/manifest.json --host-result build/k03-smp/host/result.json \
+            --result build/k03-smp/rendezvous/result.json --result build/k03-smp/missing_ap/result.json --out build/k03-smp/verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: k03-smp-bootstrap-evidence
+          include-hidden-files: true
+          path: |
+            build/k03-smp/a/manifest.json
+            build/k03-smp/a/rendezvous/BOOTX64.EFI
+            build/k03-smp/a/rendezvous/kernel.obj
+            build/k03-smp/a/rendezvous/boot.img
+            build/k03-smp/a/rendezvous/stdout.log
+            build/k03-smp/a/rendezvous/stderr.log
+            build/k03-smp/a/missing_ap/BOOTX64.EFI
+            build/k03-smp/a/missing_ap/kernel.obj
+            build/k03-smp/a/missing_ap/boot.img
+            build/k03-smp/a/missing_ap/stdout.log
+            build/k03-smp/a/missing_ap/stderr.log
+            build/k03-smp/a/notices/tessryn-LICENSE
+            build/k03-smp/a/notices/tessryn-NOTICE
+            build/k03-smp/a/notices/rust-LICENSE-APACHE
+            build/k03-smp/a/notices/rust-LICENSE-MIT
+            build/k03-smp/a/notices/rust-COPYRIGHT
+            build/k03-smp/a/sources/.github/workflows/k03-smp.yml
+            build/k03-smp/a/sources/fixtures/rom.py
+            build/k03-smp/a/sources/kernel/cpu.rs
+            build/k03-smp/a/sources/kernel/diagnostics.rs
+            build/k03-smp/a/sources/kernel/entry.S
+            build/k03-smp/a/sources/kernel/framebuffer.rs
+            build/k03-smp/a/sources/kernel/main.rs
+            build/k03-smp/a/sources/kernel/paging.rs
+            build/k03-smp/a/sources/kernel/smp.rs
+            build/k03-smp/a/sources/kernel/smp_acpi.rs
+            build/k03-smp/a/sources/kernel/smp_entry.S
+            build/k03-smp/a/sources/kernel/uefi.rs
+            build/k03-smp/a/sources/planning/k02-toolchain.lock.json
+            build/k03-smp/a/sources/planning/k03-smp.json
+            build/k03-smp/a/sources/tests/k03_smp_acpi.rs
+            build/k03-smp/a/sources/toolchain.lock.json
+            build/k03-smp/a/sources/tools/build_fixture.py
+            build/k03-smp/a/sources/tools/build_k03_smp.py
+            build/k03-smp/a/sources/tools/build_kernel.py
+            build/k03-smp/a/sources/tools/check_k03_smp_host.py
+            build/k03-smp/a/sources/tools/g03/__init__.py
+            build/k03-smp/a/sources/tools/g03/process.py
+            build/k03-smp/a/sources/tools/k01_media.py
+            build/k03-smp/a/sources/tools/k02_region_protocol.py
+            build/k03-smp/a/sources/tools/k03_smp_protocol.py
+            build/k03-smp/a/sources/tools/k03_smp_provenance.py
+            build/k03-smp/a/sources/tools/k03_smp_trace.py
+            build/k03-smp/a/sources/tools/run_k03_smp.py
+            build/k03-smp/a/sources/tools/setup_k02_toolchain.py
+            build/k03-smp/a/sources/tools/setup_toolchain.py
+            build/k03-smp/a/sources/tools/setup_uefi.py
+            build/k03-smp/a/sources/tools/summarize_k03_smp_failure.py
+            build/k03-smp/a/sources/tools/verify_k03_smp.py
+            build/k03-smp/a/sources/uefi-toolchain.lock.json
+            build/k03-smp/b/manifest.json
+            build/k03-smp/b/rendezvous/BOOTX64.EFI
+            build/k03-smp/b/rendezvous/kernel.obj
+            build/k03-smp/b/rendezvous/boot.img
+            build/k03-smp/b/rendezvous/stdout.log
+            build/k03-smp/b/rendezvous/stderr.log
+            build/k03-smp/b/missing_ap/BOOTX64.EFI
+            build/k03-smp/b/missing_ap/kernel.obj
+            build/k03-smp/b/missing_ap/boot.img
+            build/k03-smp/b/missing_ap/stdout.log
+            build/k03-smp/b/missing_ap/stderr.log
+            build/k03-smp/b/notices/tessryn-LICENSE
+            build/k03-smp/b/notices/tessryn-NOTICE
+            build/k03-smp/b/notices/rust-LICENSE-APACHE
+            build/k03-smp/b/notices/rust-LICENSE-MIT
+            build/k03-smp/b/notices/rust-COPYRIGHT
+            build/k03-smp/b/sources/.github/workflows/k03-smp.yml
+            build/k03-smp/b/sources/fixtures/rom.py
+            build/k03-smp/b/sources/kernel/cpu.rs
+            build/k03-smp/b/sources/kernel/diagnostics.rs
+            build/k03-smp/b/sources/kernel/entry.S
+            build/k03-smp/b/sources/kernel/framebuffer.rs
+            build/k03-smp/b/sources/kernel/main.rs
+            build/k03-smp/b/sources/kernel/paging.rs
+            build/k03-smp/b/sources/kernel/smp.rs
+            build/k03-smp/b/sources/kernel/smp_acpi.rs
+            build/k03-smp/b/sources/kernel/smp_entry.S
+            build/k03-smp/b/sources/kernel/uefi.rs
+            build/k03-smp/b/sources/planning/k02-toolchain.lock.json
+            build/k03-smp/b/sources/planning/k03-smp.json
+            build/k03-smp/b/sources/tests/k03_smp_acpi.rs
+            build/k03-smp/b/sources/toolchain.lock.json
+            build/k03-smp/b/sources/tools/build_fixture.py
+            build/k03-smp/b/sources/tools/build_k03_smp.py
+            build/k03-smp/b/sources/tools/build_kernel.py
+            build/k03-smp/b/sources/tools/check_k03_smp_host.py
+            build/k03-smp/b/sources/tools/g03/__init__.py
+            build/k03-smp/b/sources/tools/g03/process.py
+            build/k03-smp/b/sources/tools/k01_media.py
+            build/k03-smp/b/sources/tools/k02_region_protocol.py
+            build/k03-smp/b/sources/tools/k03_smp_protocol.py
+            build/k03-smp/b/sources/tools/k03_smp_provenance.py
+            build/k03-smp/b/sources/tools/k03_smp_trace.py
+            build/k03-smp/b/sources/tools/run_k03_smp.py
+            build/k03-smp/b/sources/tools/setup_k02_toolchain.py
+            build/k03-smp/b/sources/tools/setup_toolchain.py
+            build/k03-smp/b/sources/tools/setup_uefi.py
+            build/k03-smp/b/sources/tools/summarize_k03_smp_failure.py
+            build/k03-smp/b/sources/tools/verify_k03_smp.py
+            build/k03-smp/b/sources/uefi-toolchain.lock.json
+            build/k03-smp/rendezvous/result.json
+            build/k03-smp/rendezvous/registration.json
+            build/k03-smp/rendezvous/stdout.log
+            build/k03-smp/rendezvous/stderr.log
+            build/k03-smp/rendezvous/firmware/code.fd
+            build/k03-smp/rendezvous/firmware/vars.fd
+            build/k03-smp/rendezvous/firmware/NOTICE
+            build/k03-smp/missing_ap/result.json
+            build/k03-smp/missing_ap/registration.json
+            build/k03-smp/missing_ap/stdout.log
+            build/k03-smp/missing_ap/stderr.log
+            build/k03-smp/missing_ap/firmware/code.fd
+            build/k03-smp/missing_ap/firmware/vars.fd
+            build/k03-smp/missing_ap/firmware/NOTICE
+            build/k03-smp/host/result.json
+            build/k03-smp/host/build-stdout.log
+            build/k03-smp/host/build-stderr.log
+            build/k03-smp/host/tests-stdout.log
+            build/k03-smp/host/tests-stderr.log
+            build/k03-smp/verification.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain portable failure metadata
+        if: failure()
+        run: python3 tools/summarize_k03_smp_failure.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: k03-smp-failure-metadata
+          path: build/k03-smp/failure-summary.json
+          if-no-files-found: warn
+          retention-days: 14
