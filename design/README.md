@@ -25,6 +25,7 @@ These documents record research, architectural decisions, implementation gates a
 | [Single-CPU timer preemption](k03-timer-preemption.md) | HPET/PIC interrupts, resumable CPL3 contexts, strict actual-time budgets and evidence requirements |
 | [Two-CPU kernel bootstrap](k03-smp-bootstrap.md) | ACPI admission, original INIT/SIPI, private AP CPU state, source-bound IPIs and retained-memory stop |
 | [In-kernel benchmark experiment](native-kernel-benchmarks.md) | Opt-in raw-counter guest observations, capture boundaries and hardware timing gates |
+| [Runtime benchmark experiments](runtime-benchmarks.md) | Actual timer capture intervals, bounded two-CPU contention fixtures and raw timing scope |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
