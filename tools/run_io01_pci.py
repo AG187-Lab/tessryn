@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT))
 from tools.build_io01_pci import CASES, PROFILE, canonical, validate_build
 from tools.check_kernel_display import QMP
 from tools.g03.evidence import parse_json
-from tools.io01_pci_trace import DONE_PREFIX, verify
+from tools.io01_pci_trace import DONE_PREFIX, EvidenceRejected, require_evidence, verify
 from tools.k02_region_protocol import digest, fresh_output, regular_bytes, require, write_json
 from tools.setup_uefi import verify_installation
 
@@ -115,6 +115,7 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
     handlers = {}
     child = connection = recording = None
     status, reason = "unavailable", "emulator process launch failed"
+    stage = "process launch"
 
     def cancel(*_):
         nonlocal cancelled
@@ -149,9 +150,10 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
         for name, pipe in (("serial", child.stdout), ("stderr", child.stderr)):
             os.set_blocking(pipe.fileno(), False)
             selector.register(pipe, selectors.EVENT_READ, name)
+        stage = "QMP connection and negotiation"
         while connection is None:
             pump(0.01)
-            require(child.poll() is None, "emulator exited before QMP connected")
+            require_evidence(child.poll() is None, "emulator exited before QMP connected")
             attempt = socket.socket(socket.AF_UNIX)
             try:
                 attempt.settimeout(0.05)
@@ -164,14 +166,17 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
                 raise
         recording = RecordedSocket(connection)
         qmp = QMP(recording, deadline, pump)
-        require(is_status(qmp.command("query-status"), "running", True), "emulator did not start running")
+        require_evidence(is_status(qmp.command("query-status"), "running", True), "emulator did not start running")
+        stage = "terminal serial record"
         while not DONE.search(output["serial"]):
             pump(0.01)
-            require(not any(marker in output["serial"] for marker in FAULT_MARKERS), "guest reported failure")
-            require(child.poll() is None, "emulator exited before terminal serial line")
+            require_evidence(not any(marker in output["serial"] for marker in FAULT_MARKERS), "guest reported failure")
+            require_evidence(child.poll() is None, "emulator exited before terminal serial line")
+        stage = "QMP pause and inventory"
         qmp.command("stop")
-        require(is_status(qmp.command("query-status"), "paused", False), "emulator pause not observed")
-        require(type(qmp.command("query-pci")) is list, "query-pci did not return a bus list")
+        require_evidence(is_status(qmp.command("query-status"), "paused", False), "emulator pause not observed")
+        require_evidence(type(qmp.command("query-pci")) is list, "query-pci did not return a bus list")
+        stage = "QMP quit and process exit"
         qmp.command("quit")
         socket_open = True
         while socket_open or child.poll() is None or selector.get_map():
@@ -181,7 +186,7 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
                     socket_open = bool(recording.recv(4096))
                 except socket.timeout:
                     pass
-        require(child.returncode == 0, "emulator did not exit cleanly after QMP quit")
+        require_evidence(child.returncode == 0, "emulator did not exit cleanly after QMP quit")
         status, reason = "completed", "serial, QMP and process streams completed"
     except TimeoutError:
         status, reason = "timeout", "emulator or QMP capture exceeded deadline"
@@ -189,9 +194,11 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
         status, reason = "cancelled", "emulator capture cancelled"
     except LogLimit:
         status, reason = "log_limit", "emulator capture exceeded byte budget"
-    except (OSError, ValueError, KeyError, TypeError, RecursionError):
+    except EvidenceRejected as error:
+        status, reason = "fail", str(error)
+    except (OSError, ValueError, KeyError, TypeError, RecursionError) as error:
         if child is not None:
-            status, reason = "fail", "emulator serial or QMP capture rejected"
+            status, reason = "fail", f"{stage} rejected ({type(error).__name__})"
     finally:
         try:
             if child is not None:
@@ -245,49 +252,50 @@ def qmp_records(data: bytes) -> list[dict]:
 
 
 def observations(case, serial, stderr, qmp_recv, qmp_send):
+    require_evidence(not stderr, "emulator wrote to stderr")
     require(len(serial) + len(stderr) <= MAX_LOG_BYTES and len(qmp_recv) + len(qmp_send) <= MAX_QMP_BYTES,
             "capture logs exceed their bounds")
     markers = list(DONE.finditer(serial))
-    require(len(markers) == 1 and markers[0].end() == len(serial) and not stderr
+    require_evidence(len(markers) == 1 and markers[0].end() == len(serial)
             and not any(marker in serial for marker in FAULT_MARKERS), "missing terminal serial line or unexpected guest output")
     requests = qmp_records(qmp_send)
-    require(len(requests) == len(CONTROLS) and all(type(row.get("id")) is int and row == {"id": i, "execute": op}
+    require_evidence(len(requests) == len(CONTROLS) and all(type(row.get("id")) is int and row == {"id": i, "execute": op}
             for i, (row, op) in enumerate(zip(requests, CONTROLS), 1)), "unexpected QMP command sequence")
     replies = qmp_records(qmp_recv)
-    require(set(replies[0]) == {"QMP"} and type(replies[0]["QMP"]) is dict, "missing original QMP greeting")
+    require_evidence(set(replies[0]) == {"QMP"} and type(replies[0]["QMP"]) is dict, "missing original QMP greeting")
     returned = []
     events = set()
     rtc_path, rtc_count = None, 0
     for row in replies[1:]:
         if "event" in row:
             event = row["event"]
-            require(event in ("RTC_CHANGE", "STOP", "SHUTDOWN")
+            require_evidence(event in ("RTC_CHANGE", "STOP", "SHUTDOWN")
                     and (event == "RTC_CHANGE" or event not in events) and "id" not in row
                     and "error" not in row and "return" not in row, "unexpected QMP event")
             if event == "RTC_CHANGE":
-                # OVMF can set the emulated RTC during boot. It is not a reset,
-                # resume or capture-time change to the PCI topology.
+                # QEMU can deliver a rate-limited boot RTC update after STOP.
+                # The event has no effect on the paused PCI inventory.
                 data = row.get("data")
-                require(len(returned) <= 2 and "STOP" not in events and type(data) is dict
+                require_evidence("SHUTDOWN" not in events and len(returned) < len(CONTROLS) and type(data) is dict
                         and set(data) == {"offset", "qom-path"} and type(data["offset"]) is int
                         and -(1 << 63) <= data["offset"] < 1 << 63 and type(data["qom-path"]) is str
                         and re.fullmatch(r"/machine/unattached/device\[[0-9]{1,3}\]/rtc", data["qom-path"])
                         and rtc_count < MAX_RTC_EVENTS and (rtc_path is None or data["qom-path"] == rtc_path),
-                        "invalid or late QMP RTC change")
+                        "invalid QMP RTC change")
                 rtc_path, rtc_count = data["qom-path"], rtc_count + 1
             elif event == "STOP":
-                require(len(returned) in (2, 3) and "data" not in row, "QMP stop is out of order")
+                require_evidence(len(returned) in (2, 3) and "data" not in row, "QMP stop is out of order")
             else:
                 data = row.get("data")
-                require(len(returned) in (5, 6) and type(data) is dict
+                require_evidence(len(returned) in (5, 6) and type(data) is dict
                         and data.get("guest") is False and data.get("reason") == "host-qmp-quit",
                         "shutdown was not attributed to the host QMP quit")
             events.add(event)
         else:
-            require(set(row) == {"return", "id"} and type(row["id"]) is int and row["id"] == len(returned) + 1,
+            require_evidence(set(row) == {"return", "id"} and type(row["id"]) is int and row["id"] == len(returned) + 1,
                     "unexpected QMP reply")
             returned.append(row["return"])
-    require(len(returned) == len(CONTROLS) and returned[0] == returned[2] == returned[5] == {}
+    require_evidence(len(returned) == len(CONTROLS) and returned[0] == returned[2] == returned[5] == {}
             and is_status(returned[1], "running", True) and is_status(returned[3], "paused", False)
             and type(returned[4]) is list, "QMP replies do not prove the paused PCI observation")
     return verify(serial, returned[4], case)
@@ -352,6 +360,8 @@ def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False) 
         if captured.status == "completed":
             observed = observations(case, captured.serial, captured.stderr, captured.qmp_recv, captured.qmp_send)
             status, reason = "pass", "original PCI serial and paused QMP topology matched"
+    except EvidenceRejected as error:
+        status, reason = "fail", str(error)
     except (OSError, ValueError, KeyError, TypeError, RecursionError, subprocess.SubprocessError):
         if bound is not None:
             status, reason = "fail", "PCI capture inputs or evidence rejected"
@@ -406,6 +416,9 @@ def main():
     except (OSError, ValueError, KeyError, TypeError, RecursionError, subprocess.SubprocessError) as error:
         parser.exit(1, f"PCI audit rejected: {type(error).__name__}\n")
     print(f"{result['case']}: {result['status']} ({result['qualification']})")
+    if result["status"] not in ("pass", "consistent"):
+        process = result["execution"]
+        print(f"{result['reason']} (capture {process['status']}, exit {process['returncode']})", file=sys.stderr)
     return 0 if result["status"] in ("pass", "consistent") else 1
 
 

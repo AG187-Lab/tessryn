@@ -34,7 +34,8 @@ class QMPBoundaryTests(unittest.TestCase):
     def test_passes_original_paused_inventory_to_trace_verifier(self):
         rtc = {"event": "RTC_CHANGE", "data": {"offset": 2, "qom-path": "/machine/unattached/device[17]/rtc"}}
         next_rtc = {"event": "RTC_CHANGE", "data": {**rtc["data"], "offset": 3}}
-        replies = self.replies[:3] + [rtc, next_rtc] + self.replies[3:]
+        # The second RTC change can be delivered after the guest has stopped.
+        replies = self.replies[:3] + [rtc] + self.replies[3:6] + [next_rtc] + self.replies[6:]
         with patch.object(runner, "verify", return_value={"case": "absent"}) as compare:
             self.assertEqual(runner.observations("absent", self.serial, b"", wire(replies), self.requests),
                              {"case": "absent"})
@@ -47,8 +48,8 @@ class QMPBoundaryTests(unittest.TestCase):
                   self.replies[:7] + [{"return": {}, "id": 5}] + self.replies[8:],
                   self.replies[:3] + [{"event": "RTC_CHANGE", "data": {
                       "offset": True, "qom-path": "/machine/unattached/device[1]/rtc"}}] + self.replies[3:],
-                  self.replies[:5] + [{"event": "RTC_CHANGE", "data": {
-                      "offset": -1, "qom-path": "/machine/unattached/device[1]/rtc"}}] + self.replies[5:]]
+                  self.replies + [{"event": "RTC_CHANGE", "data": {
+                      "offset": -1, "qom-path": "/machine/unattached/device[1]/rtc"}}]]
         with patch.object(runner, "verify") as compare:
             for replies in faults:
                 with self.subTest(replies=replies), self.assertRaises(ValueError):

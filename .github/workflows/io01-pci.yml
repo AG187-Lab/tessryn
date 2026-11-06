@@ -36,10 +36,15 @@ jobs:
           python3 tools/build_io01_pci.py --compare build/io01-pci/a/manifest.json build/io01-pci/b/manifest.json
       - name: Cross-check the present and absent guests against paused QMP
         run: |
+          status=0
           for case in present absent; do
-            python3 tools/run_io01_pci.py --manifest build/io01-pci/a/manifest.json --case "$case" --out "build/io01-pci/$case" --allow-qemu
-            python3 tools/run_io01_pci.py --manifest build/io01-pci/a/manifest.json --case "$case" --out "build/io01-pci/$case" --verify
+            if python3 tools/run_io01_pci.py --manifest build/io01-pci/a/manifest.json --case "$case" --out "build/io01-pci/$case" --allow-qemu; then
+              python3 tools/run_io01_pci.py --manifest build/io01-pci/a/manifest.json --case "$case" --out "build/io01-pci/$case" --verify || status=1
+            else
+              status=1
+            fi
           done
+          exit "$status"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: success()
         with:
