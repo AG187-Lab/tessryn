@@ -1,6 +1,7 @@
 # Local timers and a shared budget on two CPUs
 
-Status: implementation and emulator validation in progress. This bounded K03
+Status: bounded clean original-kernel emulator execution accepted;
+[retained evidence](../evidence/k03-smp-budget/README.md). This bounded K03
 profile joins the [protected two-CPU contexts](k03-smp-user.md) to the unchanged
 [scheduler policy](k03-preparation.md). The [single-CPU HPET timer](k03-timer-preemption.md)
 and [two-CPU peer stops](k03-smp-user.md) remain separate correctness references.
@@ -20,8 +21,8 @@ CPU independently calibrates and arms its own xAPIC one-shot countdown. The
 timer uses a dedicated DPL0 vector. A valid stop checks the actual interrupted
 CPL3 frame and private root, the active local generation, the local timer
 configuration, a zero current count, the hardware in-service bit, EOI and a
-drained local source before rearm. Other interrupt or entry states fail the
-experiment. Both legacy PICs and all 24 admitted I/O APIC routes are masked;
+drained local source before rearm. Invalid stop frames, timer source state or
+entry timing fail the experiment. Both legacy PICs and all 24 admitted I/O APIC routes are masked;
 the profile never sends vector 67 by IPI. In the normal case the conservative
 latest programmed expiry must fit inside its reservation before entry. The
 deliberately late fixture still requires actual entry before the reservation's
@@ -49,7 +50,7 @@ pure CPL3 cycles or physical timing precision.
 
 | Case | Required observation |
 | --- | --- |
-| `preempt` | Both CPUs start with live reservations under one cap. The second grant is clipped by the first. Both unbounded user loops are stopped by their local hardware timers; the AP's user progress brackets the BSP trap. In a second batch both saved contexts resume, advance their private heartbeats, and stop through fresh generations. Timely stops charge full observed intervals and release only their own reservations. The fixture completes after the second batch. |
+| `preempt` | Both CPUs start with live reservations under one cap. The second grant is clipped by the first. Both unbounded user loops are stopped by their local hardware timers; the BSP trap precedes the AP's earliest possible timer expiry after fresh AP user progress. In a second batch both saved contexts resume, advance their private heartbeats, and stop through fresh generations. Timely stops charge full observed intervals and release only their own reservations. The fixture completes after the second batch. |
 | `late` | A test-only timer setup deliberately schedules both authentic stops beyond the grants. The first reconciliation charges all elapsed time, halts the domain, and leaves the peer lease and reservation owned until its separate receipt is reconciled. The BSP observes rejected further admission, charges the peer without clamping, and ends with no outstanding leases or reservations. |
 
 In the late case the peer may already be stopped in hardware while its receipt
@@ -64,6 +65,13 @@ matching builds; actual ACPI parser checks; fresh runs of both cases; and a
 separate replay of the binary-bound CPL3 state, timer receipts, shared budget
 transitions and terminal state. Retain artifacts with exact source and inventory
 bindings. Earlier profiles keep their original evidence formats and gates.
+
+Clean implementation `eab49c93d60132e301671e5af50cf9e098a69584` passed 774
+Python tests, 26 parser checks, seven twin artifacts and two fresh boots.
+An independent audit of the 148-file artifact replayed six CPL3 timer traps
+and both complete ledgers, with no privacy findings. The three earlier
+SMP user scenarios and nine twin artifacts also verified at that source.
+Offline replay checks consistency; it does not independently attest execution.
 
 With the pinned tools installed, use a clean implementation checkout and
 fresh output directories:

@@ -2,7 +2,8 @@
 
 Date: 2026-11-06
 
-Status: accepted implementation direction; execution validation pending.
+Status: accepted; bounded [clean emulator validation](../../evidence/k03-smp-budget/README.md)
+passed for both timing cases and the earlier CPL3 regression.
 
 ## Context
 

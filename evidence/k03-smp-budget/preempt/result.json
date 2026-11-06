@@ -1,0 +1,172 @@
+{
+  "capture_only": false,
+  "case": "preempt",
+  "evaluator_sha256": "a71a7e6e0e5202fb343b200e0d017d3d4eeefea8cf504f5b861a085527508985",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,hpet=on",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+      "-m",
+      "256M",
+      "-smp",
+      "2,sockets=1,cores=2,threads=1,maxcpus=2",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 1.871859749997384,
+    "max_log_bytes": 1048576,
+    "returncode": 33,
+    "status": "completed",
+    "timeout_seconds": 30
+  },
+  "format": "tessryn-k03-smp-budget-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "983f5cf81a5624058d34cd610a036f994391ce7dfe713e96df0c003d76d830ec",
+      "size_bytes": 16698
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "513525142b7a9bfffa7fb7fefd6f8e8b064c250e1fbe86ab5f9f699b09419f1e",
+  "observations": {
+    "calibration": [
+      {
+        "count_interval_ns": 5054000,
+        "maximum_ns": 5075000,
+        "minimum_ns": 5032000
+      },
+      {
+        "count_interval_ns": 5056992,
+        "maximum_ns": 5078000,
+        "minimum_ns": 5037000
+      }
+    ],
+    "cap_ns": 1200000000,
+    "capture_authentication": "unverified_offline",
+    "case": "preempt",
+    "consumed_ns": 223177000,
+    "cpus_online": 2,
+    "denied_redispatch": false,
+    "enabled_apic_ids": [
+      0,
+      1
+    ],
+    "halted": false,
+    "irq_count": 4,
+    "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+    "overlap_expiry_margin_ticks": [
+      5368301,
+      5488101
+    ],
+    "private_roots": [
+      234536960,
+      234606592
+    ],
+    "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+    "reconciliation": [
+      {
+        "available": 772439000,
+        "charged_ns": 27561000,
+        "consumed": 27561000,
+        "cpu": 0,
+        "halted": 0,
+        "peer_lease": 1,
+        "peer_reserved": 400000000,
+        "reserved": 400000000,
+        "round": 1,
+        "state": "runnable"
+      },
+      {
+        "available": 1088330000,
+        "charged_ns": 84109000,
+        "consumed": 111670000,
+        "cpu": 1,
+        "halted": 0,
+        "peer_lease": 0,
+        "peer_reserved": 0,
+        "reserved": 0,
+        "round": 1,
+        "state": "runnable"
+      },
+      {
+        "available": 774755000,
+        "charged_ns": 25245000,
+        "consumed": 136915000,
+        "cpu": 0,
+        "halted": 0,
+        "peer_lease": 2,
+        "peer_reserved": 288330000,
+        "reserved": 288330000,
+        "round": 2,
+        "state": "completed"
+      },
+      {
+        "available": 976823000,
+        "charged_ns": 86262000,
+        "consumed": 223177000,
+        "cpu": 1,
+        "halted": 0,
+        "peer_lease": 0,
+        "peer_reserved": 0,
+        "reserved": 0,
+        "round": 2,
+        "state": "completed"
+      }
+    ],
+    "reserved_ns": 0,
+    "retained": "all",
+    "rounds": 2,
+    "shared_grant_clips": 2,
+    "stop_window_ns": 20055000,
+    "task_consumed_ns": [
+      52806000,
+      170371000
+    ],
+    "terminal_heartbeats": [
+      297236,
+      445567
+    ]
+  },
+  "qualification": "not_established",
+  "reason": "source-bound original two-CPU LAPIC preemption and budget protocol matched",
+  "registration_sha256": "b603ee4d04a10180c7da00b7907e46dbd4044dba8f29f5a1944f2bbe283e0138",
+  "scope": "bounded original-kernel two-CPU CPL3 LAPIC preemption and aggregate CPU budget; migration, reclamation, physical clocks, devices and performance unqualified",
+  "status": "pass"
+}

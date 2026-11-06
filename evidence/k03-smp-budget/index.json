@@ -1,0 +1,215 @@
+{
+  "files": [
+    {
+      "path": "a/late/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/late/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/manifest.json",
+      "sha256": "513525142b7a9bfffa7fb7fefd6f8e8b064c250e1fbe86ab5f9f699b09419f1e",
+      "size_bytes": 30369
+    },
+    {
+      "path": "a/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "a/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "a/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "a/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "a/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "a/preempt/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/preempt/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/scheduler/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "a/scheduler/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/late/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/late/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/manifest.json",
+      "sha256": "bb1b2aa0a5ff276b7da746e229871aa1efee0c2d885b763cb98876afc44a3dc9",
+      "size_bytes": 30367
+    },
+    {
+      "path": "b/notices/rust-COPYRIGHT",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "size_bytes": 1571
+    },
+    {
+      "path": "b/notices/rust-LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "size_bytes": 9723
+    },
+    {
+      "path": "b/notices/rust-LICENSE-MIT",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "size_bytes": 1068
+    },
+    {
+      "path": "b/notices/tessryn-LICENSE",
+      "sha256": "c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c",
+      "size_bytes": 11358
+    },
+    {
+      "path": "b/notices/tessryn-NOTICE",
+      "sha256": "30c0209d8af5b4f1818908647b8458325f1f4401b8f8cb4138b7bb766a249b3f",
+      "size_bytes": 194
+    },
+    {
+      "path": "b/preempt/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/preempt/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/scheduler/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "b/scheduler/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/build-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/build-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/result.json",
+      "sha256": "3ee40934aacec8ae7b6f02d15bfad6d366bbae923effd1a0e97622d0e76b4cf7",
+      "size_bytes": 3413
+    },
+    {
+      "path": "host/tests-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "host/tests-stdout.log",
+      "sha256": "c9a8f5fb7320e5303aa9609a6da43ac385925a0ee7602d11f0e80001b87e5d2e",
+      "size_bytes": 1986
+    },
+    {
+      "path": "late/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "late/registration.json",
+      "sha256": "64296b82c80ec15ab8539e9c01b1693b0c5b1b735dbda1ae9541f0db03de15ca",
+      "size_bytes": 3114
+    },
+    {
+      "path": "late/result.json",
+      "sha256": "593af084d8ca17f8d77f12c737ee2e755c4d0ecb38e9fbe9bbe51ceb67204b91",
+      "size_bytes": 3859
+    },
+    {
+      "path": "late/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "late/stdout.log",
+      "sha256": "a217ac447b3bd9cedb3f112f27cc01f08b284e2c1c30e16128daca52ca833716",
+      "size_bytes": 11987
+    },
+    {
+      "path": "preempt/firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    },
+    {
+      "path": "preempt/registration.json",
+      "sha256": "b603ee4d04a10180c7da00b7907e46dbd4044dba8f29f5a1944f2bbe283e0138",
+      "size_bytes": 3135
+    },
+    {
+      "path": "preempt/result.json",
+      "sha256": "275878878da6388cc6cde7136b4d3cb4350f739615cd1c7a1b1d337c2d375a02",
+      "size_bytes": 4472
+    },
+    {
+      "path": "preempt/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "preempt/stdout.log",
+      "sha256": "983f5cf81a5624058d34cd610a036f994391ce7dfe713e96df0c003d76d830ec",
+      "size_bytes": 16698
+    },
+    {
+      "path": "regressions/k03-smp-user/verification.json",
+      "sha256": "5488a3c3b8d4ba25873d3dde1dd9128471c5ade36ab8e8f038864dc3d98ce468",
+      "size_bytes": 3308
+    },
+    {
+      "path": "summary.json",
+      "sha256": "c5ce06c88cdb32fb3a1efeda751e580304a22d8800a09132bf6f365d64ea076d",
+      "size_bytes": 36887
+    },
+    {
+      "path": "verification.json",
+      "sha256": "a90f751bbbc0f85dc4ccbb8b30c9ae6c6c449588049af90ed05a03e961e2a760",
+      "size_bytes": 5307
+    }
+  ],
+  "format": "tessryn-smp-budget-text-index/v1"
+}

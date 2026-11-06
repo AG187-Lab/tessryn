@@ -1,0 +1,147 @@
+{
+  "capture_only": false,
+  "case": "late",
+  "evaluator_sha256": "a71a7e6e0e5202fb343b200e0d017d3d4eeefea8cf504f5b861a085527508985",
+  "execution": {
+    "command": [
+      "qemu-system-x86_64",
+      "-machine",
+      "q35,hpet=on",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+      "-m",
+      "256M",
+      "-smp",
+      "2,sockets=1,cores=2,threads=1,maxcpus=2",
+      "-nodefaults",
+      "-no-user-config",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "null",
+      "-nic",
+      "none",
+      "-no-reboot",
+      "-device",
+      "VGA,romfile=",
+      "-global",
+      "apic.vapic=off",
+      "-drive",
+      "if=pflash,format=raw,readonly=on,file=code.fd",
+      "-drive",
+      "if=pflash,format=raw,file=vars.fd",
+      "-debugcon",
+      "stdio",
+      "-global",
+      "isa-debugcon.iobase=0xe9",
+      "-device",
+      "isa-debug-exit,iobase=0xf4,iosize=0x04",
+      "-drive",
+      "if=ide,format=raw,snapshot=on,file=boot.img",
+      "-boot",
+      "order=c"
+    ],
+    "elapsed_seconds": 1.9639262080017943,
+    "max_log_bytes": 1048576,
+    "returncode": 33,
+    "status": "completed",
+    "timeout_seconds": 30
+  },
+  "format": "tessryn-k03-smp-budget-result/v1",
+  "logs": [
+    {
+      "path": "stdout.log",
+      "sha256": "a217ac447b3bd9cedb3f112f27cc01f08b284e2c1c30e16128daca52ca833716",
+      "size_bytes": 11987
+    },
+    {
+      "path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "manifest_sha256": "513525142b7a9bfffa7fb7fefd6f8e8b064c250e1fbe86ab5f9f699b09419f1e",
+  "observations": {
+    "calibration": [
+      {
+        "count_interval_ns": 5058000,
+        "maximum_ns": 5079000,
+        "minimum_ns": 5031000
+      },
+      {
+        "count_interval_ns": 5057008,
+        "maximum_ns": 5078000,
+        "minimum_ns": 5033000
+      }
+    ],
+    "cap_ns": 60000000,
+    "capture_authentication": "unverified_offline",
+    "case": "late",
+    "consumed_ns": 318911000,
+    "cpus_online": 2,
+    "denied_redispatch": true,
+    "enabled_apic_ids": [
+      0,
+      1
+    ],
+    "halted": true,
+    "irq_count": 2,
+    "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+    "overlap_expiry_margin_ticks": [
+      17342401
+    ],
+    "private_roots": [
+      234536960,
+      234606592
+    ],
+    "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+    "reconciliation": [
+      {
+        "available": 0,
+        "charged_ns": 67869000,
+        "consumed": 67869000,
+        "cpu": 0,
+        "halted": 1,
+        "peer_lease": 1,
+        "peer_reserved": 20000000,
+        "reserved": 20000000,
+        "round": 1,
+        "state": "failed"
+      },
+      {
+        "available": 0,
+        "charged_ns": 251042000,
+        "consumed": 318911000,
+        "cpu": 1,
+        "halted": 1,
+        "peer_lease": 0,
+        "peer_reserved": 0,
+        "reserved": 0,
+        "round": 1,
+        "state": "failed"
+      }
+    ],
+    "reserved_ns": 0,
+    "retained": "all",
+    "rounds": 1,
+    "shared_grant_clips": 1,
+    "stop_window_ns": 20040000,
+    "task_consumed_ns": [
+      67869000,
+      251042000
+    ],
+    "terminal_heartbeats": [
+      398657,
+      578353
+    ]
+  },
+  "qualification": "not_established",
+  "reason": "source-bound original two-CPU LAPIC preemption and budget protocol matched",
+  "registration_sha256": "64296b82c80ec15ab8539e9c01b1693b0c5b1b735dbda1ae9541f0db03de15ca",
+  "scope": "bounded original-kernel two-CPU CPL3 LAPIC preemption and aggregate CPU budget; migration, reclamation, physical clocks, devices and performance unqualified",
+  "status": "pass"
+}
