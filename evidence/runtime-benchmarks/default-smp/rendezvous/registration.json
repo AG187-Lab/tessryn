@@ -1,0 +1,97 @@
+{
+  "capture_origin": "local_runner_claim_unverified_offline",
+  "case": "rendezvous",
+  "command": [
+    "qemu-system-x86_64",
+    "-machine",
+    "q35,hpet=on",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+    "-m",
+    "256M",
+    "-smp",
+    "2,sockets=1,cores=2,threads=1,maxcpus=2",
+    "-nodefaults",
+    "-no-user-config",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "null",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-device",
+    "VGA,romfile=",
+    "-global",
+    "apic.vapic=off",
+    "-drive",
+    "if=pflash,format=raw,readonly=on,file=code.fd",
+    "-drive",
+    "if=pflash,format=raw,file=vars.fd",
+    "-debugcon",
+    "stdio",
+    "-global",
+    "isa-debugcon.iobase=0xe9",
+    "-device",
+    "isa-debug-exit,iobase=0xf4,iosize=0x04",
+    "-drive",
+    "if=ide,format=raw,snapshot=on,file=boot.img",
+    "-boot",
+    "order=c"
+  ],
+  "created_at_utc": "2026-10-18T07:21:42.598487Z",
+  "emulator_sha256": "310807b302f5bb742fd097782b2b5129c1e3b897a47d372a8eeaee1e08e30f80",
+  "evaluator_sha256": "00a1a252d9a32b62cdcb1887d47e146806cc7c25b7aecf6124c826afdc0641a1",
+  "firmware": [
+    {
+      "path": "firmware/code.fd",
+      "sha256": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "size_bytes": 3653632
+    },
+    {
+      "path": "firmware/vars.fd",
+      "sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e",
+      "size_bytes": 540672
+    },
+    {
+      "path": "firmware/NOTICE",
+      "sha256": "1ddeaed2e7d2e9ecb960bdfc1b8ee45387aff70d056d985d145949af3951657c",
+      "size_bytes": 42903
+    }
+  ],
+  "format": "tessryn-k03-smp-registration/v1",
+  "launcher": {
+    "executable": "/usr/bin/env",
+    "sha256": "6e506aec3c0cff703ac1e66cedc6f1945354ad41339a38db4425c7c88227128f",
+    "temporary_scope": "private owned directory removed after child reap"
+  },
+  "manifest_sha256": "d08ced63c5a1721b05e03049f1b997ebfb60ae3be258bcc042256aa83a36044c",
+  "max_log_bytes": 1048576,
+  "qualification": "not_established",
+  "scope": "bounded original-kernel two-CPU xAPIC bootstrap and rendezvous; CPL3 SMP, scheduler contention, physical clocks, devices and performance unqualified",
+  "selected_artifacts": [
+    {
+      "case": "rendezvous",
+      "path": "rendezvous/BOOTX64.EFI",
+      "sha256": "89a9b09f1cade7a24e71921cd4014418df3b2d9b413a3cae04b3b0eb7a422a71",
+      "size_bytes": 45568
+    },
+    {
+      "case": "rendezvous",
+      "path": "rendezvous/kernel.obj",
+      "sha256": "3af0f0b3b55ef18a0bb8ac0db7cba6aff4290591cc61e01b1a3068dbb809b0b4",
+      "size_bytes": 420140
+    },
+    {
+      "case": "rendezvous",
+      "path": "rendezvous/boot.img",
+      "sha256": "fe14dd693f8ce0daf986e83fd3c6f7c550f50925933e6d2109e10a0536e7264a",
+      "size_bytes": 35651584
+    }
+  ],
+  "timeout_seconds": 30
+}

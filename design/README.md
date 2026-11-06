@@ -27,6 +27,7 @@ These documents record research, architectural decisions, implementation gates a
 | [Two-CPU user contexts](k03-smp-user.md) | Private CPL3 address spaces and contexts, authenticated peer interrupts, fault containment and validation gates |
 | [Two-CPU timers and shared budgets](k03-smp-budget.md) | Per-CPU preemption, serialized domain reservations, ordered stop accounting and late-stop containment |
 | [In-kernel benchmark experiment](native-kernel-benchmarks.md) | Opt-in raw-counter guest observations, capture boundaries and hardware timing gates |
+| [Runtime benchmark experiments](runtime-benchmarks.md) | Actual timer capture intervals, bounded two-CPU contention fixtures and raw timing scope |
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |

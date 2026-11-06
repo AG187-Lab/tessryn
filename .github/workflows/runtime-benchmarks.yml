@@ -1,0 +1,71 @@
+name: Repeated runtime benchmark observations
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-observations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Check extraction, capture and provenance boundaries
+        run: python3 -m unittest tests.test_runtime_benchmarks tests.test_preemption_benchmark tests.test_contention_benchmarks -v
+      - name: Install existing pinned compiler, host libraries and emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Preregister and capture two complete repeats of both lanes
+        run: python3 tools/run_runtime_benchmarks.py --out build/runtime-benchmarks/run-1 --allow-qemu
+      - name: Recompute all original trace and repeated-identity gates
+        run: python3 tools/verify_runtime_benchmarks.py build/runtime-benchmarks/run-1
+      - name: Derive the exact verified successful file allowlist
+        id: packet
+        run: |
+          python3 - <<'PY'
+          import os, subprocess
+          paths = subprocess.check_output([
+              'python3', 'tools/verify_runtime_benchmarks.py',
+              'build/runtime-benchmarks/run-1', '--list-files'], text=True)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('paths<<VERIFIED_RUNTIME_PACKET\n' + paths + 'VERIFIED_RUNTIME_PACKET\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: repeated-runtime-qemu-observations-not-hardware-performance
+          include-hidden-files: true
+          path: ${{ steps.packet.outputs.paths }}
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish only fixed failure metadata
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          destination = Path('build/runtime-benchmarks/ci-failure.json')
+          destination.parent.mkdir(parents=True, exist_ok=True)
+          with destination.open('x') as output:
+              json.dump({'format': 'tessryn-runtime-ci-failure/v1', 'status': 'failed',
+                         'raw_host_diagnostics': 'private_not_uploaded',
+                         'hardware_qualified': False, 'inference_qualified': False}, output)
+              output.write('\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: runtime-benchmark-fixed-failure-metadata
+          path: build/runtime-benchmarks/ci-failure.json
+          if-no-files-found: warn
+          retention-days: 14
