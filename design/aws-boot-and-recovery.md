@@ -203,3 +203,8 @@ The [offline native evidence intake](aws-native-evidence.md) binds private
 snapshot/AMI/root-volume/serial/lifecycle captures for two fresh native boots
 and independent Linux recovery. It makes no cloud calls and returns consistency
 requiring trusted owner review; its synthetic tests are not native observations.
+
+The separate [IO01 PCI discovery experiment](io01-pci-discovery.md) prepares a
+storage prerequisite offline. It compares post-firmware Tessryn serial records
+with QEMU's PCI inventory. It supplies no new AWS boot, device I/O or persistence
+evidence and does not change the accepted CPU profile above.
