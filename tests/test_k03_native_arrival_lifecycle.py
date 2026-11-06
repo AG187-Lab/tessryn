@@ -24,12 +24,12 @@ OFFSETS = {
 ROOTS = {1: 0x200000, 2: 0x210000, 3: 0x220000}
 
 
-def offer(row):
+def offer(row, *, lease=0, progress=0):
     due = EPOCH + row["arrival"] * TICK
     return ("OFFER", dict(id=row["id"], domain=row["domain"], arrival=row["arrival"],
                          due=due, observed=due, work=row["work"], cancel=row["cancel"] or 0,
                          **{"class": CLASSES[row["class"]]}, slot=row["id"] - 1,
-                         task_gen=1, lease=0, progress=0))
+                         task_gen=1, lease=lease, progress=progress))
 
 
 def dispatch(job, lease, start):
@@ -43,12 +43,13 @@ def cancel(job, disposition, lease, reserved_ns, progress):
                           disposition=disposition, lease=lease, reserved_ns=reserved_ns, progress=progress))
 
 
-def stop(start_row, *, source, resume, rip, progress_before, progress_after, consumed, outcome):
+def stop(start_row, *, source, resume, rip, progress_before, progress_after, consumed, outcome,
+         timer_ticks=2_001_000):
     _, start = start_row
     job = start["id"]
     arm_before = start["start"] + 100
     timer = source == 67
-    trap = arm_before + (2_001_000 if timer else 50_000)
+    trap = arm_before + (timer_ticks if timer else 50_000)
     retired = trap + 40
     charge = (retired - start["start"]) * 10
     row = {key: start[key] for key in ("id", "domain", "slot", "task_gen", "cpu", "lease", "start", "grant_ns", "hard")}
@@ -65,8 +66,8 @@ def stop(start_row, *, source, resume, rip, progress_before, progress_after, con
 def fixture():
     first = dispatch(1, 1, EPOCH + 100)
     canceled = stop(first, source=67, resume="user_start", rip="loop", progress_before=0,
-                    progress_after=2_000, consumed=0, outcome="canceled")
-    second = dispatch(3, 2, EPOCH + 4 * TICK + 100)
+                    progress_after=2_000, consumed=0, outcome="canceled", timer_ticks=4_001_000)
+    second = dispatch(3, 2, canceled[1]["reconciled"] + 100)
     yielded = stop(second, source=67, resume="user_start", rip="after_dec", progress_before=0,
                    progress_after=WORK_ITERATIONS, consumed=0, outcome="yield")
     third = dispatch(3, 3, yielded[1]["reconciled"] + 100)
@@ -80,7 +81,8 @@ def fixture():
                        worker_cpu=1, worker_slot=0, jobs=3, limit_ns=DOMAIN_LIMIT, run_limit_ns=RUN_LIMIT)),
         offer(DIRECTED_OFFERS[0]), offer(DIRECTED_OFFERS[1]), first,
         cancel(1, "running", 1, GRANT, 1_000), cancel(2, "queued", 0, 0, 0),
-        canceled, offer(DIRECTED_OFFERS[2]), second, yielded, third, completed,
+        offer(DIRECTED_OFFERS[2], lease=1, progress=1_500), canceled,
+        second, yielded, third, completed,
         ("TASK", dict(id=1, domain=1, state="canceled", consumed_ns=totals[0], dispatches=1, progress=2_000)),
         ("TASK", dict(id=2, domain=2, state="canceled", consumed_ns=0, dispatches=0, progress=0)),
         ("TASK", dict(id=3, domain=3, state="completed", consumed_ns=totals[2], dispatches=2, progress=WORK_ITERATIONS)),
@@ -109,6 +111,8 @@ class NativeArrivalLifecycleTests(unittest.TestCase):
         report = self.replay(fixture())
         self.assertEqual(report["cancel_counts"], {"queued": 1, "running": 1, "terminal": 0})
         self.assertEqual(report["completed"], 1)
+        self.assertEqual([(event["kind"], event["id"]) for event in report["in_slice_events"]],
+                         [("cancel", 1), ("offer", 3)])
         first, queued, complete = report["jobs"]
         self.assertGreater(first["running_cancel_drain_ns"], 0)
         self.assertEqual((queued["consumed_ns"], queued["slices"]), (0, []))
@@ -125,7 +129,19 @@ class NativeArrivalLifecycleTests(unittest.TestCase):
     def test_rejects_stale_stop_regressed_time_or_shortened_charge(self):
         for change in ({"lease": 2}, {"retired": EPOCH + TICK - 1}, {"charged_ns": 0}):
             with self.subTest(change=change):
-                self.reject(6, **change)
+                self.reject(7, **change)
+
+    def test_rejects_post_trap_observation_before_retirement(self):
+        stopped = fixture()[7][1]
+        observed = stopped["trap"] + 1
+        self.assertLess(observed, stopped["retired"])
+        self.reject(6, observed=observed)
+
+    def test_rejects_completion_drain_before_possible_timer_expiry(self):
+        completed = fixture()[11][1]
+        eoi = completed["trap"] + 1
+        self.assertLess(eoi, completed["arm_before"] + 2 * TICK - 2)
+        self.reject(11, drained=1, eoi=eoi)
 
     def test_rejects_forged_no_progress_completion_tail(self):
         for change in ({"resume_rip": CODE + OFFSETS["user_start"]}, {"progress_after": WORK_ITERATIONS - 1},

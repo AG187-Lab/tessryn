@@ -238,7 +238,8 @@ class _Replay:
             latency = [_ns(min(expiry_late, row["trap"]), row["trap"]), _ns(expiry_early, row["trap"])]
         else:
             require(row["vector"] == 128 and rip == "complete_return" and row["isr_before"] == row["isr_after"] == 0
-                    and (row["trap"] <= row["eoi"] <= row["retired"] if row["drained"] else row["eoi"] == 0),
+                    and (max(row["trap"], expiry_early) <= row["eoi"] <= row["retired"]
+                         if row["drained"] else row["eoi"] == 0),
                     "native workload completion gate or drain differs")
             latency = None
         return latency
@@ -249,6 +250,7 @@ class _Replay:
                 ("id", "domain", "slot", "task_gen", "cpu", "lease", "start", "grant_ns", "hard")),
                 "native workload stop does not acknowledge the exact active lease")
         job = active.job
+        require(self.latest <= row["trap"], "native workload event was observed after its active lease began closing")
         self.advance(row["retired"])
         require(active.row["select_done"] <= row["arm_before"] and row["retired"] <= row["hard"],
                 "native workload arm precedes selection or retirement is late")
