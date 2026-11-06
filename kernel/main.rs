@@ -3,10 +3,16 @@
 #![no_main]
 #![deny(unsafe_op_in_unsafe_fn)]
 
-#[cfg_attr(any(native_benchmarks, k03_smp), allow(dead_code))]
+#[cfg_attr(any(native_benchmarks, k03_smp, io01_pci), allow(dead_code))]
 mod cpu;
 mod diagnostics;
 mod framebuffer;
+#[cfg(io01_pci)]
+mod io01_pci;
+#[cfg(all(io01_pci, any(not(k01_emulator), not(k01_case = "normal"), k01_aws,
+    k01_high_handoff, k02_native, k02_matrix, k02_region_service, k03_timer,
+    k03_smp, k03_smp_user, k03_smp_budget, native_benchmarks, smp_benchmarks)))]
+compile_error!("PCI discovery requires its separate single-CPU emulator profile");
 mod paging;
 mod uefi;
 #[cfg(k03_smp)]
@@ -69,7 +75,7 @@ mod region_runtime;
 #[cfg(any(all(k02_region_service, not(k02_matrix)), k03_smp_user))]
 mod k02_sha256;
 
-#[cfg(not(any(native_benchmarks, k03_smp)))]
+#[cfg(not(any(native_benchmarks, k03_smp, io01_pci)))]
 use core::arch::asm;
 use core::mem::MaybeUninit;
 use core::panic::PanicInfo;
@@ -127,6 +133,10 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch={:#x} free_pages={} loader=reserved runtime=reserved firmware=quarantined\n",
         handoff.scratch, handoff.free_pages));
+    #[cfg(io01_pci)]
+    io01_pci::run();
+    #[cfg(not(io01_pci))]
+    {
     if cfg!(k01_high_handoff) {
         print(format_args!("TESSRYN_K01_HIGH_OWNERSHIP_OK scratch={:#x} pattern={pattern:#x}\n", handoff.scratch));
     }
@@ -153,6 +163,7 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_PASS\n"));
     finish(true)
+    }
     }
 }
 
