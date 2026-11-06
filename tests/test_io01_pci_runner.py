@@ -75,6 +75,54 @@ class QMPBoundaryTests(unittest.TestCase):
 
 
 class ChildBoundaryTests(unittest.TestCase):
+    def test_socket_reset_requires_a_quit_acknowledgement(self):
+        script = """
+import json
+import socket
+import sys
+
+with socket.socket(socket.AF_UNIX) as listener:
+    listener.bind("qmp.sock")
+    listener.listen(1)
+    connection, _ = listener.accept()
+    with connection, connection.makefile("rb") as requests:
+        def send(message):
+            connection.sendall(json.dumps(message).encode() + b"\\n")
+
+        send({"QMP": {}})
+        replies = ({}, {"status": "running", "running": True}, {},
+                   {"status": "paused", "running": False}, [], {})
+        for reply in replies:
+            request = json.loads(requests.readline())
+            if request["execute"] == "quit" and sys.argv[1] == "drop":
+                break
+            send({"return": reply, "id": request["id"]})
+            if request["id"] == 2:
+                print("TESSRYN_IO01_PCI_DONE count=1", flush=True)
+"""
+
+        class ResetAtClose(runner.RecordedSocket):
+            def recv(self, size):
+                data = super().recv(size)
+                if not data:
+                    raise ConnectionResetError
+                return data
+
+        for mode, expected in (("ack", "completed"), ("drop", "fail")):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory(prefix="tessryn-io01-test-") as directory:
+                fixture = [sys.executable, "-I", "-B", "-c", script, mode]
+                with (patch.object(runner, "QEMU", Path(sys.executable)),
+                      patch.object(runner, "qemu_command", return_value=fixture),
+                      patch.object(runner, "RecordedSocket", ResetAtClose)):
+                    result = runner.capture("absent", Path(directory), timeout=5)
+                self.assertEqual(result.status, expected, result.reason)
+                last_reply = json.loads(result.qmp_recv.splitlines()[-1])
+                self.assertEqual(last_reply["id"], 6 if mode == "ack" else 5)
+                if mode == "ack":
+                    self.assertEqual(result.returncode, 0)
+                else:
+                    self.assertIn("QMP quit acknowledgement rejected", result.reason)
+
     def test_timeout_reaps_a_real_child_waiting_without_qmp(self):
         fixture = [sys.executable, "-I", "-B", "-c", "import time; time.sleep(60)"]
         with tempfile.TemporaryDirectory(prefix="tessryn-io01-test-") as directory:

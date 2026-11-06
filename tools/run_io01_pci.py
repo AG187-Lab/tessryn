@@ -176,8 +176,9 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
         qmp.command("stop")
         require_evidence(is_status(qmp.command("query-status"), "paused", False), "emulator pause not observed")
         require_evidence(type(qmp.command("query-pci")) is list, "query-pci did not return a bus list")
-        stage = "QMP quit and process exit"
-        qmp.command("quit")
+        stage = "QMP quit acknowledgement"
+        require_evidence(qmp.command("quit") == {}, "QMP quit reply was invalid")
+        stage = "QMP shutdown drain and process exit"
         socket_open = True
         while socket_open or child.poll() is None or selector.get_map():
             pump(0.01)
@@ -186,6 +187,10 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS) -> Ca
                     socket_open = bool(recording.recv(4096))
                 except socket.timeout:
                     pass
+                except ConnectionResetError:
+                    # Linux can reset this socket during QEMU shutdown.
+                    # Only the drain after a valid quit reply accepts it as EOF.
+                    socket_open = False
         require_evidence(child.returncode == 0, "emulator did not exit cleanly after QMP quit")
         status, reason = "completed", "serial, QMP and process streams completed"
     except TimeoutError:
