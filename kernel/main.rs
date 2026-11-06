@@ -23,6 +23,9 @@ compile_error!("contention benchmarks require the separate two-CPU rendezvous em
 mod smp_user;
 #[cfg(all(k03_smp_budget, not(k03_smp_user)))]
 compile_error!("SMP budgets require the separate SMP user execution profile");
+#[cfg(all(k03_smp_workload, any(not(k03_smp_user), k03_smp_budget,
+    smp_case = "missing_ap", not(smp_user_case = "rendezvous"))))]
+compile_error!("scheduled workload requires the separate SMP user rendezvous image");
 #[cfg(all(k03_smp_user, not(k03_smp)))]
 compile_error!("SMP user execution requires the separate SMP emulator profile");
 #[cfg(all(k03_smp, any(not(k01_emulator), k01_aws, k02_native, native_benchmarks, k03_timer)))]
@@ -35,7 +38,7 @@ compile_error!("the first native benchmark profile requires k01_emulator only");
 mod benchmark_clock;
 #[cfg(native_benchmarks)]
 mod native_benchmarks;
-#[cfg(any(native_benchmarks, k03_timer, k03_smp_budget))]
+#[cfg(any(native_benchmarks, k03_timer, k03_smp_budget, k03_smp_workload))]
 extern crate tessryn_scheduler;
 #[cfg(k03_timer)]
 mod preempt_timer;
