@@ -1,0 +1,62 @@
+{
+  "format": "tessryn-scheduled-arrival-profile/v1",
+  "quantums": [4, 16],
+  "scenarios": {
+    "steady": [
+      {"id": 1, "domain": 2, "arrival": 0, "work": 20, "cancel": null, "class": "prefill"},
+      {"id": 2, "domain": 1, "arrival": 1, "work": 2, "cancel": null, "class": "decode"},
+      {"id": 3, "domain": 3, "arrival": 3, "work": 1, "cancel": null, "class": "control"},
+      {"id": 4, "domain": 1, "arrival": 9, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 5, "domain": 2, "arrival": 21, "work": 12, "cancel": null, "class": "prefill"},
+      {"id": 6, "domain": 1, "arrival": 25, "work": 2, "cancel": null, "class": "decode"},
+      {"id": 7, "domain": 3, "arrival": 40, "work": 1, "cancel": null, "class": "control"},
+      {"id": 8, "domain": 1, "arrival": 49, "work": 2, "cancel": null, "class": "decode"}
+    ],
+    "burst": [
+      {"id": 1, "domain": 2, "arrival": 0, "work": 24, "cancel": 2, "class": "prefill"},
+      {"id": 2, "domain": 1, "arrival": 1, "work": 2, "cancel": 3, "class": "decode"},
+      {"id": 3, "domain": 1, "arrival": 2, "work": 3, "cancel": 55, "class": "decode"},
+      {"id": 4, "domain": 4, "arrival": 2, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 5, "domain": 3, "arrival": 3, "work": 1, "cancel": null, "class": "control"},
+      {"id": 6, "domain": 2, "arrival": 3, "work": 28, "cancel": null, "class": "prefill"},
+      {"id": 7, "domain": 1, "arrival": 3, "work": 2, "cancel": null, "class": "decode"},
+      {"id": 8, "domain": 4, "arrival": 4, "work": 4, "cancel": 11, "class": "decode"},
+      {"id": 9, "domain": 1, "arrival": 4, "work": 2, "cancel": null, "class": "decode"},
+      {"id": 10, "domain": 3, "arrival": 5, "work": 1, "cancel": null, "class": "control"},
+      {"id": 11, "domain": 2, "arrival": 6, "work": 18, "cancel": null, "class": "prefill"},
+      {"id": 12, "domain": 4, "arrival": 7, "work": 2, "cancel": null, "class": "decode"}
+    ],
+    "overload": [
+      {"id": 1, "domain": 2, "arrival": 0, "work": 64, "cancel": null, "class": "prefill"},
+      {"id": 2, "domain": 4, "arrival": 0, "work": 64, "cancel": null, "class": "prefill"},
+      {"id": 3, "domain": 1, "arrival": 1, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 4, "domain": 4, "arrival": 2, "work": 3, "cancel": 6, "class": "decode"},
+      {"id": 5, "domain": 1, "arrival": 3, "work": 4, "cancel": null, "class": "decode"},
+      {"id": 6, "domain": 3, "arrival": 3, "work": 1, "cancel": null, "class": "control"},
+      {"id": 7, "domain": 4, "arrival": 4, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 8, "domain": 1, "arrival": 5, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 9, "domain": 2, "arrival": 5, "work": 40, "cancel": null, "class": "prefill"},
+      {"id": 10, "domain": 4, "arrival": 6, "work": 4, "cancel": null, "class": "decode"},
+      {"id": 11, "domain": 1, "arrival": 7, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 12, "domain": 4, "arrival": 8, "work": 3, "cancel": 12, "class": "decode"},
+      {"id": 13, "domain": 3, "arrival": 8, "work": 1, "cancel": null, "class": "control"},
+      {"id": 14, "domain": 1, "arrival": 9, "work": 4, "cancel": null, "class": "decode"},
+      {"id": 15, "domain": 4, "arrival": 10, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 16, "domain": 2, "arrival": 10, "work": 40, "cancel": null, "class": "prefill"},
+      {"id": 17, "domain": 1, "arrival": 11, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 18, "domain": 4, "arrival": 12, "work": 4, "cancel": null, "class": "decode"},
+      {"id": 19, "domain": 1, "arrival": 13, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 20, "domain": 3, "arrival": 13, "work": 1, "cancel": null, "class": "control"},
+      {"id": 21, "domain": 4, "arrival": 14, "work": 3, "cancel": 18, "class": "decode"},
+      {"id": 22, "domain": 1, "arrival": 15, "work": 4, "cancel": null, "class": "decode"},
+      {"id": 23, "domain": 2, "arrival": 15, "work": 40, "cancel": 33, "class": "prefill"},
+      {"id": 24, "domain": 4, "arrival": 16, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 25, "domain": 1, "arrival": 17, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 26, "domain": 4, "arrival": 18, "work": 4, "cancel": null, "class": "decode"},
+      {"id": 27, "domain": 3, "arrival": 18, "work": 1, "cancel": null, "class": "control"},
+      {"id": 28, "domain": 1, "arrival": 19, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 29, "domain": 4, "arrival": 20, "work": 3, "cancel": null, "class": "decode"},
+      {"id": 30, "domain": 2, "arrival": 20, "work": 40, "cancel": null, "class": "prefill"}
+    ]
+  }
+}
