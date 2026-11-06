@@ -31,6 +31,17 @@ jobs:
         run: python3 tools/run_kernel_benchmarks.py --out build/benchmarks/ci-smoke --rustc build/toolchain/bin/rustc --samples 8 --warmup 2 --iterations 20
       - name: Independently verify retained packet
         run: python3 tools/verify_kernel_benchmarks.py build/benchmarks/ci-smoke
+      - name: Replay and verify six scheduled-arrival policy traces
+        run: |
+          python3 tools/run_scheduled_arrivals.py --out build/scheduled-arrivals/ci --rustc build/toolchain/bin/rustc
+          python3 tools/run_scheduled_arrivals.py --verify build/scheduled-arrivals/ci
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: scheduled-arrival-replay-logical-ticks
+          path: build/scheduled-arrivals/ci/
+          if-no-files-found: error
+          retention-days: 14
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
