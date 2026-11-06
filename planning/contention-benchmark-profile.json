@@ -1,0 +1,103 @@
+{
+  "cases": [
+    {
+      "case": "counter_pair",
+      "operation_definition": "no_payload",
+      "operations": 0,
+      "round_trips": 0,
+      "sample_unit": "counter_pair"
+    },
+    {
+      "case": "local_atomic_reference",
+      "operation_definition": "payload_atomic_fetch_adds_excluding_coordination",
+      "operations": 1024,
+      "round_trips": 0,
+      "sample_unit": "coordinated_batch_completion"
+    },
+    {
+      "case": "separate_64b_lines",
+      "operation_definition": "payload_atomic_fetch_adds_excluding_coordination",
+      "operations": 2048,
+      "round_trips": 0,
+      "sample_unit": "coordinated_batch_completion"
+    },
+    {
+      "case": "same_64b_line",
+      "operation_definition": "payload_atomic_fetch_adds_excluding_coordination",
+      "operations": 2048,
+      "round_trips": 0,
+      "sample_unit": "coordinated_batch_completion"
+    },
+    {
+      "case": "shared_atomic_counter",
+      "operation_definition": "payload_atomic_fetch_adds_excluding_coordination",
+      "operations": 2048,
+      "round_trips": 0,
+      "sample_unit": "coordinated_batch_completion"
+    },
+    {
+      "case": "ping_pong_roundtrip",
+      "operation_definition": "ping_publication_stores_excluding_poll_loads",
+      "operations": 2048,
+      "round_trips": 1024,
+      "sample_unit": "coordinated_batch_completion"
+    }
+  ],
+  "checks": [
+    "exact_peer_generations",
+    "exact_final_counts",
+    "separate_and_shared_64b_layout",
+    "bounded_waits",
+    "bsp_clock_no_regression",
+    "original_terminal_stop"
+  ],
+  "clock": {
+    "cross_cpu_subtraction": false,
+    "name": "hpet",
+    "overhead_subtraction": false,
+    "owner": "bsp",
+    "period_fs": 10000000,
+    "unit": "raw_ticks"
+  },
+  "config": {
+    "cases": 6,
+    "cpus": 2,
+    "iterations": 1024,
+    "samples": 16,
+    "warmup": 4
+  },
+  "hardware_qualified": false,
+  "inference_qualified": false,
+  "kind": "contention_benchmark_profile",
+  "layout": {
+    "assumed_line_bytes": 64,
+    "hardware_cache_line_qualified": false
+  },
+  "limits": {
+    "max_log_bytes": 1048576,
+    "max_polls": 20000000,
+    "timeout_seconds": 60,
+    "wait_ticks": 200000000
+  },
+  "measurement_semantics": "BSP_raw_HPET_completion_including_peer_coordination_except_adjacent_counter_reference",
+  "platform": {
+    "accelerator": "tcg,thread=multi",
+    "architecture": "x86_64",
+    "cpu": "max,phys-bits=48,la57=off,nx=on,pcid=off,pge=off,pku=off,pks=off,sgx=off,cet-ss=off,cet-ibt=off,fsgsbase=off,x2apic=off",
+    "cpu_count": 2,
+    "hpet": 4275044352,
+    "increments": 4096,
+    "ipi_vector": 64,
+    "lapic": 4276092928,
+    "machine": "q35,hpet=on",
+    "memory_bytes": 268435456,
+    "period_fs": 10000000,
+    "stop_vector": 65,
+    "target": "x86_64-unknown-uefi",
+    "timeout_ns": 2000000000,
+    "topology": "2,sockets=1,cores=2,threads=1,maxcpus=2"
+  },
+  "schema_version": 1,
+  "scope": "two_cpu_qemu_contention",
+  "warmup_policy": "per_case_retained_raw_excluded_from_statistics"
+}
