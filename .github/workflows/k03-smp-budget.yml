@@ -1,0 +1,210 @@
+name: K03 two-CPU LAPIC preemption and aggregate budget
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  k03-smp-budget:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Check budget evidence boundaries
+        run: |
+          python3 -m unittest discover -s tests -p 'test_k03_smp_budget*.py' -v
+          python3 tools/validate_design.py
+      - name: Install pinned compiler, host libraries and emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Execute the actual ACPI parser host tests
+        run: python3 tools/check_k03_smp_user_host.py --out build/k03-smp-budget/host
+      - name: Build independent budget twins and pinned scheduler libraries
+        run: |
+          python3 tools/k03_smp_budget.py build --out build/k03-smp-budget/a
+          python3 tools/k03_smp_budget.py build --out build/k03-smp-budget/b
+      - name: Capture both local timers, contended reservations and actual late stops
+        run: |
+          for case in preempt late; do
+            python3 tools/k03_smp_budget.py run --manifest build/k03-smp-budget/a/manifest.json --case "$case" --out "build/k03-smp-budget/$case" --allow-qemu
+          done
+      - name: Replay compiled binding, actual traps and the complete shared ledger
+        run: |
+          python3 tools/k03_smp_budget.py verify --first build/k03-smp-budget/a/manifest.json --second build/k03-smp-budget/b/manifest.json --host-result build/k03-smp-budget/host/result.json \
+            --result build/k03-smp-budget/preempt/result.json --result build/k03-smp-budget/late/result.json --out build/k03-smp-budget/verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: k03-smp-budget-evidence
+          include-hidden-files: true
+          path: |
+            build/k03-smp-budget/a/manifest.json
+            build/k03-smp-budget/a/libtessryn_scheduler.rlib
+            build/k03-smp-budget/a/preempt/BOOTX64.EFI
+            build/k03-smp-budget/a/preempt/kernel.obj
+            build/k03-smp-budget/a/preempt/boot.img
+            build/k03-smp-budget/a/late/BOOTX64.EFI
+            build/k03-smp-budget/a/late/kernel.obj
+            build/k03-smp-budget/a/late/boot.img
+            build/k03-smp-budget/a/scheduler/stdout.log
+            build/k03-smp-budget/a/scheduler/stderr.log
+            build/k03-smp-budget/a/preempt/stdout.log
+            build/k03-smp-budget/a/preempt/stderr.log
+            build/k03-smp-budget/a/late/stdout.log
+            build/k03-smp-budget/a/late/stderr.log
+            build/k03-smp-budget/a/notices/tessryn-LICENSE
+            build/k03-smp-budget/a/notices/tessryn-NOTICE
+            build/k03-smp-budget/a/notices/rust-LICENSE-APACHE
+            build/k03-smp-budget/a/notices/rust-LICENSE-MIT
+            build/k03-smp-budget/a/notices/rust-COPYRIGHT
+            build/k03-smp-budget/a/sources/.github/workflows/k03-smp-budget.yml
+            build/k03-smp-budget/a/sources/fixtures/rom.py
+            build/k03-smp-budget/a/sources/kernel/cpu.rs
+            build/k03-smp-budget/a/sources/kernel/diagnostics.rs
+            build/k03-smp-budget/a/sources/kernel/entry.S
+            build/k03-smp-budget/a/sources/kernel/framebuffer.rs
+            build/k03-smp-budget/a/sources/kernel/k02_paging.rs
+            build/k03-smp-budget/a/sources/kernel/k02_sha256.rs
+            build/k03-smp-budget/a/sources/kernel/main.rs
+            build/k03-smp-budget/a/sources/kernel/paging.rs
+            build/k03-smp-budget/a/sources/kernel/smp.rs
+            build/k03-smp-budget/a/sources/kernel/smp_acpi.rs
+            build/k03-smp-budget/a/sources/kernel/smp_budget.rs
+            build/k03-smp-budget/a/sources/kernel/smp_entry.S
+            build/k03-smp-budget/a/sources/kernel/smp_user.rs
+            build/k03-smp-budget/a/sources/kernel/smp_user_entry.S
+            build/k03-smp-budget/a/sources/kernel/uefi.rs
+            build/k03-smp-budget/a/sources/planning/k02-toolchain.lock.json
+            build/k03-smp-budget/a/sources/planning/k03-smp-budget.json
+            build/k03-smp-budget/a/sources/scheduler-core/lib.rs
+            build/k03-smp-budget/a/sources/tests/k03_smp_acpi.rs
+            build/k03-smp-budget/a/sources/toolchain.lock.json
+            build/k03-smp-budget/a/sources/tools/build_fixture.py
+            build/k03-smp-budget/a/sources/tools/build_k02_native.py
+            build/k03-smp-budget/a/sources/tools/build_k03_smp_user.py
+            build/k03-smp-budget/a/sources/tools/build_kernel.py
+            build/k03-smp-budget/a/sources/tools/check_k03_smp_user_host.py
+            build/k03-smp-budget/a/sources/tools/g03/__init__.py
+            build/k03-smp-budget/a/sources/tools/g03/process.py
+            build/k03-smp-budget/a/sources/tools/k01_media.py
+            build/k03-smp-budget/a/sources/tools/k02_region_protocol.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_budget.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_budget_protocol.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_budget_trace.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_protocol.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_trace.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_user_protocol.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_user_provenance.py
+            build/k03-smp-budget/a/sources/tools/k03_smp_user_trace.py
+            build/k03-smp-budget/a/sources/tools/run_k03_smp_user.py
+            build/k03-smp-budget/a/sources/tools/setup_k02_toolchain.py
+            build/k03-smp-budget/a/sources/tools/setup_toolchain.py
+            build/k03-smp-budget/a/sources/tools/setup_uefi.py
+            build/k03-smp-budget/a/sources/tools/verify_k03_smp_user.py
+            build/k03-smp-budget/a/sources/uefi-toolchain.lock.json
+            build/k03-smp-budget/b/manifest.json
+            build/k03-smp-budget/b/libtessryn_scheduler.rlib
+            build/k03-smp-budget/b/preempt/BOOTX64.EFI
+            build/k03-smp-budget/b/preempt/kernel.obj
+            build/k03-smp-budget/b/preempt/boot.img
+            build/k03-smp-budget/b/late/BOOTX64.EFI
+            build/k03-smp-budget/b/late/kernel.obj
+            build/k03-smp-budget/b/late/boot.img
+            build/k03-smp-budget/b/scheduler/stdout.log
+            build/k03-smp-budget/b/scheduler/stderr.log
+            build/k03-smp-budget/b/preempt/stdout.log
+            build/k03-smp-budget/b/preempt/stderr.log
+            build/k03-smp-budget/b/late/stdout.log
+            build/k03-smp-budget/b/late/stderr.log
+            build/k03-smp-budget/b/notices/tessryn-LICENSE
+            build/k03-smp-budget/b/notices/tessryn-NOTICE
+            build/k03-smp-budget/b/notices/rust-LICENSE-APACHE
+            build/k03-smp-budget/b/notices/rust-LICENSE-MIT
+            build/k03-smp-budget/b/notices/rust-COPYRIGHT
+            build/k03-smp-budget/b/sources/.github/workflows/k03-smp-budget.yml
+            build/k03-smp-budget/b/sources/fixtures/rom.py
+            build/k03-smp-budget/b/sources/kernel/cpu.rs
+            build/k03-smp-budget/b/sources/kernel/diagnostics.rs
+            build/k03-smp-budget/b/sources/kernel/entry.S
+            build/k03-smp-budget/b/sources/kernel/framebuffer.rs
+            build/k03-smp-budget/b/sources/kernel/k02_paging.rs
+            build/k03-smp-budget/b/sources/kernel/k02_sha256.rs
+            build/k03-smp-budget/b/sources/kernel/main.rs
+            build/k03-smp-budget/b/sources/kernel/paging.rs
+            build/k03-smp-budget/b/sources/kernel/smp.rs
+            build/k03-smp-budget/b/sources/kernel/smp_acpi.rs
+            build/k03-smp-budget/b/sources/kernel/smp_budget.rs
+            build/k03-smp-budget/b/sources/kernel/smp_entry.S
+            build/k03-smp-budget/b/sources/kernel/smp_user.rs
+            build/k03-smp-budget/b/sources/kernel/smp_user_entry.S
+            build/k03-smp-budget/b/sources/kernel/uefi.rs
+            build/k03-smp-budget/b/sources/planning/k02-toolchain.lock.json
+            build/k03-smp-budget/b/sources/planning/k03-smp-budget.json
+            build/k03-smp-budget/b/sources/scheduler-core/lib.rs
+            build/k03-smp-budget/b/sources/tests/k03_smp_acpi.rs
+            build/k03-smp-budget/b/sources/toolchain.lock.json
+            build/k03-smp-budget/b/sources/tools/build_fixture.py
+            build/k03-smp-budget/b/sources/tools/build_k02_native.py
+            build/k03-smp-budget/b/sources/tools/build_k03_smp_user.py
+            build/k03-smp-budget/b/sources/tools/build_kernel.py
+            build/k03-smp-budget/b/sources/tools/check_k03_smp_user_host.py
+            build/k03-smp-budget/b/sources/tools/g03/__init__.py
+            build/k03-smp-budget/b/sources/tools/g03/process.py
+            build/k03-smp-budget/b/sources/tools/k01_media.py
+            build/k03-smp-budget/b/sources/tools/k02_region_protocol.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_budget.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_budget_protocol.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_budget_trace.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_protocol.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_trace.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_user_protocol.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_user_provenance.py
+            build/k03-smp-budget/b/sources/tools/k03_smp_user_trace.py
+            build/k03-smp-budget/b/sources/tools/run_k03_smp_user.py
+            build/k03-smp-budget/b/sources/tools/setup_k02_toolchain.py
+            build/k03-smp-budget/b/sources/tools/setup_toolchain.py
+            build/k03-smp-budget/b/sources/tools/setup_uefi.py
+            build/k03-smp-budget/b/sources/tools/verify_k03_smp_user.py
+            build/k03-smp-budget/b/sources/uefi-toolchain.lock.json
+            build/k03-smp-budget/preempt/result.json
+            build/k03-smp-budget/preempt/registration.json
+            build/k03-smp-budget/preempt/stdout.log
+            build/k03-smp-budget/preempt/stderr.log
+            build/k03-smp-budget/preempt/firmware/code.fd
+            build/k03-smp-budget/preempt/firmware/vars.fd
+            build/k03-smp-budget/preempt/firmware/NOTICE
+            build/k03-smp-budget/late/result.json
+            build/k03-smp-budget/late/registration.json
+            build/k03-smp-budget/late/stdout.log
+            build/k03-smp-budget/late/stderr.log
+            build/k03-smp-budget/late/firmware/code.fd
+            build/k03-smp-budget/late/firmware/vars.fd
+            build/k03-smp-budget/late/firmware/NOTICE
+            build/k03-smp-budget/host/result.json
+            build/k03-smp-budget/host/build-stdout.log
+            build/k03-smp-budget/host/build-stderr.log
+            build/k03-smp-budget/host/tests-stdout.log
+            build/k03-smp-budget/host/tests-stderr.log
+            build/k03-smp-budget/verification.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain portable failure metadata
+        if: failure()
+        run: python3 tools/k03_smp_budget.py failure-summary
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: k03-smp-budget-failure-metadata
+          path: build/k03-smp-budget/failure-summary.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,201 @@
+{
+  "capture_authentication": "unverified_offline",
+  "format": "tessryn-k03-smp-budget-verification/v1",
+  "host_parser": {
+    "receipts": 2,
+    "result_sha256": "3ee40934aacec8ae7b6f02d15bfad6d366bbae923effd1a0e97622d0e76b4cf7",
+    "source_files": 2,
+    "tests": 26
+  },
+  "observations": {
+    "late": {
+      "calibration": [
+        {
+          "count_interval_ns": 5058000,
+          "maximum_ns": 5079000,
+          "minimum_ns": 5031000
+        },
+        {
+          "count_interval_ns": 5057008,
+          "maximum_ns": 5078000,
+          "minimum_ns": 5033000
+        }
+      ],
+      "cap_ns": 60000000,
+      "capture_authentication": "unverified_offline",
+      "case": "late",
+      "consumed_ns": 318911000,
+      "cpus_online": 2,
+      "denied_redispatch": true,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "halted": true,
+      "irq_count": 2,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_expiry_margin_ticks": [
+        17342401
+      ],
+      "private_roots": [
+        234536960,
+        234606592
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "reconciliation": [
+        {
+          "available": 0,
+          "charged_ns": 67869000,
+          "consumed": 67869000,
+          "cpu": 0,
+          "halted": 1,
+          "peer_lease": 1,
+          "peer_reserved": 20000000,
+          "reserved": 20000000,
+          "round": 1,
+          "state": "failed"
+        },
+        {
+          "available": 0,
+          "charged_ns": 251042000,
+          "consumed": 318911000,
+          "cpu": 1,
+          "halted": 1,
+          "peer_lease": 0,
+          "peer_reserved": 0,
+          "reserved": 0,
+          "round": 1,
+          "state": "failed"
+        }
+      ],
+      "reserved_ns": 0,
+      "retained": "all",
+      "rounds": 1,
+      "shared_grant_clips": 1,
+      "stop_window_ns": 20040000,
+      "task_consumed_ns": [
+        67869000,
+        251042000
+      ],
+      "terminal_heartbeats": [
+        398657,
+        578353
+      ]
+    },
+    "preempt": {
+      "calibration": [
+        {
+          "count_interval_ns": 5054000,
+          "maximum_ns": 5075000,
+          "minimum_ns": 5032000
+        },
+        {
+          "count_interval_ns": 5056992,
+          "maximum_ns": 5078000,
+          "minimum_ns": 5037000
+        }
+      ],
+      "cap_ns": 1200000000,
+      "capture_authentication": "unverified_offline",
+      "case": "preempt",
+      "consumed_ns": 223177000,
+      "cpus_online": 2,
+      "denied_redispatch": false,
+      "enabled_apic_ids": [
+        0,
+        1
+      ],
+      "halted": false,
+      "irq_count": 4,
+      "madt_sha256": "441794f0b4bd74feb6f4fc1adf82048023a612ba676dc308c8173e449c0ccdbb",
+      "overlap_expiry_margin_ticks": [
+        5368301,
+        5488101
+      ],
+      "private_roots": [
+        234536960,
+        234606592
+      ],
+      "program_sha256": "c595d373170e20485aff7face3781e2dfcc64515619fd917710da7f6a451e8cc",
+      "reconciliation": [
+        {
+          "available": 772439000,
+          "charged_ns": 27561000,
+          "consumed": 27561000,
+          "cpu": 0,
+          "halted": 0,
+          "peer_lease": 1,
+          "peer_reserved": 400000000,
+          "reserved": 400000000,
+          "round": 1,
+          "state": "runnable"
+        },
+        {
+          "available": 1088330000,
+          "charged_ns": 84109000,
+          "consumed": 111670000,
+          "cpu": 1,
+          "halted": 0,
+          "peer_lease": 0,
+          "peer_reserved": 0,
+          "reserved": 0,
+          "round": 1,
+          "state": "runnable"
+        },
+        {
+          "available": 774755000,
+          "charged_ns": 25245000,
+          "consumed": 136915000,
+          "cpu": 0,
+          "halted": 0,
+          "peer_lease": 2,
+          "peer_reserved": 288330000,
+          "reserved": 288330000,
+          "round": 2,
+          "state": "completed"
+        },
+        {
+          "available": 976823000,
+          "charged_ns": 86262000,
+          "consumed": 223177000,
+          "cpu": 1,
+          "halted": 0,
+          "peer_lease": 0,
+          "peer_reserved": 0,
+          "reserved": 0,
+          "round": 2,
+          "state": "completed"
+        }
+      ],
+      "reserved_ns": 0,
+      "retained": "all",
+      "rounds": 2,
+      "shared_grant_clips": 2,
+      "stop_window_ns": 20055000,
+      "task_consumed_ns": [
+        52806000,
+        170371000
+      ],
+      "terminal_heartbeats": [
+        297236,
+        445567
+      ]
+    }
+  },
+  "provenance": {
+    "compiler_dependencies": 16,
+    "revision": "eab49c93d60132e301671e5af50cf9e098a69584",
+    "runtime_files": 29,
+    "tree_sha256": "49524a2f6bb3cf802fa85d1fca7ada97b7bda48c72910342b0f94e179dd68715"
+  },
+  "qualification": "not_established",
+  "scope": "bounded original-kernel two-CPU CPL3 LAPIC preemption and aggregate CPU budget; migration, reclamation, physical clocks, devices and performance unqualified",
+  "source": {
+    "dirty": false,
+    "revision": "eab49c93d60132e301671e5af50cf9e098a69584",
+    "snapshot_algorithm": "git-worktree-v2",
+    "tree_sha256": "49524a2f6bb3cf802fa85d1fca7ada97b7bda48c72910342b0f94e179dd68715"
+  },
+  "status": "pass",
+  "twin_artifacts": 7
+}

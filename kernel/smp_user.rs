@@ -1,6 +1,9 @@
 //! Two image-bound CPL3 programs on retained, immutable private address spaces.
 //! Only the BSP prints. CPU-local continuations are selected through SWAPGS,
-//! never the mutable single-CPU runtime. No scheduler or budget state is shared.
+//! never the mutable single-CPU runtime.
+#[cfg(k03_smp_budget)]
+#[path = "smp_budget.rs"]
+mod budget;
 use core::arch::{asm, global_asm};
 use core::mem::{offset_of, size_of};
 use core::ptr;
@@ -31,10 +34,12 @@ pub static K03_SMP_USER_CONTRACT: Contract = Contract {
     magic: *b"TESSRYN-SMPUSR1\0",
     words: [1, case_id(), 2, CODE, STACK, DATA, PEER, 66, 128, ITERATIONS, TIMEOUT, WINDOW],
 };
-global_asm!(include_str!("smp_user_entry.S"));
+global_asm!(include_str!("smp_user_entry.S"), smp_budget = const cfg!(k03_smp_budget) as u8);
 unsafe extern "sysv64" {
     fn smp_user_enter(root: u64, saved: *const Saved, context: *mut Context);
     fn smp_load_gdt(pointer: *const Pointer);
+    #[cfg(k03_smp_budget)]
+    fn smp_user_timer_67();
     fn smp_user_ipi_66(); fn smp_user_yield_128(); fn smp_user_fault_13(); fn smp_user_fault_14(); fn smp_user_unexpected();
     fn smp_spurious();
     static smp_user_program_start: u8; static smp_user_program_end: u8;
@@ -115,6 +120,8 @@ fn print_payload(cpu: usize, phase: &str) { let template = hash_page(ptr::addr_o
 pub fn prepare(handoff: &crate::uefi::Handoff, bsp: u64, ap: u64) {
     ensure(case_id() < 3 && ptr::addr_of!(smp_user_program_end) as u64 - ptr::addr_of!(smp_user_program_start) as u64 == 4096);
     ensure(handoff.physical_bits == 48);
+    #[cfg(k03_smp_budget)]
+    budget::prepare_interrupts();
     for cpu in 0..2 {
         IDS[cpu].store(if cpu == 0 { bsp } else { ap }, Ordering::Relaxed);
         let code = code_phys(cpu); let stack = stack_phys(cpu);
@@ -141,7 +148,7 @@ pub fn prepare(handoff: &crate::uefi::Handoff, bsp: u64, ap: u64) {
         }
         if cpu == 1 { ensure(tables.translation(PEER).is_none()); }
         let mut saved = initial();
-        saved.rip = if cpu == 0 { user_address(ptr::addr_of!(smp_user_bsp_start)) } else { match case_id() { 0 => user_address(ptr::addr_of!(smp_user_warmup_start)), 1 => user_address(ptr::addr_of!(smp_user_peer_fault)), _ => user_address(ptr::addr_of!(smp_user_forged_fault)) } };
+        saved.rip = if cpu == 0 || cfg!(k03_smp_budget) { user_address(ptr::addr_of!(smp_user_bsp_start)) } else { match case_id() { 0 => user_address(ptr::addr_of!(smp_user_warmup_start)), 1 => user_address(ptr::addr_of!(smp_user_peer_fault)), _ => user_address(ptr::addr_of!(smp_user_forged_fault)) } };
         saved.registers[2] = SEED + cpu as u64; saved.registers[3] = SENTINEL + cpu as u64;
         saved.registers[8] = DATA; saved.registers[9] = PEER; saved.registers[13] = ITERATIONS;
         saved.fp[160..168].copy_from_slice(&(SENTINEL + cpu as u64).to_le_bytes());
@@ -170,6 +177,8 @@ pub fn install(cpu: usize) {
         let idt = ptr::addr_of_mut!(IDT).cast::<[Gate; 256]>().add(cpu).cast::<Gate>();
         for vector in 0..256 { idt.add(vector).write(Gate::new(smp_user_unexpected as *const () as usize, if vector == 8 { 1 } else { 0 }, false)); }
         for (vector, address, dpl3) in [(13, smp_user_fault_13 as *const () as usize, false), (14, smp_user_fault_14 as *const () as usize, false), (66, smp_user_ipi_66 as *const () as usize, false), (128, smp_user_yield_128 as *const () as usize, true), (255, smp_spurious as *const () as usize, false)] { idt.add(vector).write(Gate::new(address, 0, dpl3)); }
+        #[cfg(k03_smp_budget)]
+        idt.add(67).write(Gate::new(smp_user_timer_67 as *const () as usize, 0, false));
         asm!("lidt [{}]", in(reg) &Pointer { limit: 4095, base: idt as u64 }, options(readonly, nostack));
         // No user-controlled GS value can select the privileged continuation.
         asm!("xor eax, eax", "mov fs, ax", "mov gs, ax", out("eax") _, options(nostack));
@@ -205,6 +214,7 @@ fn enter(cpu: usize) {
 }
 
 #[unsafe(no_mangle)]
+#[cfg_attr(k03_smp_budget, allow(unreachable_code))]
 extern "sysv64" fn smp_user_capture(frame: *const Saved, fp: *const u8, c: *mut Context) {
     let cpu = if id() == IDS[0].load(Ordering::Relaxed) { 0 } else { 1 };
     ensure(c == context(cpu));
@@ -218,7 +228,7 @@ extern "sysv64" fn smp_user_capture(frame: *const Saved, fp: *const u8, c: *mut 
     let mut expected_registers = [0u64; 15];
     expected_registers[2] = SEED + cpu as u64; expected_registers[3] = SENTINEL + cpu as u64;
     expected_registers[8] = DATA; expected_registers[9] = PEER;
-    expected_registers[13] = if cpu == 1 && case_id() == 0 { 0 } else { ITERATIONS };
+    expected_registers[13] = if !cfg!(k03_smp_budget) && cpu == 1 && case_id() == 0 { 0 } else { ITERATIONS };
     expected_registers[14] = if cpu == 0 || case_id() == 0 { 0x2b } else { 0 };
     // Normalized order: R15..R8, RDI, RSI, RBP, RBX, RDX, RCX, RAX.
     ensure(saved.registers == expected_registers);
@@ -233,6 +243,11 @@ extern "sysv64" fn smp_user_capture(frame: *const Saved, fp: *const u8, c: *mut 
     expected_fp[28..32].copy_from_slice(&mask.to_le_bytes());
     ensure(saved.fp == expected_fp);
     ensure(saved.fp[0..2] == [0x7f, 3] && saved.fp[24..28] == [0x80, 0x1f, 0, 0] && marker(cpu) == SEED + cpu as u64);
+    #[cfg(k03_smp_budget)]
+    {
+        budget::capture(cpu, saved, frame as u64, fp as u64, root, cr2);
+        return;
+    }
     let (mut before, mut after, mut generation) = (0, 0, 0);
     let slot = if cpu == 0 { 0 } else if saved.vector == 66 { 2 } else { 1 };
     if saved.vector == 66 {
@@ -258,7 +273,10 @@ extern "sysv64" fn smp_user_capture(frame: *const Saved, fp: *const u8, c: *mut 
     if saved.vector == 66 { ACK[cpu].store(1, Ordering::Release); }
 }
 
+#[cfg_attr(k03_smp_budget, allow(unreachable_code))]
 pub fn ap_run() -> ! {
+    #[cfg(k03_smp_budget)]
+    budget::ap_run();
     wait(&COMMAND, 1);
     let bsp_before = progress(0, 0); let ap_before = heartbeat(1); let start = clock();
     enter(1);
@@ -296,8 +314,11 @@ fn print_capture(cpu: usize, stage: &str, slot: usize) {
     print(format_args!(" gpr=")); for register in s.registers { for byte in register.to_le_bytes() { print(format_args!("{byte:02x}")); } }
     print(format_args!(" fp_image=")); for byte in s.fp { print(format_args!("{byte:02x}")); } print(format_args!("\n"));
 }
+#[cfg_attr(k03_smp_budget, allow(unreachable_code))]
 pub fn run(_handoff: &crate::uefi::Handoff) -> ! {
     install(0);
+    #[cfg(k03_smp_budget)]
+    budget::run();
     print(format_args!("TESSRYN_K03_SMP_USER_BEGIN case={} cpus=2 vector=66\n", case_name()));
     for cpu in 0..2 { print_space(cpu); print_walks(cpu); print_payload(cpu, "before"); }
     COMMAND.store(1, Ordering::Release);

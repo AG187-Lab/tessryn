@@ -1,0 +1,20 @@
+{
+  "schema": "tessryn-k03-smp-budget/v1",
+  "scope": "bounded original-kernel two-CPU CPL3 LAPIC preemption and aggregate CPU budget; migration, reclamation, physical clocks, devices and performance unqualified",
+  "cpu_count": 2,
+  "accelerator": "tcg,thread=multi",
+  "timer_vector": 67,
+  "lapic_divide_configuration": 3,
+  "lapic_divider": 16,
+  "ap_timer_multiplier": 4,
+  "hpet_period_fs": 10000000,
+  "domain": 1,
+  "scheduler_owner": "bsp-only",
+  "descriptor_bytes": 136,
+  "cases": {
+    "preempt": {"cap_ns": 1200000000, "quantum_ns": 800000000, "timer_ns": 20000000, "rounds": 2},
+    "late": {"cap_ns": 60000000, "quantum_ns": 40000000, "timer_ns": 60000000, "rounds": 1}
+  },
+  "retained": "all memory and contexts until VM exit",
+  "performance_gate": "registered native complete-path performance comparison pending"
+}

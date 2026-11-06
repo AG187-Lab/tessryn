@@ -49,6 +49,13 @@ smp_user_enter:
     mov r9, [r9 + 48]
     swapgs
     iretq
+.if {smp_budget}
+.global smp_user_timer_67
+smp_user_timer_67:
+    push 0
+    push 67
+    jmp smp_user_trap_common
+.endif
 .global smp_user_ipi_66
 smp_user_ipi_66:
     push 0

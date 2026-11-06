@@ -52,9 +52,14 @@ private AP supervisor state. The separate [two-CPU CPL3 profile](k03-smp-user.md
 now adds immutable private address spaces and user contexts, protected peer IPI
 stops and fault containment. Its [clean evidence](../evidence/k03-smp-user/README.md)
 records three accepted boots, nine twin artifacts, 755 Python tests, 26 parser
-checks and all 57 earlier-profile commands. Shared scheduler ownership,
-aggregate budgets/accounting, per-CPU timers and safe reuse remain later gates;
-all memory in the new profile stays retained.
+checks and all 57 earlier-profile commands. All memory stays retained.
+
+The [two-CPU budget profile](k03-smp-budget.md) adds local timer stops and
+serialized shared-domain reservations. Its [clean packet](../evidence/k03-smp-budget/README.md)
+records six CPL3 timer traps, both contexts resuming, two clipped grants in the
+normal case and full late charges with peer ownership retained until
+reconciliation. Independent dispatch, deadline and blocked/woken fixtures,
+safe reuse and physical clocks remain open.
 
 [Physical hardware requirements](hardware-intake.md) are ready through
 [PR #64](https://github.com/AG187-Lab/tessryn/pull/64). No server has been rented or
