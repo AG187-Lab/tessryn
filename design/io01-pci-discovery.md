@@ -17,9 +17,10 @@ dwords through `0xcf8` and reads them from `0xcfc`. It probes segment zero, buse
 0–7, all 32 slots and all eight functions. The three allowed dword offsets are
 `0x00` (vendor/device), `0x08` (class, subclass, programming interface, revision)
 and `0x0c` (header). It skips absent vendors, rejects invalid vendors and header
-types, and admits at most 64 records in BDF order. The selector writes do not
-write PCI configuration data. The kernel does not size BARs, map device MMIO,
-configure interrupts, enable DMA, or send any controller or storage commands.
+types, and admits at most 64 records in BDF order. The probe leaves PCI
+configuration data intact. It does not size BARs, map PCI device registers,
+configure device interrupts, enable DMA, or send storage commands. The existing
+K01 framebuffer is unchanged.
 
 The runner boots the same firmware-loaded disposable IDE disk in two fresh guests.
 Both have an explicit PCIe root port and K01's emulated VGA for firmware graphics
@@ -43,10 +44,13 @@ admission remain separate work. Discovery is not a grant to use a device.
 Use the [pinned setup](first-kernel.md) in a clean checkout. The build output and
 both capture directories must be new, under ignored `build/`. The emulator has
 no network, host-device passthrough or physical-disk access. Its firmware variable
-store and disk working state are disposable.
+store and disk working state are disposable. The scanner unit tests also require
+the pinned Rust host libraries.
 
 ```sh
 python3 -B -m unittest discover -s tests -p 'test_io01_pci*.py' -v
+python3 tools/setup_k02_toolchain.py
+python3 tools/setup_uefi.py
 build/toolchain/bin/rustc --edition=2024 --test -D warnings kernel/io01_pci.rs -o build/io01-pci-host-tests
 build/io01-pci-host-tests
 python3 tools/build_io01_pci.py --out build/io01-pci/a

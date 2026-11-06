@@ -25,6 +25,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
           python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
           python3 tools/setup_uefi.py
       - name: Test scanner and build identical images
         run: |
