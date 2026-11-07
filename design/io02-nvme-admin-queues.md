@@ -34,6 +34,8 @@ independently verify the final zero CC, CSTS, AQA, ASQ and ACQ. The
 empty-port control must report zero queue writes and produces no snapshots.
 No doorbell is rung and no command is submitted. Command execution,
 DMA authority, namespace I/O, persistence and cloud qualification remain open.
+The separate [VT-d setup experiment](io02-nvme-vtd.md) uses these reserved
+queue pages to test remapper configuration with bus mastering still disabled.
 
 ## Reproduce offline
 

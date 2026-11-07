@@ -21,11 +21,13 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.build_io01_pci import CASES, PROFILE, canonical, validate_build
+from tools.build_io01_pci import CASES, DMA_CASES, PROFILE, canonical, validate_build
 from tools.check_kernel_display import QMP
 from tools.g03.evidence import parse_json
 from tools.io01_pci_trace import DONE_PREFIX, EvidenceRejected, require_evidence, verify
 from tools.io02_nvme_admin_trace import ADMIN_SNAPSHOT_ARGUMENTS, ADMIN_SNAPSHOT_FILE, verify_admin_queues
+from tools.io02_nvme_dma_trace import (VTD_STATE_FILE, VTD_TABLES_FILE, verify_dma_isolation,
+                                      vtd_snapshot_requests)
 from tools.io02_nvme_trace import SNAPSHOT_ARGUMENTS, SNAPSHOT_FILE, admit_bar0, verify_registers
 from tools.k02_region_protocol import digest, fresh_output, regular_bytes, require, write_json
 from tools.setup_uefi import verify_installation
@@ -36,9 +38,12 @@ NVME_FORMAT = "tessryn-io02-nvme-registers-result/v1"
 NVME_SCOPE = "original-kernel PCI configuration and NVMe register reads on one QEMU q35 TCG profile"
 ADMIN_FORMAT = "tessryn-io02-nvme-admin-queues-result/v1"
 ADMIN_SCOPE = "original-kernel NVMe admin queue setup and teardown on one QEMU q35 TCG profile"
+DMA_FORMAT = "tessryn-io02-nvme-dma-isolation-result/v1"
+DMA_SCOPE = "original-kernel NVMe VT-d setup or capability refusal with bus mastering off on one QEMU q35 TCG profile"
 PASS_REASON = "original PCI serial and paused QMP topology matched"
 NVME_PASS_REASON = "original PCI and NVMe serial matched paused QMP topology and register evidence"
 ADMIN_PASS_REASON = "original NVMe admin queue witness and paused QMP final register state matched"
+DMA_PASS_REASON = "original NVMe VT-d witness and paused QMP state matched the selected control"
 TIMEOUT_SECONDS = 30
 MAX_LOG_BYTES = 1 << 20
 MAX_QMP_BYTES = 1 << 20
@@ -46,6 +51,7 @@ MAX_QMP_BYTES = 1 << 20
 MAX_RTC_EVENTS = TIMEOUT_SECONDS + 2
 DONE = re.compile(rb"(?m)^" + re.escape(DONE_PREFIX) + rb"[0-9]{1,4}\r?\n")
 FAULT_MARKERS = (b"TESSRYN_IO01_PCI_FAIL", b"TESSRYN_IO02_NVME_FAIL", b"TESSRYN_IO02_NVME_ADMIN_FAIL",
+                 b"TESSRYN_IO02_VTD_FAIL",
                  b"TESSRYN_K01_FAIL", b"TESSRYN_K01_UNEXPECTED",
                  b"TESSRYN_K01_EXCEPTION", b"TESSRYN_K01_PANIC")
 CONTROLS = ("qmp_capabilities", "query-status", "stop", "query-status", "query-pci", "quit")
@@ -54,7 +60,10 @@ FIRMWARE_FILES = {"code": "code.fd", "vars": "vars.fd", "notice": "NOTICE"}
 QEMU = ROOT / "build/toolchain/bin/qemu-system-x86_64"
 
 
-def snapshot_requests(case, *, nvme_registers=False, nvme_admin_queues=False):
+def snapshot_requests(case, *, nvme_registers=False, nvme_admin_queues=False,
+                      nvme_dma_isolation=False, serial=b""):
+    if nvme_dma_isolation:
+        return SNAPSHOT_ARGUMENTS, ADMIN_SNAPSHOT_ARGUMENTS, *vtd_snapshot_requests(serial, case)
     if case != "present":
         return ()
     if nvme_admin_queues:
@@ -62,23 +71,29 @@ def snapshot_requests(case, *, nvme_registers=False, nvme_admin_queues=False):
     return (SNAPSHOT_ARGUMENTS,) if nvme_registers else ()
 
 
-def pass_reason(*, nvme_registers=False, nvme_admin_queues=False):
+def pass_reason(*, nvme_registers=False, nvme_admin_queues=False, nvme_dma_isolation=False):
+    if nvme_dma_isolation:
+        return DMA_PASS_REASON
     if nvme_admin_queues:
         return ADMIN_PASS_REASON
     return NVME_PASS_REASON if nvme_registers else PASS_REASON
 
 
-def qemu_command(case: str) -> list[str]:
-    require(case in CASES, "unknown PCI case")
+def qemu_command(case: str, *, nvme_dma_isolation: bool = False) -> list[str]:
+    require(case in (DMA_CASES if nvme_dma_isolation else CASES), "unknown PCI case for the selected profile")
     command = ["qemu-system-x86_64", "-machine", PROFILE["machine"] + ",accel=" + PROFILE["accelerator"],
                "-cpu", PROFILE["cpu"], "-m", f"{PROFILE['memory_mib']}M", "-smp", str(PROFILE["vcpus"]),
                "-nodefaults", "-no-user-config", "-display", "none", "-monitor", "none", "-serial", "stdio",
                "-nic", "none", "-no-reboot", "-device", "VGA,romfile=", "-global", "apic.vapic=off",
                "-drive", "if=pflash,format=raw,readonly=on,file=code.fd",
                "-drive", "if=pflash,format=raw,file=vars.fd",
-               "-drive", "if=ide,format=raw,snapshot=on,file=boot.img", "-boot", "order=c",
-               "-device", "pcie-root-port,id=io01-port,bus=pcie.0,addr=0x2,slot=2,chassis=1"]
-    if case == "present":
+               "-drive", "if=ide,format=raw,snapshot=on,file=boot.img", "-boot", "order=c"]
+    if nvme_dma_isolation:
+        translation = "on" if case == "present" else "off"
+        command += ["-device", "intel-iommu,intremap=off,aw-bits=39,scalable-mode=off,"
+                    "caching-mode=off,device-iotlb=off,dma-translation=" + translation]
+    command += ["-device", "pcie-root-port,id=io01-port,bus=pcie.0,addr=0x2,slot=2,chassis=1"]
+    if case == "present" or nvme_dma_isolation:
         command += ["-device", "nvme,id=io01-nvme,bus=io01-port,addr=0,serial=TESSRYN-PCI"]
     return command + ["-qmp", "unix:qmp.sock,server=on,wait=off"]
 
@@ -126,14 +141,17 @@ class Capture:
     qmp_send: bytes = b""
     nvme_snapshot: bytes | None = None
     admin_snapshot: bytes | None = None
+    vtd_state: bytes | None = None
+    vtd_tables: bytes | None = None
 
 
 def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
-            nvme_registers: bool = False, nvme_admin_queues: bool = False) -> Capture:
+            nvme_registers: bool = False, nvme_admin_queues: bool = False,
+            nvme_dma_isolation: bool = False) -> Capture:
     """Own the QEMU group, socket and nonblocking pipes through bounded cleanup."""
     require(type(timeout) in (int, float) and math.isfinite(timeout) and 0 < timeout <= TIMEOUT_SECONDS,
             "invalid PCI capture deadline")
-    command = qemu_command(case)
+    command = qemu_command(case, nvme_dma_isolation=nvme_dma_isolation)
     selector = selectors.DefaultSelector()
     started = time.monotonic()
     deadline = started + timeout
@@ -142,7 +160,6 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
     handlers = {}
     child = connection = recording = None
     snapshots = {}
-    reads = snapshot_requests(case, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
     status, reason = "unavailable", "emulator process launch failed"
     stage = "process launch"
 
@@ -206,6 +223,8 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
         require_evidence(is_status(qmp.command("query-status"), "paused", False), "emulator pause not observed")
         pci = qmp.command("query-pci")
         require_evidence(type(pci) is list, "query-pci did not return a bus list")
+        reads = snapshot_requests(case, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues,
+                                  nvme_dma_isolation=nvme_dma_isolation, serial=bytes(output["serial"]))
         if reads:
             stage = "paused QMP NVMe register read"
             admit_bar0(pci)
@@ -281,7 +300,8 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
                    bytes(output["serial"]), bytes(output["stderr"]),
                    bytes(recording.incoming) if recording is not None else b"",
                    bytes(recording.outgoing) if recording is not None else b"",
-                   snapshots.get(SNAPSHOT_FILE), snapshots.get(ADMIN_SNAPSHOT_FILE))
+                   snapshots.get(SNAPSHOT_FILE), snapshots.get(ADMIN_SNAPSHOT_FILE),
+                   snapshots.get(VTD_STATE_FILE), snapshots.get(VTD_TABLES_FILE))
 
 
 def is_status(value, name, running):
@@ -297,7 +317,8 @@ def qmp_records(data: bytes) -> list[dict]:
 
 
 def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=False, nvme_snapshot=None,
-                 nvme_admin_queues=False, admin_snapshot=None):
+                 nvme_admin_queues=False, admin_snapshot=None, nvme_dma_isolation=False,
+                 vtd_state=None, vtd_tables=None):
     require_evidence(not stderr, "emulator wrote to stderr")
     require(len(serial) + len(stderr) <= MAX_LOG_BYTES and len(qmp_recv) + len(qmp_send) <= MAX_QMP_BYTES,
             "capture logs exceed their bounds")
@@ -305,7 +326,8 @@ def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=Fal
     require_evidence(len(markers) == 1 and markers[0].end() == len(serial)
             and not any(marker in serial for marker in FAULT_MARKERS), "missing terminal serial line or unexpected guest output")
     requests = qmp_records(qmp_send)
-    reads = snapshot_requests(case, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
+    reads = snapshot_requests(case, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues,
+                              nvme_dma_isolation=nvme_dma_isolation, serial=serial)
     controls = (*CONTROLS[:-1], *("pmemsave" for _ in reads), CONTROLS[-1])
     expected_requests = [{"id": i, "execute": op} for i, op in enumerate(controls, 1)]
     for request, arguments in zip(expected_requests[len(CONTROLS) - 1:-1], reads):
@@ -350,6 +372,9 @@ def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=Fal
             and type(returned[4]) is list, "QMP replies do not prove the paused PCI observation")
     require_evidence(all(reply == {} for reply in returned[len(CONTROLS) - 1:-1]),
                      "QMP register read was not acknowledged")
+    if nvme_dma_isolation:
+        return verify_dma_isolation(serial, returned[4], case, nvme_snapshot, admin_snapshot, vtd_state, vtd_tables)
+    require_evidence(vtd_state is None and vtd_tables is None, "unexpected QMP VT-d snapshot")
     if nvme_admin_queues:
         return verify_admin_queues(serial, returned[4], case, nvme_snapshot, admin_snapshot)
     require_evidence(admin_snapshot is None, "unexpected QMP admin register snapshot")
@@ -363,9 +388,10 @@ def reference(name: str, data: bytes) -> dict:
     return {"path": name, "sha256": digest(data), "size_bytes": len(data)}
 
 
-def load_inputs(manifest_path: Path, *, nvme_registers=False, nvme_admin_queues=False):
+def load_inputs(manifest_path: Path, *, nvme_registers=False, nvme_admin_queues=False, nvme_dma_isolation=False):
     original = regular_bytes(manifest_path, 2 << 20)
-    manifest, disk = validate_build(manifest_path, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
+    manifest, disk = validate_build(manifest_path, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues,
+                                    nvme_dma_isolation=nvme_dma_isolation)
     require(regular_bytes(manifest_path, 2 << 20) == original, "manifest changed while checking inputs")
     setup = verify_installation()
     require(setup == manifest["toolchain"]["setup"], "verified emulator setup differs from the build")
@@ -386,14 +412,17 @@ def bindings(inputs):
             "firmware": [reference(name, raw) for name, raw in firmware.items()]}
 
 
-def execution(case, captured):
+def execution(case, captured, *, nvme_dma_isolation=False):
     return {"status": captured.status, "reason": captured.reason, "returncode": captured.returncode,
-            "elapsed_seconds": captured.elapsed_seconds, "command": qemu_command(case),
+            "elapsed_seconds": captured.elapsed_seconds,
+            "command": qemu_command(case, nvme_dma_isolation=nvme_dma_isolation),
             "timeout_seconds": TIMEOUT_SECONDS, "max_log_bytes": MAX_LOG_BYTES, "max_qmp_bytes": MAX_QMP_BYTES}
 
 
-def header(case, *, nvme_registers=False, nvme_admin_queues=False):
-    if nvme_admin_queues:
+def header(case, *, nvme_registers=False, nvme_admin_queues=False, nvme_dma_isolation=False):
+    if nvme_dma_isolation:
+        format_name, scope = DMA_FORMAT, DMA_SCOPE
+    elif nvme_admin_queues:
         format_name, scope = ADMIN_FORMAT, ADMIN_SCOPE
     else:
         format_name, scope = (NVME_FORMAT, NVME_SCOPE) if nvme_registers else (FORMAT, SCOPE)
@@ -402,14 +431,16 @@ def header(case, *, nvme_registers=False, nvme_admin_queues=False):
 
 
 def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False,
-        nvme_registers: bool = False, nvme_admin_queues: bool = False) -> dict:
-    require(case in CASES and allow_qemu is True, "explicit --allow-qemu and a known case are required")
+        nvme_registers: bool = False, nvme_admin_queues: bool = False, nvme_dma_isolation: bool = False) -> dict:
+    require(case in (DMA_CASES if nvme_dma_isolation else CASES) and allow_qemu is True,
+            "explicit --allow-qemu and a case for the selected profile are required")
     manifest_path = Path(manifest_path).absolute()
     out = fresh_output(out)
     captured = Capture("unavailable", "verified PCI build or emulator setup unavailable")
     bound, observed = None, None
     status, reason = "unavailable", captured.reason
-    options = {"nvme_registers": nvme_registers, "nvme_admin_queues": nvme_admin_queues}
+    options = {"nvme_registers": nvme_registers, "nvme_admin_queues": nvme_admin_queues,
+               "nvme_dma_isolation": nvme_dma_isolation}
     try:
         inputs = load_inputs(manifest_path, **options)
         bound = bindings(inputs)
@@ -423,7 +454,8 @@ def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False,
         require(load_inputs(manifest_path, **options) == inputs, "capture inputs changed")
         if captured.status == "completed":
             observed = observations(case, captured.serial, captured.stderr, captured.qmp_recv, captured.qmp_send,
-                                    nvme_snapshot=captured.nvme_snapshot, admin_snapshot=captured.admin_snapshot, **options)
+                                    nvme_snapshot=captured.nvme_snapshot, admin_snapshot=captured.admin_snapshot,
+                                    vtd_state=captured.vtd_state, vtd_tables=captured.vtd_tables, **options)
             status, reason = "pass", pass_reason(**options)
     except EvidenceRejected as error:
         status, reason = "fail", str(error)
@@ -432,7 +464,8 @@ def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False,
             status, reason = "fail", "PCI capture inputs or evidence rejected"
     logs = (captured.serial, captured.stderr, captured.qmp_recv, captured.qmp_send)
     names = LOGS
-    for name, snapshot in ((SNAPSHOT_FILE, captured.nvme_snapshot), (ADMIN_SNAPSHOT_FILE, captured.admin_snapshot)):
+    for name, snapshot in ((SNAPSHOT_FILE, captured.nvme_snapshot), (ADMIN_SNAPSHOT_FILE, captured.admin_snapshot),
+                           (VTD_STATE_FILE, captured.vtd_state), (VTD_TABLES_FILE, captured.vtd_tables)):
         if snapshot is not None:
             logs += (snapshot,)
             names += (name,)
@@ -442,16 +475,19 @@ def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False,
             file.write(raw)
         refs.append(reference(name, raw))
     result = {**header(case, **options), "status": status, "reason": reason, "bindings": bound,
-              "execution": execution(case, captured), "observations": observed, "logs": refs}
+              "execution": execution(case, captured, nvme_dma_isolation=nvme_dma_isolation),
+              "observations": observed, "logs": refs}
     write_json(out / "result.json", result)
     return result
 
 
 def verify_result(manifest_path: Path, out: Path, case: str, *, nvme_registers: bool = False,
-                  nvme_admin_queues: bool = False) -> dict:
+                  nvme_admin_queues: bool = False, nvme_dma_isolation: bool = False) -> dict:
     """Recheck a passed packet; this does not run a guest or authenticate capture."""
+    require(case in (DMA_CASES if nvme_dma_isolation else CASES), "unknown PCI case for the selected profile")
     result = parse_json(regular_bytes(out / "result.json", 2 << 20))
-    options = {"nvme_registers": nvme_registers, "nvme_admin_queues": nvme_admin_queues}
+    options = {"nvme_registers": nvme_registers, "nvme_admin_queues": nvme_admin_queues,
+               "nvme_dma_isolation": nvme_dma_isolation}
     expected = header(case, **options)
     require(set(result) == set(expected) | {"status", "reason", "bindings", "execution", "observations", "logs"}
             and all(result[key] == value for key, value in expected.items()) and result["status"] == "pass"
@@ -463,22 +499,26 @@ def verify_result(manifest_path: Path, out: Path, case: str, *, nvme_registers: 
     require(type(elapsed) in (int, float) and math.isfinite(elapsed) and 0 <= elapsed <= TIMEOUT_SECONDS + 2
             and type(observed_execution.get("returncode")) is int
             and canonical(observed_execution) == canonical(execution(
-                case, Capture("completed", "serial, QMP and process streams completed", 0, elapsed))),
+                case, Capture("completed", "serial, QMP and process streams completed", 0, elapsed),
+                nvme_dma_isolation=nvme_dma_isolation)),
             "invalid successful execution record")
     raw = [regular_bytes(out / name, MAX_LOG_BYTES if i < 2 else MAX_QMP_BYTES) for i, name in enumerate(LOGS)]
     refs = [reference(name, data) for name, data in zip(LOGS, raw)]
     snapshots = {}
-    for arguments in snapshot_requests("present", **options):
+    for arguments in snapshot_requests(case, serial=raw[0], **options):
         name, size = arguments["filename"], arguments["size"]
-        if case == "present":
-            snapshots[name] = regular_bytes(out / name, size)
-            refs.append(reference(name, snapshots[name]))
-        else:
-            require(not os.path.lexists(out / name), "unexpected QMP register snapshot")
+        snapshots[name] = regular_bytes(out / name, size)
+        refs.append(reference(name, snapshots[name]))
+    if case == "blocked":
+        require(not os.path.lexists(out / VTD_TABLES_FILE), "blocked case retained an unexpected VT-d table snapshot")
+    if case == "absent":
+        for arguments in snapshot_requests("present", **options):
+            require(not os.path.lexists(out / arguments["filename"]), "unexpected QMP register snapshot")
     require(canonical(result["logs"]) == canonical(refs),
             "PCI packet raw log hashes differ")
     measured = observations(case, *raw, nvme_snapshot=snapshots.get(SNAPSHOT_FILE),
-                            admin_snapshot=snapshots.get(ADMIN_SNAPSHOT_FILE), **options)
+                            admin_snapshot=snapshots.get(ADMIN_SNAPSHOT_FILE),
+                            vtd_state=snapshots.get(VTD_STATE_FILE), vtd_tables=snapshots.get(VTD_TABLES_FILE), **options)
     require(canonical(result["observations"]) == canonical(measured), "PCI packet observations differ from raw captures")
     return {**expected, "status": "consistent", "observations": measured, "new_guest_execution": False}
 
@@ -487,15 +527,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--case", choices=CASES, required=True)
+    parser.add_argument("--case", choices=(*CASES, "blocked"), required=True)
     profile = parser.add_mutually_exclusive_group()
     profile.add_argument("--nvme-registers", action="store_true", help="use the separate IO02 register profile")
     profile.add_argument("--nvme-admin-queues", action="store_true", help="use the IO02 admin-queue profile")
+    profile.add_argument("--nvme-dma-isolation", action="store_true", help="use the IO02 VT-d setup profile")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--allow-qemu", action="store_true")
     mode.add_argument("--verify", action="store_true", help="check an existing packet without starting a guest")
     args = parser.parse_args()
-    options = {"nvme_registers": args.nvme_registers, "nvme_admin_queues": args.nvme_admin_queues}
+    options = {"nvme_registers": args.nvme_registers, "nvme_admin_queues": args.nvme_admin_queues,
+               "nvme_dma_isolation": args.nvme_dma_isolation}
     try:
         result = (verify_result(args.manifest, args.out, args.case, **options)
                   if args.verify else run(args.manifest, args.out, args.case, allow_qemu=args.allow_qemu, **options))

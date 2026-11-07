@@ -86,11 +86,18 @@ pub(super) fn run(handoff: &crate::uefi::Handoff, functions: &[Function]) {
     );
     match result {
         Ok(None) => {
-            print(format_args!("TESSRYN_IO02_NVME_ABSENT reads=0\n"));
-            #[cfg(io02_nvme_admin_queues)]
-            print(format_args!("TESSRYN_IO02_NVME_ADMIN_ABSENT writes=0\n"));
+            #[cfg(io02_nvme_dma_isolation)]
+            vtd_fail("nvme-required");
+            #[cfg(not(io02_nvme_dma_isolation))]
+            {
+                print(format_args!("TESSRYN_IO02_NVME_ABSENT reads=0\n"));
+                #[cfg(io02_nvme_admin_queues)]
+                print(format_args!("TESSRYN_IO02_NVME_ADMIN_ABSENT writes=0\n"));
+            }
         }
         Ok(Some(Registers { bar, cap, vs })) => {
+            #[cfg(io02_nvme_dma_isolation)]
+            if let Err(reason) = admit_vtd_path(handoff, functions) { vtd_fail(reason); }
             print(format_args!(
                 "TESSRYN_IO02_NVME_REGISTERS bdf=01:00.0 bar={bar:#010x} cap={cap:#018x} vs={vs:#010x} reads=3\n"
             ));
@@ -101,6 +108,13 @@ pub(super) fn run(handoff: &crate::uefi::Handoff, functions: &[Function]) {
                     print(format_args!(
                         "TESSRYN_IO02_NVME_ADMIN bdf=01:00.0 asq={asq:#018x} acq={acq:#018x} aqa=0x00010001 cc_ready=0x00460001 csts_ready=0x00000001 cc_final=0x00000000 csts_final=0x00000000 bme=0 doorbells=0 firmware={firmware}\n"
                     ));
+                    #[cfg(io02_nvme_dma_isolation)]
+                    {
+                        if !vtd_bus_master_off() { vtd_fail("nvme-bus-master-before-vtd"); }
+                        let result = crate::io02_vtd::run(handoff, asq, acq);
+                        if !vtd_bus_master_off() { vtd_fail("nvme-bus-master-after-vtd"); }
+                        if let Err(reason) = result { vtd_fail(reason); }
+                    }
                 }
                 Err(reason) => {
                     print(format_args!("TESSRYN_IO02_NVME_ADMIN_FAIL reason={reason}\n"));
@@ -113,6 +127,38 @@ pub(super) fn run(handoff: &crate::uefi::Handoff, functions: &[Function]) {
             halt();
         }
     }
+}
+
+#[cfg(all(io02_nvme_dma_isolation, not(test)))]
+fn admit_vtd_path(handoff: &crate::uefi::Handoff, functions: &[Function]) -> Result<(), &'static str> {
+    if handoff.vtd_base != Some(crate::paging::VTD_MMIO_BASE) {
+        return Err("vtd-dmar-not-admitted");
+    }
+    let root_port = Bdf { bus: 0, slot: 2, function: 0 };
+    let bridge = functions.iter().find(|row| row.bdf == root_port).ok_or("vtd-root-port-missing")?;
+    if bridge.id != 0x000c_1b36 || bridge.class_rev >> 16 != 0x0604
+        || (bridge.header >> 16) & 0xff != 1
+    {
+        return Err("vtd-root-port-identity");
+    }
+    // SAFETY: the admitted root port is 00:02.0. Read the type-1
+    // Primary/Secondary/Subordinate Bus dword at offset 0x18 only.
+    let buses = unsafe { super::read_config(0x8000_1018) };
+    if buses & 0x00ff_ffff != 0x0001_0100 { return Err("vtd-root-port-bus-range"); }
+    Ok(())
+}
+
+#[cfg(all(io02_nvme_dma_isolation, not(test)))]
+fn vtd_bus_master_off() -> bool {
+    // SAFETY: the single BSP has already admitted this fixed NVMe endpoint.
+    let command = unsafe { super::read_config(CONTROLLER.selector(Register::CommandStatus)) } as u16;
+    command & 6 == 2
+}
+
+#[cfg(all(io02_nvme_dma_isolation, not(test)))]
+fn vtd_fail(reason: &'static str) -> ! {
+    crate::diagnostics::print(format_args!("TESSRYN_IO02_VTD_FAIL reason={reason}\n"));
+    crate::diagnostics::halt()
 }
 
 #[cfg(all(io02_nvme_admin_queues, not(test)))]

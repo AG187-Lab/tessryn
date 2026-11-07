@@ -16,6 +16,10 @@ pub const NVME_BAR_BYTES: u64 = 0x4000;
 #[cfg(io02_nvme_registers)]
 const NVME_PAGE_FLAGS: u64 =
     1 | ((cfg!(io02_nvme_admin_queues) as u64) << 1) | (1 << 3) | (1 << 4) | (1 << 63);
+#[cfg(io02_nvme_dma_isolation)]
+pub const VTD_MMIO_BASE: u64 = 0xfed9_0000;
+#[cfg(io02_nvme_dma_isolation)]
+const VTD_PAGE_FLAGS: u64 = 3 | (1 << 3) | (1 << 4) | (1 << 63);
 // One fixed supervisor MMIO leaf, used only by the admitted HPET profile.
 // PAT index 3 (PWT=PCD=1, PAT=0) must be admitted as UC by the CPU owner.
 #[cfg(any(k02_native, k03_timer, k03_smp, test))]
@@ -28,6 +32,8 @@ pub enum Error {
     Empty, Overflow, PhysicalWidth, NonCanonical, Guard, Alignment, TableBudget, LeafBudget, TableLink,
     #[cfg(io02_nvme_registers)]
     NvmeAperture,
+    #[cfg(io02_nvme_dma_isolation)]
+    VtdAperture,
 }
 impl Error {
     pub const fn label(self) -> &'static str {
@@ -39,6 +45,8 @@ impl Error {
             Self::TableLink => "table-link",
             #[cfg(io02_nvme_registers)]
             Self::NvmeAperture => "nvme-aperture",
+            #[cfg(io02_nvme_dma_isolation)]
+            Self::VtdAperture => "vtd-aperture",
         }
     }
 }
@@ -175,6 +183,19 @@ impl Tables {
     #[cfg(io02_nvme_registers)]
     pub fn set_nvme_register_page(&mut self, address: u64) -> Result<(), Error> {
         nvme_aperture(address, self.physical_bits)?;
+        self.demote_register_page(address, NVME_PAGE_FLAGS)
+    }
+
+    /// The pinned QEMU remapping unit gets exactly one UC, NX supervisor page.
+    #[cfg(io02_nvme_dma_isolation)]
+    pub fn set_vtd_register_page(&mut self, address: u64) -> Result<(), Error> {
+        if address != VTD_MMIO_BASE { return Err(Error::VtdAperture); }
+        validate_range(Range::checked(address, 4096)?, self.physical_bits)?;
+        self.demote_register_page(address, VTD_PAGE_FLAGS)
+    }
+
+    #[cfg(io02_nvme_registers)]
+    fn demote_register_page(&mut self, address: u64, flags: u64) -> Result<(), Error> {
         let pdpt = self.link_index(self.pages[0].0[((address >> 39) & 511) as usize])?;
         let directory = self.link_index(self.pages[pdpt].0[((address >> 30) & 511) as usize])?;
         let slot = ((address >> 21) & 511) as usize;
@@ -190,7 +211,7 @@ impl Tables {
         for (index, entry) in self.pages[table].0.iter_mut().enumerate() {
             *entry = (huge_base + index as u64 * 4096) | 3 | accessed_dirty;
         }
-        self.pages[table].0[selected] = address | NVME_PAGE_FLAGS;
+        self.pages[table].0[selected] = address | flags;
         self.used += 1;
         self.leaves += 511;
         // The active root must not expose the table before its entries exist.
@@ -284,5 +305,33 @@ mod nvme_tests {
         assert_eq!(tables.translation(NVME_MMIO_BASE), Some(NVME_MMIO_BASE));
         tables.used = TABLE_CAPACITY;
         assert_eq!(tables.set_nvme_register_page(NVME_MMIO_BASE), Err(Error::TableBudget));
+    }
+
+    #[cfg(io02_nvme_dma_isolation)]
+    #[test]
+    fn vtd_demotes_its_fixed_page_without_retyping_neighbors_or_nvme() {
+        let mut tables = Tables::empty();
+        tables.reset(48, 0x20_0000).unwrap();
+        tables.map_range(Range { start: 0, end: LOW_LIMIT }).unwrap();
+        tables.set_nvme_register_page(NVME_MMIO_BASE).unwrap();
+        let before = (tables.table_count(), tables.leaf_count());
+        assert_eq!(tables.set_vtd_register_page(VTD_MMIO_BASE + 4096), Err(Error::VtdAperture));
+        assert_eq!((tables.table_count(), tables.leaf_count()), before);
+
+        tables.set_vtd_register_page(VTD_MMIO_BASE).unwrap();
+        assert_eq!((tables.table_count(), tables.leaf_count()), (before.0 + 1, before.1 + 511));
+        let pdpt = tables.link_index(tables.pages[0].0[0]).unwrap();
+        let directory = tables.link_index(tables.pages[pdpt].0[(VTD_MMIO_BASE >> 30) as usize]).unwrap();
+        let slot = ((VTD_MMIO_BASE >> 21) & 511) as usize;
+        let table = tables.link_index(tables.pages[directory].0[slot]).unwrap();
+        let huge_base = VTD_MMIO_BASE & !(HUGE_PAGE - 1);
+        for index in 0..512 {
+            let page = huge_base + index as u64 * 4096;
+            let flags = if page == VTD_MMIO_BASE { 0x8000_0000_0000_001b } else { 3 };
+            assert_eq!(tables.pages[table].0[index], page | flags);
+            assert_eq!(tables.translation(page + 4095), Some(page + 4095));
+        }
+        assert_eq!(tables.translation(NVME_MMIO_BASE), Some(NVME_MMIO_BASE));
+        assert_eq!(tables.set_vtd_register_page(VTD_MMIO_BASE), Err(Error::TableLink));
     }
 }

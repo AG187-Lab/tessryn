@@ -9,10 +9,16 @@ mod diagnostics;
 mod framebuffer;
 #[cfg(io01_pci)]
 mod io01_pci;
+#[cfg(io02_nvme_dma_isolation)]
+mod io02_vtd;
+#[cfg(io02_nvme_dma_isolation)]
+mod io02_vtd_acpi;
 #[cfg(all(io02_nvme_registers, not(io01_pci)))]
 compile_error!("the NVMe register probe requires the separate IO01 emulator image");
 #[cfg(all(io02_nvme_admin_queues, not(io02_nvme_registers)))]
 compile_error!("the NVMe admin queue experiment requires the separate NVMe register image");
+#[cfg(all(io02_nvme_dma_isolation, not(io02_nvme_admin_queues)))]
+compile_error!("the NVMe DMA isolation experiment requires the separate admin queue image");
 #[cfg(all(io01_pci, any(not(k01_emulator), not(k01_case = "normal"), k01_aws,
     k01_high_handoff, k02_native, k02_matrix, k02_region_service, k03_timer,
     k03_smp, k03_smp_user, k03_smp_budget, native_benchmarks, smp_benchmarks)))]
@@ -21,7 +27,8 @@ mod paging;
 mod uefi;
 #[cfg(k03_smp)]
 mod smp;
-#[cfg(k03_smp)]
+#[cfg(any(k03_smp, io02_nvme_dma_isolation))]
+#[cfg_attr(io02_nvme_dma_isolation, allow(dead_code))]
 mod smp_acpi;
 #[cfg(smp_benchmarks)]
 mod contention_benchmarks;
