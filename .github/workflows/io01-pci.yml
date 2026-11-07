@@ -1,0 +1,80 @@
+name: IO01 PCI discovery
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pci-discovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Test discovery evidence boundaries
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_io01_pci*.py' -v
+          python3 tools/validate_design.py
+      - name: Install pinned compiler, emulator and firmware
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Test scanner and build identical images
+        run: |
+          build/toolchain/bin/rustc --edition=2024 --test -D warnings kernel/io01_pci.rs -o build/io01-pci-host-tests
+          build/io01-pci-host-tests
+          python3 tools/build_io01_pci.py --out build/io01-pci/a
+          python3 tools/build_io01_pci.py --out build/io01-pci/b
+          python3 tools/build_io01_pci.py --compare build/io01-pci/a/manifest.json build/io01-pci/b/manifest.json
+      - name: Cross-check the present and absent guests against paused QMP
+        run: |
+          status=0
+          for case in present absent; do
+            if python3 tools/run_io01_pci.py --manifest build/io01-pci/a/manifest.json --case "$case" --out "build/io01-pci/$case" --allow-qemu; then
+              python3 tools/run_io01_pci.py --manifest build/io01-pci/a/manifest.json --case "$case" --out "build/io01-pci/$case" --verify || status=1
+            else
+              status=1
+            fi
+          done
+          exit "$status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: io01-pci-discovery-evidence
+          path: |
+            build/io01-pci/a/manifest.json
+            build/io01-pci/a/BOOTX64.EFI
+            build/io01-pci/a/boot.img
+            build/io01-pci/a/notices/tessryn-LICENSE
+            build/io01-pci/a/notices/tessryn-NOTICE
+            build/io01-pci/a/notices/rust-LICENSE-APACHE
+            build/io01-pci/a/notices/rust-LICENSE-MIT
+            build/io01-pci/a/notices/rust-COPYRIGHT
+            build/io01-pci/b/manifest.json
+            build/io01-pci/b/BOOTX64.EFI
+            build/io01-pci/b/boot.img
+            build/io01-pci/b/notices/tessryn-LICENSE
+            build/io01-pci/b/notices/tessryn-NOTICE
+            build/io01-pci/b/notices/rust-LICENSE-APACHE
+            build/io01-pci/b/notices/rust-LICENSE-MIT
+            build/io01-pci/b/notices/rust-COPYRIGHT
+            build/io01-pci/present/result.json
+            build/io01-pci/present/serial.log
+            build/io01-pci/present/stderr.log
+            build/io01-pci/present/qmp-recv.log
+            build/io01-pci/present/qmp-send.log
+            build/io01-pci/absent/result.json
+            build/io01-pci/absent/serial.log
+            build/io01-pci/absent/stderr.log
+            build/io01-pci/absent/qmp-recv.log
+            build/io01-pci/absent/qmp-send.log
+          if-no-files-found: error
+          retention-days: 14
