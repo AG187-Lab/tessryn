@@ -76,3 +76,23 @@ The result describes this image-bound CPU workload under the pinned emulator.
 Physical scheduling claims require a qualified platform and clock. The
 [inference performance plan](inference-performance.md) supplies the later
 workload and qualification gates for choosing an inference quantum.
+
+## Verified QEMU comparison
+
+The capture at `e6ff3db5335583c39968580f3af04640d6f525d8` passed all 13
+boots and read-only replay. The 12 comparison boots covered 200 offers and
+32 cancellations. In the directed boot the queued job used zero CPU time
+and never dispatched. The running cancellation retained the 80 ms reservation
+until hardware retirement, then charged 23.598 ms. The remaining job completed
+all 64,000 iterations through the protected completion gate.
+
+| Workload | Quantum 4 dispatches per run | Quantum 16 dispatches per run |
+| --- | ---: | ---: |
+| Steady | 83–94 | 29–30 |
+| Burst | 110–118 | 39–40 |
+| Overload | 599–636 | 166–185 |
+
+The two overload repeats had maximum decode first waits of 666–670 ms at
+quantum 4 and 2,345–2,360 ms at quantum 16, measured in QEMU virtual time.
+The capture registration SHA-256 is
+`a1c4c9bcc98b69392c9827a34ad434f473c04ac66481c59ab422c8eff83eff1f`.
