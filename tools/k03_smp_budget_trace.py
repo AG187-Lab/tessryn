@@ -213,6 +213,12 @@ def _timer(trace, case, number, cpu, start, epoch, hard, resume, before):
     if fault:
         require(timer["capture"] < early and 0 < timer["current"] <= initial
             and timer["heartbeat_after"] == before + 1, "SMP budget fault did not drain a live countdown after one user heartbeat")
+        # The LAPIC count read falls between the trap clock sample and retirement.
+        elapsed = (initial - timer["current"]) * DIVIDER
+        lower = (timer["capture"] - timer["arm_after"]) * TICK_NS
+        upper = (timer["retired"] - timer["arm_before"]) * TICK_NS
+        require(lower - ROUNDING_NS <= elapsed <= upper + ROUNDING_NS,
+            "SMP budget fault countdown contradicts its HPET bracket")
     else:
         require(timer["capture"] >= early, "SMP budget timer did not reach expiry")
     if case != "late":
@@ -272,9 +278,11 @@ def parse_transcript(case, data, returncode, stderr, binding):
         require(all(previous_heartbeat[cpu ^ 1] < timer["peer_heartbeat"] <= timers[cpu ^ 1]["heartbeat_after"]
             for cpu, timer in enumerate(timers)), "SMP budget peer progress does not belong to both active CPL3 loops")
         if fault:
-            fault_peer = _integers(_budget(trace, "FAULT_PEER", {"round": number, "sample": ANY, "heartbeat": ANY}))
-            require(bsp["retired"] <= fault_peer["sample"] < min(earliest_ap, ap["capture"])
-                and bsp["peer_heartbeat"] < fault_peer["heartbeat"] <= ap["heartbeat_after"],
+            fault_peer = _integers(_budget(trace, "FAULT_PEER", {"round": number,
+                **_any("baseline_sample", "baseline_heartbeat", "sample", "heartbeat")}))
+            require(bsp["retired"] <= fault_peer["baseline_sample"] <= fault_peer["sample"] < ap["capture"]
+                and fault_peer["sample"] + ROUNDING_NS // TICK_NS < earliest_ap
+                and bsp["peer_heartbeat"] <= fault_peer["baseline_heartbeat"] < fault_peer["heartbeat"] <= ap["heartbeat_after"],
                 "SMP budget peer did not progress after BSP fault retirement and before its own timer")
         overlap_ticks.append(earliest_ap - bsp["capture"])
         previous_heartbeat = [timer["heartbeat_after"] for timer in timers]

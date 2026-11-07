@@ -276,7 +276,9 @@ def synthetic_fault_fixture():
                        "cr2": hex(target), "isr_before": 0, "heartbeat": 1, "gpr": gpr.hex()}.items():
         raw = mutate(raw, "TRAP", key, value, user=True)
     first_account = rows(raw, "ACCOUNT")[0]
-    raw = raw.replace(first_account, f"TESSRYN_K03_SMP_BUDGET_FAULT_PEER round=1 sample={retired + 10} heartbeat=3\n".encode() + first_account, 1)
+    witness = (f"TESSRYN_K03_SMP_BUDGET_FAULT_PEER round=1 baseline_sample={retired + 5} baseline_heartbeat=3 "
+               f"sample={retired + 10} heartbeat=4\n")
+    raw = raw.replace(first_account, witness.encode() + first_account, 1)
 
     cap = SCENARIOS["fault"].cap_ns
     first_charge = (retired - number(raw, "BATCH", "start")) * 10
@@ -347,12 +349,17 @@ class BudgetTraceTests(unittest.TestCase):
                            ("irr_after", 8), ("isr_before", 8), ("retire_count", 1), ("capture", early),
                            ("resume_rip", hex(PROFILE["user_code"])), ("heartbeat_after", 2)):
             with self.subTest(timer=key): self.reject(mutate(raw, "TIMER", key, value), "fault")
+        for impossible in (1, number(raw, "TIMER", "initial")):
+            with self.subTest(current=impossible), self.assertRaisesRegex(ValueError, "countdown contradicts its HPET bracket"):
+                self.parse("fault", mutate(raw, "TIMER", "current", impossible))
         self.reject(mutate(raw, "TIMER", "isr_before", 0, 1), "fault")
 
     def test_fault_requires_post_retirement_peer_progress_and_exact_charge(self):
         raw = FAULT_TRACE
         witness, = rows(raw, "FAULT_PEER")
         self.reject(raw.replace(witness, b"", 1), "fault")
+        self.reject(mutate(raw, "FAULT_PEER", "baseline_sample", number(raw, "TIMER", "retired") - 1), "fault")
+        self.reject(mutate(raw, "FAULT_PEER", "heartbeat", number(raw, "FAULT_PEER", "baseline_heartbeat")), "fault")
         for key, value in (("sample", number(raw, "TIMER", "retired") - 1), ("sample", number(raw, "TIMER", "capture", 1)),
                            ("heartbeat", number(raw, "TIMER", "peer_heartbeat")), ("heartbeat", number(raw, "TIMER", "heartbeat_after", 1) + 1)):
             with self.subTest(witness=key): self.reject(mutate(raw, "FAULT_PEER", key, value), "fault")

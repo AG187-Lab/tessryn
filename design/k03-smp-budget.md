@@ -58,11 +58,15 @@ In the late case the peer may already be stopped in hardware while its receipt
 awaits reconciliation. Retaining the peer lease is a policy ownership proof,
 not a claim of immediate cross-CPU cancellation. Terminal park uses protected
 acknowledgment and stable user progress observations. All memory stays retained.
-The fault case keeps the same retained-memory rule. It also checks that the
-failed task cannot be dispatched again while the unaffected domain remains
-admissible. The retained published packet covers the two landed cases; the
-fault extension is a separate local experiment. Broader application recovery
-and arbitrary-program admission remain open.
+The fault case keeps the same retained-memory rule. The faulting CPU's
+countdown must agree with the HPET bracket spanning its trap capture and
+retirement. Two heartbeat samples taken after that retirement must show the
+peer progressing before its own timer stop. The BSP applies both receipts
+after the hardware stops, in retirement order. In that ledger, the failed
+task cannot be dispatched again, and the peer's reservation stays intact
+until its own receipt is applied. The historical packet covers the original
+two cases; the fault extension is a separate draft candidate. Broader
+application recovery and arbitrary-program admission remain open.
 
 ## Validation and limits
 

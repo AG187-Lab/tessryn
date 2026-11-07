@@ -175,6 +175,12 @@ fn execute(cpu: usize, round: u64) {
     row.retire_count = local(CURRENT);
     row.retired = clock();
     ensure(row.capture >= row.entry && row.retired >= row.capture && row.heartbeat_after > row.heartbeat_before);
+    if FAULT && cpu == 0 {
+        // The live countdown was read after capture and before retirement.
+        let counted = u64::from(row.initial - row.current) * DIVISOR;
+        ensure(counted + ROUNDING_NS >= elapsed(row.arm_after, row.capture)
+            && counted <= elapsed(row.arm_before, row.retired) + ROUNDING_NS);
+    }
     unsafe { run_ptr(cpu).write(row); }
 }
 
@@ -304,8 +310,10 @@ pub(super) fn run() -> ! {
         // Sample a fresh increment after the faulting CPU has returned to its
         // supervisor continuation. Both samples must precede AP timer expiry.
         let peer_after_fault = if FAULT {
-            let fresh = progress(1, heartbeat(1));
-            Some((clock(), fresh))
+            let baseline_sample = clock();
+            let baseline_heartbeat = heartbeat(1);
+            let fresh = progress(1, baseline_heartbeat);
+            Some((baseline_sample, baseline_heartbeat, clock(), fresh))
         } else { None };
         wait(&STOPPED, round);
         let rows: [Run; 2] = core::array::from_fn(|cpu| unsafe { run_ptr(cpu).read() });
@@ -333,10 +341,12 @@ pub(super) fn run() -> ! {
             last_rip[cpu] = unsafe { ptr::addr_of!(CAPTURES).cast::<Capture>().add(cpu).read().saved.rip };
             last_heartbeat[cpu] = r.heartbeat_after;
         }
-        if let Some((sample, heartbeat)) = peer_after_fault {
-            ensure(rows[0].retired <= sample && sample < rows[1].capture && sample < ap_earliest
-                && rows[0].peer_heartbeat < heartbeat && heartbeat <= rows[1].heartbeat_after);
-            print(format_args!("TESSRYN_K03_SMP_BUDGET_FAULT_PEER round={round} sample={sample} heartbeat={heartbeat}\n"));
+        if let Some((baseline_sample, baseline_heartbeat, sample, heartbeat)) = peer_after_fault {
+            ensure(rows[0].retired <= baseline_sample && baseline_sample <= sample
+                && sample < rows[1].capture && sample < ap_earliest
+                && rows[0].peer_heartbeat <= baseline_heartbeat && baseline_heartbeat < heartbeat
+                && heartbeat <= rows[1].heartbeat_after);
+            print(format_args!("TESSRYN_K03_SMP_BUDGET_FAULT_PEER round={round} baseline_sample={baseline_sample} baseline_heartbeat={baseline_heartbeat} sample={sample} heartbeat={heartbeat}\n"));
         }
         let first = usize::from(rows[1].retired < rows[0].retired);
         if FAULT { ensure(first == 0); }
