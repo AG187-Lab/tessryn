@@ -1,7 +1,7 @@
 # Local timers and a shared budget on two CPUs
 
-Status: bounded clean original-kernel emulator execution accepted;
-[retained evidence](../evidence/k03-smp-budget/README.md). This bounded K03
+Status: the original `preempt` and `late` cases have accepted clean emulator
+[evidence](../evidence/k03-smp-budget/README.md). This bounded K03
 profile joins the [protected two-CPU contexts](k03-smp-user.md) to the unchanged
 [scheduler policy](k03-preparation.md). The [single-CPU HPET timer](k03-timer-preemption.md)
 and [two-CPU peer stops](k03-smp-user.md) remain separate correctness references.
@@ -18,8 +18,8 @@ publish a local stop receipt; it cannot mutate scheduler state.
 
 The existing shared HPET main counter supplies node-local emulator time. Each
 CPU independently calibrates and arms its own xAPIC one-shot countdown. The
-timer uses a dedicated DPL0 vector. A valid stop checks the actual interrupted
-CPL3 frame and private root, the active local generation, the local timer
+timer uses a dedicated DPL0 vector. A valid timer interrupt stop checks the
+actual interrupted CPL3 frame and private root, the active local generation, the local timer
 configuration, a zero current count, the hardware in-service bit, EOI and a
 drained local source before rearm. Invalid stop frames, timer source state or
 entry timing fail the experiment. Both legacy PICs and all 24 admitted I/O APIC routes are masked;
