@@ -33,6 +33,7 @@ These documents record research, architectural decisions, implementation gates a
 | [AWS CPU boot and recovery](aws-boot-and-recovery.md) | Headless UEFI inputs, local tests and separately approved native EC2 evidence |
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [IO01 PCI discovery](io01-pci-discovery.md) | Read-only q35 PCI header inventory, serial diagnostics and QMP cross-check |
+| [IO02 NVMe register probe](io02-nvme-registers.md) | Read-only QEMU controller registers and same-guest QMP reference |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
 | [Research](research.md) | Dated primary sources, applicability and open questions |
 | [Review findings](review.md) | Adversarial findings and their resolutions |
