@@ -9,6 +9,12 @@ pub const GUARD: u64 = CANONICAL_LIMIT - HUGE_PAGE;
 pub const TABLE_CAPACITY: usize = 128;
 pub const LEAF_CAPACITY: usize = 16_384;
 const ADDRESS_MASK: u64 = 0x000f_ffff_ffff_f000;
+#[cfg(io02_nvme_registers)]
+pub const NVME_MMIO_BASE: u64 = 0x8100_0000;
+#[cfg(io02_nvme_registers)]
+pub const NVME_BAR_BYTES: u64 = 0x4000;
+#[cfg(io02_nvme_registers)]
+const NVME_PAGE_FLAGS: u64 = 1 | (1 << 3) | (1 << 4) | (1 << 63);
 // One fixed supervisor MMIO leaf, used only by the admitted HPET profile.
 // PAT index 3 (PWT=PCD=1, PAT=0) must be admitted as UC by the CPU owner.
 #[cfg(any(k02_native, k03_timer, k03_smp, test))]
@@ -17,7 +23,11 @@ pub const HPET_LEAF: u64 = 0xfec0_0000;
 pub const HPET_UC_FLAGS: u64 = 0x83 | (1 << 3) | (1 << 4) | (1 << 63);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Error { Empty, Overflow, PhysicalWidth, NonCanonical, Guard, Alignment, TableBudget, LeafBudget, TableLink }
+pub enum Error {
+    Empty, Overflow, PhysicalWidth, NonCanonical, Guard, Alignment, TableBudget, LeafBudget, TableLink,
+    #[cfg(io02_nvme_registers)]
+    NvmeAperture,
+}
 impl Error {
     pub const fn label(self) -> &'static str {
         match self {
@@ -26,6 +36,8 @@ impl Error {
             Self::Guard => "guard-overlap", Self::Alignment => "table-alignment",
             Self::TableBudget => "table-budget", Self::LeafBudget => "leaf-budget",
             Self::TableLink => "table-link",
+            #[cfg(io02_nvme_registers)]
+            Self::NvmeAperture => "nvme-aperture",
         }
     }
 }
@@ -58,6 +70,16 @@ pub fn mapping_bounds(range: Range, physical_bits: u8) -> Result<Range, Error> {
     let rounded = Range { start: range.start & !(HUGE_PAGE - 1), end };
     validate_range(rounded, physical_bits)?;
     Ok(rounded)
+}
+
+#[cfg(io02_nvme_registers)]
+pub fn nvme_aperture(address: u64, physical_bits: u8) -> Result<Range, Error> {
+    // This address belongs to the pinned QEMU profile only. No new platform
+    // can inherit this authority from a matching PCI class or a RAM gap.
+    if address != NVME_MMIO_BASE { return Err(Error::NvmeAperture); }
+    let range = Range::checked(address, NVME_BAR_BYTES)?;
+    validate_range(range, physical_bits)?;
+    Ok(range)
 }
 
 #[repr(C, align(4096))]
@@ -135,8 +157,44 @@ impl Tables {
         let pdpt = self.link_index(self.pages[0].0[((address >> 39) & 511) as usize]).ok()?;
         let directory = self.link_index(self.pages[pdpt].0[((address >> 30) & 511) as usize]).ok()?;
         let leaf = self.pages[directory].0[((address >> 21) & 511) as usize];
+        #[cfg(io02_nvme_registers)]
+        if leaf & 0x81 == 1 {
+            let table = self.link_index(leaf).ok()?;
+            let entry = self.pages[table].0[((address >> 12) & 511) as usize];
+            return (entry & 1 != 0).then_some((entry & ADDRESS_MASK) | (address & 4095));
+        }
         if leaf & 0x81 != 0x81 { return None; }
         Some((leaf & ADDRESS_MASK & !(HUGE_PAGE - 1)) | (address & (HUGE_PAGE - 1)))
+    }
+
+    /// Replace the first register page in its original identity mapping.
+    /// The caller admits NXE, CR0.WP and PAT[3]=UC and reloads the live root
+    /// before using the page. The other 511 pages retain their K01 mappings.
+    #[cfg(io02_nvme_registers)]
+    pub fn set_nvme_register_page(&mut self, address: u64) -> Result<(), Error> {
+        nvme_aperture(address, self.physical_bits)?;
+        let pdpt = self.link_index(self.pages[0].0[((address >> 39) & 511) as usize])?;
+        let directory = self.link_index(self.pages[pdpt].0[((address >> 30) & 511) as usize])?;
+        let slot = ((address >> 21) & 511) as usize;
+        let previous = self.pages[directory].0[slot];
+        let huge_base = address & !(HUGE_PAGE - 1);
+        let accessed_dirty = previous & ((1 << 5) | (1 << 6));
+        if previous & !accessed_dirty != huge_base | 0x83 { return Err(Error::TableLink); }
+        if self.used == TABLE_CAPACITY { return Err(Error::TableBudget); }
+        if self.leaves > LEAF_CAPACITY - 511 { return Err(Error::LeafBudget); }
+
+        let table = self.used;
+        let selected = ((address >> 12) & 511) as usize;
+        for (index, entry) in self.pages[table].0.iter_mut().enumerate() {
+            *entry = (huge_base + index as u64 * 4096) | 3 | accessed_dirty;
+        }
+        self.pages[table].0[selected] = address | NVME_PAGE_FLAGS;
+        self.used += 1;
+        self.leaves += 511;
+        // The active root must not expose the table before its entries exist.
+        core::sync::atomic::compiler_fence(core::sync::atomic::Ordering::Release);
+        self.pages[directory].0[slot] = (self.base + table as u64 * 4096) | 3;
+        Ok(())
     }
 
     /// Change only the already mapped HPET-containing supervisor leaf. The
@@ -176,5 +234,52 @@ impl Tables {
         if *leaf & !((1 << 5) | (1 << 6)) != address | 0x83 { return Err(Error::TableLink); }
         *leaf = address | HPET_UC_FLAGS;
         Ok(())
+    }
+}
+
+#[cfg(all(test, io02_nvme_registers))]
+mod nvme_tests {
+    use super::*;
+
+    #[test]
+    fn demotes_one_identity_leaf_and_changes_only_the_register_page() {
+        let mut tables = Tables::empty();
+        tables.reset(48, 0x20_0000).unwrap();
+        tables.map_range(Range { start: 0, end: LOW_LIMIT }).unwrap();
+        let pdpt = tables.link_index(tables.pages[0].0[0]).unwrap();
+        let directory = tables.link_index(tables.pages[pdpt].0[(NVME_MMIO_BASE >> 30) as usize]).unwrap();
+        let slot = ((NVME_MMIO_BASE >> 21) & 511) as usize;
+        tables.pages[directory].0[slot] |= 0x60; // Simulate hardware A/D updates.
+        let before = (tables.table_count(), tables.leaf_count());
+        tables.set_nvme_register_page(NVME_MMIO_BASE).unwrap();
+        assert_eq!((tables.table_count(), tables.leaf_count()), (before.0 + 1, before.1 + 511));
+        let pt = tables.link_index(tables.pages[directory].0[slot]).unwrap();
+        assert_eq!(tables.pages[pt].0[0], NVME_MMIO_BASE | 0x8000_0000_0000_0019);
+        for index in 1..512 {
+            let neighbor = NVME_MMIO_BASE + index as u64 * 4096;
+            assert_eq!(tables.pages[pt].0[index], neighbor | 0x63);
+            assert_eq!(tables.translation(neighbor + 4095), Some(neighbor + 4095));
+        }
+        assert_eq!(tables.translation(NVME_MMIO_BASE + 4095), Some(NVME_MMIO_BASE + 4095));
+        assert_eq!(tables.translation(NVME_MMIO_BASE - 1), Some(NVME_MMIO_BASE - 1));
+        assert_eq!(tables.translation(NVME_MMIO_BASE + HUGE_PAGE), Some(NVME_MMIO_BASE + HUGE_PAGE));
+        assert_eq!(tables.set_nvme_register_page(NVME_MMIO_BASE), Err(Error::TableLink));
+    }
+
+    #[test]
+    fn rejects_wrong_unmapped_and_over_budget_ranges_without_demoting() {
+        let mut tables = Tables::empty();
+        tables.reset(48, 0x20_0000).unwrap();
+        assert_eq!(nvme_aperture(NVME_MMIO_BASE, 48).unwrap().end, NVME_MMIO_BASE + 0x4000);
+        assert_eq!(tables.set_nvme_register_page(NVME_MMIO_BASE + 4096), Err(Error::NvmeAperture));
+        assert_eq!(tables.set_nvme_register_page(NVME_MMIO_BASE), Err(Error::TableLink));
+        tables.map_range(Range::checked(NVME_MMIO_BASE, 4096).unwrap()).unwrap();
+        let before = tables.table_count();
+        tables.leaves = LEAF_CAPACITY;
+        assert_eq!(tables.set_nvme_register_page(NVME_MMIO_BASE), Err(Error::LeafBudget));
+        assert_eq!(tables.table_count(), before);
+        assert_eq!(tables.translation(NVME_MMIO_BASE), Some(NVME_MMIO_BASE));
+        tables.used = TABLE_CAPACITY;
+        assert_eq!(tables.set_nvme_register_page(NVME_MMIO_BASE), Err(Error::TableBudget));
     }
 }

@@ -9,6 +9,8 @@ mod diagnostics;
 mod framebuffer;
 #[cfg(io01_pci)]
 mod io01_pci;
+#[cfg(all(io02_nvme_registers, not(io01_pci)))]
+compile_error!("the NVMe register probe requires the separate IO01 emulator image");
 #[cfg(all(io01_pci, any(not(k01_emulator), not(k01_case = "normal"), k01_aws,
     k01_high_handoff, k02_native, k02_matrix, k02_region_service, k03_timer,
     k03_smp, k03_smp_user, k03_smp_budget, native_benchmarks, smp_benchmarks)))]
@@ -136,8 +138,10 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch={:#x} free_pages={} loader=reserved runtime=reserved firmware=quarantined\n",
         handoff.scratch, handoff.free_pages));
-    #[cfg(io01_pci)]
+    #[cfg(all(io01_pci, not(io02_nvme_registers)))]
     io01_pci::run();
+    #[cfg(all(io01_pci, io02_nvme_registers))]
+    io01_pci::run(handoff);
     #[cfg(not(io01_pci))]
     {
     if cfg!(k01_high_handoff) {

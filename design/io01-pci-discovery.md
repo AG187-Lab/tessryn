@@ -5,6 +5,8 @@ and a prerequisite for the storage and diagnostic work in [CLOUD01 #35](https://
 It exercises original Tessryn code in QEMU. Native storage, persistence and
 service diagnostics still require [IO02 #10](https://github.com/AG187-Lab/tessryn/issues/10)
 and [K05 #8](https://github.com/AG187-Lab/tessryn/issues/8).
+The separate [IO02 register profile](io02-nvme-registers.md) builds on this
+inventory to read the modeled NVMe controller's capability and version registers.
 
 The dedicated `io01_pci` image runs one boot CPU on `pc-q35-11.1` with TCG,
 `qemu64`, 256 MiB RAM and the pinned OVMF pair. It starts the scan only after
