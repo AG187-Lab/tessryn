@@ -49,9 +49,13 @@ smp_user_enter:
     mov r9, [r9 + 48]
     swapgs
     iretq
-.if {smp_budget}
+.if {smp_timer}
 .global smp_user_timer_67
 smp_user_timer_67:
+.if {smp_workload}
+    cmp qword ptr [rsp + 8], 8
+    je smp_workload_timer_drain
+.endif
     push 0
     push 67
     jmp smp_user_trap_common
@@ -133,6 +137,41 @@ smp_user_unexpected:
 1:  hlt
     jmp 1b
 
+.if {smp_workload}
+// Only the AP's post-INT128 drain window enables IRQs at CPL0. Preserve the
+// supervisor continuation, including flags and any live legacy FP state.
+smp_workload_timer_drain:
+    cld
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+    push rbx
+    mov rbx, rsp
+    and rsp, -16
+    sub rsp, 512
+    fxsave64 [rsp]
+    call smp_workload_drain
+    fxrstor64 [rsp]
+    mov rsp, rbx
+    pop rbx
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    iretq
+.endif
+
 .section .text$smpuser,"xr"
 .balign 4096
 .global smp_user_program_start
@@ -192,3 +231,41 @@ smp_user_budget_fault_start:
     .org smp_user_program_start + 4096
 .global smp_user_program_end
 smp_user_program_end:
+
+.if {smp_workload}
+.section .text$smpworkload,"xr"
+.balign 4096
+.global smp_workload_program_start
+smp_workload_program_start:
+.global smp_workload_user_start
+smp_workload_user_start:
+    mov ax, 0x2b
+    mov gs, ax
+    cmp qword ptr [rdi + 8], r13
+    jne smp_workload_bad
+.global smp_workload_loop
+smp_workload_loop:
+    lock inc qword ptr [rdi]
+.global smp_workload_after_inc
+smp_workload_after_inc:
+    add r10, r12
+.global smp_workload_after_sum
+smp_workload_after_sum:
+    pause
+.global smp_workload_before_dec
+smp_workload_before_dec:
+    dec rcx
+.global smp_workload_after_dec
+smp_workload_after_dec:
+    jnz smp_workload_loop
+.global smp_workload_complete
+smp_workload_complete:
+    int 128
+.global smp_workload_complete_return
+smp_workload_complete_return:
+smp_workload_bad:
+    ud2
+    .org smp_workload_program_start + 4096
+.global smp_workload_program_end
+smp_workload_program_end:
+.endif

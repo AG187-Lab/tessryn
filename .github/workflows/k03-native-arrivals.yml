@@ -1,0 +1,123 @@
+name: K03 native scheduled admission and cancellation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  k03-native-arrivals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.6'
+      - name: Test cancellation, lifecycle and evidence boundaries
+        run: python3 -m unittest tests.test_k03_native_arrival_lifecycle tests.test_k03_native_arrivals_protocol -v
+      - name: Install pinned compiler, host libraries and emulator
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential pkg-config libglib2.0-dev ninja-build
+          python3 tools/setup_toolchain.py --jobs 4
+          python3 tools/setup_k02_toolchain.py
+          python3 tools/setup_uefi.py
+      - name: Preregister and capture the directed case and 12 comparison boots
+        run: |
+          mkdir -p build
+          if ! python3 tools/k03_native_arrivals.py --out build/k03-native-arrivals/ci --allow-qemu >build/k03-native-arrivals-capture.log 2>&1; then
+            echo '::error::Native scheduled-arrival capture failed. Raw diagnostics are kept out of public logs.'
+            exit 1
+          fi
+      - name: Replay the full registered capture read-only
+        run: |
+          if ! python3 tools/k03_native_arrivals.py --verify build/k03-native-arrivals/ci >build/k03-native-arrivals-replay.log 2>&1; then
+            echo '::error::Native scheduled-arrival replay failed. Raw diagnostics are kept out of public logs.'
+            exit 1
+          fi
+      - name: Export verified quantum results and directed cancellation witnesses
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          packet = Path('build/k03-native-arrivals/ci')
+          summary_bytes = (packet / 'summary.json').read_bytes()
+          registration_bytes = (packet / 'registration.json').read_bytes()
+          summary = json.loads(summary_bytes)
+          registration = json.loads(registration_bytes)
+          registration_sha256 = hashlib.sha256(registration_bytes).hexdigest()
+
+          def checked(condition):
+              if not condition:
+                  raise SystemExit('Native scheduled-arrival public evidence does not match the verified sweep.')
+
+          def integer(value):
+              checked(type(value) is int and 0 <= value < 2**64)
+              return value
+
+          def hex_id(value, width):
+              checked(isinstance(value, str) and re.fullmatch(f'[0-9a-f]{{{width}}}', value) is not None)
+              return value
+
+          source = summary['source']
+          checked(summary['status'] == 'pass' and source['dirty'] is False and source['revision'] == os.environ['GITHUB_SHA'])
+          checked(summary['registration_sha256'] == registration_sha256)
+          schedule = [('directed', 4)] + [(case, quantum) for case in ('steady', 'burst', 'overload') for quantum in (4, 16, 16, 4)]
+          attempts = []
+          for number, ((case, quantum), attempt) in enumerate(zip(schedule, summary['attempts'], strict=True), 1):
+              checked((attempt['number'], attempt['scenario'], attempt['quantum'], attempt['status']) == (number, case, quantum, 'pass'))
+              observed = attempt['observations']
+              decode_wait = observed['classes']['decode']['first_wait_ns']
+              attempts.append({
+                  'number': number, 'scenario': case, 'quantum': quantum,
+                  **{key: integer(observed[key]) for key in ('offers', 'cancels', 'completed', 'canceled', 'dispatches', 'timer_stops')},
+                  'cancel_counts': {key: integer(observed['cancel_counts'][key]) for key in ('queued', 'running', 'terminal')},
+                  'max_decode_first_wait_ns': None if decode_wait is None else integer(decode_wait['max']),
+                  'trace_sha256': hex_id(observed['trace_sha256'], 64),
+              })
+
+          directed = summary['attempts'][0]['observations']['jobs']
+          witnesses = {}
+          for (kind, expected_state), job in zip((('running', 'canceled'), ('queued', 'canceled'), ('completion', 'completed')), directed, strict=True):
+              checked(job['state'] == expected_state)
+              witness = {'task_id': integer(job['id']), 'consumed_ns': integer(job['consumed_ns']),
+                         'iterations': integer(job['progress']), 'slices': len(job['slices'])}
+              if kind != 'completion':
+                  canceled = job['cancellation']
+                  checked(canceled['disposition'] == kind)
+                  witness['reservation_at_cancel_ns'] = integer(canceled['reserved_ns'])
+              if kind == 'running':
+                  witness['cancel_to_retirement_ns'] = integer(job['running_cancel_drain_ns'])
+              witnesses[kind] = witness
+
+          image, = [ref for ref in registration['artifacts'] if ref['path'] == 'a/BOOTX64.EFI']
+          evidence = {
+              'format': 'tessryn-native-scheduled-arrivals-ci-evidence/v1',
+              'status': 'pass', 'time_basis': 'QEMU virtual time',
+              'source_revision': hex_id(source['revision'], 40),
+              'source_tree_sha256': hex_id(source['tree_sha256'], 64),
+              'registration_sha256': registration_sha256,
+              'replayed_summary_sha256': hashlib.sha256(summary_bytes).hexdigest(),
+              'image_sha256': hex_id(image['sha256'], 64),
+              'workload_sha256': hex_id(registration['workload_sha256'], 64),
+              'in_slice_offers_by_quantum': {key: integer(summary['in_slice_offers_by_quantum'][key]) for key in ('4', '16')},
+              'directed_witnesses': witnesses,
+              'attempts': attempts,
+          }
+          Path('build/k03-native-arrivals/ci-evidence.json').write_text(json.dumps(evidence, indent=2, sort_keys=True) + '\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: k03-native-arrivals-evidence-summary
+          path: build/k03-native-arrivals/ci-evidence.json
+          if-no-files-found: error
+          retention-days: 14

@@ -3,10 +3,16 @@
 #![no_main]
 #![deny(unsafe_op_in_unsafe_fn)]
 
-#[cfg_attr(any(native_benchmarks, k03_smp), allow(dead_code))]
+#[cfg_attr(any(native_benchmarks, k03_smp, io01_pci), allow(dead_code))]
 mod cpu;
 mod diagnostics;
 mod framebuffer;
+#[cfg(io01_pci)]
+mod io01_pci;
+#[cfg(all(io01_pci, any(not(k01_emulator), not(k01_case = "normal"), k01_aws,
+    k01_high_handoff, k02_native, k02_matrix, k02_region_service, k03_timer,
+    k03_smp, k03_smp_user, k03_smp_budget, native_benchmarks, smp_benchmarks)))]
+compile_error!("PCI discovery requires its separate single-CPU emulator profile");
 mod paging;
 mod uefi;
 #[cfg(k03_smp)]
@@ -23,6 +29,9 @@ compile_error!("contention benchmarks require the separate two-CPU rendezvous em
 mod smp_user;
 #[cfg(all(k03_smp_budget, not(k03_smp_user)))]
 compile_error!("SMP budgets require the separate SMP user execution profile");
+#[cfg(all(k03_smp_workload, any(not(k03_smp_user), k03_smp_budget,
+    smp_case = "missing_ap", not(smp_user_case = "rendezvous"))))]
+compile_error!("scheduled workload requires the separate SMP user rendezvous image");
 #[cfg(all(k03_smp_user, not(k03_smp)))]
 compile_error!("SMP user execution requires the separate SMP emulator profile");
 #[cfg(all(k03_smp, any(not(k01_emulator), k01_aws, k02_native, native_benchmarks, k03_timer)))]
@@ -35,7 +44,7 @@ compile_error!("the first native benchmark profile requires k01_emulator only");
 mod benchmark_clock;
 #[cfg(native_benchmarks)]
 mod native_benchmarks;
-#[cfg(any(native_benchmarks, k03_timer, k03_smp_budget))]
+#[cfg(any(native_benchmarks, k03_timer, k03_smp_budget, k03_smp_workload))]
 extern crate tessryn_scheduler;
 #[cfg(k03_timer)]
 mod preempt_timer;
@@ -69,7 +78,7 @@ mod region_runtime;
 #[cfg(any(all(k02_region_service, not(k02_matrix)), k03_smp_user))]
 mod k02_sha256;
 
-#[cfg(not(any(native_benchmarks, k03_smp)))]
+#[cfg(not(any(native_benchmarks, k03_smp, io01_pci)))]
 use core::arch::asm;
 use core::mem::MaybeUninit;
 use core::panic::PanicInfo;
@@ -127,6 +136,10 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_MEMORY_OWNERSHIP_OK scratch={:#x} free_pages={} loader=reserved runtime=reserved firmware=quarantined\n",
         handoff.scratch, handoff.free_pages));
+    #[cfg(io01_pci)]
+    io01_pci::run();
+    #[cfg(not(io01_pci))]
+    {
     if cfg!(k01_high_handoff) {
         print(format_args!("TESSRYN_K01_HIGH_OWNERSHIP_OK scratch={:#x} pattern={pattern:#x}\n", handoff.scratch));
     }
@@ -153,6 +166,7 @@ pub extern "sysv64" fn kernel_main(handoff: &uefi::Handoff) -> ! {
     }
     print(format_args!("TESSRYN_K01_PASS\n"));
     finish(true)
+    }
     }
 }
 
