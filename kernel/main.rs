@@ -11,6 +11,8 @@ mod framebuffer;
 mod io01_pci;
 #[cfg(all(io02_nvme_registers, not(io01_pci)))]
 compile_error!("the NVMe register probe requires the separate IO01 emulator image");
+#[cfg(all(io02_nvme_admin_queues, not(io02_nvme_registers)))]
+compile_error!("the NVMe admin queue experiment requires the separate NVMe register image");
 #[cfg(all(io01_pci, any(not(k01_emulator), not(k01_case = "normal"), k01_aws,
     k01_high_handoff, k02_native, k02_matrix, k02_region_service, k03_timer,
     k03_smp, k03_smp_user, k03_smp_budget, native_benchmarks, smp_benchmarks)))]
