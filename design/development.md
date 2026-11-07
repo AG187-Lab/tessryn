@@ -61,6 +61,12 @@ normal case and full late charges with peer ownership retained until
 reconciliation. Independent dispatch, deadline and blocked/woken fixtures,
 safe reuse and physical clocks remain open.
 
+The [native scheduled-admission experiment](k03-native-arrivals.md) uses the
+BSP as a policy coordinator and one AP as a CPL3 worker. It pairs the same
+three scheduled workloads at quanta 4 and 16 with a separate cancellation
+and completion test. Its replay preserves offer delay, ready-queue wait,
+timer handling and exact retirement charges in QEMU virtual time.
+
 [Physical hardware requirements](hardware-intake.md) are ready through
 [PR #64](https://github.com/AG187-Lab/tessryn/pull/64). No server has been rented or
 qualified by that work; a machine, confirmed boot/console/recovery access and a
