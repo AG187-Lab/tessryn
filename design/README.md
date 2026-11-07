@@ -34,6 +34,7 @@ These documents record research, architectural decisions, implementation gates a
 | [Native AWS evidence intake](aws-native-evidence.md) | Private cloud capture consistency, fresh boots, independent recovery and cleanup review |
 | [IO01 PCI discovery](io01-pci-discovery.md) | Read-only q35 PCI header inventory, serial diagnostics and QMP cross-check |
 | [IO02 NVMe register probe](io02-nvme-registers.md) | Read-only QEMU controller registers and same-guest QMP reference |
+| [IO02 NVMe admin queues](io02-nvme-admin-queues.md) | QEMU admin queue setup and teardown with bus mastering disabled |
 | [Evaluation evidence](evaluation-evidence.md) | Schemas, preregistration, holdouts and measurement rules |
 | [Research](research.md) | Dated primary sources, applicability and open questions |
 | [Review findings](review.md) | Adversarial findings and their resolutions |

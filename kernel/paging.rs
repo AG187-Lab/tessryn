@@ -14,7 +14,8 @@ pub const NVME_MMIO_BASE: u64 = 0x8100_0000;
 #[cfg(io02_nvme_registers)]
 pub const NVME_BAR_BYTES: u64 = 0x4000;
 #[cfg(io02_nvme_registers)]
-const NVME_PAGE_FLAGS: u64 = 1 | (1 << 3) | (1 << 4) | (1 << 63);
+const NVME_PAGE_FLAGS: u64 =
+    1 | ((cfg!(io02_nvme_admin_queues) as u64) << 1) | (1 << 3) | (1 << 4) | (1 << 63);
 // One fixed supervisor MMIO leaf, used only by the admitted HPET profile.
 // PAT index 3 (PWT=PCD=1, PAT=0) must be admitted as UC by the CPU owner.
 #[cfg(any(k02_native, k03_timer, k03_smp, test))]
@@ -170,6 +171,7 @@ impl Tables {
     /// Replace the first register page in its original identity mapping.
     /// The caller admits NXE, CR0.WP and PAT[3]=UC and reloads the live root
     /// before using the page. The other 511 pages retain their K01 mappings.
+    /// Only the separate admin queue experiment gets a writable register page.
     #[cfg(io02_nvme_registers)]
     pub fn set_nvme_register_page(&mut self, address: u64) -> Result<(), Error> {
         nvme_aperture(address, self.physical_bits)?;
@@ -254,7 +256,8 @@ mod nvme_tests {
         tables.set_nvme_register_page(NVME_MMIO_BASE).unwrap();
         assert_eq!((tables.table_count(), tables.leaf_count()), (before.0 + 1, before.1 + 511));
         let pt = tables.link_index(tables.pages[directory].0[slot]).unwrap();
-        assert_eq!(tables.pages[pt].0[0], NVME_MMIO_BASE | 0x8000_0000_0000_0019);
+        let expected = if cfg!(io02_nvme_admin_queues) { 0x8000_0000_0000_001b } else { 0x8000_0000_0000_0019 };
+        assert_eq!(tables.pages[pt].0[0], NVME_MMIO_BASE | expected);
         for index in 1..512 {
             let neighbor = NVME_MMIO_BASE + index as u64 * 4096;
             assert_eq!(tables.pages[pt].0[index], neighbor | 0x63);

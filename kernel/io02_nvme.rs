@@ -2,6 +2,10 @@
 
 use super::{Bdf, Function, Register};
 
+#[cfg(io02_nvme_admin_queues)]
+#[path = "io02_nvme_admin.rs"]
+mod admin;
+
 const CONTROLLER: Bdf = Bdf {
     bus: 1,
     slot: 0,
@@ -76,19 +80,124 @@ pub(super) fn run(handoff: &crate::uefi::Handoff, functions: &[Function]) {
         |selector| unsafe { super::read_config(selector) },
         // SAFETY: K01 owns CR3 and has validated the final firmware handoff.
         |bar| unsafe { crate::cpu::prepare_nvme_mmio(handoff, bar) },
-        // SAFETY: probe admits the single uncached, read-only BAR page before
-        // invoking this closure at only the three aligned register offsets.
+        // SAFETY: probe admits the single uncached BAR page before invoking
+        // this closure at only the three aligned register offsets.
         |address| unsafe { core::ptr::without_provenance::<u32>(address as usize).read_volatile() },
     );
     match result {
-        Ok(None) => print(format_args!("TESSRYN_IO02_NVME_ABSENT reads=0\n")),
-        Ok(Some(Registers { bar, cap, vs })) => print(format_args!(
-            "TESSRYN_IO02_NVME_REGISTERS bdf=01:00.0 bar={bar:#010x} cap={cap:#018x} vs={vs:#010x} reads=3\n"
-        )),
+        Ok(None) => {
+            print(format_args!("TESSRYN_IO02_NVME_ABSENT reads=0\n"));
+            #[cfg(io02_nvme_admin_queues)]
+            print(format_args!("TESSRYN_IO02_NVME_ADMIN_ABSENT writes=0\n"));
+        }
+        Ok(Some(Registers { bar, cap, vs })) => {
+            print(format_args!(
+                "TESSRYN_IO02_NVME_REGISTERS bdf=01:00.0 bar={bar:#010x} cap={cap:#018x} vs={vs:#010x} reads=3\n"
+            ));
+            #[cfg(io02_nvme_admin_queues)]
+            match queue_io::run(handoff, bar) {
+                Ok((asq, acq, firmware_reset)) => {
+                    let firmware = if firmware_reset { "reset" } else { "inactive" };
+                    print(format_args!(
+                        "TESSRYN_IO02_NVME_ADMIN bdf=01:00.0 asq={asq:#018x} acq={acq:#018x} aqa=0x00010001 cc_ready=0x00460001 csts_ready=0x00000001 cc_final=0x00000000 csts_final=0x00000000 bme=0 doorbells=0 firmware={firmware}\n"
+                    ));
+                }
+                Err(reason) => {
+                    print(format_args!("TESSRYN_IO02_NVME_ADMIN_FAIL reason={reason}\n"));
+                    halt();
+                }
+            }
+        }
         Err(reason) => {
             print(format_args!("TESSRYN_IO02_NVME_FAIL reason={reason}\n"));
             halt();
         }
+    }
+}
+
+#[cfg(all(io02_nvme_admin_queues, not(test)))]
+mod queue_io {
+    use core::ptr;
+    use core::sync::atomic::{Ordering, fence};
+
+    use crate::paging::{LOW_LIMIT, Range, validate_range};
+    use crate::uefi::Handoff;
+
+    use super::{CONTROLLER, Register as PciRegister, admin};
+
+    const PAGE_BYTES: usize = 4096;
+    const PAGE_WORDS: usize = PAGE_BYTES / size_of::<u64>();
+
+    #[repr(C, align(4096))]
+    struct QueuePage([u64; PAGE_WORDS]);
+
+    static mut SUBMISSION: QueuePage = QueuePage([0; PAGE_WORDS]);
+    static mut COMPLETION: QueuePage = QueuePage([0; PAGE_WORDS]);
+
+    struct Device {
+        bar: u64,
+        submission: *mut u64,
+        completion: *mut u64,
+    }
+
+    impl admin::AdminIo for Device {
+        fn pci_command(&mut self) -> u16 {
+            // SAFETY: the exact endpoint is admitted on the sole masked BSP.
+            unsafe { super::super::read_config(CONTROLLER.selector(PciRegister::CommandStatus)) as u16 }
+        }
+
+        fn set_pci_command(&mut self, value: u16) {
+            // SAFETY: the state machine changes BME on this endpoint only.
+            unsafe { super::super::write_config_command(CONTROLLER, value) };
+        }
+
+        fn read(&mut self, register: admin::Register) -> u32 {
+            // SAFETY: the admitted UC register page contains every typed offset.
+            unsafe { ptr::without_provenance::<u32>((self.bar + register as u64) as usize).read_volatile() }
+        }
+
+        fn write(&mut self, register: admin::Register, value: u32) {
+            // SAFETY: only this profile gets a writable register page, and
+            // the typed offsets exclude the doorbell aperture.
+            unsafe { ptr::without_provenance_mut::<u32>((self.bar + register as u64) as usize).write_volatile(value) };
+        }
+
+        fn zero_pages(&mut self) {
+            // SAFETY: the distinct static pages are image-owned and the
+            // state machine calls this with device bus mastering stopped.
+            for page in [self.submission, self.completion] {
+                for index in 0..PAGE_WORDS {
+                    unsafe { page.add(index).write_volatile(0) };
+                }
+            }
+            fence(Ordering::SeqCst);
+        }
+    }
+
+    fn queue_page(handoff: &Handoff, address: u64) -> Result<Range, &'static str> {
+        if address == 0 || address % PAGE_BYTES as u64 != 0 {
+            return Err("admin-page-alignment");
+        }
+        let page = Range::checked(address, PAGE_BYTES as u64).map_err(|error| error.label())?;
+        validate_range(page, handoff.physical_bits).map_err(|error| error.label())?;
+        if page.start < handoff.image.start || page.end > handoff.image.end || page.end > LOW_LIMIT {
+            return Err("admin-page-ownership");
+        }
+        Ok(page)
+    }
+
+    pub(super) fn run(handoff: &Handoff, bar: u64) -> Result<(u64, u64, bool), &'static str> {
+        // K01 already identity maps the image in the live root. Keep the raw
+        // pointers for CPU stores and admit their whole pages as DMA addresses.
+        let submission = ptr::addr_of_mut!(SUBMISSION).cast::<u64>();
+        let completion = ptr::addr_of_mut!(COMPLETION).cast::<u64>();
+        let asq = queue_page(handoff, submission.addr() as u64)?;
+        let acq = queue_page(handoff, completion.addr() as u64)?;
+        if asq.overlaps(acq) {
+            return Err("admin-page-overlap");
+        }
+        let firmware_reset = admin::cycle(&mut Device { bar, submission, completion }, asq.start, acq.start)?;
+        Ok((asq.start, acq.start, firmware_reset))
     }
 }
 

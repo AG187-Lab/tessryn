@@ -145,6 +145,25 @@ unsafe fn read_config(selector: u32) -> u32 {
     value
 }
 
+#[cfg(all(io02_nvme_admin_queues, not(test)))]
+unsafe fn write_config_command(bdf: Bdf, value: u16) {
+    // SAFETY: the masked BSP owns the configuration ports, and the caller
+    // has admitted this endpoint. A word write cannot touch PCI Status W1C bits.
+    unsafe {
+        core::arch::asm!(
+            "mov dx, 0xcf8",
+            "out dx, eax",
+            "mov dx, 0xcfc",
+            "mov ax, cx",
+            "out dx, ax",
+            inout("eax") bdf.selector(Register::CommandStatus) => _,
+            in("cx") value,
+            out("dx") _,
+            options(nostack, preserves_flags),
+        );
+    }
+}
+
 #[cfg(not(test))]
 pub fn run(#[cfg(io02_nvme_registers)] handoff: &crate::uefi::Handoff) -> ! {
     print(format_args!(

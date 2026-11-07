@@ -35,8 +35,10 @@ observation rejects the run. Capture uses the existing bounded QEMU runner.
 
 This experiment supplies emulator evidence for register admission and early
 serial diagnostics. The probe leaves PCI configuration data and controller
-registers intact. Queue setup, DMA authority, namespace I/O, persistence,
-service diagnostics and [CLOUD01](https://github.com/AG187-Lab/tessryn/issues/35)
+registers intact. The separate [admin queue experiment](io02-nvme-admin-queues.md)
+exercises setup and teardown in QEMU with bus mastering disabled. DMA authority,
+namespace I/O, persistence, service diagnostics and
+[CLOUD01](https://github.com/AG187-Lab/tessryn/issues/35)
 qualification remain open. No performance samples are collected.
 
 ## Reproduce offline

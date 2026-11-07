@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture and verify bounded QEMU PCI discovery and NVMe register reads."""
+"""Capture and verify bounded QEMU PCI discovery and NVMe experiments."""
 
 from __future__ import annotations
 
@@ -25,7 +25,8 @@ from tools.build_io01_pci import CASES, PROFILE, canonical, validate_build
 from tools.check_kernel_display import QMP
 from tools.g03.evidence import parse_json
 from tools.io01_pci_trace import DONE_PREFIX, EvidenceRejected, require_evidence, verify
-from tools.io02_nvme_trace import SNAPSHOT_ARGUMENTS, SNAPSHOT_FILE, SNAPSHOT_SIZE, admit_bar0, verify_registers
+from tools.io02_nvme_admin_trace import ADMIN_SNAPSHOT_ARGUMENTS, ADMIN_SNAPSHOT_FILE, verify_admin_queues
+from tools.io02_nvme_trace import SNAPSHOT_ARGUMENTS, SNAPSHOT_FILE, admit_bar0, verify_registers
 from tools.k02_region_protocol import digest, fresh_output, regular_bytes, require, write_json
 from tools.setup_uefi import verify_installation
 
@@ -33,20 +34,38 @@ FORMAT = "tessryn-io01-pci-result/v1"
 SCOPE = "original-kernel PCI configuration reads on one QEMU q35 TCG profile"
 NVME_FORMAT = "tessryn-io02-nvme-registers-result/v1"
 NVME_SCOPE = "original-kernel PCI configuration and NVMe register reads on one QEMU q35 TCG profile"
+ADMIN_FORMAT = "tessryn-io02-nvme-admin-queues-result/v1"
+ADMIN_SCOPE = "original-kernel NVMe admin queue setup and teardown on one QEMU q35 TCG profile"
 PASS_REASON = "original PCI serial and paused QMP topology matched"
 NVME_PASS_REASON = "original PCI and NVMe serial matched paused QMP topology and register evidence"
+ADMIN_PASS_REASON = "original NVMe admin queue witness and paused QMP final register state matched"
 TIMEOUT_SECONDS = 30
 MAX_LOG_BYTES = 1 << 20
 MAX_QMP_BYTES = 1 << 20
 # The pinned QEMU monitor rate-limits guest RTC changes to one per second.
 MAX_RTC_EVENTS = TIMEOUT_SECONDS + 2
 DONE = re.compile(rb"(?m)^" + re.escape(DONE_PREFIX) + rb"[0-9]{1,4}\r?\n")
-FAULT_MARKERS = (b"TESSRYN_IO01_PCI_FAIL", b"TESSRYN_IO02_NVME_FAIL", b"TESSRYN_K01_FAIL", b"TESSRYN_K01_UNEXPECTED",
+FAULT_MARKERS = (b"TESSRYN_IO01_PCI_FAIL", b"TESSRYN_IO02_NVME_FAIL", b"TESSRYN_IO02_NVME_ADMIN_FAIL",
+                 b"TESSRYN_K01_FAIL", b"TESSRYN_K01_UNEXPECTED",
                  b"TESSRYN_K01_EXCEPTION", b"TESSRYN_K01_PANIC")
 CONTROLS = ("qmp_capabilities", "query-status", "stop", "query-status", "query-pci", "quit")
 LOGS = ("serial.log", "stderr.log", "qmp-recv.log", "qmp-send.log")
 FIRMWARE_FILES = {"code": "code.fd", "vars": "vars.fd", "notice": "NOTICE"}
 QEMU = ROOT / "build/toolchain/bin/qemu-system-x86_64"
+
+
+def snapshot_requests(case, *, nvme_registers=False, nvme_admin_queues=False):
+    if case != "present":
+        return ()
+    if nvme_admin_queues:
+        return SNAPSHOT_ARGUMENTS, ADMIN_SNAPSHOT_ARGUMENTS
+    return (SNAPSHOT_ARGUMENTS,) if nvme_registers else ()
+
+
+def pass_reason(*, nvme_registers=False, nvme_admin_queues=False):
+    if nvme_admin_queues:
+        return ADMIN_PASS_REASON
+    return NVME_PASS_REASON if nvme_registers else PASS_REASON
 
 
 def qemu_command(case: str) -> list[str]:
@@ -106,10 +125,11 @@ class Capture:
     qmp_recv: bytes = b""
     qmp_send: bytes = b""
     nvme_snapshot: bytes | None = None
+    admin_snapshot: bytes | None = None
 
 
 def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
-            nvme_registers: bool = False) -> Capture:
+            nvme_registers: bool = False, nvme_admin_queues: bool = False) -> Capture:
     """Own the QEMU group, socket and nonblocking pipes through bounded cleanup."""
     require(type(timeout) in (int, float) and math.isfinite(timeout) and 0 < timeout <= TIMEOUT_SECONDS,
             "invalid PCI capture deadline")
@@ -121,7 +141,8 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
     cancelled = False
     handlers = {}
     child = connection = recording = None
-    nvme_snapshot = None
+    snapshots = {}
+    reads = snapshot_requests(case, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
     status, reason = "unavailable", "emulator process launch failed"
     stage = "process launch"
 
@@ -185,12 +206,15 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
         require_evidence(is_status(qmp.command("query-status"), "paused", False), "emulator pause not observed")
         pci = qmp.command("query-pci")
         require_evidence(type(pci) is list, "query-pci did not return a bus list")
-        if nvme_registers and case == "present":
+        if reads:
             stage = "paused QMP NVMe register read"
             admit_bar0(pci)
-            require_evidence(qmp.command("pmemsave", SNAPSHOT_ARGUMENTS) == {}, "QMP register read reply was invalid")
-            nvme_snapshot = regular_bytes(scratch / SNAPSHOT_FILE, SNAPSHOT_SIZE)
-            require_evidence(len(nvme_snapshot) == SNAPSHOT_SIZE, "incomplete QMP register snapshot")
+            for arguments in reads:
+                require_evidence(qmp.command("pmemsave", arguments) == {}, "QMP register read reply was invalid")
+                name, size = arguments["filename"], arguments["size"]
+                snapshot = regular_bytes(scratch / name, size)
+                require_evidence(len(snapshot) == size, "incomplete QMP register snapshot")
+                snapshots[name] = snapshot
         stage = "QMP quit acknowledgement"
         require_evidence(qmp.command("quit") == {}, "QMP quit reply was invalid")
         stage = "QMP shutdown drain and process exit"
@@ -256,7 +280,8 @@ def capture(case: str, scratch: Path, *, timeout: float = TIMEOUT_SECONDS,
     return Capture(status, reason, child.returncode if child is not None else None, time.monotonic() - started,
                    bytes(output["serial"]), bytes(output["stderr"]),
                    bytes(recording.incoming) if recording is not None else b"",
-                   bytes(recording.outgoing) if recording is not None else b"", nvme_snapshot)
+                   bytes(recording.outgoing) if recording is not None else b"",
+                   snapshots.get(SNAPSHOT_FILE), snapshots.get(ADMIN_SNAPSHOT_FILE))
 
 
 def is_status(value, name, running):
@@ -271,7 +296,8 @@ def qmp_records(data: bytes) -> list[dict]:
     return [parse_json(line) for line in lines]
 
 
-def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=False, nvme_snapshot=None):
+def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=False, nvme_snapshot=None,
+                 nvme_admin_queues=False, admin_snapshot=None):
     require_evidence(not stderr, "emulator wrote to stderr")
     require(len(serial) + len(stderr) <= MAX_LOG_BYTES and len(qmp_recv) + len(qmp_send) <= MAX_QMP_BYTES,
             "capture logs exceed their bounds")
@@ -279,11 +305,11 @@ def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=Fal
     require_evidence(len(markers) == 1 and markers[0].end() == len(serial)
             and not any(marker in serial for marker in FAULT_MARKERS), "missing terminal serial line or unexpected guest output")
     requests = qmp_records(qmp_send)
-    read_registers = nvme_registers and case == "present"
-    controls = (*CONTROLS[:-1], "pmemsave", CONTROLS[-1]) if read_registers else CONTROLS
+    reads = snapshot_requests(case, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
+    controls = (*CONTROLS[:-1], *("pmemsave" for _ in reads), CONTROLS[-1])
     expected_requests = [{"id": i, "execute": op} for i, op in enumerate(controls, 1)]
-    if read_registers:
-        expected_requests[-2]["arguments"] = SNAPSHOT_ARGUMENTS
+    for request, arguments in zip(expected_requests[len(CONTROLS) - 1:-1], reads):
+        request["arguments"] = arguments
     require_evidence(canonical(requests) == canonical(expected_requests), "unexpected QMP command sequence")
     replies = qmp_records(qmp_recv)
     require_evidence(set(replies[0]) == {"QMP"} and type(replies[0]["QMP"]) is dict, "missing original QMP greeting")
@@ -322,8 +348,12 @@ def observations(case, serial, stderr, qmp_recv, qmp_send, *, nvme_registers=Fal
     require_evidence(len(returned) == len(controls) and returned[0] == returned[2] == returned[-1] == {}
             and is_status(returned[1], "running", True) and is_status(returned[3], "paused", False)
             and type(returned[4]) is list, "QMP replies do not prove the paused PCI observation")
+    require_evidence(all(reply == {} for reply in returned[len(CONTROLS) - 1:-1]),
+                     "QMP register read was not acknowledged")
+    if nvme_admin_queues:
+        return verify_admin_queues(serial, returned[4], case, nvme_snapshot, admin_snapshot)
+    require_evidence(admin_snapshot is None, "unexpected QMP admin register snapshot")
     if nvme_registers:
-        require_evidence(not read_registers or returned[-2] == {}, "QMP register read was not acknowledged")
         return verify_registers(serial, returned[4], case, nvme_snapshot)
     require_evidence(nvme_snapshot is None, "unexpected QMP register snapshot")
     return verify(serial, returned[4], case)
@@ -333,9 +363,9 @@ def reference(name: str, data: bytes) -> dict:
     return {"path": name, "sha256": digest(data), "size_bytes": len(data)}
 
 
-def load_inputs(manifest_path: Path, *, nvme_registers=False):
+def load_inputs(manifest_path: Path, *, nvme_registers=False, nvme_admin_queues=False):
     original = regular_bytes(manifest_path, 2 << 20)
-    manifest, disk = validate_build(manifest_path, nvme_registers=nvme_registers)
+    manifest, disk = validate_build(manifest_path, nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
     require(regular_bytes(manifest_path, 2 << 20) == original, "manifest changed while checking inputs")
     setup = verify_installation()
     require(setup == manifest["toolchain"]["setup"], "verified emulator setup differs from the build")
@@ -362,35 +392,39 @@ def execution(case, captured):
             "timeout_seconds": TIMEOUT_SECONDS, "max_log_bytes": MAX_LOG_BYTES, "max_qmp_bytes": MAX_QMP_BYTES}
 
 
-def header(case, *, nvme_registers=False):
-    return {"format": NVME_FORMAT if nvme_registers else FORMAT, "case": case,
-            "scope": NVME_SCOPE if nvme_registers else SCOPE, "qualification": "not_established",
+def header(case, *, nvme_registers=False, nvme_admin_queues=False):
+    if nvme_admin_queues:
+        format_name, scope = ADMIN_FORMAT, ADMIN_SCOPE
+    else:
+        format_name, scope = (NVME_FORMAT, NVME_SCOPE) if nvme_registers else (FORMAT, SCOPE)
+    return {"format": format_name, "case": case, "scope": scope, "qualification": "not_established",
             "capture_origin": "local_runner_claim_unverified_offline"}
 
 
 def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False,
-        nvme_registers: bool = False) -> dict:
+        nvme_registers: bool = False, nvme_admin_queues: bool = False) -> dict:
     require(case in CASES and allow_qemu is True, "explicit --allow-qemu and a known case are required")
     manifest_path = Path(manifest_path).absolute()
     out = fresh_output(out)
     captured = Capture("unavailable", "verified PCI build or emulator setup unavailable")
     bound, observed = None, None
     status, reason = "unavailable", captured.reason
+    options = {"nvme_registers": nvme_registers, "nvme_admin_queues": nvme_admin_queues}
     try:
-        inputs = load_inputs(manifest_path, nvme_registers=nvme_registers)
+        inputs = load_inputs(manifest_path, **options)
         bound = bindings(inputs)
         with tempfile.TemporaryDirectory(prefix="tessryn-io01-", dir=Path("/tmp").resolve()) as temporary:
             scratch = Path(temporary)
             for name, raw in inputs[3].items():
                 (scratch / name).write_bytes(raw)
             (scratch / "boot.img").write_bytes(inputs[1])
-            captured = capture(case, scratch, nvme_registers=nvme_registers)
+            captured = capture(case, scratch, **options)
         status, reason = captured.status, captured.reason
-        require(load_inputs(manifest_path, nvme_registers=nvme_registers) == inputs, "capture inputs changed")
+        require(load_inputs(manifest_path, **options) == inputs, "capture inputs changed")
         if captured.status == "completed":
             observed = observations(case, captured.serial, captured.stderr, captured.qmp_recv, captured.qmp_send,
-                                    nvme_registers=nvme_registers, nvme_snapshot=captured.nvme_snapshot)
-            status, reason = "pass", NVME_PASS_REASON if nvme_registers else PASS_REASON
+                                    nvme_snapshot=captured.nvme_snapshot, admin_snapshot=captured.admin_snapshot, **options)
+            status, reason = "pass", pass_reason(**options)
     except EvidenceRejected as error:
         status, reason = "fail", str(error)
     except (OSError, ValueError, KeyError, TypeError, RecursionError, subprocess.SubprocessError):
@@ -398,29 +432,31 @@ def run(manifest_path: Path, out: Path, case: str, *, allow_qemu: bool = False,
             status, reason = "fail", "PCI capture inputs or evidence rejected"
     logs = (captured.serial, captured.stderr, captured.qmp_recv, captured.qmp_send)
     names = LOGS
-    if captured.nvme_snapshot is not None:
-        logs += (captured.nvme_snapshot,)
-        names += (SNAPSHOT_FILE,)
+    for name, snapshot in ((SNAPSHOT_FILE, captured.nvme_snapshot), (ADMIN_SNAPSHOT_FILE, captured.admin_snapshot)):
+        if snapshot is not None:
+            logs += (snapshot,)
+            names += (name,)
     refs = []
     for name, raw in zip(names, logs):
         with (out / name).open("xb") as file:
             file.write(raw)
         refs.append(reference(name, raw))
-    result = {**header(case, nvme_registers=nvme_registers), "status": status, "reason": reason, "bindings": bound,
+    result = {**header(case, **options), "status": status, "reason": reason, "bindings": bound,
               "execution": execution(case, captured), "observations": observed, "logs": refs}
     write_json(out / "result.json", result)
     return result
 
 
-def verify_result(manifest_path: Path, out: Path, case: str, *, nvme_registers: bool = False) -> dict:
+def verify_result(manifest_path: Path, out: Path, case: str, *, nvme_registers: bool = False,
+                  nvme_admin_queues: bool = False) -> dict:
     """Recheck a passed packet; this does not run a guest or authenticate capture."""
     result = parse_json(regular_bytes(out / "result.json", 2 << 20))
-    expected = header(case, nvme_registers=nvme_registers)
-    pass_reason = NVME_PASS_REASON if nvme_registers else PASS_REASON
+    options = {"nvme_registers": nvme_registers, "nvme_admin_queues": nvme_admin_queues}
+    expected = header(case, **options)
     require(set(result) == set(expected) | {"status", "reason", "bindings", "execution", "observations", "logs"}
             and all(result[key] == value for key, value in expected.items()) and result["status"] == "pass"
-            and result["reason"] == pass_reason, "not a passed PCI/NVMe packet for the selected profile")
-    require(canonical(result["bindings"]) == canonical(bindings(load_inputs(manifest_path, nvme_registers=nvme_registers))),
+            and result["reason"] == pass_reason(**options), "not a passed PCI/NVMe packet for the selected profile")
+    require(canonical(result["bindings"]) == canonical(bindings(load_inputs(manifest_path, **options))),
             "PCI packet input bindings differ")
     observed_execution = result["execution"]
     elapsed = observed_execution.get("elapsed_seconds") if type(observed_execution) is dict else None
@@ -431,15 +467,18 @@ def verify_result(manifest_path: Path, out: Path, case: str, *, nvme_registers: 
             "invalid successful execution record")
     raw = [regular_bytes(out / name, MAX_LOG_BYTES if i < 2 else MAX_QMP_BYTES) for i, name in enumerate(LOGS)]
     refs = [reference(name, data) for name, data in zip(LOGS, raw)]
-    nvme_snapshot = None
-    if nvme_registers and case == "present":
-        nvme_snapshot = regular_bytes(out / SNAPSHOT_FILE, SNAPSHOT_SIZE)
-        refs.append(reference(SNAPSHOT_FILE, nvme_snapshot))
-    elif nvme_registers:
-        require(not os.path.lexists(out / SNAPSHOT_FILE), "unexpected QMP register snapshot")
+    snapshots = {}
+    for arguments in snapshot_requests("present", **options):
+        name, size = arguments["filename"], arguments["size"]
+        if case == "present":
+            snapshots[name] = regular_bytes(out / name, size)
+            refs.append(reference(name, snapshots[name]))
+        else:
+            require(not os.path.lexists(out / name), "unexpected QMP register snapshot")
     require(canonical(result["logs"]) == canonical(refs),
             "PCI packet raw log hashes differ")
-    measured = observations(case, *raw, nvme_registers=nvme_registers, nvme_snapshot=nvme_snapshot)
+    measured = observations(case, *raw, nvme_snapshot=snapshots.get(SNAPSHOT_FILE),
+                            admin_snapshot=snapshots.get(ADMIN_SNAPSHOT_FILE), **options)
     require(canonical(result["observations"]) == canonical(measured), "PCI packet observations differ from raw captures")
     return {**expected, "status": "consistent", "observations": measured, "new_guest_execution": False}
 
@@ -449,15 +488,17 @@ def main():
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--case", choices=CASES, required=True)
-    parser.add_argument("--nvme-registers", action="store_true", help="use the separate IO02 register profile")
+    profile = parser.add_mutually_exclusive_group()
+    profile.add_argument("--nvme-registers", action="store_true", help="use the separate IO02 register profile")
+    profile.add_argument("--nvme-admin-queues", action="store_true", help="use the IO02 admin-queue profile")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--allow-qemu", action="store_true")
     mode.add_argument("--verify", action="store_true", help="check an existing packet without starting a guest")
     args = parser.parse_args()
+    options = {"nvme_registers": args.nvme_registers, "nvme_admin_queues": args.nvme_admin_queues}
     try:
-        result = (verify_result(args.manifest, args.out, args.case, nvme_registers=args.nvme_registers)
-                  if args.verify else run(args.manifest, args.out, args.case, allow_qemu=args.allow_qemu,
-                                          nvme_registers=args.nvme_registers))
+        result = (verify_result(args.manifest, args.out, args.case, **options)
+                  if args.verify else run(args.manifest, args.out, args.case, allow_qemu=args.allow_qemu, **options))
     except (OSError, ValueError, KeyError, TypeError, RecursionError, subprocess.SubprocessError) as error:
         parser.exit(1, f"PCI audit rejected: {type(error).__name__}\n")
     print(f"{result['case']}: {result['status']} ({result['qualification']})")
