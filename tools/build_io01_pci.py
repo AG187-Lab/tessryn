@@ -22,10 +22,12 @@ from tools.k02_region_protocol import fresh_output, regular_bytes
 PROFILE = {"machine": "pc-q35-11.1", "accelerator": "tcg", "cpu": "qemu64", "vcpus": 1,
            "memory_mib": 256, "segment": 0, "first_bus": 0, "last_bus": 7, "mechanism": "cf8-cfc"}
 CASES = ("present", "absent")
+DMA_CASES = ("present", "blocked")
 CASE_FLAGS = ["--cfg", 'k01_case="normal"', "--cfg", "k01_emulator", "--cfg", "io01_pci"]
 ARTIFACT_TYPE = "tessryn-io01-pci"
 NVME_ARTIFACT_TYPE = "tessryn-io02-nvme-registers"
 ADMIN_ARTIFACT_TYPE = "tessryn-io02-nvme-admin-queues"
+DMA_ARTIFACT_TYPE = "tessryn-io02-nvme-dma-isolation"
 
 
 def digest(data: bytes) -> str:
@@ -54,32 +56,41 @@ def notice_records(directory: Path) -> list[dict]:
     return result
 
 
-def case_flags(nvme_registers: bool, *, nvme_admin_queues: bool = False) -> list[str]:
-    if nvme_admin_queues:
-        return CASE_FLAGS + ["--cfg", "io02_nvme_registers", "--cfg", "io02_nvme_admin_queues"]
+def case_flags(nvme_registers: bool, *, nvme_admin_queues: bool = False,
+               nvme_dma_isolation: bool = False) -> list[str]:
+    if nvme_admin_queues or nvme_dma_isolation:
+        flags = CASE_FLAGS + ["--cfg", "io02_nvme_registers", "--cfg", "io02_nvme_admin_queues"]
+        if nvme_dma_isolation:
+            flags += ["--cfg", "io02_nvme_dma_isolation"]
+        return flags
     return CASE_FLAGS + ["--cfg", "io02_nvme_registers"] if nvme_registers else CASE_FLAGS
 
 
-def artifact_type(nvme_registers: bool, nvme_admin_queues: bool) -> str:
+def artifact_type(nvme_registers: bool, nvme_admin_queues: bool, nvme_dma_isolation: bool = False) -> str:
+    if nvme_dma_isolation:
+        return DMA_ARTIFACT_TYPE
     if nvme_admin_queues:
         return ADMIN_ARTIFACT_TYPE
     return NVME_ARTIFACT_TYPE if nvme_registers else ARTIFACT_TYPE
 
 
 def description(source: dict, toolchain: dict, efi: bytes, disk: bytes, notices: list[dict],
-                *, nvme_registers: bool = False, nvme_admin_queues: bool = False) -> dict:
-    return {"schema_version": 1, "artifact_type": artifact_type(nvme_registers, nvme_admin_queues),
+                *, nvme_registers: bool = False, nvme_admin_queues: bool = False,
+                nvme_dma_isolation: bool = False) -> dict:
+    return {"schema_version": 1, "artifact_type": artifact_type(nvme_registers, nvme_admin_queues, nvme_dma_isolation),
             "profile": PROFILE, "source": source, "toolchain": toolchain,
-            "rust_case_flags": case_flags(nvme_registers, nvme_admin_queues=nvme_admin_queues),
+            "rust_case_flags": case_flags(nvme_registers, nvme_admin_queues=nvme_admin_queues,
+                                          nvme_dma_isolation=nvme_dma_isolation),
             "artifacts": [{**artifact("BOOTX64.EFI", efi), "pe_validation": inspect_pe(efi)},
                           artifact("boot.img", disk)], "notices": notices}
 
 
-def build(out: Path, *, nvme_registers: bool = False, nvme_admin_queues: bool = False) -> dict:
+def build(out: Path, *, nvme_registers: bool = False, nvme_admin_queues: bool = False,
+          nvme_dma_isolation: bool = False) -> dict:
     out = fresh_output(out)
     source, compiler = source_identity(), compiler_profile()
     efi_path = out / "BOOTX64.EFI"
-    flags = case_flags(nvme_registers, nvme_admin_queues=nvme_admin_queues)
+    flags = case_flags(nvme_registers, nvme_admin_queues=nvme_admin_queues, nvme_dma_isolation=nvme_dma_isolation)
     cmd = compile_command(compiler, Path("kernel/main.rs"), efi_path, flags)
     proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=60)
     (out / "build.log").write_text((proc.stdout + proc.stderr).replace(str(ROOT), "tessryn"))
@@ -92,25 +103,26 @@ def build(out: Path, *, nvme_registers: bool = False, nvme_admin_queues: bool = 
     if source_identity() != source or compiler_profile()["toolchain"] != compiler["toolchain"]:
         raise ValueError("IO01 source or toolchain changed during the build")
     manifest = description(source, compiler["toolchain"], efi, disk, notices,
-                           nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues)
+                           nvme_registers=nvme_registers, nvme_admin_queues=nvme_admin_queues,
+                           nvme_dma_isolation=nvme_dma_isolation)
     (out / "manifest.json").write_bytes(canonical(manifest))
     return manifest
 
 
 def validate_build(manifest_path: Path, *, nvme_registers: bool = False,
-                   nvme_admin_queues: bool = False) -> tuple[dict, bytes]:
+                   nvme_admin_queues: bool = False, nvme_dma_isolation: bool = False) -> tuple[dict, bytes]:
     """Recheck fixed artifact bytes, provenance, setup and current source."""
     manifest_path = manifest_path.absolute()
     raw = regular_bytes(manifest_path, 1 << 20)
     manifest = parse_json(raw)
-    expected_type = artifact_type(nvme_registers, nvme_admin_queues)
+    expected_type = artifact_type(nvme_registers, nvme_admin_queues, nvme_dma_isolation)
     if manifest_path.name != "manifest.json" or manifest.get("artifact_type") != expected_type:
         raise ValueError("build manifest differs from the selected PCI/NVMe profile")
     efi = regular_bytes(manifest_path.parent / "BOOTX64.EFI", 1 << 20)
     disk = regular_bytes(manifest_path.parent / "boot.img", 128 << 20)
     expected = description(source_identity(), compiler_profile()["toolchain"], efi, disk,
                            notice_records(manifest_path.parent), nvme_registers=nvme_registers,
-                           nvme_admin_queues=nvme_admin_queues)
+                           nvme_admin_queues=nvme_admin_queues, nvme_dma_isolation=nvme_dma_isolation)
     if raw != canonical(expected) or disk != make_disk(efi):
         raise ValueError("IO01 manifest, media or exact checkout binding differs")
     return manifest, disk
@@ -124,8 +136,10 @@ def main() -> int:
     profile = parser.add_mutually_exclusive_group()
     profile.add_argument("--nvme-registers", action="store_true", help="build or compare the separate IO02 register profile")
     profile.add_argument("--nvme-admin-queues", action="store_true", help="build or compare the IO02 admin-queue profile")
+    profile.add_argument("--nvme-dma-isolation", action="store_true", help="build or compare the IO02 VT-d setup profile")
     args = parser.parse_args()
-    options = {"nvme_registers": args.nvme_registers, "nvme_admin_queues": args.nvme_admin_queues}
+    options = {"nvme_registers": args.nvme_registers, "nvme_admin_queues": args.nvme_admin_queues,
+               "nvme_dma_isolation": args.nvme_dma_isolation}
     try:
         if args.out is not None:
             result = build(args.out, **options)

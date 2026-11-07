@@ -228,6 +228,8 @@ pub struct Handoff {
     pub cr3: u64,
     pub free_pages: u64,
     pub scratch: u64,
+    #[cfg(io02_nvme_dma_isolation)]
+    pub vtd_base: Option<u64>,
     #[cfg(k03_smp)]
     pub smp: SmpHandoff,
 }
@@ -345,6 +347,65 @@ unsafe fn allocate(boot: &BootServices, pages: usize) -> Range {
     let status = unsafe { (boot.allocate_pages)(1, 2, pages, &mut address) };
     if status != 0 { fail("allocate-loader-pages"); }
     Range::new(address, pages as u64 * PAGE)
+}
+
+/// Read the relevant ACPI tables before ExitBootServices. The caller has
+/// checked descriptor spans, kinds, and non-overlap in the final memory map.
+#[cfg(io02_nvme_dma_isolation)]
+unsafe fn admit_vtd(system: &SystemTable, handoff: &Handoff) -> Result<u64, &'static str> {
+    use crate::smp_acpi::{MAX_SDT_BYTES, SDT_HEADER_BYTES, parse_rsdp, xsdt_entries};
+
+    #[repr(C)]
+    struct Configuration { guid: Guid, address: u64 }
+    const ACPI2: Guid = Guid {
+        a: 0x8868_e871, b: 0xe4f1, c: 0x11d3, d: [0xbc, 0x22, 0, 0x80, 0xc7, 0x3c, 0x88, 0x81],
+    };
+    let span = |address: u64, bytes: usize, kinds: &[u32]| {
+        let range = Range::checked(address, bytes as u64).map_err(|_| "acpi-range")?;
+        if address == 0 || bytes > MAX_SDT_BYTES || range.end > LIMIT
+            || !handoff.range_has_kind(range, kinds)
+        {
+            return Err("acpi-memory-kind");
+        }
+        Ok(())
+    };
+    if !(1..=256).contains(&system.configuration_count) {
+        return Err("acpi-configuration-count");
+    }
+    span(system.configuration as u64, system.configuration_count * size_of::<Configuration>(),
+         &[1, 2, 3, 4, 5, 6, 7, 9, 10])?;
+    let mut rsdp = None;
+    for index in 0..system.configuration_count {
+        // SAFETY: the complete configuration array was bounded above.
+        let entry = unsafe { ptr::read_unaligned((system.configuration as *const Configuration).add(index)) };
+        if entry.guid == ACPI2 && rsdp.replace(entry.address).is_some() {
+            return Err("acpi-duplicate-root");
+        }
+    }
+    let table = |address: u64, bytes: usize| -> Result<&[u8], &'static str> {
+        span(address, bytes, &[9, 10])?;
+        // SAFETY: each read span is entirely mapped firmware ACPI memory.
+        Ok(unsafe { core::slice::from_raw_parts(address as *const u8, bytes) })
+    };
+    let read_sdt = |address: u64| -> Result<&[u8], &'static str> {
+        let header = table(address, SDT_HEADER_BYTES)?;
+        let size = u32::from_le_bytes(header[4..8].try_into().unwrap()) as usize;
+        if !(SDT_HEADER_BYTES..=MAX_SDT_BYTES).contains(&size) {
+            return Err("acpi-sdt-length");
+        }
+        table(address, size)
+    };
+    let root = parse_rsdp(table(rsdp.ok_or("acpi-root-missing")?, 36)?)
+        .map_err(|_| "acpi-rsdp")?;
+    let mut dmar = None;
+    for address in xsdt_entries(read_sdt(root.xsdt)?).map_err(|_| "acpi-xsdt")? {
+        let header = table(address, SDT_HEADER_BYTES)?;
+        if &header[..4] == b"DMAR" {
+            if dmar.is_some() { return Err("acpi-dmar-duplicate"); }
+            dmar = Some(crate::io02_vtd_acpi::admit_dmar(read_sdt(address)?, crate::paging::VTD_MMIO_BASE)?);
+        }
+    }
+    dmar.ok_or("acpi-dmar-missing")
 }
 
 #[cfg(k03_smp)]
@@ -525,6 +586,8 @@ pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Resul
         map: map_allocation.start as *const u8, map_length: 0,
         descriptor_size: 0, stack, map_allocation, image: image_range,
         framebuffer, high_scratch, reset, physical_bits, cr3: 0, free_pages: 0, scratch: 0,
+        #[cfg(io02_nvme_dma_isolation)]
+        vtd_base: None,
         #[cfg(k03_smp)]
         smp,
     };
@@ -540,6 +603,18 @@ pub unsafe fn leave_firmware(image: Handle, system: *const SystemTable) -> Resul
         handoff.map_length = length;
         handoff.descriptor_size = stride;
         handoff.validate();
+        #[cfg(io02_nvme_dma_isolation)]
+        if attempt == 1 {
+            // SAFETY: the complete descriptor map has been checked above. Keep
+            // only the admitted physical base through any exit retry.
+            handoff.vtd_base = Some(match unsafe { admit_vtd(system, &handoff) } {
+                Ok(base) => base,
+                Err(reason) => {
+                    print(format_args!("TESSRYN_IO02_VTD_FAIL reason={reason}\n"));
+                    crate::diagnostics::halt();
+                }
+            });
+        }
         let paging = match unsafe { crate::cpu::prepare_mappings(&handoff) } {
             Ok(paging) => paging,
             Err(error) => {
