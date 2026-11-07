@@ -3,16 +3,18 @@
 use super::{asm, clock, context, elapsed, ensure, fence, finish, heartbeat, id, marker, print,
     print_capture, print_payload, print_space, print_walks, progress, ptr, read, user_address, wait,
     wait_ns, write, AtomicU64, Capture, Ordering, Saved, CAPTURES, CODE, SEED, TIMEOUT, WINDOW,
-    smp_user_loop_end, smp_user_loop_start};
+    smp_user_loop_end, smp_user_loop_start, smp_user_peer_fault};
 use tessryn_scheduler::{CpuLease, Dispatch, Error, Scheduler, StopOutcome, TaskId, TaskState, TaskSpec};
 
 const DOMAIN: u64 = 1;
 const LATE: bool = cfg!(smp_budget_case = "late");
+const FAULT: bool = cfg!(smp_budget_case = "fault");
+pub(super) const FAULT_ADDRESS: u64 = super::PEER + 4096;
 const LIMIT: u64 = if LATE { 60_000_000 } else { 1_200_000_000 };
 const QUANTUM: u64 = if LATE { 40_000_000 } else { 800_000_000 };
 const TARGET: u64 = if LATE { 60_000_000 } else { 20_000_000 };
 const AP_MULTIPLIER: u64 = 4;
-const ROUNDS: u64 = if LATE { 1 } else { 2 };
+const ROUNDS: u64 = if LATE || FAULT { 1 } else { 2 };
 const LAPIC: u64 = 0xfee0_0000;
 const VECTOR: u64 = 67;
 const BIT: u32 = 1 << (VECTOR % 32);
@@ -35,7 +37,7 @@ pub struct Contract { magic: [u8; 16], words: [u64; 15] }
 #[unsafe(no_mangle)]
 pub static K03_SMP_BUDGET_CONTRACT: Contract = Contract {
     magic: *b"TESSRYN-SMPBUD1\0",
-    words: [1, LATE as u64, 2, DOMAIN, VECTOR, DCR as u64, DIVISOR, LIMIT, QUANTUM,
+    words: [1, if FAULT { 2 } else { LATE as u64 }, 2, DOMAIN, VECTOR, DCR as u64, DIVISOR, LIMIT, QUANTUM,
         TARGET, ROUNDS, 10_000_000, WINDOW, TIMEOUT, AP_MULTIPLIER],
 };
 
@@ -173,6 +175,12 @@ fn execute(cpu: usize, round: u64) {
     row.retire_count = local(CURRENT);
     row.retired = clock();
     ensure(row.capture >= row.entry && row.retired >= row.capture && row.heartbeat_after > row.heartbeat_before);
+    if FAULT && cpu == 0 {
+        // The live countdown was read after capture and before retirement.
+        let counted = u64::from(row.initial - row.current) * DIVISOR;
+        ensure(counted + ROUNDING_NS >= elapsed(row.arm_after, row.capture)
+            && counted <= elapsed(row.arm_before, row.retired) + ROUNDING_NS);
+    }
     unsafe { run_ptr(cpu).write(row); }
 }
 
@@ -182,17 +190,26 @@ pub(super) fn capture(cpu: usize, saved: Saved, frame: u64, fp: u64, root: u64, 
     row.capture = clock();
     row.peer_heartbeat = heartbeat(cpu ^ 1);
     row.heartbeat_after = heartbeat(cpu);
-    let start = user_address(ptr::addr_of!(smp_user_loop_start));
-    ensure(saved.vector == VECTOR && saved.error == 0 && row.lease != 0
-        && row.lease == LEASES[cpu].load(Ordering::Relaxed)
-        && saved.rip < user_address(ptr::addr_of!(smp_user_loop_end))
-        && saved.rip.checked_sub(start).is_some_and(|offset| matches!(offset, 0 | 4 | 6)));
-    ensure(row.capture >= row.entry
-        && elapsed(row.arm_before, row.capture) + ROUNDING_NS >= u64::from(count(cpu)) * DIVISOR);
+    let fault = FAULT && cpu == 0;
+    ensure(row.capture >= row.entry && row.lease != 0 && row.lease == LEASES[cpu].load(Ordering::Relaxed));
+    if fault {
+        ensure(saved.vector == 14 && saved.error == 4 && cr2 == FAULT_ADDRESS
+            && saved.rip == user_address(ptr::addr_of!(smp_user_peer_fault))
+            && row.heartbeat_before.checked_add(1) == Some(row.heartbeat_after));
+    } else {
+        let start = user_address(ptr::addr_of!(smp_user_loop_start));
+        ensure(saved.vector == VECTOR && saved.error == 0
+            && saved.rip < user_address(ptr::addr_of!(smp_user_loop_end))
+            && saved.rip.checked_sub(start).is_some_and(|offset| matches!(offset, 0 | 4 | 6))
+            && elapsed(row.arm_before, row.capture) + ROUNDING_NS >= u64::from(count(cpu)) * DIVISOR);
+    }
     row.lvt_before = local(LVT); row.initial = local(INITIAL); row.current = local(CURRENT);
-    ensure(row.lvt_before == VECTOR as u32 && row.initial == count(cpu) && row.current == 0 && local(DIVIDE) == DCR);
-    row.irr_before = banks(0x200, 0); row.isr_before = banks(0x100, BIT);
-    write(LVT, MASKED); write(INITIAL, 0); write(0xb0, 0);
+    ensure(row.lvt_before == VECTOR as u32 && row.initial == count(cpu) && local(DIVIDE) == DCR
+        && if fault { 0 < row.current && row.current <= row.initial } else { row.current == 0 });
+    row.irr_before = banks(0x200, 0); row.isr_before = banks(0x100, if fault { 0 } else { BIT });
+    write(LVT, MASKED); write(INITIAL, 0);
+    // A synchronous page fault has no LAPIC in-service vector to acknowledge.
+    if !fault { write(0xb0, 0); }
     row.irr_after = banks(0x200, 0); row.isr_after = banks(0x100, 0); row.lvt_after = local(LVT);
     ensure(row.lvt_after == MASKED && local(CURRENT) == 0);
     let c = context(cpu);
@@ -249,7 +266,7 @@ fn log_timer(cpu: usize, round: u64, r: Run) {
     print(format_args!("TESSRYN_K03_SMP_BUDGET_TIMER round={round} cpu={cpu} lease={} arm_before={} arm_after={} entry={} capture={} retired={} initial={} current={} irr_before={} isr_before={} irr_after={} isr_after={} lvt_before={:#x} lvt_after={:#x} retire_count={} peer_heartbeat={} resume_rip={:#x} heartbeat_before={} heartbeat_after={}\n",
         r.lease, r.arm_before, r.arm_after, r.entry, r.capture, r.retired, r.initial, r.current, r.irr_before, r.isr_before,
         r.irr_after, r.isr_after, r.lvt_before, r.lvt_after, r.retire_count, r.peer_heartbeat, r.resume_rip, r.heartbeat_before, r.heartbeat_after));
-    print_capture(cpu, "timer", cpu);
+    print_capture(cpu, if FAULT && cpu == 0 { "fault" } else { "timer" }, cpu);
 }
 fn peer(policy: &Policy, lease: CpuLease, grant: Dispatch) -> (u32, u64) {
     if let Some(current) = checked(policy.cpu_lease(lease.cpu() as usize)) {
@@ -261,12 +278,12 @@ fn peer(policy: &Policy, lease: CpuLease, grant: Dispatch) -> (u32, u64) {
 }
 
 pub(super) fn run() -> ! {
-    ensure((cfg!(smp_budget_case = "preempt") ^ LATE) && super::case_id() == 0);
+    ensure(cfg!(smp_budget_case = "preempt") as u8 + LATE as u8 + FAULT as u8 == 1 && super::case_id() == 0);
     calibrate(0);
     wait(&CALIBRATED, 1);
     let epoch = clock();
     EPOCH.store(epoch, Ordering::Relaxed);
-    let case = if LATE { "late" } else { "preempt" };
+    let case = if FAULT { "fault" } else if LATE { "late" } else { "preempt" };
     print(format_args!("TESSRYN_K03_SMP_BUDGET_BEGIN case={case} cpus=2 domain={DOMAIN} vector={VECTOR} epoch={epoch}\n"));
     log_interrupt_admission();
     for cpu in 0..2 { print_space(cpu); print_walks(cpu); print_payload(cpu, "before"); }
@@ -275,6 +292,7 @@ pub(super) fn run() -> ! {
     checked(policy.add_domain(DOMAIN, LIMIT));
     let tasks = core::array::from_fn(|_| checked(policy.create_task(DOMAIN, TaskSpec { budget_ns: LIMIT, deadline_ns: 0 }, 0)));
     let mut last_rip = [CODE; 2];
+    if FAULT { last_rip[0] = unsafe { (*context(0)).saved.rip }; }
     let mut last_heartbeat = [0; 2];
     for round in 1..=ROUNDS {
         let start = clock();
@@ -289,6 +307,14 @@ pub(super) fn run() -> ! {
         GO.store(round, Ordering::Release);
         let ap_ready_heartbeat = progress(1, last_heartbeat[1]);
         execute(0, round);
+        // Sample a fresh increment after the faulting CPU has returned to its
+        // supervisor continuation. Both samples must precede AP timer expiry.
+        let peer_after_fault = if FAULT {
+            let baseline_sample = clock();
+            let baseline_heartbeat = heartbeat(1);
+            let fresh = progress(1, baseline_heartbeat);
+            Some((baseline_sample, baseline_heartbeat, clock(), fresh))
+        } else { None };
         wait(&STOPPED, round);
         let rows: [Run; 2] = core::array::from_fn(|cpu| unsafe { run_ptr(cpu).read() });
         // AP has done user work before BSP's arm. The authentic BSP trap
@@ -315,28 +341,43 @@ pub(super) fn run() -> ! {
             last_rip[cpu] = unsafe { ptr::addr_of!(CAPTURES).cast::<Capture>().add(cpu).read().saved.rip };
             last_heartbeat[cpu] = r.heartbeat_after;
         }
+        if let Some((baseline_sample, baseline_heartbeat, sample, heartbeat)) = peer_after_fault {
+            ensure(rows[0].retired <= baseline_sample && baseline_sample <= sample
+                && sample < rows[1].capture && sample < ap_earliest
+                && rows[0].peer_heartbeat <= baseline_heartbeat && baseline_heartbeat < heartbeat
+                && heartbeat <= rows[1].heartbeat_after);
+            print(format_args!("TESSRYN_K03_SMP_BUDGET_FAULT_PEER round={round} baseline_sample={baseline_sample} baseline_heartbeat={baseline_heartbeat} sample={sample} heartbeat={heartbeat}\n"));
+        }
         let first = usize::from(rows[1].retired < rows[0].retired);
+        if FAULT { ensure(first == 0); }
         for (index, cpu) in [first, first ^ 1].into_iter().enumerate() {
             let r = rows[cpu]; let g = grants[cpu]; let now = elapsed(epoch, r.retired);
             ensure((now > g.stop_by_ns) == LATE);
-            let outcome = if !LATE && round == ROUNDS { StopOutcome::Complete } else { StopOutcome::Yield };
+            let outcome = if FAULT && cpu == 0 { StopOutcome::Fail }
+                else if !LATE && round == ROUNDS { StopOutcome::Complete } else { StopOutcome::Yield };
             let state = checked(policy.stop(g.lease, now, outcome));
             let label = match state { TaskState::Runnable if !LATE && round < ROUNDS => "runnable",
-                TaskState::Completed if !LATE && round == ROUNDS => "completed", TaskState::Failed if LATE => "failed",
+                TaskState::Completed if !LATE && round == ROUNDS && (!FAULT || cpu == 1) => "completed",
+                TaskState::Failed if LATE || FAULT && cpu == 0 => "failed",
                 _ => { ensure(false); unreachable!() } };
             let d = checked(policy.accounting(DOMAIN));
             ensure(d.halted == LATE);
+            if FAULT {
+                let task = checked(policy.task(DOMAIN, tasks[cpu]));
+                ensure(task.budget.consumed_ns == u128::from(elapsed(start, r.retired))
+                    && task.budget.reserved_ns == 0 && checked(policy.cpu_lease(cpu)).is_none());
+            }
             let (peer_lease, peer_reserved) = peer(&policy, grants[cpu ^ 1].lease, grants[cpu ^ 1]);
             ensure((peer_lease != 0) == (index == 0));
             print(format_args!("TESSRYN_K03_SMP_BUDGET_ACCOUNT round={round} cpu={cpu} lease={} retired={} elapsed_ns={} consumed={} reserved={} available={} halted={} state={label} peer_lease={peer_lease} peer_reserved={peer_reserved}\n",
                 r.lease, r.retired, elapsed(start, r.retired), d.budget.consumed_ns, d.budget.reserved_ns,
                 d.budget.available_ns(), d.halted as u8));
-            if LATE && index == 0 {
+            if (LATE || FAULT) && index == 0 {
                 ensure(matches!(policy.dispatch(cpu, QUANTUM, now), Err(Error::NoRunnableTask))
                     && checked(policy.accounting(DOMAIN)) == d
                     && peer(&policy, grants[cpu ^ 1].lease, grants[cpu ^ 1]) == (peer_lease, peer_reserved));
-                print(format_args!("TESSRYN_K03_SMP_BUDGET_DENY round={round} cpu={cpu} reason=no-runnable-task consumed={} reserved={} available={} halted=1 peer_lease={peer_lease} peer_reserved={peer_reserved}\n",
-                    d.budget.consumed_ns, d.budget.reserved_ns, d.budget.available_ns()));
+                print(format_args!("TESSRYN_K03_SMP_BUDGET_DENY round={round} cpu={cpu} reason=no-runnable-task consumed={} reserved={} available={} halted={} peer_lease={peer_lease} peer_reserved={peer_reserved}\n",
+                    d.budget.consumed_ns, d.budget.reserved_ns, d.budget.available_ns(), d.halted as u8));
             }
         }
     }
@@ -351,6 +392,6 @@ pub(super) fn run() -> ! {
         last_heartbeat[0], stable[0], last_heartbeat[1], stable[1]));
     for cpu in 0..2 { print_payload(cpu, "after"); ensure(marker(cpu) == SEED + cpu as u64); }
     print(format_args!("TESSRYN_K03_SMP_BUDGET_PASS cpus=2 rounds={ROUNDS} irqs={} consumed={} reserved=0 halted={} retained=all\n",
-        ROUNDS * 2, d.budget.consumed_ns, d.halted as u8));
+        ROUNDS * 2 - FAULT as u64, d.budget.consumed_ns, d.halted as u8));
     finish(true)
 }

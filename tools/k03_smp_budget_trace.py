@@ -130,24 +130,53 @@ def _calibration(trace, cpu, clock, epoch):
     return {"minimum_ns": lo, "maximum_ns": hi, "count_interval_ns": span}
 
 
-def _timer_trap(trace, cpu, lease, root, space, stack, program, heartbeat):
+def _context(binding, case):
+    if case != "fault":
+        return context_binding(binding, "rendezvous")
+    from tools.build_k03_smp_user import fault_entry_size
+
+    require(type(binding) is dict and type(binding.get("program")) is dict,
+        "SMP budget fault context binding incomplete")
+    program = binding["program"]
+    offsets, instructions = program.get("offsets"), program.get("instruction_bytes")
+    require(type(offsets) is dict and type(instructions) is dict and "fault_start" in offsets and "fault_start" in instructions,
+        "SMP budget compiled fault entry missing")
+    inherited = {**program, "offsets": {name: value for name, value in offsets.items() if name != "fault_start"},
+        "instruction_bytes": {name: value for name, value in instructions.items() if name != "fault_start"}}
+    base, _ = context_binding({**binding, "program": inherited}, "rendezvous")
+    start, encoded = offsets["fault_start"], instructions["fault_start"]
+    require(type(start) is int and start == offsets["loop_end"] + 2
+        and type(encoded) is str and re.fullmatch(r"(?:[0-9a-f]{2}){1,32}", encoded)
+        and instructions["loop_end"] == ("0f0b" + encoded)[:32], "SMP budget fault entry span differs")
+    code = bytes.fromhex(encoded)
+    require(start + len(code) <= program["size_bytes"]
+        and fault_entry_size(code, 0, offsets["loop_end"] - start, offsets["peer_fault"] - start) == len(code),
+        "SMP budget fault entry instructions differ")
+    return base, program
+
+
+def _stop_trap(trace, cpu, lease, root, space, stack, program, heartbeat, *, fault):
     sentinel, marker = PROFILE["register_sentinel"] + cpu, PROFILE["marker_seed"] + cpu
     frame = space["trap_end"] - PROFILE["trap_frame_bytes"]
     fp = frame - PROFILE["fp_bytes"]
-    row = _integers(trace.service("TRAP", {"cpu": cpu, "stage": "timer", "vector": VECTOR, "error": 0,
-        "rip": ANY, "cs": 0x33, "rflags": ANY, "rsp": PROFILE["user_stack"] + 4096 - 16, "ss": 0x2b, "cr2": ANY,
+    fault_address = PROFILE["peer"] + 4096
+    row = _integers(trace.service("TRAP", {"cpu": cpu, "stage": "fault" if fault else "timer",
+        "vector": 14 if fault else VECTOR, "error": 4 if fault else 0,
+        "rip": PROFILE["user_code"] + program["offsets"]["peer_fault"] if fault else ANY,
+        "cs": 0x33, "rflags": ANY, "rsp": PROFILE["user_stack"] + 4096 - 16, "ss": 0x2b,
+        "cr2": fault_address if fault else ANY,
         "frame": frame, "fp": fp, "root": space["root"], "apic": space["apic"], "r12": sentinel, "r13": marker,
-        "xmm0lo": sentinel, "xmm0hi": marker, "isr_before": IRQ_BIT, "isr_after": 0, "generation": lease,
+        "xmm0lo": sentinel, "xmm0hi": marker, "isr_before": 0 if fault else IRQ_BIT, "isr_after": 0, "generation": lease,
         "marker": marker, "heartbeat": heartbeat, "kernel_rsp": ANY, "kernel_cr3": root, "gpr": ANY, "fp_image": ANY}),
         "stage", "gpr", "fp_image")
-    require(row["rip"] - PROFILE["user_code"] - program["offsets"]["loop_start"] in (0, 4, 6)
+    require((fault or row["rip"] - PROFILE["user_code"] - program["offsets"]["loop_start"] in (0, 4, 6))
         and row["rflags"] & 0x202 == 0x202 and row["rflags"] & ~0x10ad7 == 0 and space["trap_start"] <= fp
         and row["kernel_rsp"] % 16 == 0 and stack[0] <= row["kernel_rsp"] <= stack[1] - 576,
-        "SMP budget actual CPL3 loop/trap/frame/continuation escaped its CPU")
+        "SMP budget actual CPL3 stop/frame/continuation escaped its CPU")
     require(type(row["gpr"]) is str and re.fullmatch(r"[0-9a-f]{240}", row["gpr"])
         and type(row["fp_image"]) is str and re.fullmatch(r"[0-9a-f]{1024}", row["fp_image"]), "SMP budget full GPR or legacy FP image missing")
-    expected = [0, 0, marker, sentinel, 0, 0, 0, 0, PROFILE["user_data"], PROFILE["peer"], 0, 0, 0,
-        PROFILE["warmup_iterations"], 0x2b]
+    rsi = fault_address if fault else PROFILE["peer"]
+    expected = [0, 0, marker, sentinel, 0, 0, 0, 0, PROFILE["user_data"], rsi, 0, 0, 0, PROFILE["warmup_iterations"], 0x2b]
     require(struct.unpack("<15Q", bytes.fromhex(row["gpr"])) == tuple(expected), "SMP budget full GPR context differs")
     raw = bytes.fromhex(row["fp_image"]); mask, = struct.unpack_from("<I", raw, 28)
     require(0 < mask <= 0xffff and mask & 0x1f80 == 0x1f80, "SMP budget invalid hardware MXCSR mask")
@@ -168,18 +197,31 @@ def _expiry(timer):
 def _timer(trace, case, number, cpu, start, epoch, hard, resume, before):
     target = SCENARIOS[case].timer_ns * (AP_TIMER_MULTIPLIER if cpu == 1 else 1)
     initial = (target + DIVIDER - 1) // DIVIDER
+    fault = case == "fault" and cpu == 0
     timer = _integers(_budget(trace, "TIMER", {"round": number, "cpu": cpu, "lease": number,
         **_any("arm_before", "arm_after", "entry", "capture", "retired", "peer_heartbeat", "heartbeat_after"),
-        "initial": initial, "current": 0, "irr_before": 0, "isr_before": IRQ_BIT, "irr_after": 0, "isr_after": 0,
+        "initial": initial, "current": ANY if fault else 0, "irr_before": 0, "isr_before": 0 if fault else IRQ_BIT,
+        "irr_after": 0, "isr_after": 0,
         "lvt_before": VECTOR, "lvt_after": 0x10000 | VECTOR, "retire_count": 0,
         "resume_rip": resume, "heartbeat_before": before}))
     early, late = _expiry(timer)
     require(start <= timer["arm_before"] <= timer["arm_after"] <= timer["entry"] <= timer["capture"] <= timer["retired"]
         and (timer["entry"] - epoch) * TICK_NS < hard and timer["entry"] < early
-        and timer["capture"] >= early and timer["heartbeat_after"] > before
+        and timer["heartbeat_after"] > before
         and (timer["retired"] - start) * TICK_NS <= PROFILE["timeout_ns"],
         "SMP budget timer entry, real one-shot expiry, or retirement bracket differs")
-    if case == "preempt":
+    if fault:
+        require(timer["capture"] < early and 0 < timer["current"] <= initial
+            and timer["heartbeat_after"] == before + 1, "SMP budget fault did not drain a live countdown after one user heartbeat")
+        # The LAPIC count read falls between the trap clock sample and retirement.
+        elapsed = (initial - timer["current"]) * DIVIDER
+        lower = (timer["capture"] - timer["arm_after"]) * TICK_NS
+        upper = (timer["retired"] - timer["arm_before"]) * TICK_NS
+        require(lower - ROUNDING_NS <= elapsed <= upper + ROUNDING_NS,
+            "SMP budget fault countdown contradicts its HPET bracket")
+    else:
+        require(timer["capture"] >= early, "SMP budget timer did not reach expiry")
+    if case != "late":
         require((late - epoch) * TICK_NS + ROUNDING_NS < hard, "SMP budget normal timer has no margin before its hard policy bound")
     return timer
 
@@ -187,7 +229,7 @@ def _timer(trace, case, number, cpu, start, epoch, hard, resume, before):
 def parse_transcript(case, data, returncode, stderr, binding):
     require(case in SCENARIOS and type(returncode) is int and returncode == 33 and type(stderr) is bytes and stderr == b"", "SMP budget process did not finish cleanly")
     require(type(binding) is dict and set(binding) == {"context", "budget"}, "SMP budget compiled binding incomplete")
-    base, program = context_binding(binding["context"], "rendezvous")
+    base, program = _context(binding["context"], case)
     descriptor = binding["budget"]
     require(type(descriptor) is dict and set(descriptor) == {"size_bytes", "sha256", "efi_file_offset", "efi_rva"}
         and type(descriptor["size_bytes"]) is int and descriptor["size_bytes"] == DESCRIPTOR_SIZE and descriptor["sha256"] == digest(descriptor_bytes(case))
@@ -201,9 +243,10 @@ def parse_transcript(case, data, returncode, stderr, binding):
     spaces = _spaces(trace, apics, image, owned, program)
     calibration = [_calibration(trace, cpu, clock, epoch) for cpu in (0, 1)]
     scenario = SCENARIOS[case]; cap = scenario.cap_ns
+    fault = case == "fault"
     consumed = reserved = 0; task_time = [0, 0]; previous_retired = epoch; previous_heartbeat = [0, 0]
-    resume = [PROFILE["user_code"] + program["offsets"]["bsp_start"]] * 2
-    clipped = 0; overlap_ticks = []; reconciliations = []; denied = False
+    resume = [PROFILE["user_code"] + program["offsets"][entry] for entry in ("fault_start" if fault else "bsp_start", "bsp_start")]
+    clipped = 0; overlap_ticks = []; reconciliations = []; denied = False; fault_peer = None
     for number in range(1, scenario.rounds + 1):
         grants = []; temporary = 0
         for cpu in (0, 1):
@@ -226,13 +269,21 @@ def parse_transcript(case, data, returncode, stderr, binding):
         timers = []
         for cpu in (0, 1):
             timer = _timer(trace, case, number, cpu, start, epoch, hard[cpu], resume[cpu], previous_heartbeat[cpu])
-            resume[cpu] = _timer_trap(trace, cpu, number, root, spaces[cpu], stacks[cpu], program, timer["heartbeat_after"])
+            resume[cpu] = _stop_trap(trace, cpu, number, root, spaces[cpu], stacks[cpu], program,
+                timer["heartbeat_after"], fault=fault and cpu == 0)
             timers.append(timer)
         bsp, ap = timers; earliest_ap, _ = _expiry(ap)
         require(ap["entry"] <= bsp["arm_before"] and bsp["capture"] + ROUNDING_NS // TICK_NS < earliest_ap
             and batch["ap_ready_heartbeat"] <= bsp["peer_heartbeat"], "SMP budget actual overlapping CPL3 execution is not established")
         require(all(previous_heartbeat[cpu ^ 1] < timer["peer_heartbeat"] <= timers[cpu ^ 1]["heartbeat_after"]
             for cpu, timer in enumerate(timers)), "SMP budget peer progress does not belong to both active CPL3 loops")
+        if fault:
+            fault_peer = _integers(_budget(trace, "FAULT_PEER", {"round": number,
+                **_any("baseline_sample", "baseline_heartbeat", "sample", "heartbeat")}))
+            require(bsp["retired"] <= fault_peer["baseline_sample"] <= fault_peer["sample"] < ap["capture"]
+                and fault_peer["sample"] + ROUNDING_NS // TICK_NS < earliest_ap
+                and bsp["peer_heartbeat"] <= fault_peer["baseline_heartbeat"] < fault_peer["heartbeat"] <= ap["heartbeat_after"],
+                "SMP budget peer did not progress after BSP fault retirement and before its own timer")
         overlap_ticks.append(earliest_ap - bsp["capture"])
         previous_heartbeat = [timer["heartbeat_after"] for timer in timers]
         active = {0, 1}; order = sorted(active, key=lambda cpu: (timers[cpu]["retired"], cpu))
@@ -243,14 +294,14 @@ def parse_transcript(case, data, returncode, stderr, binding):
             task_time[cpu] += elapsed; consumed += elapsed; reserved -= grants[cpu]; active.remove(cpu)
             available = max(0, cap - consumed - reserved); peer = cpu ^ 1
             halted = int(case == "late")
-            state = "failed" if halted else "completed" if number == scenario.rounds else "runnable"
+            state = "failed" if halted or (fault and cpu == 0) else "completed" if number == scenario.rounds else "runnable"
             peer_lease, peer_reserved = (number, grants[peer]) if peer in active else (0, 0)
             accounting = {"consumed": consumed, "reserved": reserved, "available": available,
                 "halted": halted, "peer_lease": peer_lease, "peer_reserved": peer_reserved}
             _budget(trace, "ACCOUNT", {"round": number, "cpu": cpu, "lease": number, "retired": retired, "elapsed_ns": elapsed,
                 "state": state, **accounting})
             reconciliations.append({"round": number, "cpu": cpu, "charged_ns": elapsed, "state": state, **accounting})
-            if case == "late" and index == 0:
+            if case in ("late", "fault") and index == 0:
                 _budget(trace, "DENY", {"round": number, "cpu": cpu, "reason": "no-runnable-task", **accounting}); denied = True
         previous_retired = max(timer["retired"] for timer in timers)
     require(clipped == scenario.rounds and reserved == 0 and sum(task_time) == consumed
@@ -260,13 +311,15 @@ def parse_transcript(case, data, returncode, stderr, binding):
     require(previous_retired <= stop["start"] and (stop["end"] - stop["start"]) * TICK_NS >= PROFILE["window_ns"],
         "SMP budget terminal AP ownership or stable observation window differs")
     for cpu in (0, 1): trace.service("PAYLOAD", {"cpu": cpu, "phase": "after", "sha256": program["sha256"]})
-    _budget(trace, "PASS", {"cpus": 2, "rounds": scenario.rounds, "irqs": 2 * scenario.rounds,
+    irq_count = 1 if fault else 2 * scenario.rounds
+    _budget(trace, "PASS", {"cpus": 2, "rounds": scenario.rounds, "irqs": irq_count,
         "consumed": consumed, "reserved": 0, "halted": int(case == "late"), "retained": "all"})
     require(trace.index == len(trace.rows), "SMP budget trailing or unknown evidence")
     return {"case": case, "cpus_online": 2, "enabled_apic_ids": apics, "madt_sha256": madt_sha,
         "private_roots": [space["root"] for space in spaces], "program_sha256": program["sha256"], "calibration": calibration,
-        "rounds": scenario.rounds, "irq_count": 2 * scenario.rounds, "shared_grant_clips": clipped,
+        "rounds": scenario.rounds, "irq_count": irq_count, "shared_grant_clips": clipped,
         "overlap_expiry_margin_ticks": overlap_ticks, "cap_ns": cap, "consumed_ns": consumed, "task_consumed_ns": task_time,
         "reserved_ns": 0, "halted": case == "late", "denied_redispatch": denied, "reconciliation": reconciliations,
         "terminal_heartbeats": previous_heartbeat, "stop_window_ns": (stop["end"] - stop["start"]) * TICK_NS,
-        "retained": "all", "capture_authentication": "unverified_offline"}
+        "retained": "all", "capture_authentication": "unverified_offline",
+        **({"fault_peer_progress": fault_peer} if fault else {})}

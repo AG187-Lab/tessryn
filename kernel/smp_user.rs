@@ -39,7 +39,8 @@ pub static K03_SMP_USER_CONTRACT: Contract = Contract {
 };
 global_asm!(include_str!("smp_user_entry.S"),
     smp_timer = const cfg!(any(k03_smp_budget, k03_smp_workload)) as u8,
-    smp_workload = const cfg!(k03_smp_workload) as u8);
+    smp_workload = const cfg!(k03_smp_workload) as u8,
+    smp_budget_fault = const cfg!(all(k03_smp_budget, smp_budget_case = "fault")) as u8);
 unsafe extern "sysv64" {
     fn smp_user_enter(root: u64, saved: *const Saved, context: *mut Context);
     fn smp_load_gdt(pointer: *const Pointer);
@@ -51,6 +52,14 @@ unsafe extern "sysv64" {
     static smp_user_bsp_start: u8; static smp_user_warmup_start: u8;
     static smp_user_after_yield: u8; static smp_user_peer_fault: u8; static smp_user_forged_fault: u8;
     static smp_user_loop_start: u8; static smp_user_loop_end: u8;
+    #[cfg(all(k03_smp_budget, smp_budget_case = "fault"))]
+    static smp_user_budget_fault_start: u8;
+}
+
+fn probe_address(_cpu: usize) -> u64 {
+    #[cfg(all(k03_smp_budget, smp_budget_case = "fault"))]
+    if _cpu == 0 { return budget::FAULT_ADDRESS; }
+    PEER
 }
 #[derive(Clone, Copy)]
 #[repr(C, packed)]
@@ -166,10 +175,13 @@ pub fn prepare(handoff: &crate::uefi::Handoff, bsp: u64, ap: u64) {
             let t = tables.user_translation(address).unwrap(); ensure(t.physical == physical && t.writable == writable && t.executable == executable && t.page_bytes == 4096);
         }
         if cpu == 1 { ensure(tables.translation(PEER).is_none()); }
+        if probe_address(cpu) != PEER { ensure(tables.translation(probe_address(cpu)).is_none()); }
         let mut saved = initial();
         saved.rip = if cpu == 0 || cfg!(k03_smp_budget) { user_address(ptr::addr_of!(smp_user_bsp_start)) } else { match case_id() { 0 => user_address(ptr::addr_of!(smp_user_warmup_start)), 1 => user_address(ptr::addr_of!(smp_user_peer_fault)), _ => user_address(ptr::addr_of!(smp_user_forged_fault)) } };
+        #[cfg(all(k03_smp_budget, smp_budget_case = "fault"))]
+        if cpu == 0 { saved.rip = user_address(ptr::addr_of!(smp_user_budget_fault_start)); }
         saved.registers[2] = SEED + cpu as u64; saved.registers[3] = SENTINEL + cpu as u64;
-        saved.registers[8] = DATA; saved.registers[9] = PEER; saved.registers[13] = ITERATIONS;
+        saved.registers[8] = DATA; saved.registers[9] = probe_address(cpu); saved.registers[13] = ITERATIONS;
         saved.fp[160..168].copy_from_slice(&(SENTINEL + cpu as u64).to_le_bytes());
         saved.fp[168..176].copy_from_slice(&(SEED + cpu as u64).to_le_bytes());
         unsafe { context(cpu).write(Context { own: context(cpu) as u64, kernel_rsp: 0, kernel_root: 0, index: cpu as u64, saved, root: tables.root(), apic: if cpu == 0 { bsp } else { ap } }); }
@@ -255,12 +267,12 @@ extern "sysv64" fn smp_user_capture(frame: *const Saved, fp: *const u8, c: *mut 
     }
     let mut expected_registers = [0u64; 15];
     expected_registers[2] = SEED + cpu as u64; expected_registers[3] = SENTINEL + cpu as u64;
-    expected_registers[8] = DATA; expected_registers[9] = PEER;
+    expected_registers[8] = DATA; expected_registers[9] = probe_address(cpu);
     expected_registers[13] = if !cfg!(k03_smp_budget) && cpu == 1 && case_id() == 0 { 0 } else { ITERATIONS };
     expected_registers[14] = if cpu == 0 || case_id() == 0 { 0x2b } else { 0 };
     // Normalized order: R15..R8, RDI, RSI, RBP, RBX, RDX, RCX, RAX.
     ensure(saved.registers == expected_registers);
-    ensure(saved.registers[3] == SENTINEL + cpu as u64 && saved.registers[2] == SEED + cpu as u64 && saved.registers[8] == DATA && saved.registers[9] == PEER);
+    ensure(saved.registers[3] == SENTINEL + cpu as u64 && saved.registers[2] == SEED + cpu as u64 && saved.registers[8] == DATA && saved.registers[9] == probe_address(cpu));
     ensure(u64::from_le_bytes(saved.fp[160..168].try_into().unwrap()) == SENTINEL + cpu as u64 && u64::from_le_bytes(saved.fp[168..176].try_into().unwrap()) == SEED + cpu as u64);
     let mut expected_fp = initial().fp;
     expected_fp[160..168].copy_from_slice(&(SENTINEL + cpu as u64).to_le_bytes());

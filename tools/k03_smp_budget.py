@@ -85,7 +85,7 @@ def expected_dependencies():
 
 def coff_binding(obj, efi, case):
     """Bind the budget descriptor after PR68's full COFF and payload validation."""
-    inherited = inherited_coff_binding(obj, efi, "rendezvous")
+    inherited = inherited_coff_binding(obj, efi, "rendezvous", fault_entry=case == "fault")
     _, _, _, table, count, _, _ = struct.unpack_from("<HHIIIHH", obj)
     strings = table + count * 18
     found, index = [], 0
@@ -442,7 +442,7 @@ def main():
         elif args.operation == "verify":
             require(not args.out.exists(), "SMP budget verification output exists")
             report = verify(args.first, args.second, args.host_result, args.result); args.out.parent.mkdir(parents=True, exist_ok=True); write_json(args.out, report)
-            print("Both SMP budget cases verified; physical scheduling qualification unavailable")
+            print("All SMP budget cases verified; physical scheduling qualification unavailable")
         else:
             args.root.mkdir(parents=True, exist_ok=True); write_json(args.root / "failure-summary.json", failure_summary(args.root))
             print("SMP budget failure metadata retained; raw diagnostics excluded")

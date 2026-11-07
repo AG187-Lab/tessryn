@@ -1,7 +1,7 @@
 # Local timers and a shared budget on two CPUs
 
-Status: bounded clean original-kernel emulator execution accepted;
-[retained evidence](../evidence/k03-smp-budget/README.md). This bounded K03
+Status: the original `preempt` and `late` cases have accepted clean emulator
+[evidence](../evidence/k03-smp-budget/README.md). This bounded K03
 profile joins the [protected two-CPU contexts](k03-smp-user.md) to the unchanged
 [scheduler policy](k03-preparation.md). The [single-CPU HPET timer](k03-timer-preemption.md)
 and [two-CPU peer stops](k03-smp-user.md) remain separate correctness references.
@@ -18,8 +18,8 @@ publish a local stop receipt; it cannot mutate scheduler state.
 
 The existing shared HPET main counter supplies node-local emulator time. Each
 CPU independently calibrates and arms its own xAPIC one-shot countdown. The
-timer uses a dedicated DPL0 vector. A valid stop checks the actual interrupted
-CPL3 frame and private root, the active local generation, the local timer
+timer uses a dedicated DPL0 vector. A valid timer interrupt stop checks the
+actual interrupted CPL3 frame and private root, the active local generation, the local timer
 configuration, a zero current count, the hardware in-service bit, EOI and a
 drained local source before rearm. Invalid stop frames, timer source state or
 entry timing fail the experiment. Both legacy PICs and all 24 admitted I/O APIC routes are masked;
@@ -52,16 +52,26 @@ pure CPL3 cycles or physical timing precision.
 | --- | --- |
 | `preempt` | Both CPUs start with live reservations under one cap. The second grant is clipped by the first. Both unbounded user loops are stopped by their local hardware timers; the BSP trap precedes the AP's earliest possible timer expiry after fresh AP user progress. In a second batch both saved contexts resume, advance their private heartbeats, and stop through fresh generations. Timely stops charge full observed intervals and release only their own reservations. The fixture completes after the second batch. |
 | `late` | A test-only timer setup deliberately schedules both authentic stops beyond the grants. The first reconciliation charges all elapsed time, halts the domain, and leaves the peer lease and reservation owned until its separate receipt is reconciled. The BSP observes rejected further admission, charges the peer without clamping, and ends with no outstanding leases or reservations. |
+| `fault` | With both grants live, the BSP's CPL3 fixture increments its private heartbeat and takes a bound non-present read fault. The kernel masks and stops its still-running timer, verifies the local interrupt request and in-service registers are clear, and records the fault without acknowledging a timer interrupt. The AP advances again after the faulting CPU has retired and then stops through its own timer IRQ. The BSP charges the failed task's full interval, retires only its lease, and leaves the peer's original grant and domain admission intact until the peer's own receipt. |
 
 In the late case the peer may already be stopped in hardware while its receipt
 awaits reconciliation. Retaining the peer lease is a policy ownership proof,
 not a claim of immediate cross-CPU cancellation. Terminal park uses protected
 acknowledgment and stable user progress observations. All memory stays retained.
+The fault case keeps the same retained-memory rule. The faulting CPU's
+countdown must agree with the HPET bracket spanning its trap capture and
+retirement. Two heartbeat samples taken after that retirement must show the
+peer progressing before its own timer stop. The BSP applies both receipts
+after the hardware stops, in retirement order. In that ledger, the failed
+task cannot be dispatched again, and the peer's reservation stays intact
+until its own receipt is applied. The historical packet covers the original
+two cases; the fault extension is a separate draft candidate. Broader
+application recovery and arbitrary-program admission remain open.
 
 ## Validation and limits
 
 Require clean committed source; pinned toolchain and firmware; independently
-matching builds; actual ACPI parser checks; fresh runs of both cases; and a
+matching builds; actual ACPI parser checks; fresh runs of all three cases; and a
 separate replay of the binary-bound CPL3 state, timer receipts, shared budget
 transitions and terminal state. Retain artifacts with exact source and inventory
 bindings. Earlier profiles keep their original evidence formats and gates.
@@ -81,10 +91,10 @@ python3 tools/check_k03_smp_user_host.py --out build/k03-smp-budget/host
 for twin in a b; do
   python3 tools/k03_smp_budget.py build --out "build/k03-smp-budget/$twin"
 done
-for case in preempt late; do
+for case in preempt late fault; do
   python3 tools/k03_smp_budget.py run --manifest build/k03-smp-budget/a/manifest.json --case "$case" --out "build/k03-smp-budget/$case" --allow-qemu
 done
-python3 tools/k03_smp_budget.py verify --first build/k03-smp-budget/a/manifest.json --second build/k03-smp-budget/b/manifest.json --host-result build/k03-smp-budget/host/result.json --result build/k03-smp-budget/preempt/result.json --result build/k03-smp-budget/late/result.json --out build/k03-smp-budget/verification.json
+python3 tools/k03_smp_budget.py verify --first build/k03-smp-budget/a/manifest.json --second build/k03-smp-budget/b/manifest.json --host-result build/k03-smp-budget/host/result.json --result build/k03-smp-budget/preempt/result.json --result build/k03-smp-budget/late/result.json --result build/k03-smp-budget/fault/result.json --out build/k03-smp-budget/verification.json
 ```
 
 This experiment has no general runnable queues, blocking or wakeup across

@@ -33,15 +33,16 @@ jobs:
         run: |
           python3 tools/k03_smp_budget.py build --out build/k03-smp-budget/a
           python3 tools/k03_smp_budget.py build --out build/k03-smp-budget/b
-      - name: Capture both local timers, contended reservations and actual late stops
+      - name: Capture local timers, late stops and fault containment under a shared cap
         run: |
-          for case in preempt late; do
+          for case in preempt late fault; do
             python3 tools/k03_smp_budget.py run --manifest build/k03-smp-budget/a/manifest.json --case "$case" --out "build/k03-smp-budget/$case" --allow-qemu
           done
       - name: Replay compiled binding, actual traps and the complete shared ledger
         run: |
           python3 tools/k03_smp_budget.py verify --first build/k03-smp-budget/a/manifest.json --second build/k03-smp-budget/b/manifest.json --host-result build/k03-smp-budget/host/result.json \
-            --result build/k03-smp-budget/preempt/result.json --result build/k03-smp-budget/late/result.json --out build/k03-smp-budget/verification.json
+            --result build/k03-smp-budget/preempt/result.json --result build/k03-smp-budget/late/result.json \
+            --result build/k03-smp-budget/fault/result.json --out build/k03-smp-budget/verification.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: success()
         with:
@@ -56,12 +57,17 @@ jobs:
             build/k03-smp-budget/a/late/BOOTX64.EFI
             build/k03-smp-budget/a/late/kernel.obj
             build/k03-smp-budget/a/late/boot.img
+            build/k03-smp-budget/a/fault/BOOTX64.EFI
+            build/k03-smp-budget/a/fault/kernel.obj
+            build/k03-smp-budget/a/fault/boot.img
             build/k03-smp-budget/a/scheduler/stdout.log
             build/k03-smp-budget/a/scheduler/stderr.log
             build/k03-smp-budget/a/preempt/stdout.log
             build/k03-smp-budget/a/preempt/stderr.log
             build/k03-smp-budget/a/late/stdout.log
             build/k03-smp-budget/a/late/stderr.log
+            build/k03-smp-budget/a/fault/stdout.log
+            build/k03-smp-budget/a/fault/stderr.log
             build/k03-smp-budget/a/notices/tessryn-LICENSE
             build/k03-smp-budget/a/notices/tessryn-NOTICE
             build/k03-smp-budget/a/notices/rust-LICENSE-APACHE
@@ -120,12 +126,17 @@ jobs:
             build/k03-smp-budget/b/late/BOOTX64.EFI
             build/k03-smp-budget/b/late/kernel.obj
             build/k03-smp-budget/b/late/boot.img
+            build/k03-smp-budget/b/fault/BOOTX64.EFI
+            build/k03-smp-budget/b/fault/kernel.obj
+            build/k03-smp-budget/b/fault/boot.img
             build/k03-smp-budget/b/scheduler/stdout.log
             build/k03-smp-budget/b/scheduler/stderr.log
             build/k03-smp-budget/b/preempt/stdout.log
             build/k03-smp-budget/b/preempt/stderr.log
             build/k03-smp-budget/b/late/stdout.log
             build/k03-smp-budget/b/late/stderr.log
+            build/k03-smp-budget/b/fault/stdout.log
+            build/k03-smp-budget/b/fault/stderr.log
             build/k03-smp-budget/b/notices/tessryn-LICENSE
             build/k03-smp-budget/b/notices/tessryn-NOTICE
             build/k03-smp-budget/b/notices/rust-LICENSE-APACHE
@@ -190,6 +201,13 @@ jobs:
             build/k03-smp-budget/late/firmware/code.fd
             build/k03-smp-budget/late/firmware/vars.fd
             build/k03-smp-budget/late/firmware/NOTICE
+            build/k03-smp-budget/fault/result.json
+            build/k03-smp-budget/fault/registration.json
+            build/k03-smp-budget/fault/stdout.log
+            build/k03-smp-budget/fault/stderr.log
+            build/k03-smp-budget/fault/firmware/code.fd
+            build/k03-smp-budget/fault/firmware/vars.fd
+            build/k03-smp-budget/fault/firmware/NOTICE
             build/k03-smp-budget/host/result.json
             build/k03-smp-budget/host/build-stdout.log
             build/k03-smp-budget/host/build-stderr.log

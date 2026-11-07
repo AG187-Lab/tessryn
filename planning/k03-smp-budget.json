@@ -13,7 +13,8 @@
   "descriptor_bytes": 136,
   "cases": {
     "preempt": {"cap_ns": 1200000000, "quantum_ns": 800000000, "timer_ns": 20000000, "rounds": 2},
-    "late": {"cap_ns": 60000000, "quantum_ns": 40000000, "timer_ns": 60000000, "rounds": 1}
+    "late": {"cap_ns": 60000000, "quantum_ns": 40000000, "timer_ns": 60000000, "rounds": 1},
+    "fault": {"cap_ns": 1200000000, "quantum_ns": 800000000, "timer_ns": 20000000, "rounds": 1}
   },
   "retained": "all memory and contexts until VM exit",
   "performance_gate": "registered native complete-path performance comparison pending"

@@ -12,7 +12,7 @@ PROFILE_NAME = "k03-smp-budget"
 ARTIFACT_TYPE = "tessryn-" + PROFILE_NAME
 SCOPE = ("bounded original-kernel two-CPU CPL3 LAPIC preemption and aggregate CPU budget; "
          "migration, reclamation, physical clocks, devices and performance unqualified")
-CASES = ("preempt", "late")
+CASES = ("preempt", "late", "fault")
 VECTOR = 67
 DIVIDE_CONFIG = 3
 DIVIDER = 16
@@ -57,7 +57,8 @@ class Scenario:
 
 
 SCENARIOS = {"preempt": Scenario(1_200_000_000, 800_000_000, 20_000_000, 2),
-             "late": Scenario(60_000_000, 40_000_000, 60_000_000, 1)}
+             "late": Scenario(60_000_000, 40_000_000, 60_000_000, 1),
+             "fault": Scenario(1_200_000_000, 800_000_000, 20_000_000, 1)}
 
 
 def format_name(kind):
