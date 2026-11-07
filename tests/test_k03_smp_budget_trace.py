@@ -1,11 +1,12 @@
-"""Replay original diagnostic boots only as fixtures, never as release evidence."""
+"""Replay diagnostic boots and synthetic mutations, never as release evidence."""
 from __future__ import annotations
 
 import copy
+import hashlib
 import re
 import unittest
 
-from tools.k03_smp_budget_protocol import CASES, PROFILE, SCENARIOS
+from tools.k03_smp_budget_protocol import CASES, PROFILE, SCENARIOS, descriptor_bytes
 from tools.k03_smp_budget_trace import parse_transcript
 
 BINDINGS = {'late': {'budget': {'efi_file_offset': 76032,
@@ -236,15 +237,81 @@ def mutate(raw, kind, key, value, index=0, user=False):
     return raw.replace(line, replaced, 1)
 
 
+def synthetic_fault_fixture():
+    """Keep the first preempt batch, replacing the BSP stop with a modeled fault."""
+    raw = TRACES["preempt"]
+    raw = raw[:raw.index(rows(raw, "BATCH")[1])] + raw[raw.index(rows(raw, "STOP")[0]):]
+    binding = copy.deepcopy(BINDINGS["preempt"])
+    binding["budget"]["sha256"] = hashlib.sha256(descriptor_bytes("fault")).hexdigest()
+    program = binding["context"]["program"]
+    code = bytearray(4096)
+    for label, value in program["instruction_bytes"].items():
+        at = program["offsets"][label]
+        code[at:at + 16] = bytes.fromhex(value)
+    entry = program["offsets"]["loop_end"] + 2
+    # Reload GS, check marker, branch to the old UD2 on mismatch, increment
+    # the heartbeat once, then jump to the old peer load instruction.
+    encoded = bytes.fromhex("66b82b00668ee84c396f0875f1f048ff07ebda")
+    code[entry:entry + len(encoded)] = encoded
+    program["offsets"]["fault_start"] = entry
+    program["instruction_bytes"]["fault_start"] = encoded.hex()
+    end = program["offsets"]["loop_end"]
+    program["instruction_bytes"]["loop_end"] = code[end:end + 16].hex()
+    old_sha = program["sha256"]
+    program["sha256"] = hashlib.sha256(code).hexdigest()
+    raw = raw.replace(old_sha.encode(), program["sha256"].encode())
+
+    raw = mutate(raw, "BEGIN", "case", "fault")
+    capture = number(raw, "TIMER", "entry") + 800
+    retired = capture + 800
+    current = number(raw, "TIMER", "initial") - (capture - number(raw, "TIMER", "arm_before")) * 10 // 16
+    for key, value in {"capture": capture, "retired": retired, "current": current, "isr_before": 0,
+                       "resume_rip": hex(PROFILE["user_code"] + entry), "heartbeat_after": 1, "peer_heartbeat": 2}.items():
+        raw = mutate(raw, "TIMER", key, value)
+    raw = mutate(raw, "TIMER", "peer_heartbeat", 1, 1)
+    target = PROFILE["peer"] + 4096
+    gpr = bytearray.fromhex(field(raw, "TRAP", "gpr", user=True))
+    gpr[9 * 8:10 * 8] = target.to_bytes(8, "little")
+    for key, value in {"stage": "fault", "vector": 14, "error": 4, "rip": hex(PROFILE["user_code"] + program["offsets"]["peer_fault"]),
+                       "cr2": hex(target), "isr_before": 0, "heartbeat": 1, "gpr": gpr.hex()}.items():
+        raw = mutate(raw, "TRAP", key, value, user=True)
+    first_account = rows(raw, "ACCOUNT")[0]
+    raw = raw.replace(first_account, f"TESSRYN_K03_SMP_BUDGET_FAULT_PEER round=1 sample={retired + 10} heartbeat=3\n".encode() + first_account, 1)
+
+    cap = SCENARIOS["fault"].cap_ns
+    first_charge = (retired - number(raw, "BATCH", "start")) * 10
+    peer_reserved = number(raw, "GRANT", "grant_ns", 1)
+    for key, value in {"retired": retired, "elapsed_ns": first_charge, "consumed": first_charge,
+                       "available": cap - first_charge - peer_reserved, "state": "failed"}.items():
+        raw = mutate(raw, "ACCOUNT", key, value)
+    second_account = rows(raw, "ACCOUNT")[1]
+    deny = (f"TESSRYN_K03_SMP_BUDGET_DENY round=1 cpu=0 reason=no-runnable-task consumed={first_charge} "
+            f"reserved={peer_reserved} available={cap - first_charge - peer_reserved} halted=0 peer_lease=1 peer_reserved={peer_reserved}\n")
+    raw = raw.replace(second_account, deny.encode() + second_account, 1)
+    total = first_charge + number(raw, "ACCOUNT", "elapsed_ns", 1)
+    for key, value in {"consumed": total, "available": cap - total, "state": "completed"}.items():
+        raw = mutate(raw, "ACCOUNT", key, value, 1)
+    ap_heartbeat = number(raw, "TIMER", "heartbeat_after", 1)
+    for key, value in {"cpu0": 1, "stable0": 1, "cpu1": ap_heartbeat, "stable1": ap_heartbeat}.items():
+        raw = mutate(raw, "STOP", key, value)
+    for key, value in {"rounds": 1, "irqs": 1, "consumed": total}.items():
+        raw = mutate(raw, "PASS", key, value)
+    return raw, binding
+
+
+FAULT_TRACE, FAULT_BINDING = synthetic_fault_fixture()
+
+
 class BudgetTraceTests(unittest.TestCase):
     def parse(self, case="preempt", raw=None, binding=None):
-        return parse_transcript(case, TRACES[case] if raw is None else raw, 33, b"", BINDINGS[case] if binding is None else binding)
+        default_raw, default_binding = (FAULT_TRACE, FAULT_BINDING) if case == "fault" else (TRACES[case], BINDINGS[case])
+        return parse_transcript(case, default_raw if raw is None else raw, 33, b"", default_binding if binding is None else binding)
 
     def reject(self, raw, case="preempt"):
         with self.assertRaises(ValueError): self.parse(case, raw)
 
     def test_real_cases_have_distinct_shared_budget_outcomes(self):
-        normal, late = (self.parse(case) for case in CASES)
+        normal, late = (self.parse(case) for case in ("preempt", "late"))
         self.assertEqual([normal["irq_count"], late["irq_count"]], [4, 2])
         self.assertEqual([normal["shared_grant_clips"], late["shared_grant_clips"]], [2, 1])
         self.assertFalse(normal["halted"]); self.assertTrue(late["halted"])
@@ -254,6 +321,48 @@ class BudgetTraceTests(unittest.TestCase):
         self.assertGreater(late["reconciliation"][0]["peer_reserved"], 0)
         self.assertEqual(late["reconciliation"][1]["peer_reserved"], 0)
         self.assertEqual(normal["capture_authentication"], "unverified_offline")
+
+    def test_fault_drains_bsp_timer_and_accounts_peer_separately(self):
+        result = self.parse("fault")
+        bsp, ap = result["reconciliation"]
+        self.assertEqual((result["irq_count"], result["rounds"], result["shared_grant_clips"]), (1, 1, 1))
+        self.assertEqual((bsp["cpu"], bsp["state"], bsp["peer_lease"], bsp["peer_reserved"]), (0, "failed", 1, 400_000_000))
+        self.assertEqual((ap["cpu"], ap["state"], ap["peer_lease"], ap["reserved"]), (1, "completed", 0, 0))
+        self.assertEqual(result["consumed_ns"], bsp["charged_ns"] + ap["charged_ns"])
+        self.assertGreater(ap["available"], 0)
+        self.assertFalse(result["halted"])
+        self.assertTrue(result["denied_redispatch"])
+
+    def test_fault_requires_exact_compiled_entry_and_hardware_trap(self):
+        raw = FAULT_TRACE
+        bad = copy.deepcopy(FAULT_BINDING)
+        bad["context"]["program"]["instruction_bytes"]["fault_start"] = bad["context"]["program"]["instruction_bytes"]["fault_start"][:-2] + "db"
+        with self.assertRaisesRegex(ValueError, "branch target"):
+            self.parse("fault", binding=bad)
+        for key, value in (("stage", "timer"), ("vector", 67), ("error", 5), ("rip", "0x100000000"),
+                           ("cr2", hex(PROFILE["peer"])), ("cs", "0x8"), ("isr_before", 8), ("gpr", "0" * 240)):
+            with self.subTest(trap=key): self.reject(mutate(raw, "TRAP", key, value, user=True), "fault")
+        early = number(raw, "TIMER", "arm_before") + ((number(raw, "TIMER", "initial") + 1) * 16) // 10
+        for key, value in (("current", 0), ("current", number(raw, "TIMER", "initial") + 1),
+                           ("irr_after", 8), ("isr_before", 8), ("retire_count", 1), ("capture", early),
+                           ("resume_rip", hex(PROFILE["user_code"])), ("heartbeat_after", 2)):
+            with self.subTest(timer=key): self.reject(mutate(raw, "TIMER", key, value), "fault")
+        self.reject(mutate(raw, "TIMER", "isr_before", 0, 1), "fault")
+
+    def test_fault_requires_post_retirement_peer_progress_and_exact_charge(self):
+        raw = FAULT_TRACE
+        witness, = rows(raw, "FAULT_PEER")
+        self.reject(raw.replace(witness, b"", 1), "fault")
+        for key, value in (("sample", number(raw, "TIMER", "retired") - 1), ("sample", number(raw, "TIMER", "capture", 1)),
+                           ("heartbeat", number(raw, "TIMER", "peer_heartbeat")), ("heartbeat", number(raw, "TIMER", "heartbeat_after", 1) + 1)):
+            with self.subTest(witness=key): self.reject(mutate(raw, "FAULT_PEER", key, value), "fault")
+        for key, value in (("elapsed_ns", 0), ("state", "completed"), ("halted", 1), ("peer_lease", 0), ("peer_reserved", 0)):
+            with self.subTest(account=key): self.reject(mutate(raw, "ACCOUNT", key, value), "fault")
+        denied, = rows(raw, "DENY")
+        self.reject(raw.replace(denied, b"", 1), "fault")
+        self.reject(mutate(raw, "DENY", "halted", 1), "fault")
+        self.reject(mutate(raw, "ACCOUNT", "state", "failed", 1), "fault")
+        self.reject(mutate(raw, "PASS", "irqs", 2), "fault")
 
     def test_process_case_and_compiled_binding_are_required(self):
         for code, stderr in ((None, b""), (True, b""), (0, b""), (33, b"host error")):
@@ -335,7 +444,7 @@ class BudgetTraceTests(unittest.TestCase):
 
     def test_terminal_ap_ack_heartbeats_and_retained_payloads(self):
         for case in CASES:
-            raw = TRACES[case]
+            raw = FAULT_TRACE if case == "fault" else TRACES[case]
             for key, value in (("ap_ack", 0), ("stable0", 0), ("stable1", 0), ("end", number(raw, "STOP", "start") + 1)):
                 self.reject(mutate(raw, "STOP", key, value), case)
             self.reject(mutate(raw, "PAYLOAD", "sha256", "0" * 64, 3, True), case)

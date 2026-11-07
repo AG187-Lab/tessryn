@@ -179,6 +179,16 @@ smp_user_loop_start:
 smp_user_loop_end:
 smp_user_bad:
     ud2
+.if {smp_budget_fault}
+.global smp_user_budget_fault_start
+smp_user_budget_fault_start:
+    mov ax, 0x2b
+    mov gs, ax
+    cmp qword ptr [rdi + 8], r13
+    jne smp_user_bad
+    lock inc qword ptr [rdi]
+    jmp smp_user_peer_fault
+.endif
     .org smp_user_program_start + 4096
 .global smp_user_program_end
 smp_user_program_end:

@@ -13,6 +13,7 @@ from unittest import mock
 
 from tools import k03_smp_budget as tooling
 from tools import k03_smp_budget_protocol as protocol
+from tools.build_k03_smp_user import fault_entry_size
 
 
 class BudgetToolingTests(unittest.TestCase):
@@ -29,7 +30,7 @@ class BudgetToolingTests(unittest.TestCase):
         profile = {"linker": tooling.ROOT / "build/uefi/bin/rust-lld", "toolchain": {"rust_flags": [
             "--crate-name=tessryn_kernel", "--crate-type=bin", "-Clink-arg=/timestamp:0"]}}
         commands = tooling.expected_commands(profile)
-        self.assertEqual(list(commands), ["scheduler", "preempt", "late"])
+        self.assertEqual(list(commands), ["scheduler", "preempt", "late", "fault"])
         self.assertIn("--crate-type=rlib", commands["scheduler"])
         self.assertIn("--crate-name=tessryn_scheduler", commands["scheduler"])
         self.assertNotIn("-Clink-arg=/timestamp:0", commands["scheduler"])
@@ -44,10 +45,20 @@ class BudgetToolingTests(unittest.TestCase):
         paths = [row.strip() for row in block.split("path: |", 1)[1].splitlines() if row.strip()]
         self.assertEqual(len(paths), len(set(paths)))
         self.assertEqual(set(paths), {"build/k03-smp-budget/" + name for name in protocol.success_inventory()})
-        self.assertEqual(len(paths), 148)
+        self.assertEqual(len(paths), 165)
         self.assertIn("include-hidden-files: true", block)
         self.assertIn("if: success()", text)
         self.assertIn("path: build/k03-smp-budget/failure-summary.json", text.split("name: k03-smp-budget-failure-metadata", 1)[1])
+
+    def test_fault_entry_binds_the_marker_rejection_and_the_actual_load_target(self):
+        # Entry at page offset 64, failure UD2 at 62, peer load at 40.
+        code = bytes.fromhex("66b82b00668ee84c396f0875f1f048ff07ebd5")
+        self.assertEqual(fault_entry_size(code, 0, -2, -24), len(code))
+        for position in (12, 15, 18):
+            changed = bytearray(code)
+            changed[position] ^= 1
+            with self.subTest(position=position), self.assertRaises(ValueError):
+                fault_entry_size(changed, 0, -2, -24)
 
     def test_reused_python_dependency_closure_is_explicit(self):
         pending = ["tools/k03_smp_budget.py", "tools/check_k03_smp_user_host.py"]

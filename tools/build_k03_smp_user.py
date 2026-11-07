@@ -19,7 +19,29 @@ from tools.k01_media import make_disk
 from tools.setup_uefi import verify_installation
 
 
-def coff_binding(obj, efi, case):
+def fault_entry_size(code, entry, bad, fault):
+    """Bind the fault fixture's marker check, heartbeat and exact jumps."""
+    # Reload GS like the original context, then CMP [RDI+8], R13.
+    prefix = bytes.fromhex("66b82b00668ee84c396f08")
+    require(0 <= entry and code.startswith(prefix, entry), "SMP user fault entry setup differs")
+
+    def branch(at, encodings, target):
+        for opcode, width in encodings:
+            if code.startswith(opcode, at):
+                start = at + len(opcode)
+                end = start + width
+                require(end <= len(code) and end + int.from_bytes(code[start:end], "little", signed=True) == target,
+                    "SMP user fault entry branch target differs")
+                return end
+        raise ValueError("SMP user fault entry branch opcode differs")
+
+    checked = branch(entry + len(prefix), ((b"\x75", 1), (b"\x0f\x85", 4)), bad)
+    increment = bytes.fromhex("f048ff07")  # LOCK INC [RDI]
+    require(code.startswith(increment, checked), "SMP user fault entry heartbeat differs")
+    return branch(checked + len(increment), ((b"\xeb", 1), (b"\xe9", 4)), fault) - entry
+
+
+def coff_binding(obj, efi, case, *, fault_entry=False):
     """Bind inherited AP bootstrap and the original copied CPL3 program."""
     from tools.k03_smp_protocol import descriptor_bytes as bootstrap_descriptor
     from tools.k03_smp_user_protocol import DESCRIPTOR_SIZE
@@ -47,6 +69,8 @@ def coff_binding(obj, efi, case):
     wanted = {"K03_SMP_CONTRACT", "smp_trampoline_start", "smp_trampoline_end", "K03_SMP_USER_CONTRACT", "smp_user_program_start", "smp_user_program_end",
         "smp_user_bsp_start", "smp_user_loop_start", "smp_user_loop_end", "smp_user_warmup_start", "smp_user_warmup_end",
         "smp_user_yield", "smp_user_after_yield", "smp_user_peer_fault", "smp_user_forged_fault"}
+    if fault_entry:
+        wanted.add("smp_user_budget_fault_start")
     symbols, index = {}, 0
     while index < symbol_count:
         at = symbol_at + index * 18
@@ -95,7 +119,8 @@ def coff_binding(obj, efi, case):
     for name in wanted - {"K03_SMP_CONTRACT", "smp_trampoline_start", "smp_trampoline_end", "K03_SMP_USER_CONTRACT", "smp_user_program_start", "smp_user_program_end"}:
         section, offset = symbols[name]
         require(section == start[0] and start[1] <= offset < start[1] + 4096, "SMP user label escapes program page")
-        labels[name.removeprefix("smp_user_")] = offset - start[1]
+        label = "fault_start" if name == "smp_user_budget_fault_start" else name.removeprefix("smp_user_")
+        labels[label] = offset - start[1]
     require(labels["bsp_start"] == 0 and labels["warmup_end"] == labels["yield"]
         and all(code[labels[name]:labels[name] + 7] == bytes.fromhex("66b82b00668ee8") for name in ("bsp_start", "warmup_start")),
         "SMP user entry does not exercise the declared GS selector reload")
@@ -106,6 +131,11 @@ def coff_binding(obj, efi, case):
     require(code[labels["forged_fault"]:labels["forged_fault"] + 2] == b"\xcd\x42", "SMP user forged interrupt is not INT66")
     require(code[labels["peer_fault"]:labels["peer_fault"] + 3] == bytes.fromhex("488b06"), "SMP user peer probe is not MOV RAX,[RSI]")
     require(labels["warmup_start"] < labels["warmup_end"], "SMP user finite warmup bounds invalid")
+    lengths = dict.fromkeys(labels, 16)
+    if fault_entry:
+        entry, bad = labels["fault_start"], labels["loop_end"]
+        require(entry == bad + 2 and code[bad:entry] == b"\x0f\x0b", "SMP user fault entry must follow the UD2 tail")
+        lengths["fault_start"] = fault_entry_size(code, entry, bad, labels["peer_fault"])
     pe_info = inspect_pe(efi)
     pe = struct.unpack_from("<I", efi, 60)[0]
     optional = struct.unpack_from("<H", efi, pe + 20)[0]
@@ -131,7 +161,7 @@ def coff_binding(obj, efi, case):
         "image_size": struct.unpack_from("<I", efi, pe + 24 + 56)[0],
         "executable_ranges": [[row["rva"], row["rva"] + row["virtual_size"]] for row in pe_info["sections"] if row["flags"] & 0x20000000]}
     return {"bootstrap": bootstrap, "descriptor": linked(descriptor, False),
-        "program": {**program, "offsets": labels, "instruction_bytes": {name: code[offset:offset + 16].hex() for name, offset in labels.items()}}}
+        "program": {**program, "offsets": labels, "instruction_bytes": {name: code[offset:offset + lengths[name]].hex() for name, offset in labels.items()}}}
 
 
 def dependency_paths(data, snapshot):
