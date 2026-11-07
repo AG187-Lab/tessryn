@@ -160,6 +160,83 @@ pub unsafe fn take_ownership(handoff: &crate::uefi::Handoff) {
     }
 }
 
+/// Admit one fixed QEMU NVMe register page after K01 CPU ownership.
+///
+/// The caller must be the sole BSP with interrupts masked. BAR identity and
+/// memory decoding must already have been verified without touching MMIO.
+#[cfg(io02_nvme_registers)]
+pub unsafe fn prepare_nvme_mmio(handoff: &crate::uefi::Handoff, bar: u64) -> Result<(), &'static str> {
+    use crate::paging::{nvme_aperture, Range};
+
+    let aperture = nvme_aperture(bar, handoff.physical_bits).map_err(|error| error.label())?;
+    let scratch = Range::checked(handoff.scratch, 4096).map_err(|error| error.label())?;
+    if [handoff.image, handoff.stack, handoff.map_allocation, scratch]
+        .into_iter().any(|range| aperture.overlaps(range))
+        || handoff.framebuffer.is_some_and(|range| aperture.overlaps(range))
+        || handoff.high_scratch.is_some_and(|range| aperture.overlaps(range))
+    {
+        return Err("nvme-bar-overlaps-live-range");
+    }
+    for index in 0..handoff.descriptors() {
+        let descriptor = handoff.descriptor(index);
+        let bytes = descriptor.pages.checked_mul(4096).ok_or("nvme-descriptor-overflow")?;
+        let range = Range::checked(descriptor.start, bytes).map_err(|error| error.label())?;
+        if aperture.overlaps(range) { return Err("nvme-bar-overlaps-memory-map"); }
+    }
+
+    const MSR_AND_PAT: u32 = (1 << 5) | (1 << 16);
+    const EFER: u32 = 0xc000_0080;
+    const NXE: u64 = 1 << 11;
+    const WP: u64 = 1 << 16;
+    if __cpuid(0).eax < 1 || __cpuid(1).edx & MSR_AND_PAT != MSR_AND_PAT
+        || __cpuid(0x8000_0000).eax < 0x8000_0001 || __cpuid(0x8000_0001).edx & (1 << 20) == 0
+    {
+        return Err("nvme-mmio-cpu-features");
+    }
+
+    let (cr0, cr3, cr4, rflags): (u64, u64, u64, u64);
+    unsafe {
+        asm!("mov {}, cr0", out(reg) cr0, options(nomem, nostack, preserves_flags));
+        asm!("mov {}, cr3", out(reg) cr3, options(nomem, nostack, preserves_flags));
+        asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack, preserves_flags));
+        asm!("pushfq", "pop {}", out(reg) rflags, options(preserves_flags));
+    }
+    // A single non-global, non-PCID four-level root admits a full CR3 fence.
+    if cr3 != handoff.cr3 || cr4 & ((1 << 7) | (1 << 12) | (1 << 17)) != 0 || rflags & (1 << 9) != 0 {
+        return Err("nvme-mmio-cpu-ownership");
+    }
+
+    unsafe fn read_msr(index: u32) -> u64 {
+        let (low, high): (u32, u32);
+        unsafe {
+            asm!("rdmsr", in("ecx") index, out("eax") low, out("edx") high,
+                options(nomem, nostack, preserves_flags));
+        }
+        (u64::from(high) << 32) | u64::from(low)
+    }
+
+    // The chosen PTE uses PWT and PCD with PAT=0, selecting UC index 3.
+    if unsafe { read_msr(0x277) } >> 24 & 0xff != 0 { return Err("nvme-mmio-pat-not-uc"); }
+    let efer = unsafe { read_msr(EFER) } | NXE;
+    let cr0_after: u64;
+    unsafe {
+        asm!("wrmsr", in("ecx") EFER, in("eax") efer as u32, in("edx") (efer >> 32) as u32,
+            options(nostack, preserves_flags));
+        asm!("mov cr0, {}", in(reg) cr0 | WP, options(nostack, preserves_flags));
+        asm!("mov {}, cr0", out(reg) cr0_after, options(nomem, nostack, preserves_flags));
+    }
+    if unsafe { read_msr(EFER) } & NXE == 0 || cr0_after & WP == 0 {
+        return Err("nvme-mmio-cpu-protection");
+    }
+
+    // SAFETY: K01 installed the image-owned root and no other CPU can use it.
+    let tables = unsafe { &mut *ptr::addr_of_mut!(TABLES) };
+    if tables.root() != cr3 { return Err("nvme-mmio-root"); }
+    tables.set_nvme_register_page(bar).map_err(|error| error.label())?;
+    unsafe { asm!("wbinvd", "mov cr3, {}", in(reg) cr3, options(nostack, preserves_flags)); }
+    Ok(())
+}
+
 #[cfg(k02_native)]
 pub unsafe fn install_user_test_boundary(stack_top: u64, return_gate: usize) {
     // SAFETY: one boot CPU, interrupts masked, before any user instruction.

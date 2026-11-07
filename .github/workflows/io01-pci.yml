@@ -78,3 +78,58 @@ jobs:
             build/io01-pci/absent/qmp-send.log
           if-no-files-found: error
           retention-days: 14
+      - name: Test NVMe admission and build identical images
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_io02_nvme*.py' -v
+          build/toolchain/bin/rustc --edition=2024 --test -D warnings --cfg io02_nvme_registers kernel/io01_pci.rs -o build/io02-nvme-host-tests
+          build/io02-nvme-host-tests
+          build/toolchain/bin/rustc --edition=2024 --test -D warnings --cfg io02_nvme_registers kernel/paging.rs -o build/io02-nvme-paging-tests
+          build/io02-nvme-paging-tests
+          python3 tools/build_io01_pci.py --nvme-registers --out build/io02-nvme/a
+          python3 tools/build_io01_pci.py --nvme-registers --out build/io02-nvme/b
+          python3 tools/build_io01_pci.py --nvme-registers --compare build/io02-nvme/a/manifest.json build/io02-nvme/b/manifest.json
+      - name: Compare original NVMe register reads with paused QMP
+        run: |
+          status=0
+          for case in present absent; do
+            if python3 tools/run_io01_pci.py --nvme-registers --manifest build/io02-nvme/a/manifest.json --case "$case" --out "build/io02-nvme/$case" --allow-qemu; then
+              python3 tools/run_io01_pci.py --nvme-registers --manifest build/io02-nvme/a/manifest.json --case "$case" --out "build/io02-nvme/$case" --verify || status=1
+            else
+              status=1
+            fi
+          done
+          exit "$status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: success()
+        with:
+          name: io02-nvme-register-evidence
+          path: |
+            build/io02-nvme/a/manifest.json
+            build/io02-nvme/a/BOOTX64.EFI
+            build/io02-nvme/a/boot.img
+            build/io02-nvme/a/notices/tessryn-LICENSE
+            build/io02-nvme/a/notices/tessryn-NOTICE
+            build/io02-nvme/a/notices/rust-LICENSE-APACHE
+            build/io02-nvme/a/notices/rust-LICENSE-MIT
+            build/io02-nvme/a/notices/rust-COPYRIGHT
+            build/io02-nvme/b/manifest.json
+            build/io02-nvme/b/BOOTX64.EFI
+            build/io02-nvme/b/boot.img
+            build/io02-nvme/b/notices/tessryn-LICENSE
+            build/io02-nvme/b/notices/tessryn-NOTICE
+            build/io02-nvme/b/notices/rust-LICENSE-APACHE
+            build/io02-nvme/b/notices/rust-LICENSE-MIT
+            build/io02-nvme/b/notices/rust-COPYRIGHT
+            build/io02-nvme/present/result.json
+            build/io02-nvme/present/serial.log
+            build/io02-nvme/present/stderr.log
+            build/io02-nvme/present/qmp-recv.log
+            build/io02-nvme/present/qmp-send.log
+            build/io02-nvme/present/nvme-registers.bin
+            build/io02-nvme/absent/result.json
+            build/io02-nvme/absent/serial.log
+            build/io02-nvme/absent/stderr.log
+            build/io02-nvme/absent/qmp-recv.log
+            build/io02-nvme/absent/qmp-send.log
+          if-no-files-found: error
+          retention-days: 14

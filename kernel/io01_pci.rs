@@ -1,11 +1,14 @@
 //! Original Apache-2.0 PCI configuration discovery for one q35 emulator profile.
 //!
 //! Segment zero, buses 0–7 and the conventional configuration header only.
-//! This profile leaves firmware assignments untouched and grants no BAR, MMIO,
-//! interrupt, DMA or driver authority.
+//! The inventory leaves firmware assignments untouched. A separate opt-in
+//! profile can use the inventory for a bounded NVMe register probe.
 
 #[cfg(not(test))]
 use crate::diagnostics::{halt, print};
+#[cfg(io02_nvme_registers)]
+#[path = "io02_nvme.rs"]
+mod io02_nvme;
 
 const MAX_FUNCTIONS: usize = 64;
 
@@ -20,8 +23,14 @@ struct Bdf {
 #[repr(u32)]
 enum Register {
     Id = 0x00,
+    #[cfg(io02_nvme_registers)]
+    CommandStatus = 0x04,
     ClassRevision = 0x08,
     Header = 0x0c,
+    #[cfg(io02_nvme_registers)]
+    Bar0 = 0x10,
+    #[cfg(io02_nvme_registers)]
+    Bar1 = 0x14,
 }
 
 impl Bdf {
@@ -137,7 +146,7 @@ unsafe fn read_config(selector: u32) -> u32 {
 }
 
 #[cfg(not(test))]
-pub fn run() -> ! {
+pub fn run(#[cfg(io02_nvme_registers)] handoff: &crate::uefi::Handoff) -> ! {
     print(format_args!(
         "TESSRYN_IO01_PCI_BEGIN segment=0 buses=0-7 mechanism=cf8-cfc\n"
     ));
@@ -161,6 +170,8 @@ pub fn run() -> ! {
                     "TESSRYN_IO01_PCI_FUNCTION bdf={bus:02x}:{slot:02x}.{function:x} id=0x{id:08x} class_rev=0x{class_rev:08x} header=0x{header:08x}\n"
                 ));
             }
+            #[cfg(io02_nvme_registers)]
+            io02_nvme::run(handoff, inventory.admitted());
             print(format_args!(
                 "TESSRYN_IO01_PCI_DONE count={}\n",
                 inventory.len
